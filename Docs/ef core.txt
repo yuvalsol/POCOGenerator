@@ -1,0 +1,8 @@
+Moving from Entity Framework 6 to Entity Framework Core 2.0
+https://www.marathonus.com/about/blog/moving-from-entity-framework-6-to-entity-framework-core-2-0/
+
+Migrating Entity Framework 6 projects to Entity Framework Core 1 (EF7)
+https://blog.devart.com/migrating-entity-framework-6-projects-to-entity-framework-core-1-entity-framework-7.html
+
+Porting an EF6 Code-Based Model to EF Core
+https://docs.microsoft.com/en-us/ef/efcore-and-ef6/porting/port-code

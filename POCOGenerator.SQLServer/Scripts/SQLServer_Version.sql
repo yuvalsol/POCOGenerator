@@ -1,0 +1,1 @@
+select serverproperty('ProductVersion')

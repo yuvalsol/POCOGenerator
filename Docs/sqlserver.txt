@@ -1,0 +1,41 @@
+﻿
+┌──────────────────┬──────────────────────────────────────────┐
+│    SQL Server    │                   .NET                   │
+├──────────────────┼──────────────────────────────────────────┤
+│ bigint           │ long                                     │
+│ binary           │ byte[]                                   │
+│ bit              │ bool                                     │
+│ char             │ string                                   │
+│ date             │ DateTime                                 │
+│ datetime         │ DateTime                                 │
+│ datetime2        │ DateTime                                 │
+│ datetimeoffset   │ DateTimeOffset                           │
+│ decimal          │ decimal                                  │
+│ filestream       │ byte[]                                   │
+│ float            │ double                                   │
+│ geography        │ Microsoft.SqlServer.Types.SqlGeography   │
+│ geometry         │ Microsoft.SqlServer.Types.SqlGeometry    │
+│ hierarchyid      │ Microsoft.SqlServer.Types.SqlHierarchyId │
+│ image            │ byte[]                                   │
+│ int              │ int                                      │
+│ money            │ decimal                                  │
+│ nchar            │ string                                   │
+│ ntext            │ string                                   │
+│ numeric          │ decimal                                  │
+│ nvarchar         │ string                                   │
+│ real             │ float                                    │
+│ rowversion       │ byte[]                                   │
+│ smalldatetime    │ DateTime                                 │
+│ smallint         │ short                                    │
+│ smallmoney       │ decimal                                  │
+│ sql_variant      │ object                                   │
+│ text             │ string                                   │
+│ time             │ TimeSpan                                 │
+│ timestamp        │ byte[]                                   │
+│ tinyint          │ byte                                     │
+│ uniqueidentifier │ Guid                                     │
+│ varbinary        │ byte[]                                   │
+│ varchar          │ string                                   │
+│ xml              │ string                                   │
+│ else             │ object                                   │
+└──────────────────┴──────────────────────────────────────────┘

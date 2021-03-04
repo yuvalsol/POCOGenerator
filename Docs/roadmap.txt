@@ -1,0 +1,95 @@
+Errors:
+1. errors from another dll reference are not being catched
+
+/******************/
+
+views & sp
+- eunm declartions show up on views
+- enum are not references to a table: tableName.enumName
+
+/******************/
+
+Register type mapping
+SQL type string to .NET type Type
+
+Conditions
+From version
+Internal setting --> Execute scalar script
+
+/******************/
+
+Humanizer
+
+Humanizer.Core 2.0.1
+https://www.nuget.org/packages/Humanizer.Core/2.0.1
+Install-Package Humanizer.Core -Version 2.0.1
+
+Humanize String
+http://humanizr.net/#humanize-string
+
+Transform String
+http://humanizr.net/#transform-string
+
+
+/******************/
+
+reconnet/change database without closing the appliaction
+
+/******************/
+
+DbContext
+
+Working with DbContext
+https://docs.microsoft.com/en-us/ef/ef6/fundamentals/working-with-dbcontext
+DbContext in Entity Framework 6
+http://www.entityframeworktutorial.net/entityframework6/dbcontext.aspx
+
+/******************/
+
+add option: EF Core
+
+Compare EF Core & EF6
+https://docs.microsoft.com/en-us/ef/efcore-and-ef6/index
+Learn Entity Framework Core
+https://www.learnentityframeworkcore.com/
+EF Core Data Annotations Attributes
+https://www.learnentityframeworkcore.com/configuration/data-annotation-attributes
+
+porting from EF to EF Core:
+Moving from EF6 to EF Core
+https://passos.com.au/moving-from-ef6-to-ef-core/
+Porting to Entity Framework Core
+https://codeopinion.com/porting-to-entity-framework-core/
+Porting an EF6 Code-Based Model to EF Core
+https://docs.microsoft.com/en-us/ef/efcore-and-ef6/porting/port-code
+
+/******************/
+
+split project to winforms, console application, dll
+
+/******************/
+
+MySQL 8
+
+1.
+default values for spatial types, json, binary
+
+Handling of Explicit Defaults as of MySQL 8.0.13
+https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html
+
+Prior to MySQL 8.0.13:
+The BLOB, TEXT, GEOMETRY, and JSON data types cannot be assigned a default value.
+
+2.
+spatial types can be specified with SRID. not necessary 0
+
+Spatial Data Types
+https://dev.mysql.com/doc/refman/8.0/en/spatial-type-overview.html
+
+/******************/
+
+add project to github
+
+/******************/
+
+add dll to nuget

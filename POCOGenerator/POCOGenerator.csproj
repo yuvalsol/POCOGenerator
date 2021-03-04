@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8E9F1307-4DAD-4F02-97F0-C0BCE59B1B86}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>POCOGenerator</RootNamespace>
+    <AssemblyName>POCOGenerator</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Solution Items\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="CachedEnumerable.cs" />
+    <Compile Include="DatabaseAccessibleObjects.cs" />
+    <Compile Include="Objects\Database.cs" />
+    <Compile Include="Objects\ForeignKey.cs" />
+    <Compile Include="Objects\Function.cs" />
+    <Compile Include="Objects\FunctionColumn.cs" />
+    <Compile Include="Objects\FunctionParameter.cs" />
+    <Compile Include="Objects\IDbColumn.cs" />
+    <Compile Include="Objects\IDbObject.cs" />
+    <Compile Include="Objects\IDbParameter.cs" />
+    <Compile Include="Objects\IDbRoutine.cs" />
+    <Compile Include="Objects\Index.cs" />
+    <Compile Include="Objects\NavigationProperty.cs" />
+    <Compile Include="Objects\PrimaryKey.cs" />
+    <Compile Include="Objects\Procedure.cs" />
+    <Compile Include="Objects\ProcedureColumn.cs" />
+    <Compile Include="Objects\ProcedureParameter.cs" />
+    <Compile Include="Objects\Version.cs" />
+    <Compile Include="Objects\Server.cs" />
+    <Compile Include="Objects\Table.cs" />
+    <Compile Include="Objects\TableColumn.cs" />
+    <Compile Include="Objects\TVP.cs" />
+    <Compile Include="Objects\TVPColumn.cs" />
+    <Compile Include="Objects\UniqueKey.cs" />
+    <Compile Include="Objects\View.cs" />
+    <Compile Include="Objects\ViewColumn.cs" />
+    <Compile Include="Disclaimer.cs" />
+    <Compile Include="Generator.cs" />
+    <Compile Include="GeneratorEventArgs.cs" />
+    <Compile Include="GeneratorFactory.cs" />
+    <Compile Include="GeneratorResults.cs" />
+    <Compile Include="GeneratorSettings.cs" />
+    <Compile Include="GeneratorSupport.cs" />
+    <Compile Include="GeneratorWinFormsFactory.cs" />
+    <Compile Include="IGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RDBMS.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\POCOGenerator.DbFactories\POCOGenerator.DbFactories.csproj">
+      <Project>{c303c478-61f6-47d0-b01e-7f3b92523682}</Project>
+      <Name>POCOGenerator.DbFactories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POCOGenerator.DbHandlers\POCOGenerator.DbHandlers.csproj">
+      <Project>{1cc551e8-d88b-404f-a15d-25c3a590d15b}</Project>
+      <Name>POCOGenerator.DbHandlers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POCOGenerator.DbObjects\POCOGenerator.DbObjects.csproj">
+      <Project>{a5523067-8ed9-4ecc-bb40-37835890f193}</Project>
+      <Name>POCOGenerator.DbObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POCOGenerator.POCOIterators\POCOGenerator.POCOIterators.csproj">
+      <Project>{3e933ece-6386-4b0b-8335-ab0e46bc06ec}</Project>
+      <Name>POCOGenerator.POCOIterators</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POCOGenerator.POCOWriters\POCOGenerator.POCOWriters.csproj">
+      <Project>{c80d4ea0-c70a-4f47-b1cd-00e9231196c9}</Project>
+      <Name>POCOGenerator.POCOWriters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POCOGenerator.Utils\POCOGenerator.Utils.csproj">
+      <Project>{74e97281-c6ce-4241-a201-f3a8ca566a0e}</Project>
+      <Name>POCOGenerator.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ILRepack.targets" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\ILRepack.Lib.MSBuild.Task.2.0.18.2\build\ILRepack.Lib.MSBuild.Task.targets" Condition="Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.18.2\build\ILRepack.Lib.MSBuild.Task.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.18.2\build\ILRepack.Lib.MSBuild.Task.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.Lib.MSBuild.Task.2.0.18.2\build\ILRepack.Lib.MSBuild.Task.targets'))" />
+  </Target>
+</Project>

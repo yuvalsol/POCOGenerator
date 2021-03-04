@@ -1,0 +1,1569 @@
+﻿namespace POCOGeneratorUI
+{
+    partial class POCOGeneratorForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(POCOGeneratorForm));
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.trvServer = new System.Windows.Forms.TreeView();
+            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.filterSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearCheckBoxesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageListDbObjects = new System.Windows.Forms.ImageList(this.components);
+            this.txtPocoEditor = new System.Windows.Forms.RichTextBox();
+            this.contextMenuPocoEditor = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelMain = new System.Windows.Forms.Panel();
+            this.btnConnect = new System.Windows.Forms.Button();
+            this.grbPOCO = new System.Windows.Forms.GroupBox();
+            this.chkUsingInsideNamespace = new System.Windows.Forms.CheckBox();
+            this.panelEnum = new System.Windows.Forms.Panel();
+            this.rdbEnumSQLTypeToEnumInt = new System.Windows.Forms.RadioButton();
+            this.lblSQLEnum = new System.Windows.Forms.Label();
+            this.rdbEnumSQLTypeToEnumUShort = new System.Windows.Forms.RadioButton();
+            this.rdbEnumSQLTypeToString = new System.Windows.Forms.RadioButton();
+            this.panelProperties = new System.Windows.Forms.Panel();
+            this.rdbProperties = new System.Windows.Forms.RadioButton();
+            this.rdbFields = new System.Windows.Forms.RadioButton();
+            this.chkVirtualProperties = new System.Windows.Forms.CheckBox();
+            this.chkStructTypesNullable = new System.Windows.Forms.CheckBox();
+            this.chkComments = new System.Windows.Forms.CheckBox();
+            this.chkCommentsWithoutNull = new System.Windows.Forms.CheckBox();
+            this.chkColumnDefaults = new System.Windows.Forms.CheckBox();
+            this.lblNamespace = new System.Windows.Forms.Label();
+            this.chkOverrideProperties = new System.Windows.Forms.CheckBox();
+            this.txtNamespace = new System.Windows.Forms.TextBox();
+            this.txtInherit = new System.Windows.Forms.TextBox();
+            this.chkUsing = new System.Windows.Forms.CheckBox();
+            this.lblInherit = new System.Windows.Forms.Label();
+            this.chkPartialClass = new System.Windows.Forms.CheckBox();
+            this.chkNewLineBetweenMembers = new System.Windows.Forms.CheckBox();
+            this.grbNavigationProperties = new System.Windows.Forms.GroupBox();
+            this.chkNavigationProperties = new System.Windows.Forms.CheckBox();
+            this.chkVirtualNavigationProperties = new System.Windows.Forms.CheckBox();
+            this.panelNavigationProperties1 = new System.Windows.Forms.Panel();
+            this.rdbIEnumerableNavigationProperties = new System.Windows.Forms.RadioButton();
+            this.rdbICollectionNavigationProperties = new System.Windows.Forms.RadioButton();
+            this.rdbListNavigationProperties = new System.Windows.Forms.RadioButton();
+            this.chkNavigationPropertiesComments = new System.Windows.Forms.CheckBox();
+            this.chkShowManyToManyJoinTable = new System.Windows.Forms.CheckBox();
+            this.chkOverrideNavigationProperties = new System.Windows.Forms.CheckBox();
+            this.grbExportToFiles = new System.Windows.Forms.GroupBox();
+            this.rdbMultipleFilesRelativeNamespace = new System.Windows.Forms.RadioButton();
+            this.rdbMultipleFiles = new System.Windows.Forms.RadioButton();
+            this.rdbSingleFile = new System.Windows.Forms.RadioButton();
+            this.btnFolder = new System.Windows.Forms.Button();
+            this.txtFolder = new System.Windows.Forms.TextBox();
+            this.btnExport = new System.Windows.Forms.Button();
+            this.grbClassName = new System.Windows.Forms.GroupBox();
+            this.chkSingular = new System.Windows.Forms.CheckBox();
+            this.txtFixedClassName = new System.Windows.Forms.TextBox();
+            this.chkCamelCase = new System.Windows.Forms.CheckBox();
+            this.chkUpperCase = new System.Windows.Forms.CheckBox();
+            this.chkLowerCase = new System.Windows.Forms.CheckBox();
+            this.lblWordsSeparator = new System.Windows.Forms.Label();
+            this.txtWordsSeparator = new System.Windows.Forms.TextBox();
+            this.lblPrefix = new System.Windows.Forms.Label();
+            this.txtPrefix = new System.Windows.Forms.TextBox();
+            this.lblSuffix = new System.Windows.Forms.Label();
+            this.txtSuffix = new System.Windows.Forms.TextBox();
+            this.lblWordsSeparatorDesc = new System.Windows.Forms.Label();
+            this.lblFixedName = new System.Windows.Forms.Label();
+            this.chkIncludeDB = new System.Windows.Forms.CheckBox();
+            this.lblDBSeparator = new System.Windows.Forms.Label();
+            this.chkSearchIgnoreCase = new System.Windows.Forms.CheckBox();
+            this.txtDBSeparator = new System.Windows.Forms.TextBox();
+            this.txtReplace = new System.Windows.Forms.TextBox();
+            this.chkIncludeSchema = new System.Windows.Forms.CheckBox();
+            this.lblReplace = new System.Windows.Forms.Label();
+            this.chkIgnoreDboSchema = new System.Windows.Forms.CheckBox();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.lblSchemaSeparator = new System.Windows.Forms.Label();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.txtSchemaSeparator = new System.Windows.Forms.TextBox();
+            this.lblSingularDesc = new System.Windows.Forms.Label();
+            this.grbEFAnnotations = new System.Windows.Forms.GroupBox();
+            this.chkEF = new System.Windows.Forms.CheckBox();
+            this.chkEFColumn = new System.Windows.Forms.CheckBox();
+            this.chkEFConcurrencyCheck = new System.Windows.Forms.CheckBox();
+            this.chkEFComplexType = new System.Windows.Forms.CheckBox();
+            this.chkEFDescription = new System.Windows.Forms.CheckBox();
+            this.chkEFIndex = new System.Windows.Forms.CheckBox();
+            this.chkEFForeignKeyAndInverseProperty = new System.Windows.Forms.CheckBox();
+            this.chkEFStringLength = new System.Windows.Forms.CheckBox();
+            this.chkEFDisplay = new System.Windows.Forms.CheckBox();
+            this.chkEFRequired = new System.Windows.Forms.CheckBox();
+            this.chkEFRequiredWithErrorMessage = new System.Windows.Forms.CheckBox();
+            this.lblEF = new System.Windows.Forms.Label();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnCopy = new System.Windows.Forms.Button();
+            this.btnTypeMapping = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.folderBrowserDialogExport = new System.Windows.Forms.FolderBrowserDialog();
+            this.contextMenuTable = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.checkReferencedTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkReferencingTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkAccessibleTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnDisclaimer = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            this.contextMenu.SuspendLayout();
+            this.contextMenuPocoEditor.SuspendLayout();
+            this.panelMain.SuspendLayout();
+            this.grbPOCO.SuspendLayout();
+            this.panelEnum.SuspendLayout();
+            this.panelProperties.SuspendLayout();
+            this.grbNavigationProperties.SuspendLayout();
+            this.panelNavigationProperties1.SuspendLayout();
+            this.grbExportToFiles.SuspendLayout();
+            this.grbClassName.SuspendLayout();
+            this.grbEFAnnotations.SuspendLayout();
+            this.statusStrip.SuspendLayout();
+            this.contextMenuTable.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer1.IsSplitterFixed = true;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.panelMain);
+            this.splitContainer1.Size = new System.Drawing.Size(1039, 712);
+            this.splitContainer1.SplitterDistance = 349;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.trvServer);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.txtPocoEditor);
+            this.splitContainer2.Size = new System.Drawing.Size(1039, 349);
+            this.splitContainer2.SplitterDistance = 400;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // trvServer
+            // 
+            this.trvServer.BackColor = System.Drawing.Color.White;
+            this.trvServer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.trvServer.CheckBoxes = true;
+            this.trvServer.ContextMenuStrip = this.contextMenu;
+            this.trvServer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trvServer.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
+            this.trvServer.HideSelection = false;
+            this.trvServer.ImageIndex = 0;
+            this.trvServer.ImageList = this.imageListDbObjects;
+            this.trvServer.Location = new System.Drawing.Point(0, 0);
+            this.trvServer.Name = "trvServer";
+            this.trvServer.SelectedImageIndex = 0;
+            this.trvServer.Size = new System.Drawing.Size(400, 349);
+            this.trvServer.TabIndex = 1;
+            this.trvServer.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.trvServer_AfterCheck);
+            this.trvServer.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.trvServer_BeforeExpand);
+            this.trvServer.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.trvServer_DrawNode);
+            this.trvServer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trvServer_AfterSelect);
+            this.trvServer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trvServer_MouseUp);
+            // 
+            // contextMenu
+            // 
+            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeFilterToolStripMenuItem,
+            this.filterSettingsToolStripMenuItem,
+            this.clearCheckBoxesToolStripMenuItem});
+            this.contextMenu.Name = "contextMenuServerTree";
+            this.contextMenu.Size = new System.Drawing.Size(168, 70);
+            // 
+            // removeFilterToolStripMenuItem
+            // 
+            this.removeFilterToolStripMenuItem.Name = "removeFilterToolStripMenuItem";
+            this.removeFilterToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.removeFilterToolStripMenuItem.Text = "Remove Filter";
+            this.removeFilterToolStripMenuItem.Click += new System.EventHandler(this.removeFilterToolStripMenuItem_Click);
+            // 
+            // filterSettingsToolStripMenuItem
+            // 
+            this.filterSettingsToolStripMenuItem.Name = "filterSettingsToolStripMenuItem";
+            this.filterSettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.filterSettingsToolStripMenuItem.Text = "Filter Settings";
+            this.filterSettingsToolStripMenuItem.Click += new System.EventHandler(this.filterSettingsToolStripMenuItem_Click);
+            // 
+            // clearCheckBoxesToolStripMenuItem
+            // 
+            this.clearCheckBoxesToolStripMenuItem.Name = "clearCheckBoxesToolStripMenuItem";
+            this.clearCheckBoxesToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.clearCheckBoxesToolStripMenuItem.Text = "Clear Checkboxes";
+            this.clearCheckBoxesToolStripMenuItem.Click += new System.EventHandler(this.clearCheckBoxesToolStripMenuItem_Click);
+            // 
+            // imageListDbObjects
+            // 
+            this.imageListDbObjects.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListDbObjects.ImageStream")));
+            this.imageListDbObjects.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListDbObjects.Images.SetKeyName(0, "Server.gif");
+            this.imageListDbObjects.Images.SetKeyName(1, "Database.gif");
+            this.imageListDbObjects.Images.SetKeyName(2, "Folder.gif");
+            this.imageListDbObjects.Images.SetKeyName(3, "Table.gif");
+            this.imageListDbObjects.Images.SetKeyName(4, "View.gif");
+            this.imageListDbObjects.Images.SetKeyName(5, "Procedure.gif");
+            this.imageListDbObjects.Images.SetKeyName(6, "Function.gif");
+            this.imageListDbObjects.Images.SetKeyName(7, "TVP.gif");
+            this.imageListDbObjects.Images.SetKeyName(8, "Column.gif");
+            this.imageListDbObjects.Images.SetKeyName(9, "PrimaryKey.gif");
+            this.imageListDbObjects.Images.SetKeyName(10, "ForeignKey.gif");
+            this.imageListDbObjects.Images.SetKeyName(11, "UniqueKey.gif");
+            this.imageListDbObjects.Images.SetKeyName(12, "Index.gif");
+            // 
+            // txtPocoEditor
+            // 
+            this.txtPocoEditor.BackColor = System.Drawing.Color.White;
+            this.txtPocoEditor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPocoEditor.ContextMenuStrip = this.contextMenuPocoEditor;
+            this.txtPocoEditor.DetectUrls = false;
+            this.txtPocoEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPocoEditor.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.txtPocoEditor.Location = new System.Drawing.Point(0, 0);
+            this.txtPocoEditor.Name = "txtPocoEditor";
+            this.txtPocoEditor.ReadOnly = true;
+            this.txtPocoEditor.Size = new System.Drawing.Size(635, 349);
+            this.txtPocoEditor.TabIndex = 0;
+            this.txtPocoEditor.Text = "";
+            this.txtPocoEditor.WordWrap = false;
+            // 
+            // contextMenuPocoEditor
+            // 
+            this.contextMenuPocoEditor.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem,
+            this.selectAllToolStripMenuItem});
+            this.contextMenuPocoEditor.Name = "contextMenuPocoEditor";
+            this.contextMenuPocoEditor.Size = new System.Drawing.Size(123, 48);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripMenuItem.Image")));
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            // 
+            // selectAllToolStripMenuItem
+            // 
+            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.selectAllToolStripMenuItem.Text = "Select All";
+            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
+            // 
+            // panelMain
+            // 
+            this.panelMain.Controls.Add(this.btnDisclaimer);
+            this.panelMain.Controls.Add(this.btnConnect);
+            this.panelMain.Controls.Add(this.grbPOCO);
+            this.panelMain.Controls.Add(this.grbNavigationProperties);
+            this.panelMain.Controls.Add(this.grbExportToFiles);
+            this.panelMain.Controls.Add(this.grbClassName);
+            this.panelMain.Controls.Add(this.grbEFAnnotations);
+            this.panelMain.Controls.Add(this.statusStrip);
+            this.panelMain.Controls.Add(this.btnCopy);
+            this.panelMain.Controls.Add(this.btnTypeMapping);
+            this.panelMain.Controls.Add(this.btnClose);
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(0, 0);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(1039, 359);
+            this.panelMain.TabIndex = 0;
+            // 
+            // btnConnect
+            // 
+            this.btnConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnConnect.AutoSize = true;
+            this.btnConnect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnConnect.Location = new System.Drawing.Point(703, 303);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(57, 23);
+            this.btnConnect.TabIndex = 7;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
+            // grbPOCO
+            // 
+            this.grbPOCO.AutoSize = true;
+            this.grbPOCO.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grbPOCO.Controls.Add(this.chkUsingInsideNamespace);
+            this.grbPOCO.Controls.Add(this.panelEnum);
+            this.grbPOCO.Controls.Add(this.panelProperties);
+            this.grbPOCO.Controls.Add(this.chkVirtualProperties);
+            this.grbPOCO.Controls.Add(this.chkStructTypesNullable);
+            this.grbPOCO.Controls.Add(this.chkComments);
+            this.grbPOCO.Controls.Add(this.chkCommentsWithoutNull);
+            this.grbPOCO.Controls.Add(this.chkColumnDefaults);
+            this.grbPOCO.Controls.Add(this.lblNamespace);
+            this.grbPOCO.Controls.Add(this.chkOverrideProperties);
+            this.grbPOCO.Controls.Add(this.txtNamespace);
+            this.grbPOCO.Controls.Add(this.txtInherit);
+            this.grbPOCO.Controls.Add(this.chkUsing);
+            this.grbPOCO.Controls.Add(this.lblInherit);
+            this.grbPOCO.Controls.Add(this.chkPartialClass);
+            this.grbPOCO.Controls.Add(this.chkNewLineBetweenMembers);
+            this.grbPOCO.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.grbPOCO.Location = new System.Drawing.Point(12, 5);
+            this.grbPOCO.Name = "grbPOCO";
+            this.grbPOCO.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.grbPOCO.Size = new System.Drawing.Size(285, 221);
+            this.grbPOCO.TabIndex = 1;
+            this.grbPOCO.TabStop = false;
+            this.grbPOCO.Text = "POCO";
+            this.grbPOCO.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
+            // 
+            // chkUsingInsideNamespace
+            // 
+            this.chkUsingInsideNamespace.AutoSize = true;
+            this.chkUsingInsideNamespace.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkUsingInsideNamespace.Location = new System.Drawing.Point(65, 116);
+            this.chkUsingInsideNamespace.Name = "chkUsingInsideNamespace";
+            this.chkUsingInsideNamespace.Size = new System.Drawing.Size(142, 17);
+            this.chkUsingInsideNamespace.TabIndex = 9;
+            this.chkUsingInsideNamespace.Text = "using Inside Namespace";
+            this.chkUsingInsideNamespace.UseVisualStyleBackColor = true;
+            this.chkUsingInsideNamespace.CheckedChanged += new System.EventHandler(this.chkUsingInsideNamespace_CheckedChanged);
+            // 
+            // panelEnum
+            // 
+            this.panelEnum.AutoSize = true;
+            this.panelEnum.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelEnum.Controls.Add(this.rdbEnumSQLTypeToEnumInt);
+            this.panelEnum.Controls.Add(this.lblSQLEnum);
+            this.panelEnum.Controls.Add(this.rdbEnumSQLTypeToEnumUShort);
+            this.panelEnum.Controls.Add(this.rdbEnumSQLTypeToString);
+            this.panelEnum.Location = new System.Drawing.Point(6, 188);
+            this.panelEnum.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.panelEnum.Name = "panelEnum";
+            this.panelEnum.Size = new System.Drawing.Size(270, 20);
+            this.panelEnum.TabIndex = 14;
+            this.panelEnum.TabStop = true;
+            // 
+            // rdbEnumSQLTypeToEnumInt
+            // 
+            this.rdbEnumSQLTypeToEnumInt.AutoSize = true;
+            this.rdbEnumSQLTypeToEnumInt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbEnumSQLTypeToEnumInt.Location = new System.Drawing.Point(202, 0);
+            this.rdbEnumSQLTypeToEnumInt.Name = "rdbEnumSQLTypeToEnumInt";
+            this.rdbEnumSQLTypeToEnumInt.Size = new System.Drawing.Size(65, 17);
+            this.rdbEnumSQLTypeToEnumInt.TabIndex = 3;
+            this.rdbEnumSQLTypeToEnumInt.TabStop = true;
+            this.rdbEnumSQLTypeToEnumInt.Text = "enum int";
+            this.rdbEnumSQLTypeToEnumInt.UseVisualStyleBackColor = true;
+            this.rdbEnumSQLTypeToEnumInt.CheckedChanged += new System.EventHandler(this.rdbEnumSQLTypeToEnumInt_CheckedChanged);
+            // 
+            // lblSQLEnum
+            // 
+            this.lblSQLEnum.AutoSize = true;
+            this.lblSQLEnum.Location = new System.Drawing.Point(0, 2);
+            this.lblSQLEnum.Name = "lblSQLEnum";
+            this.lblSQLEnum.Size = new System.Drawing.Size(64, 13);
+            this.lblSQLEnum.TabIndex = 0;
+            this.lblSQLEnum.Text = "Enum Type:";
+            // 
+            // rdbEnumSQLTypeToEnumUShort
+            // 
+            this.rdbEnumSQLTypeToEnumUShort.AutoSize = true;
+            this.rdbEnumSQLTypeToEnumUShort.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbEnumSQLTypeToEnumUShort.Location = new System.Drawing.Point(119, 0);
+            this.rdbEnumSQLTypeToEnumUShort.Name = "rdbEnumSQLTypeToEnumUShort";
+            this.rdbEnumSQLTypeToEnumUShort.Size = new System.Drawing.Size(83, 17);
+            this.rdbEnumSQLTypeToEnumUShort.TabIndex = 2;
+            this.rdbEnumSQLTypeToEnumUShort.TabStop = true;
+            this.rdbEnumSQLTypeToEnumUShort.Text = "enum ushort";
+            this.rdbEnumSQLTypeToEnumUShort.UseVisualStyleBackColor = true;
+            this.rdbEnumSQLTypeToEnumUShort.CheckedChanged += new System.EventHandler(this.rdbEnumSQLTypeToEnumUShort_CheckedChanged);
+            // 
+            // rdbEnumSQLTypeToString
+            // 
+            this.rdbEnumSQLTypeToString.AutoSize = true;
+            this.rdbEnumSQLTypeToString.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbEnumSQLTypeToString.Checked = true;
+            this.rdbEnumSQLTypeToString.Location = new System.Drawing.Point(69, 0);
+            this.rdbEnumSQLTypeToString.Name = "rdbEnumSQLTypeToString";
+            this.rdbEnumSQLTypeToString.Size = new System.Drawing.Size(50, 17);
+            this.rdbEnumSQLTypeToString.TabIndex = 1;
+            this.rdbEnumSQLTypeToString.TabStop = true;
+            this.rdbEnumSQLTypeToString.Text = "string";
+            this.rdbEnumSQLTypeToString.UseVisualStyleBackColor = true;
+            this.rdbEnumSQLTypeToString.CheckedChanged += new System.EventHandler(this.rdbEnumSQLTypeToString_CheckedChanged);
+            // 
+            // panelProperties
+            // 
+            this.panelProperties.AutoSize = true;
+            this.panelProperties.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelProperties.Controls.Add(this.rdbProperties);
+            this.panelProperties.Controls.Add(this.rdbFields);
+            this.panelProperties.Location = new System.Drawing.Point(6, 19);
+            this.panelProperties.Name = "panelProperties";
+            this.panelProperties.Size = new System.Drawing.Size(135, 20);
+            this.panelProperties.TabIndex = 1;
+            this.panelProperties.TabStop = true;
+            // 
+            // rdbProperties
+            // 
+            this.rdbProperties.AutoSize = true;
+            this.rdbProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbProperties.Checked = true;
+            this.rdbProperties.Location = new System.Drawing.Point(0, 0);
+            this.rdbProperties.Name = "rdbProperties";
+            this.rdbProperties.Size = new System.Drawing.Size(72, 17);
+            this.rdbProperties.TabIndex = 1;
+            this.rdbProperties.TabStop = true;
+            this.rdbProperties.Text = "Properties";
+            this.rdbProperties.UseVisualStyleBackColor = true;
+            this.rdbProperties.CheckedChanged += new System.EventHandler(this.rdbProperties_CheckedChanged);
+            // 
+            // rdbFields
+            // 
+            this.rdbFields.AutoSize = true;
+            this.rdbFields.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbFields.Location = new System.Drawing.Point(80, 0);
+            this.rdbFields.Name = "rdbFields";
+            this.rdbFields.Size = new System.Drawing.Size(52, 17);
+            this.rdbFields.TabIndex = 2;
+            this.rdbFields.TabStop = true;
+            this.rdbFields.Text = "Fields";
+            this.rdbFields.UseVisualStyleBackColor = true;
+            this.rdbFields.CheckedChanged += new System.EventHandler(this.rdbFields_CheckedChanged);
+            // 
+            // chkVirtualProperties
+            // 
+            this.chkVirtualProperties.AutoSize = true;
+            this.chkVirtualProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkVirtualProperties.Location = new System.Drawing.Point(6, 47);
+            this.chkVirtualProperties.Name = "chkVirtualProperties";
+            this.chkVirtualProperties.Size = new System.Drawing.Size(105, 17);
+            this.chkVirtualProperties.TabIndex = 2;
+            this.chkVirtualProperties.Text = "Virtual Properties";
+            this.chkVirtualProperties.UseVisualStyleBackColor = true;
+            this.chkVirtualProperties.CheckedChanged += new System.EventHandler(this.chkVirtualProperties_CheckedChanged);
+            // 
+            // chkStructTypesNullable
+            // 
+            this.chkStructTypesNullable.AutoSize = true;
+            this.chkStructTypesNullable.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkStructTypesNullable.Location = new System.Drawing.Point(97, 70);
+            this.chkStructTypesNullable.Name = "chkStructTypesNullable";
+            this.chkStructTypesNullable.Size = new System.Drawing.Size(127, 17);
+            this.chkStructTypesNullable.TabIndex = 5;
+            this.chkStructTypesNullable.Text = "Struct Types Nullable";
+            this.chkStructTypesNullable.UseVisualStyleBackColor = true;
+            this.chkStructTypesNullable.CheckedChanged += new System.EventHandler(this.chkStructTypesNullable_CheckedChanged);
+            // 
+            // chkComments
+            // 
+            this.chkComments.AutoSize = true;
+            this.chkComments.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkComments.Location = new System.Drawing.Point(6, 93);
+            this.chkComments.Name = "chkComments";
+            this.chkComments.Size = new System.Drawing.Size(75, 17);
+            this.chkComments.TabIndex = 6;
+            this.chkComments.Text = "Comments";
+            this.chkComments.UseVisualStyleBackColor = true;
+            this.chkComments.CheckedChanged += new System.EventHandler(this.chkComments_CheckedChanged);
+            // 
+            // chkCommentsWithoutNull
+            // 
+            this.chkCommentsWithoutNull.AutoSize = true;
+            this.chkCommentsWithoutNull.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkCommentsWithoutNull.Location = new System.Drawing.Point(85, 93);
+            this.chkCommentsWithoutNull.Name = "chkCommentsWithoutNull";
+            this.chkCommentsWithoutNull.Size = new System.Drawing.Size(134, 17);
+            this.chkCommentsWithoutNull.TabIndex = 7;
+            this.chkCommentsWithoutNull.Text = "Comments Without null";
+            this.chkCommentsWithoutNull.UseVisualStyleBackColor = true;
+            this.chkCommentsWithoutNull.CheckedChanged += new System.EventHandler(this.chkCommentsWithoutNull_CheckedChanged);
+            // 
+            // chkColumnDefaults
+            // 
+            this.chkColumnDefaults.AutoSize = true;
+            this.chkColumnDefaults.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkColumnDefaults.Location = new System.Drawing.Point(6, 163);
+            this.chkColumnDefaults.Name = "chkColumnDefaults";
+            this.chkColumnDefaults.Size = new System.Drawing.Size(103, 17);
+            this.chkColumnDefaults.TabIndex = 12;
+            this.chkColumnDefaults.Text = "Column Defaults";
+            this.chkColumnDefaults.UseVisualStyleBackColor = true;
+            this.chkColumnDefaults.CheckedChanged += new System.EventHandler(this.chkColumnDefaults_CheckedChanged);
+            // 
+            // lblNamespace
+            // 
+            this.lblNamespace.AutoSize = true;
+            this.lblNamespace.Location = new System.Drawing.Point(6, 142);
+            this.lblNamespace.Name = "lblNamespace";
+            this.lblNamespace.Size = new System.Drawing.Size(64, 13);
+            this.lblNamespace.TabIndex = 0;
+            this.lblNamespace.Text = "Namespace";
+            // 
+            // chkOverrideProperties
+            // 
+            this.chkOverrideProperties.AutoSize = true;
+            this.chkOverrideProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkOverrideProperties.Location = new System.Drawing.Point(119, 47);
+            this.chkOverrideProperties.Name = "chkOverrideProperties";
+            this.chkOverrideProperties.Size = new System.Drawing.Size(116, 17);
+            this.chkOverrideProperties.TabIndex = 3;
+            this.chkOverrideProperties.Text = "Override Properties";
+            this.chkOverrideProperties.UseVisualStyleBackColor = true;
+            this.chkOverrideProperties.CheckedChanged += new System.EventHandler(this.chkOverrideProperties_CheckedChanged);
+            // 
+            // txtNamespace
+            // 
+            this.txtNamespace.Location = new System.Drawing.Point(70, 138);
+            this.txtNamespace.Name = "txtNamespace";
+            this.txtNamespace.Size = new System.Drawing.Size(75, 20);
+            this.txtNamespace.TabIndex = 10;
+            this.txtNamespace.TextChanged += new System.EventHandler(this.txtNamespace_TextChanged);
+            // 
+            // txtInherit
+            // 
+            this.txtInherit.Location = new System.Drawing.Point(189, 138);
+            this.txtInherit.Name = "txtInherit";
+            this.txtInherit.Size = new System.Drawing.Size(75, 20);
+            this.txtInherit.TabIndex = 11;
+            this.txtInherit.TextChanged += new System.EventHandler(this.txtInherit_TextChanged);
+            // 
+            // chkUsing
+            // 
+            this.chkUsing.AutoSize = true;
+            this.chkUsing.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkUsing.Location = new System.Drawing.Point(6, 116);
+            this.chkUsing.Name = "chkUsing";
+            this.chkUsing.Size = new System.Drawing.Size(51, 17);
+            this.chkUsing.TabIndex = 8;
+            this.chkUsing.Text = "using";
+            this.chkUsing.UseVisualStyleBackColor = true;
+            this.chkUsing.CheckedChanged += new System.EventHandler(this.chkUsing_CheckedChanged);
+            // 
+            // lblInherit
+            // 
+            this.lblInherit.AutoSize = true;
+            this.lblInherit.Location = new System.Drawing.Point(153, 142);
+            this.lblInherit.Name = "lblInherit";
+            this.lblInherit.Size = new System.Drawing.Size(36, 13);
+            this.lblInherit.TabIndex = 0;
+            this.lblInherit.Text = "Inherit";
+            // 
+            // chkPartialClass
+            // 
+            this.chkPartialClass.AutoSize = true;
+            this.chkPartialClass.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkPartialClass.Location = new System.Drawing.Point(6, 70);
+            this.chkPartialClass.Name = "chkPartialClass";
+            this.chkPartialClass.Size = new System.Drawing.Size(83, 17);
+            this.chkPartialClass.TabIndex = 4;
+            this.chkPartialClass.Text = "Partial Class";
+            this.chkPartialClass.UseVisualStyleBackColor = true;
+            this.chkPartialClass.CheckedChanged += new System.EventHandler(this.chkPartialClass_CheckedChanged);
+            // 
+            // chkNewLineBetweenMembers
+            // 
+            this.chkNewLineBetweenMembers.AutoSize = true;
+            this.chkNewLineBetweenMembers.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkNewLineBetweenMembers.Location = new System.Drawing.Point(117, 163);
+            this.chkNewLineBetweenMembers.Name = "chkNewLineBetweenMembers";
+            this.chkNewLineBetweenMembers.Size = new System.Drawing.Size(162, 17);
+            this.chkNewLineBetweenMembers.TabIndex = 13;
+            this.chkNewLineBetweenMembers.Text = "New Line Between Members";
+            this.chkNewLineBetweenMembers.UseVisualStyleBackColor = true;
+            this.chkNewLineBetweenMembers.CheckedChanged += new System.EventHandler(this.chkNewLineBetweenMembers_CheckedChanged);
+            // 
+            // grbNavigationProperties
+            // 
+            this.grbNavigationProperties.AutoSize = true;
+            this.grbNavigationProperties.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grbNavigationProperties.Controls.Add(this.chkNavigationProperties);
+            this.grbNavigationProperties.Controls.Add(this.chkVirtualNavigationProperties);
+            this.grbNavigationProperties.Controls.Add(this.panelNavigationProperties1);
+            this.grbNavigationProperties.Controls.Add(this.chkNavigationPropertiesComments);
+            this.grbNavigationProperties.Controls.Add(this.chkShowManyToManyJoinTable);
+            this.grbNavigationProperties.Controls.Add(this.chkOverrideNavigationProperties);
+            this.grbNavigationProperties.Location = new System.Drawing.Point(12, 229);
+            this.grbNavigationProperties.MinimumSize = new System.Drawing.Size(285, 0);
+            this.grbNavigationProperties.Name = "grbNavigationProperties";
+            this.grbNavigationProperties.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.grbNavigationProperties.Size = new System.Drawing.Size(285, 102);
+            this.grbNavigationProperties.TabIndex = 3;
+            this.grbNavigationProperties.TabStop = false;
+            this.grbNavigationProperties.Text = "Navigation Properties";
+            this.grbNavigationProperties.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
+            // 
+            // chkNavigationProperties
+            // 
+            this.chkNavigationProperties.AutoSize = true;
+            this.chkNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkNavigationProperties.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkNavigationProperties.Location = new System.Drawing.Point(6, 19);
+            this.chkNavigationProperties.Name = "chkNavigationProperties";
+            this.chkNavigationProperties.Size = new System.Drawing.Size(127, 17);
+            this.chkNavigationProperties.TabIndex = 1;
+            this.chkNavigationProperties.Text = "Navigation Properties";
+            this.chkNavigationProperties.UseVisualStyleBackColor = true;
+            this.chkNavigationProperties.CheckedChanged += new System.EventHandler(this.chkNavigationProperties_CheckedChanged);
+            // 
+            // chkVirtualNavigationProperties
+            // 
+            this.chkVirtualNavigationProperties.AutoSize = true;
+            this.chkVirtualNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkVirtualNavigationProperties.Location = new System.Drawing.Point(141, 19);
+            this.chkVirtualNavigationProperties.Name = "chkVirtualNavigationProperties";
+            this.chkVirtualNavigationProperties.Size = new System.Drawing.Size(55, 17);
+            this.chkVirtualNavigationProperties.TabIndex = 2;
+            this.chkVirtualNavigationProperties.Text = "Virtual";
+            this.chkVirtualNavigationProperties.UseVisualStyleBackColor = true;
+            this.chkVirtualNavigationProperties.CheckedChanged += new System.EventHandler(this.chkVirtualNavigationProperties_CheckedChanged);
+            // 
+            // panelNavigationProperties1
+            // 
+            this.panelNavigationProperties1.AutoSize = true;
+            this.panelNavigationProperties1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelNavigationProperties1.Controls.Add(this.rdbIEnumerableNavigationProperties);
+            this.panelNavigationProperties1.Controls.Add(this.rdbICollectionNavigationProperties);
+            this.panelNavigationProperties1.Controls.Add(this.rdbListNavigationProperties);
+            this.panelNavigationProperties1.Location = new System.Drawing.Point(6, 69);
+            this.panelNavigationProperties1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.panelNavigationProperties1.Name = "panelNavigationProperties1";
+            this.panelNavigationProperties1.Size = new System.Drawing.Size(218, 20);
+            this.panelNavigationProperties1.TabIndex = 6;
+            this.panelNavigationProperties1.TabStop = true;
+            // 
+            // rdbIEnumerableNavigationProperties
+            // 
+            this.rdbIEnumerableNavigationProperties.AutoSize = true;
+            this.rdbIEnumerableNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbIEnumerableNavigationProperties.Location = new System.Drawing.Point(131, 0);
+            this.rdbIEnumerableNavigationProperties.Name = "rdbIEnumerableNavigationProperties";
+            this.rdbIEnumerableNavigationProperties.Size = new System.Drawing.Size(84, 17);
+            this.rdbIEnumerableNavigationProperties.TabIndex = 3;
+            this.rdbIEnumerableNavigationProperties.TabStop = true;
+            this.rdbIEnumerableNavigationProperties.Text = "IEnumerable";
+            this.rdbIEnumerableNavigationProperties.UseVisualStyleBackColor = true;
+            this.rdbIEnumerableNavigationProperties.CheckedChanged += new System.EventHandler(this.rdbIEnumerableNavigationProperties_CheckedChanged);
+            // 
+            // rdbICollectionNavigationProperties
+            // 
+            this.rdbICollectionNavigationProperties.AutoSize = true;
+            this.rdbICollectionNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbICollectionNavigationProperties.Location = new System.Drawing.Point(49, 0);
+            this.rdbICollectionNavigationProperties.Name = "rdbICollectionNavigationProperties";
+            this.rdbICollectionNavigationProperties.Size = new System.Drawing.Size(74, 17);
+            this.rdbICollectionNavigationProperties.TabIndex = 2;
+            this.rdbICollectionNavigationProperties.TabStop = true;
+            this.rdbICollectionNavigationProperties.Text = "ICollection";
+            this.rdbICollectionNavigationProperties.UseVisualStyleBackColor = true;
+            this.rdbICollectionNavigationProperties.CheckedChanged += new System.EventHandler(this.rdbICollectionNavigationProperties_CheckedChanged);
+            // 
+            // rdbListNavigationProperties
+            // 
+            this.rdbListNavigationProperties.AutoSize = true;
+            this.rdbListNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbListNavigationProperties.Checked = true;
+            this.rdbListNavigationProperties.Location = new System.Drawing.Point(0, 0);
+            this.rdbListNavigationProperties.Name = "rdbListNavigationProperties";
+            this.rdbListNavigationProperties.Size = new System.Drawing.Size(41, 17);
+            this.rdbListNavigationProperties.TabIndex = 1;
+            this.rdbListNavigationProperties.TabStop = true;
+            this.rdbListNavigationProperties.Text = "List";
+            this.rdbListNavigationProperties.UseVisualStyleBackColor = true;
+            this.rdbListNavigationProperties.CheckedChanged += new System.EventHandler(this.rdbListNavigationProperties_CheckedChanged);
+            // 
+            // chkNavigationPropertiesComments
+            // 
+            this.chkNavigationPropertiesComments.AutoSize = true;
+            this.chkNavigationPropertiesComments.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkNavigationPropertiesComments.Location = new System.Drawing.Point(189, 44);
+            this.chkNavigationPropertiesComments.Name = "chkNavigationPropertiesComments";
+            this.chkNavigationPropertiesComments.Size = new System.Drawing.Size(75, 17);
+            this.chkNavigationPropertiesComments.TabIndex = 5;
+            this.chkNavigationPropertiesComments.Text = "Comments";
+            this.chkNavigationPropertiesComments.UseVisualStyleBackColor = true;
+            this.chkNavigationPropertiesComments.CheckedChanged += new System.EventHandler(this.chkNavigationPropertiesComments_CheckedChanged);
+            // 
+            // chkShowManyToManyJoinTable
+            // 
+            this.chkShowManyToManyJoinTable.AutoSize = true;
+            this.chkShowManyToManyJoinTable.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkShowManyToManyJoinTable.Location = new System.Drawing.Point(6, 44);
+            this.chkShowManyToManyJoinTable.Name = "chkShowManyToManyJoinTable";
+            this.chkShowManyToManyJoinTable.Size = new System.Drawing.Size(175, 17);
+            this.chkShowManyToManyJoinTable.TabIndex = 4;
+            this.chkShowManyToManyJoinTable.Text = "Show Many-to-Many Join Table";
+            this.chkShowManyToManyJoinTable.UseVisualStyleBackColor = true;
+            this.chkShowManyToManyJoinTable.CheckedChanged += new System.EventHandler(this.chkShowManyToManyJoinTable_CheckedChanged);
+            // 
+            // chkOverrideNavigationProperties
+            // 
+            this.chkOverrideNavigationProperties.AutoSize = true;
+            this.chkOverrideNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkOverrideNavigationProperties.Location = new System.Drawing.Point(204, 19);
+            this.chkOverrideNavigationProperties.Name = "chkOverrideNavigationProperties";
+            this.chkOverrideNavigationProperties.Size = new System.Drawing.Size(66, 17);
+            this.chkOverrideNavigationProperties.TabIndex = 3;
+            this.chkOverrideNavigationProperties.Text = "Override";
+            this.chkOverrideNavigationProperties.UseVisualStyleBackColor = true;
+            this.chkOverrideNavigationProperties.CheckedChanged += new System.EventHandler(this.chkOverrideNavigationProperties_CheckedChanged);
+            // 
+            // grbExportToFiles
+            // 
+            this.grbExportToFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.grbExportToFiles.AutoSize = true;
+            this.grbExportToFiles.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grbExportToFiles.Controls.Add(this.rdbMultipleFilesRelativeNamespace);
+            this.grbExportToFiles.Controls.Add(this.rdbMultipleFiles);
+            this.grbExportToFiles.Controls.Add(this.rdbSingleFile);
+            this.grbExportToFiles.Controls.Add(this.btnFolder);
+            this.grbExportToFiles.Controls.Add(this.txtFolder);
+            this.grbExportToFiles.Controls.Add(this.btnExport);
+            this.grbExportToFiles.Location = new System.Drawing.Point(703, 171);
+            this.grbExportToFiles.Name = "grbExportToFiles";
+            this.grbExportToFiles.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.grbExportToFiles.Size = new System.Drawing.Size(325, 114);
+            this.grbExportToFiles.TabIndex = 5;
+            this.grbExportToFiles.TabStop = false;
+            this.grbExportToFiles.Text = "Export to Files";
+            this.grbExportToFiles.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
+            // 
+            // rdbMultipleFilesRelativeNamespace
+            // 
+            this.rdbMultipleFilesRelativeNamespace.AutoSize = true;
+            this.rdbMultipleFilesRelativeNamespace.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbMultipleFilesRelativeNamespace.Location = new System.Drawing.Point(6, 81);
+            this.rdbMultipleFilesRelativeNamespace.Name = "rdbMultipleFilesRelativeNamespace";
+            this.rdbMultipleFilesRelativeNamespace.Size = new System.Drawing.Size(193, 17);
+            this.rdbMultipleFilesRelativeNamespace.TabIndex = 6;
+            this.rdbMultipleFilesRelativeNamespace.Text = "Multiple Files - Relative Namespace";
+            this.rdbMultipleFilesRelativeNamespace.UseVisualStyleBackColor = true;
+            // 
+            // rdbMultipleFiles
+            // 
+            this.rdbMultipleFiles.AutoSize = true;
+            this.rdbMultipleFiles.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbMultipleFiles.Location = new System.Drawing.Point(6, 64);
+            this.rdbMultipleFiles.Name = "rdbMultipleFiles";
+            this.rdbMultipleFiles.Size = new System.Drawing.Size(85, 17);
+            this.rdbMultipleFiles.TabIndex = 5;
+            this.rdbMultipleFiles.Text = "Multiple Files";
+            this.rdbMultipleFiles.UseVisualStyleBackColor = true;
+            // 
+            // rdbSingleFile
+            // 
+            this.rdbSingleFile.AutoSize = true;
+            this.rdbSingleFile.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbSingleFile.Checked = true;
+            this.rdbSingleFile.Location = new System.Drawing.Point(6, 47);
+            this.rdbSingleFile.Name = "rdbSingleFile";
+            this.rdbSingleFile.Size = new System.Drawing.Size(73, 17);
+            this.rdbSingleFile.TabIndex = 4;
+            this.rdbSingleFile.TabStop = true;
+            this.rdbSingleFile.Text = "Single File";
+            this.rdbSingleFile.UseVisualStyleBackColor = true;
+            // 
+            // btnFolder
+            // 
+            this.btnFolder.AutoSize = true;
+            this.btnFolder.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnFolder.Location = new System.Drawing.Point(6, 19);
+            this.btnFolder.Name = "btnFolder";
+            this.btnFolder.Size = new System.Drawing.Size(46, 23);
+            this.btnFolder.TabIndex = 1;
+            this.btnFolder.Text = "Folder";
+            this.btnFolder.UseVisualStyleBackColor = true;
+            this.btnFolder.Click += new System.EventHandler(this.btnFolder_Click);
+            // 
+            // txtFolder
+            // 
+            this.txtFolder.Location = new System.Drawing.Point(60, 20);
+            this.txtFolder.Name = "txtFolder";
+            this.txtFolder.Size = new System.Drawing.Size(205, 20);
+            this.txtFolder.TabIndex = 2;
+            // 
+            // btnExport
+            // 
+            this.btnExport.AutoSize = true;
+            this.btnExport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnExport.Location = new System.Drawing.Point(272, 19);
+            this.btnExport.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(47, 23);
+            this.btnExport.TabIndex = 3;
+            this.btnExport.Text = "Export";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // grbClassName
+            // 
+            this.grbClassName.AutoSize = true;
+            this.grbClassName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grbClassName.Controls.Add(this.chkSingular);
+            this.grbClassName.Controls.Add(this.txtFixedClassName);
+            this.grbClassName.Controls.Add(this.chkCamelCase);
+            this.grbClassName.Controls.Add(this.chkUpperCase);
+            this.grbClassName.Controls.Add(this.chkLowerCase);
+            this.grbClassName.Controls.Add(this.lblWordsSeparator);
+            this.grbClassName.Controls.Add(this.txtWordsSeparator);
+            this.grbClassName.Controls.Add(this.lblPrefix);
+            this.grbClassName.Controls.Add(this.txtPrefix);
+            this.grbClassName.Controls.Add(this.lblSuffix);
+            this.grbClassName.Controls.Add(this.txtSuffix);
+            this.grbClassName.Controls.Add(this.lblWordsSeparatorDesc);
+            this.grbClassName.Controls.Add(this.lblFixedName);
+            this.grbClassName.Controls.Add(this.chkIncludeDB);
+            this.grbClassName.Controls.Add(this.lblDBSeparator);
+            this.grbClassName.Controls.Add(this.chkSearchIgnoreCase);
+            this.grbClassName.Controls.Add(this.txtDBSeparator);
+            this.grbClassName.Controls.Add(this.txtReplace);
+            this.grbClassName.Controls.Add(this.chkIncludeSchema);
+            this.grbClassName.Controls.Add(this.lblReplace);
+            this.grbClassName.Controls.Add(this.chkIgnoreDboSchema);
+            this.grbClassName.Controls.Add(this.txtSearch);
+            this.grbClassName.Controls.Add(this.lblSchemaSeparator);
+            this.grbClassName.Controls.Add(this.lblSearch);
+            this.grbClassName.Controls.Add(this.txtSchemaSeparator);
+            this.grbClassName.Controls.Add(this.lblSingularDesc);
+            this.grbClassName.Location = new System.Drawing.Point(305, 5);
+            this.grbClassName.Name = "grbClassName";
+            this.grbClassName.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.grbClassName.Size = new System.Drawing.Size(390, 194);
+            this.grbClassName.TabIndex = 2;
+            this.grbClassName.TabStop = false;
+            this.grbClassName.Text = "Class Name";
+            this.grbClassName.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
+            // 
+            // chkSingular
+            // 
+            this.chkSingular.AutoSize = true;
+            this.chkSingular.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkSingular.Location = new System.Drawing.Point(6, 19);
+            this.chkSingular.Name = "chkSingular";
+            this.chkSingular.Size = new System.Drawing.Size(64, 17);
+            this.chkSingular.TabIndex = 1;
+            this.chkSingular.Text = "Singular";
+            this.chkSingular.UseVisualStyleBackColor = true;
+            this.chkSingular.CheckedChanged += new System.EventHandler(this.chkSingular_CheckedChanged);
+            // 
+            // txtFixedClassName
+            // 
+            this.txtFixedClassName.Location = new System.Drawing.Point(69, 161);
+            this.txtFixedClassName.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.txtFixedClassName.Name = "txtFixedClassName";
+            this.txtFixedClassName.Size = new System.Drawing.Size(75, 20);
+            this.txtFixedClassName.TabIndex = 14;
+            this.txtFixedClassName.TextChanged += new System.EventHandler(this.txtFixedClassName_TextChanged);
+            // 
+            // chkCamelCase
+            // 
+            this.chkCamelCase.AutoSize = true;
+            this.chkCamelCase.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkCamelCase.Location = new System.Drawing.Point(6, 115);
+            this.chkCamelCase.Name = "chkCamelCase";
+            this.chkCamelCase.Size = new System.Drawing.Size(79, 17);
+            this.chkCamelCase.TabIndex = 8;
+            this.chkCamelCase.Text = "CamelCase";
+            this.chkCamelCase.UseVisualStyleBackColor = true;
+            this.chkCamelCase.CheckedChanged += new System.EventHandler(this.chkCamelCase_CheckedChanged);
+            // 
+            // chkUpperCase
+            // 
+            this.chkUpperCase.AutoSize = true;
+            this.chkUpperCase.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkUpperCase.Location = new System.Drawing.Point(93, 115);
+            this.chkUpperCase.Name = "chkUpperCase";
+            this.chkUpperCase.Size = new System.Drawing.Size(94, 17);
+            this.chkUpperCase.TabIndex = 9;
+            this.chkUpperCase.Text = "UPPER CASE";
+            this.chkUpperCase.UseVisualStyleBackColor = true;
+            this.chkUpperCase.CheckedChanged += new System.EventHandler(this.chkUpperCase_CheckedChanged);
+            // 
+            // chkLowerCase
+            // 
+            this.chkLowerCase.AutoSize = true;
+            this.chkLowerCase.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkLowerCase.Location = new System.Drawing.Point(195, 115);
+            this.chkLowerCase.Name = "chkLowerCase";
+            this.chkLowerCase.Size = new System.Drawing.Size(77, 17);
+            this.chkLowerCase.TabIndex = 10;
+            this.chkLowerCase.Text = "lower case";
+            this.chkLowerCase.UseVisualStyleBackColor = true;
+            this.chkLowerCase.CheckedChanged += new System.EventHandler(this.chkLowerCase_CheckedChanged);
+            // 
+            // lblWordsSeparator
+            // 
+            this.lblWordsSeparator.AutoSize = true;
+            this.lblWordsSeparator.Location = new System.Drawing.Point(6, 94);
+            this.lblWordsSeparator.Name = "lblWordsSeparator";
+            this.lblWordsSeparator.Size = new System.Drawing.Size(87, 13);
+            this.lblWordsSeparator.TabIndex = 0;
+            this.lblWordsSeparator.Text = "Words Separator";
+            // 
+            // txtWordsSeparator
+            // 
+            this.txtWordsSeparator.Location = new System.Drawing.Point(93, 90);
+            this.txtWordsSeparator.Name = "txtWordsSeparator";
+            this.txtWordsSeparator.Size = new System.Drawing.Size(45, 20);
+            this.txtWordsSeparator.TabIndex = 7;
+            this.txtWordsSeparator.TextChanged += new System.EventHandler(this.txtWordsSeparator_TextChanged);
+            // 
+            // lblPrefix
+            // 
+            this.lblPrefix.AutoSize = true;
+            this.lblPrefix.Location = new System.Drawing.Point(152, 165);
+            this.lblPrefix.Name = "lblPrefix";
+            this.lblPrefix.Size = new System.Drawing.Size(33, 13);
+            this.lblPrefix.TabIndex = 0;
+            this.lblPrefix.Text = "Prefix";
+            // 
+            // txtPrefix
+            // 
+            this.txtPrefix.Location = new System.Drawing.Point(185, 161);
+            this.txtPrefix.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.txtPrefix.Name = "txtPrefix";
+            this.txtPrefix.Size = new System.Drawing.Size(75, 20);
+            this.txtPrefix.TabIndex = 15;
+            this.txtPrefix.TextChanged += new System.EventHandler(this.txtPrefix_TextChanged);
+            // 
+            // lblSuffix
+            // 
+            this.lblSuffix.AutoSize = true;
+            this.lblSuffix.Location = new System.Drawing.Point(268, 165);
+            this.lblSuffix.Name = "lblSuffix";
+            this.lblSuffix.Size = new System.Drawing.Size(33, 13);
+            this.lblSuffix.TabIndex = 0;
+            this.lblSuffix.Text = "Suffix";
+            // 
+            // txtSuffix
+            // 
+            this.txtSuffix.Location = new System.Drawing.Point(301, 161);
+            this.txtSuffix.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.txtSuffix.Name = "txtSuffix";
+            this.txtSuffix.Size = new System.Drawing.Size(75, 20);
+            this.txtSuffix.TabIndex = 16;
+            this.txtSuffix.TextChanged += new System.EventHandler(this.txtSuffix_TextChanged);
+            // 
+            // lblWordsSeparatorDesc
+            // 
+            this.lblWordsSeparatorDesc.AutoSize = true;
+            this.lblWordsSeparatorDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.lblWordsSeparatorDesc.Location = new System.Drawing.Point(146, 94);
+            this.lblWordsSeparatorDesc.Name = "lblWordsSeparatorDesc";
+            this.lblWordsSeparatorDesc.Size = new System.Drawing.Size(214, 13);
+            this.lblWordsSeparatorDesc.TabIndex = 0;
+            this.lblWordsSeparatorDesc.Text = "(Words between _ and words in CamelCase)";
+            // 
+            // lblFixedName
+            // 
+            this.lblFixedName.AutoSize = true;
+            this.lblFixedName.Location = new System.Drawing.Point(6, 165);
+            this.lblFixedName.Name = "lblFixedName";
+            this.lblFixedName.Size = new System.Drawing.Size(63, 13);
+            this.lblFixedName.TabIndex = 0;
+            this.lblFixedName.Text = "Fixed Name";
+            // 
+            // chkIncludeDB
+            // 
+            this.chkIncludeDB.AutoSize = true;
+            this.chkIncludeDB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkIncludeDB.Location = new System.Drawing.Point(6, 44);
+            this.chkIncludeDB.Name = "chkIncludeDB";
+            this.chkIncludeDB.Size = new System.Drawing.Size(79, 17);
+            this.chkIncludeDB.TabIndex = 2;
+            this.chkIncludeDB.Text = "Include DB";
+            this.chkIncludeDB.UseVisualStyleBackColor = true;
+            this.chkIncludeDB.CheckedChanged += new System.EventHandler(this.chkIncludeDB_CheckedChanged);
+            // 
+            // lblDBSeparator
+            // 
+            this.lblDBSeparator.AutoSize = true;
+            this.lblDBSeparator.Location = new System.Drawing.Point(93, 46);
+            this.lblDBSeparator.Name = "lblDBSeparator";
+            this.lblDBSeparator.Size = new System.Drawing.Size(71, 13);
+            this.lblDBSeparator.TabIndex = 0;
+            this.lblDBSeparator.Text = "DB Separator";
+            // 
+            // chkSearchIgnoreCase
+            // 
+            this.chkSearchIgnoreCase.AutoSize = true;
+            this.chkSearchIgnoreCase.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkSearchIgnoreCase.Location = new System.Drawing.Point(260, 138);
+            this.chkSearchIgnoreCase.Name = "chkSearchIgnoreCase";
+            this.chkSearchIgnoreCase.Size = new System.Drawing.Size(83, 17);
+            this.chkSearchIgnoreCase.TabIndex = 13;
+            this.chkSearchIgnoreCase.Text = "Ignore Case";
+            this.chkSearchIgnoreCase.UseVisualStyleBackColor = true;
+            this.chkSearchIgnoreCase.CheckedChanged += new System.EventHandler(this.chkSearchIgnoreCase_CheckedChanged);
+            // 
+            // txtDBSeparator
+            // 
+            this.txtDBSeparator.Location = new System.Drawing.Point(164, 42);
+            this.txtDBSeparator.Name = "txtDBSeparator";
+            this.txtDBSeparator.Size = new System.Drawing.Size(45, 20);
+            this.txtDBSeparator.TabIndex = 3;
+            this.txtDBSeparator.TextChanged += new System.EventHandler(this.txtDBSeparator_TextChanged);
+            // 
+            // txtReplace
+            // 
+            this.txtReplace.Location = new System.Drawing.Point(177, 136);
+            this.txtReplace.Name = "txtReplace";
+            this.txtReplace.Size = new System.Drawing.Size(75, 20);
+            this.txtReplace.TabIndex = 12;
+            this.txtReplace.TextChanged += new System.EventHandler(this.txtReplace_TextChanged);
+            // 
+            // chkIncludeSchema
+            // 
+            this.chkIncludeSchema.AutoSize = true;
+            this.chkIncludeSchema.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkIncludeSchema.Location = new System.Drawing.Point(6, 69);
+            this.chkIncludeSchema.Name = "chkIncludeSchema";
+            this.chkIncludeSchema.Size = new System.Drawing.Size(103, 17);
+            this.chkIncludeSchema.TabIndex = 4;
+            this.chkIncludeSchema.Text = "Include Schema";
+            this.chkIncludeSchema.UseVisualStyleBackColor = true;
+            this.chkIncludeSchema.CheckedChanged += new System.EventHandler(this.chkIncludeSchema_CheckedChanged);
+            // 
+            // lblReplace
+            // 
+            this.lblReplace.AutoSize = true;
+            this.lblReplace.Location = new System.Drawing.Point(130, 140);
+            this.lblReplace.Name = "lblReplace";
+            this.lblReplace.Size = new System.Drawing.Size(47, 13);
+            this.lblReplace.TabIndex = 0;
+            this.lblReplace.Text = "Replace";
+            // 
+            // chkIgnoreDboSchema
+            // 
+            this.chkIgnoreDboSchema.AutoSize = true;
+            this.chkIgnoreDboSchema.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkIgnoreDboSchema.Location = new System.Drawing.Point(117, 69);
+            this.chkIgnoreDboSchema.Name = "chkIgnoreDboSchema";
+            this.chkIgnoreDboSchema.Size = new System.Drawing.Size(119, 17);
+            this.chkIgnoreDboSchema.TabIndex = 5;
+            this.chkIgnoreDboSchema.Text = "Ignore dbo Schema";
+            this.chkIgnoreDboSchema.UseVisualStyleBackColor = true;
+            this.chkIgnoreDboSchema.CheckedChanged += new System.EventHandler(this.chkIgnoreDboSchema_CheckedChanged);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Location = new System.Drawing.Point(47, 136);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(75, 20);
+            this.txtSearch.TabIndex = 11;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // lblSchemaSeparator
+            // 
+            this.lblSchemaSeparator.AutoSize = true;
+            this.lblSchemaSeparator.Location = new System.Drawing.Point(244, 71);
+            this.lblSchemaSeparator.Name = "lblSchemaSeparator";
+            this.lblSchemaSeparator.Size = new System.Drawing.Size(95, 13);
+            this.lblSchemaSeparator.TabIndex = 0;
+            this.lblSchemaSeparator.Text = "Schema Separator";
+            // 
+            // lblSearch
+            // 
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Location = new System.Drawing.Point(6, 140);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(41, 13);
+            this.lblSearch.TabIndex = 0;
+            this.lblSearch.Text = "Search";
+            // 
+            // txtSchemaSeparator
+            // 
+            this.txtSchemaSeparator.Location = new System.Drawing.Point(339, 67);
+            this.txtSchemaSeparator.Name = "txtSchemaSeparator";
+            this.txtSchemaSeparator.Size = new System.Drawing.Size(45, 20);
+            this.txtSchemaSeparator.TabIndex = 6;
+            this.txtSchemaSeparator.TextChanged += new System.EventHandler(this.txtSchemaSeparator_TextChanged);
+            // 
+            // lblSingularDesc
+            // 
+            this.lblSingularDesc.AutoSize = true;
+            this.lblSingularDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
+            this.lblSingularDesc.Location = new System.Drawing.Point(78, 21);
+            this.lblSingularDesc.Name = "lblSingularDesc";
+            this.lblSingularDesc.Size = new System.Drawing.Size(107, 13);
+            this.lblSingularDesc.TabIndex = 0;
+            this.lblSingularDesc.Text = "(Tables, Views, TVPs)";
+            // 
+            // grbEFAnnotations
+            // 
+            this.grbEFAnnotations.AutoSize = true;
+            this.grbEFAnnotations.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grbEFAnnotations.Controls.Add(this.chkEF);
+            this.grbEFAnnotations.Controls.Add(this.chkEFColumn);
+            this.grbEFAnnotations.Controls.Add(this.chkEFConcurrencyCheck);
+            this.grbEFAnnotations.Controls.Add(this.chkEFComplexType);
+            this.grbEFAnnotations.Controls.Add(this.chkEFDescription);
+            this.grbEFAnnotations.Controls.Add(this.chkEFIndex);
+            this.grbEFAnnotations.Controls.Add(this.chkEFForeignKeyAndInverseProperty);
+            this.grbEFAnnotations.Controls.Add(this.chkEFStringLength);
+            this.grbEFAnnotations.Controls.Add(this.chkEFDisplay);
+            this.grbEFAnnotations.Controls.Add(this.chkEFRequired);
+            this.grbEFAnnotations.Controls.Add(this.chkEFRequiredWithErrorMessage);
+            this.grbEFAnnotations.Controls.Add(this.lblEF);
+            this.grbEFAnnotations.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grbEFAnnotations.Location = new System.Drawing.Point(305, 207);
+            this.grbEFAnnotations.MinimumSize = new System.Drawing.Size(390, 0);
+            this.grbEFAnnotations.Name = "grbEFAnnotations";
+            this.grbEFAnnotations.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.grbEFAnnotations.Size = new System.Drawing.Size(390, 124);
+            this.grbEFAnnotations.TabIndex = 4;
+            this.grbEFAnnotations.TabStop = false;
+            this.grbEFAnnotations.Text = "EF Annotations";
+            this.grbEFAnnotations.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
+            // 
+            // chkEF
+            // 
+            this.chkEF.AutoSize = true;
+            this.chkEF.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEF.Location = new System.Drawing.Point(6, 19);
+            this.chkEF.Name = "chkEF";
+            this.chkEF.Size = new System.Drawing.Size(39, 17);
+            this.chkEF.TabIndex = 1;
+            this.chkEF.Text = "EF";
+            this.chkEF.UseVisualStyleBackColor = true;
+            this.chkEF.CheckedChanged += new System.EventHandler(this.chkEF_CheckedChanged);
+            // 
+            // chkEFColumn
+            // 
+            this.chkEFColumn.AutoSize = true;
+            this.chkEFColumn.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFColumn.Location = new System.Drawing.Point(6, 44);
+            this.chkEFColumn.Name = "chkEFColumn";
+            this.chkEFColumn.Size = new System.Drawing.Size(61, 17);
+            this.chkEFColumn.TabIndex = 2;
+            this.chkEFColumn.Text = "Column";
+            this.chkEFColumn.UseVisualStyleBackColor = true;
+            this.chkEFColumn.CheckedChanged += new System.EventHandler(this.chkEFColumn_CheckedChanged);
+            // 
+            // chkEFConcurrencyCheck
+            // 
+            this.chkEFConcurrencyCheck.AutoSize = true;
+            this.chkEFConcurrencyCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFConcurrencyCheck.Location = new System.Drawing.Point(6, 69);
+            this.chkEFConcurrencyCheck.Name = "chkEFConcurrencyCheck";
+            this.chkEFConcurrencyCheck.Size = new System.Drawing.Size(117, 17);
+            this.chkEFConcurrencyCheck.TabIndex = 5;
+            this.chkEFConcurrencyCheck.Text = "ConcurrencyCheck";
+            this.chkEFConcurrencyCheck.UseVisualStyleBackColor = true;
+            this.chkEFConcurrencyCheck.CheckedChanged += new System.EventHandler(this.chkEFConcurrencyCheck_CheckedChanged);
+            // 
+            // chkEFComplexType
+            // 
+            this.chkEFComplexType.AutoSize = true;
+            this.chkEFComplexType.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFComplexType.Location = new System.Drawing.Point(6, 94);
+            this.chkEFComplexType.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.chkEFComplexType.Name = "chkEFComplexType";
+            this.chkEFComplexType.Size = new System.Drawing.Size(90, 17);
+            this.chkEFComplexType.TabIndex = 9;
+            this.chkEFComplexType.Text = "ComplexType";
+            this.chkEFComplexType.UseVisualStyleBackColor = true;
+            this.chkEFComplexType.CheckedChanged += new System.EventHandler(this.chkEFComplexType_CheckedChanged);
+            // 
+            // chkEFDescription
+            // 
+            this.chkEFDescription.AutoSize = true;
+            this.chkEFDescription.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFDescription.Location = new System.Drawing.Point(293, 69);
+            this.chkEFDescription.Name = "chkEFDescription";
+            this.chkEFDescription.Size = new System.Drawing.Size(79, 17);
+            this.chkEFDescription.TabIndex = 8;
+            this.chkEFDescription.Text = "Description";
+            this.chkEFDescription.UseVisualStyleBackColor = true;
+            this.chkEFDescription.CheckedChanged += new System.EventHandler(this.chkEFDescription_CheckedChanged);
+            // 
+            // chkEFIndex
+            // 
+            this.chkEFIndex.AutoSize = true;
+            this.chkEFIndex.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFIndex.Location = new System.Drawing.Point(104, 94);
+            this.chkEFIndex.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.chkEFIndex.Name = "chkEFIndex";
+            this.chkEFIndex.Size = new System.Drawing.Size(80, 17);
+            this.chkEFIndex.TabIndex = 10;
+            this.chkEFIndex.Text = "Index (EF6)";
+            this.chkEFIndex.UseVisualStyleBackColor = true;
+            this.chkEFIndex.CheckedChanged += new System.EventHandler(this.chkEFIndex_CheckedChanged);
+            // 
+            // chkEFForeignKeyAndInverseProperty
+            // 
+            this.chkEFForeignKeyAndInverseProperty.AutoSize = true;
+            this.chkEFForeignKeyAndInverseProperty.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFForeignKeyAndInverseProperty.Location = new System.Drawing.Point(192, 94);
+            this.chkEFForeignKeyAndInverseProperty.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.chkEFForeignKeyAndInverseProperty.Name = "chkEFForeignKeyAndInverseProperty";
+            this.chkEFForeignKeyAndInverseProperty.Size = new System.Drawing.Size(165, 17);
+            this.chkEFForeignKeyAndInverseProperty.TabIndex = 11;
+            this.chkEFForeignKeyAndInverseProperty.Text = "ForeignKey && InverseProperty";
+            this.chkEFForeignKeyAndInverseProperty.UseVisualStyleBackColor = true;
+            this.chkEFForeignKeyAndInverseProperty.CheckedChanged += new System.EventHandler(this.chkEFForeignKeyAndInverseProperty_CheckedChanged);
+            // 
+            // chkEFStringLength
+            // 
+            this.chkEFStringLength.AutoSize = true;
+            this.chkEFStringLength.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFStringLength.Location = new System.Drawing.Point(131, 69);
+            this.chkEFStringLength.Name = "chkEFStringLength";
+            this.chkEFStringLength.Size = new System.Drawing.Size(86, 17);
+            this.chkEFStringLength.TabIndex = 6;
+            this.chkEFStringLength.Text = "StringLength";
+            this.chkEFStringLength.UseVisualStyleBackColor = true;
+            this.chkEFStringLength.CheckedChanged += new System.EventHandler(this.chkEFStringLength_CheckedChanged);
+            // 
+            // chkEFDisplay
+            // 
+            this.chkEFDisplay.AutoSize = true;
+            this.chkEFDisplay.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFDisplay.Location = new System.Drawing.Point(225, 69);
+            this.chkEFDisplay.Name = "chkEFDisplay";
+            this.chkEFDisplay.Size = new System.Drawing.Size(60, 17);
+            this.chkEFDisplay.TabIndex = 7;
+            this.chkEFDisplay.Text = "Display";
+            this.chkEFDisplay.UseVisualStyleBackColor = true;
+            this.chkEFDisplay.CheckedChanged += new System.EventHandler(this.chkEFDisplay_CheckedChanged);
+            // 
+            // chkEFRequired
+            // 
+            this.chkEFRequired.AutoSize = true;
+            this.chkEFRequired.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFRequired.Location = new System.Drawing.Point(75, 44);
+            this.chkEFRequired.Name = "chkEFRequired";
+            this.chkEFRequired.Size = new System.Drawing.Size(69, 17);
+            this.chkEFRequired.TabIndex = 3;
+            this.chkEFRequired.Text = "Required";
+            this.chkEFRequired.UseVisualStyleBackColor = true;
+            this.chkEFRequired.CheckedChanged += new System.EventHandler(this.chkEFRequired_CheckedChanged);
+            // 
+            // chkEFRequiredWithErrorMessage
+            // 
+            this.chkEFRequiredWithErrorMessage.AutoSize = true;
+            this.chkEFRequiredWithErrorMessage.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkEFRequiredWithErrorMessage.Location = new System.Drawing.Point(152, 44);
+            this.chkEFRequiredWithErrorMessage.Name = "chkEFRequiredWithErrorMessage";
+            this.chkEFRequiredWithErrorMessage.Size = new System.Drawing.Size(159, 17);
+            this.chkEFRequiredWithErrorMessage.TabIndex = 4;
+            this.chkEFRequiredWithErrorMessage.Text = "Required with ErrorMessage";
+            this.chkEFRequiredWithErrorMessage.UseVisualStyleBackColor = true;
+            this.chkEFRequiredWithErrorMessage.CheckedChanged += new System.EventHandler(this.chkEFRequiredWithErrorMessage_CheckedChanged);
+            // 
+            // lblEF
+            // 
+            this.lblEF.AutoSize = true;
+            this.lblEF.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
+            this.lblEF.Location = new System.Drawing.Point(53, 21);
+            this.lblEF.Name = "lblEF";
+            this.lblEF.Size = new System.Drawing.Size(278, 13);
+            this.lblEF.TabIndex = 0;
+            this.lblEF.Text = "(Table, Key, MaxLength, Timestamp, DatabaseGenerated)";
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 337);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1039, 22);
+            this.statusStrip.TabIndex = 9;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel
+            // 
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // btnCopy
+            // 
+            this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopy.AutoSize = true;
+            this.btnCopy.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnCopy.Location = new System.Drawing.Point(987, 5);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(41, 23);
+            this.btnCopy.TabIndex = 6;
+            this.btnCopy.Text = "Copy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
+            // btnTypeMapping
+            // 
+            this.btnTypeMapping.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTypeMapping.AutoSize = true;
+            this.btnTypeMapping.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnTypeMapping.Location = new System.Drawing.Point(768, 303);
+            this.btnTypeMapping.Name = "btnTypeMapping";
+            this.btnTypeMapping.Size = new System.Drawing.Size(85, 23);
+            this.btnTypeMapping.TabIndex = 8;
+            this.btnTypeMapping.Text = "Type Mapping";
+            this.btnTypeMapping.UseVisualStyleBackColor = true;
+            this.btnTypeMapping.Click += new System.EventHandler(this.btnTypeMapping_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.AutoSize = true;
+            this.btnClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(985, 303);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(43, 23);
+            this.btnClose.TabIndex = 10;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // contextMenuTable
+            // 
+            this.contextMenuTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkReferencedTablesToolStripMenuItem,
+            this.checkReferencingTablesToolStripMenuItem,
+            this.checkAccessibleTablesToolStripMenuItem});
+            this.contextMenuTable.Name = "contextMenuTable";
+            this.contextMenuTable.Size = new System.Drawing.Size(383, 70);
+            // 
+            // checkReferencedTablesToolStripMenuItem
+            // 
+            this.checkReferencedTablesToolStripMenuItem.Name = "checkReferencedTablesToolStripMenuItem";
+            this.checkReferencedTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkReferencedTablesToolStripMenuItem.Text = "Check Tables Referenced From This Table";
+            this.checkReferencedTablesToolStripMenuItem.Click += new System.EventHandler(this.checkReferencedTablesToolStripMenuItem_Click);
+            // 
+            // checkReferencingTablesToolStripMenuItem
+            // 
+            this.checkReferencingTablesToolStripMenuItem.Name = "checkReferencingTablesToolStripMenuItem";
+            this.checkReferencingTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkReferencingTablesToolStripMenuItem.Text = "Check Tables Referencing To This Table";
+            this.checkReferencingTablesToolStripMenuItem.Click += new System.EventHandler(this.checkReferencingTablesToolStripMenuItem_Click);
+            // 
+            // checkAccessibleTablesToolStripMenuItem
+            // 
+            this.checkAccessibleTablesToolStripMenuItem.Name = "checkAccessibleTablesToolStripMenuItem";
+            this.checkAccessibleTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkAccessibleTablesToolStripMenuItem.Text = "Check Recursively Tables Accessible From && To This Table";
+            this.checkAccessibleTablesToolStripMenuItem.Click += new System.EventHandler(this.checkAccessibleTablesToolStripMenuItem_Click);
+            // 
+            // btnDisclaimer
+            // 
+            this.btnDisclaimer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDisclaimer.AutoSize = true;
+            this.btnDisclaimer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnDisclaimer.Location = new System.Drawing.Point(859, 303);
+            this.btnDisclaimer.Name = "btnDisclaimer";
+            this.btnDisclaimer.Size = new System.Drawing.Size(65, 23);
+            this.btnDisclaimer.TabIndex = 9;
+            this.btnDisclaimer.Text = "Disclaimer";
+            this.btnDisclaimer.UseVisualStyleBackColor = true;
+            this.btnDisclaimer.Click += new System.EventHandler(this.btnDisclaimer_Click);
+            // 
+            // POCOGeneratorForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClose;
+            this.ClientSize = new System.Drawing.Size(1039, 712);
+            this.Controls.Add(this.splitContainer1);
+            this.MinimumSize = new System.Drawing.Size(1055, 550);
+            this.Name = "POCOGeneratorForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "POCO Generator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.POCOGeneratorForm_FormClosing);
+            this.Load += new System.EventHandler(this.POCOGeneratorForm_Load);
+            this.Shown += new System.EventHandler(this.POCOGeneratorForm_Shown);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            this.contextMenu.ResumeLayout(false);
+            this.contextMenuPocoEditor.ResumeLayout(false);
+            this.panelMain.ResumeLayout(false);
+            this.panelMain.PerformLayout();
+            this.grbPOCO.ResumeLayout(false);
+            this.grbPOCO.PerformLayout();
+            this.panelEnum.ResumeLayout(false);
+            this.panelEnum.PerformLayout();
+            this.panelProperties.ResumeLayout(false);
+            this.panelProperties.PerformLayout();
+            this.grbNavigationProperties.ResumeLayout(false);
+            this.grbNavigationProperties.PerformLayout();
+            this.panelNavigationProperties1.ResumeLayout(false);
+            this.panelNavigationProperties1.PerformLayout();
+            this.grbExportToFiles.ResumeLayout(false);
+            this.grbExportToFiles.PerformLayout();
+            this.grbClassName.ResumeLayout(false);
+            this.grbClassName.PerformLayout();
+            this.grbEFAnnotations.ResumeLayout(false);
+            this.grbEFAnnotations.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
+            this.contextMenuTable.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TreeView trvServer;
+        private System.Windows.Forms.ImageList imageListDbObjects;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.RichTextBox txtPocoEditor;
+        private System.Windows.Forms.ContextMenuStrip contextMenuPocoEditor;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
+        private System.Windows.Forms.RadioButton rdbProperties;
+        private System.Windows.Forms.RadioButton rdbFields;
+        private System.Windows.Forms.CheckBox chkVirtualProperties;
+        private System.Windows.Forms.CheckBox chkStructTypesNullable;
+        private System.Windows.Forms.CheckBox chkComments;
+        private System.Windows.Forms.CheckBox chkCommentsWithoutNull;
+        private System.Windows.Forms.Panel panelMain;
+        private System.Windows.Forms.TextBox txtFixedClassName;
+        private System.Windows.Forms.CheckBox chkLowerCase;
+        private System.Windows.Forms.CheckBox chkUpperCase;
+        private System.Windows.Forms.CheckBox chkCamelCase;
+        private System.Windows.Forms.TextBox txtWordsSeparator;
+        private System.Windows.Forms.Label lblWordsSeparator;
+        private System.Windows.Forms.TextBox txtSuffix;
+        private System.Windows.Forms.Label lblSuffix;
+        private System.Windows.Forms.TextBox txtPrefix;
+        private System.Windows.Forms.Label lblPrefix;
+        private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.Button btnFolder;
+        private System.Windows.Forms.TextBox txtFolder;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogExport;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnTypeMapping;
+        private System.Windows.Forms.Label lblWordsSeparatorDesc;
+        private System.Windows.Forms.Label lblFixedName;
+        private System.Windows.Forms.TextBox txtDBSeparator;
+        private System.Windows.Forms.Label lblDBSeparator;
+        private System.Windows.Forms.CheckBox chkIncludeDB;
+        private System.Windows.Forms.TextBox txtSchemaSeparator;
+        private System.Windows.Forms.Label lblSchemaSeparator;
+        private System.Windows.Forms.CheckBox chkIgnoreDboSchema;
+        private System.Windows.Forms.CheckBox chkIncludeSchema;
+        private System.Windows.Forms.Button btnCopy;
+        private System.Windows.Forms.TextBox txtNamespace;
+        private System.Windows.Forms.Label lblNamespace;
+        private System.Windows.Forms.CheckBox chkUsing;
+        private System.Windows.Forms.CheckBox chkSingular;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
+        private System.Windows.Forms.CheckBox chkPartialClass;
+        private System.Windows.Forms.CheckBox chkEF;
+        private System.Windows.Forms.CheckBox chkEFRequired;
+        private System.Windows.Forms.CheckBox chkEFColumn;
+        private System.Windows.Forms.Label lblSingularDesc;
+        private System.Windows.Forms.ContextMenuStrip contextMenu;
+        private System.Windows.Forms.ToolStripMenuItem removeFilterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem filterSettingsToolStripMenuItem;
+        private System.Windows.Forms.CheckBox chkSearchIgnoreCase;
+        private System.Windows.Forms.TextBox txtReplace;
+        private System.Windows.Forms.Label lblReplace;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.CheckBox chkEFDisplay;
+        private System.Windows.Forms.CheckBox chkEFStringLength;
+        private System.Windows.Forms.CheckBox chkEFConcurrencyCheck;
+        private System.Windows.Forms.CheckBox chkNewLineBetweenMembers;
+        private System.Windows.Forms.CheckBox chkEFRequiredWithErrorMessage;
+        private System.Windows.Forms.Label lblEF;
+        private System.Windows.Forms.CheckBox chkEFComplexType;
+        private System.Windows.Forms.CheckBox chkEFIndex;
+        private System.Windows.Forms.ToolStripMenuItem clearCheckBoxesToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuTable;
+        private System.Windows.Forms.Panel panelProperties;
+        private System.Windows.Forms.CheckBox chkNavigationProperties;
+        private System.Windows.Forms.CheckBox chkVirtualNavigationProperties;
+        private System.Windows.Forms.Panel panelNavigationProperties1;
+        private System.Windows.Forms.RadioButton rdbIEnumerableNavigationProperties;
+        private System.Windows.Forms.RadioButton rdbICollectionNavigationProperties;
+        private System.Windows.Forms.RadioButton rdbListNavigationProperties;
+        private System.Windows.Forms.CheckBox chkEFForeignKeyAndInverseProperty;
+        private System.Windows.Forms.CheckBox chkNavigationPropertiesComments;
+        private System.Windows.Forms.CheckBox chkShowManyToManyJoinTable;
+        private System.Windows.Forms.TextBox txtInherit;
+        private System.Windows.Forms.Label lblInherit;
+        private System.Windows.Forms.CheckBox chkEFDescription;
+        private System.Windows.Forms.CheckBox chkOverrideProperties;
+        private System.Windows.Forms.CheckBox chkOverrideNavigationProperties;
+        private System.Windows.Forms.CheckBox chkColumnDefaults;
+        private System.Windows.Forms.GroupBox grbEFAnnotations;
+        private System.Windows.Forms.GroupBox grbClassName;
+        private System.Windows.Forms.GroupBox grbNavigationProperties;
+        private System.Windows.Forms.GroupBox grbExportToFiles;
+        private System.Windows.Forms.GroupBox grbPOCO;
+        private System.Windows.Forms.Panel panelEnum;
+        private System.Windows.Forms.RadioButton rdbEnumSQLTypeToString;
+        private System.Windows.Forms.RadioButton rdbEnumSQLTypeToEnumUShort;
+        private System.Windows.Forms.Label lblSQLEnum;
+        private System.Windows.Forms.RadioButton rdbEnumSQLTypeToEnumInt;
+        private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.ToolStripMenuItem checkReferencedTablesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkReferencingTablesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkAccessibleTablesToolStripMenuItem;
+        private System.Windows.Forms.RadioButton rdbSingleFile;
+        private System.Windows.Forms.RadioButton rdbMultipleFilesRelativeNamespace;
+        private System.Windows.Forms.RadioButton rdbMultipleFiles;
+        private System.Windows.Forms.CheckBox chkUsingInsideNamespace;
+        private System.Windows.Forms.Button btnDisclaimer;
+    }
+}
