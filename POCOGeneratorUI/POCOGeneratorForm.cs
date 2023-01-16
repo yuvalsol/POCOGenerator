@@ -185,6 +185,7 @@ namespace POCOGeneratorUI
             this.generator.Settings.POCO.Inherit = txtInherit.Text;
             this.generator.Settings.POCO.ColumnDefaults = chkColumnDefaults.Checked;
             this.generator.Settings.POCO.NewLineBetweenMembers = chkNewLineBetweenMembers.Checked;
+            this.generator.Settings.POCO.ComplexTypes = chkComplexTypes.Checked;
             this.generator.Settings.POCO.EnumSQLTypeToString = rdbEnumSQLTypeToString.Checked;
             this.generator.Settings.POCO.EnumSQLTypeToEnumUShort = rdbEnumSQLTypeToEnumUShort.Checked;
             this.generator.Settings.POCO.EnumSQLTypeToEnumInt = rdbEnumSQLTypeToEnumInt.Checked;
@@ -1039,8 +1040,6 @@ namespace POCOGeneratorUI
             if (isSupportEnumDataType)
             {
                 panelEnum.Visible = true;
-
-                // deubg ????
             }
             else
             {
@@ -2305,6 +2304,14 @@ namespace POCOGeneratorUI
             POCOOptionChanged();
         }
 
+        private void chkComplexTypes_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkComplexTypes.Checked == false)
+                SetCheckBox(chkEFComplexType, chkEFComplexType_CheckedChanged, false);
+
+            POCOOptionChanged();
+        }
+
         private void rdbEnumSQLTypeToString_CheckedChanged(object sender, EventArgs e)
         {
             if (this.generator != null && this.generator.Support.SupportEnumDataType && rdbEnumSQLTypeToString.Checked)
@@ -2581,6 +2588,10 @@ namespace POCOGeneratorUI
         private void chkEFComplexType_CheckedChanged(object sender, EventArgs e)
         {
             CheckEFCheckBox(chkEFComplexType.Checked);
+
+            if (chkEFComplexType.Checked && chkComplexTypes.Checked == false)
+                SetCheckBox(chkComplexTypes, chkComplexTypes_CheckedChanged, true);
+
             POCOOptionChanged();
         }
 
@@ -3546,6 +3557,7 @@ namespace POCOGeneratorUI
                 txtInherit_Text = txtInherit.Text,
                 chkColumnDefaults_Checked = chkColumnDefaults.Checked,
                 chkNewLineBetweenMembers_Checked = chkNewLineBetweenMembers.Checked,
+                chkComplexTypes_Checked = chkComplexTypes.Checked,
                 rdbEnumSQLTypeToString_Checked = rdbEnumSQLTypeToString.Checked,
                 rdbEnumSQLTypeToEnumUShort_Checked = rdbEnumSQLTypeToEnumUShort.Checked,
                 rdbEnumSQLTypeToEnumInt_Checked = rdbEnumSQLTypeToEnumInt.Checked,
@@ -3629,6 +3641,7 @@ namespace POCOGeneratorUI
             SetTextBox(txtInherit, txtInherit_TextChanged, settings.txtInherit_Text);
             SetCheckBox(chkColumnDefaults, chkColumnDefaults_CheckedChanged, settings.chkColumnDefaults_Checked);
             SetCheckBox(chkNewLineBetweenMembers, chkNewLineBetweenMembers_CheckedChanged, settings.chkNewLineBetweenMembers_Checked);
+            SetCheckBox(chkComplexTypes, chkComplexTypes_CheckedChanged, settings.chkComplexTypes_Checked);
             SetRadioButton(rdbEnumSQLTypeToString, rdbEnumSQLTypeToString_CheckedChanged, settings.rdbEnumSQLTypeToString_Checked);
             SetRadioButton(rdbEnumSQLTypeToEnumUShort, rdbEnumSQLTypeToEnumUShort_CheckedChanged, settings.rdbEnumSQLTypeToEnumUShort_Checked);
             SetRadioButton(rdbEnumSQLTypeToEnumInt, rdbEnumSQLTypeToEnumInt_CheckedChanged, settings.rdbEnumSQLTypeToEnumInt_Checked);

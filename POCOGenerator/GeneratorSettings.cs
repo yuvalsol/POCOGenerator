@@ -56,6 +56,7 @@ namespace POCOGenerator
             this.POCO.Inherit = settings.POCO.Inherit;
             this.POCO.ColumnDefaults = settings.POCO.ColumnDefaults;
             this.POCO.NewLineBetweenMembers = settings.POCO.NewLineBetweenMembers;
+            this.POCO.ComplexTypes = settings.POCO.ComplexTypes;
             this.POCO.EnumSQLTypeToString = settings.POCO.EnumSQLTypeToString;
             this.POCO.EnumSQLTypeToEnumUShort = settings.POCO.EnumSQLTypeToEnumUShort;
             this.POCO.EnumSQLTypeToEnumInt = settings.POCO.EnumSQLTypeToEnumInt;
@@ -333,6 +334,7 @@ namespace POCOGenerator
                     this.Inherit = null;
                     this.ColumnDefaults = false;
                     this.NewLineBetweenMembers = false;
+                    this.ComplexTypes = false;
                     this.EnumSQLTypeToString = true;
                     this.EnumSQLTypeToEnumUShort = false;
                     this.EnumSQLTypeToEnumInt = false;
@@ -687,6 +689,26 @@ namespace POCOGenerator
                     lock (lockObject)
                     {
                         newLineBetweenMembers = value;
+                    }
+                }
+            }
+
+            private bool complexTypes;
+            public bool ComplexTypes
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return complexTypes;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        complexTypes = value;
                     }
                 }
             }
@@ -2323,6 +2345,11 @@ namespace POCOGenerator
         /// Gets or sets a value indicating whether to generate a new line between class members.
         /// </summary>
         bool NewLineBetweenMembers { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate complex types.
+        /// </summary>
+        bool ComplexTypes { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate a string data member for a SQL enum &amp; set date types.
