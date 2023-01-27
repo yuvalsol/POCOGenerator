@@ -44,8 +44,6 @@
     <Compile Include="..\Solution Items\SolutionAssemblyInfo.cs">
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ComplexType.cs" />
-    <Compile Include="ComplexTypeColumn.cs" />
     <Compile Include="DbIterator.cs" />
     <Compile Include="DbIteratorEventArgs.cs" />
     <Compile Include="IDbIterator.cs" />

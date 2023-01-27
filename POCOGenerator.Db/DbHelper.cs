@@ -1558,129 +1558,16 @@ namespace POCOGenerator.Db
 
         #region Complex Types
 
-        internal class ComplexType
-        {
-            public List<ComplexTypeTable> ComplexTypeTables { get; set; }
-        }
-
-        internal class ComplexTypeTable : ITable
-        {
-            public ITable SourceTable { get; internal set; }
-            public string PropertyName { get; internal set; }
-
-            #region IDbObjectTraverse
-
-            public string Name { get; internal set; }
-            public IEnumerable<IColumn> Columns { get; internal set; }
-            public DbObjectType DbObjectType { get; internal set; }
-            public IDatabase Database { get; set; }
-            public Exception Error { get; set; }
-            public string ClassName { get; set; }
-
-            #endregion
-
-            #region ITable
-
-            public List<ITableColumn> TableColumns { get; set; }
-            public IPrimaryKey PrimaryKey { get; set; }
-            public List<IUniqueKey> UniqueKeys { get; set; }
-            public List<IForeignKey> ForeignKeys { get; set; }
-            public List<IForeignKey> PrimaryForeignKeys { get; set; }
-            public List<IIndex> Indexes { get; set; }
-            public bool IsJoinTable { get; set; }
-
-            #endregion
-
-            #region IDescription
-
-            public string Description { get; set; }
-
-            #endregion
-
-            #region IDbObject
-
-            public override string ToString()
-            {
-                return this.SourceTable.ToString().Replace(this.SourceTable.Name, this.Name);
-            }
-
-            #endregion
-        }
-
-        internal class ComplexTypeTableWithSchema : ComplexTypeTable, ISchema
-        {
-            #region ISchema
-
-            public string Schema { get; internal set; }
-
-            #endregion
-        }
-
-        internal class ComplexTypeTableColumn : ITableColumn
-        {
-            public ITableColumn SourceTableColumn { get; internal set; }
-
-            #region IColumn
-
-            public string ColumnName { get; internal set; }
-            public int? ColumnOrdinal { get; internal set; }
-            public string DataTypeName { get; internal set; }
-            public string DataTypeDisplay { get; internal set; }
-            public string Precision { get; internal set; }
-            public int? StringPrecision { get; internal set; }
-            public int? NumericPrecision { get; internal set; }
-            public int? NumericScale { get; internal set; }
-            public int? DateTimePrecision { get; internal set; }
-            public bool IsUnsigned { get; internal set; }
-            public bool IsNullable { get; internal set; }
-            public bool IsIdentity { get; set; }
-            public bool IsComputed { get; set; }
-
-            #endregion
-
-            #region ITableColumn
-
-            public ITable Table { get; set; }
-            public IPrimaryKeyColumn PrimaryKeyColumn { get; set; }
-            public List<IUniqueKeyColumn> UniqueKeyColumns { get; set; }
-            public List<IForeignKeyColumn> ForeignKeyColumns { get; set; }
-            public List<IForeignKeyColumn> PrimaryForeignKeyColumns { get; set; }
-            public List<IIndexColumn> IndexColumns { get; set; }
-            public string ColumnDefault { get; internal set; }
-
-            public string ToFullString()
-            {
-                return this.SourceTableColumn.ToFullString().Replace(this.SourceTableColumn.ColumnName, this.ColumnName);
-            }
-
-            #endregion
-
-            #region IDescription
-
-            public string Description { get; set; }
-
-            #endregion
-
-            #region IDbObject
-
-            public override string ToString()
-            {
-                return this.SourceTableColumn.ToString().Replace(this.SourceTableColumn.ColumnName, this.ColumnName);
-            }
-
-            #endregion
-        }
-
-        internal virtual void BuildComplexTypes(IDatabase database)
+        protected virtual void BuildComplexTypes(IDatabase database)
         {
             // build all the complex type tables across all tables
-            List<ComplexTypeTable> complexTypeTables = GetComplexTypeTables(database);
+            List<IComplexTypeTable> complexTypeTables = GetComplexTypeTables(database);
             if (complexTypeTables.IsNullOrEmpty())
                 return;
 
             // consolidate complex types
             // the same complex type table can appear within mutiple tables
-            List<ComplexType> complexTypes = ConsolidateComplexTypes(complexTypeTables);
+            List<IComplexType> complexTypes = ConsolidateComplexTypes(complexTypeTables);
 
             var toRename =
                 complexTypes.Select(complexType => new
@@ -1698,16 +1585,16 @@ namespace POCOGenerator.Db
                 if (item.Names.Any(n => n.Contains("Address")))
                     newName = "Address";
 
-                foreach (var table in item.complexType.ComplexTypeTables)
+                foreach (var table in item.complexType.ComplexTypeTables.Cast<ComplexTypeTable>())
                     table.Name = newName;
             }
 
-            //debug save complex types to database?
+            database.ComplexTypes = complexTypes;
         }
 
-        internal virtual List<ComplexTypeTable> GetComplexTypeTables(IDatabase database)
+        protected virtual List<IComplexTypeTable> GetComplexTypeTables(IDatabase database)
         {
-            List<ComplexTypeTable> complexTypeTables = null;
+            List<IComplexTypeTable> complexTypeTables = null;
 
             if (database.Tables.HasAny())
             {
@@ -1735,13 +1622,13 @@ namespace POCOGenerator.Db
 
                                     ComplexTypeTable complexTypeTable = null;
                                     if (complexTypeTables.IsNullOrEmpty() == false)
-                                        complexTypeTable = complexTypeTables.FirstOrDefault(t => t.Name == complexTypeTableName);
+                                        complexTypeTable = (ComplexTypeTable)complexTypeTables.FirstOrDefault(t => t.Name == complexTypeTableName);
 
                                     // build complex type table
                                     if (complexTypeTable == null)
                                     {
                                         if (complexTypeTables == null)
-                                            complexTypeTables = new List<ComplexTypeTable>();
+                                            complexTypeTables = new List<IComplexTypeTable>();
 
                                         if (Support.IsSupportSchema)
                                         {
@@ -1845,16 +1732,16 @@ namespace POCOGenerator.Db
             return complexTypeTables;
         }
 
-        internal virtual List<ComplexType> ConsolidateComplexTypes(List<ComplexTypeTable> complexTypeTables)
+        protected virtual List<IComplexType> ConsolidateComplexTypes(List<IComplexTypeTable> complexTypeTables)
         {
-            List<ComplexType> complexTypes = new List<ComplexType>();
+            List<IComplexType> complexTypes = new List<IComplexType>();
 
             while (complexTypeTables.Count > 0)
             {
-                ComplexTypeTable t1 = complexTypeTables[0];
+                IComplexTypeTable t1 = complexTypeTables[0];
                 complexTypeTables.RemoveAt(0);
 
-                List<ComplexTypeTable> tables = new List<ComplexTypeTable>() { t1 };
+                List<IComplexTypeTable> tables = new List<IComplexTypeTable>() { t1 };
 
                 // two complex type tables are the same if they have the same column count and same columns
                 // two columns are the same if they have the same: name, data type, precision, unsigned, nullable, computed

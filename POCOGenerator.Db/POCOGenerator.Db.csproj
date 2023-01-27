@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="ConnectionStringParser.cs" />
     <Compile Include="DbHelper.cs" />
+    <Compile Include="DbObjects\ComplexType.cs" />
     <Compile Include="DbObjects\ComputedColumnBase.cs" />
     <Compile Include="DbObjects\DbObjectDescriptionBase.cs" />
     <Compile Include="DbObjects\ForeignKey.cs" />

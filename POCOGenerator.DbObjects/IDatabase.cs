@@ -11,6 +11,7 @@ namespace POCOGenerator.DbObjects
         List<IProcedure> Procedures { get; set; }
         List<IFunction> Functions { get; set; }
         List<ITVP> TVPs { get; set; }
+        List<IComplexType> ComplexTypes { get; set; }
         List<Exception> Errors { get; set; }
 
         string Name { get; }

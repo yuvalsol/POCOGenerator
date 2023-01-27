@@ -171,6 +171,27 @@ namespace POCOGenerator.POCOIterators
                             }
                         }
 
+
+                        //debug
+                        if (settings.POCOIteratorSettings.ComplexTypes)
+                        {
+                            
+                            var complexTypeTables = database.Where(x => x.DbObjectType == DbObjectType.Table).OrderBy(x => x.ToString());
+                            if (complexTypeTables.Any())
+                            {
+                                foreach (IDbObjectTraverse complexTypeTable in complexTypeTables)
+                                {
+                                    bool stop = WriteDbObject(dbObjects, complexTypeTable, namespaceOffset, RaiseTableGeneratingEvent, RaiseTableGeneratedEvent, ref isFirstDbObject);
+                                    if (stop)
+                                    {
+                                        IteratorEnd(isExistDbObject);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+
                         var views = database.Where(x => x.DbObjectType == DbObjectType.View).OrderBy(x => x.ToString());
                         if (views.Any())
                         {
@@ -1998,10 +2019,10 @@ namespace POCOGenerator.POCOIterators
                 (tableColumn.ColumnName != cleanColumnName))
             {
                 //debug
-                if (tableColumn is ComplexType == false)
+                /*if (tableColumn is ComplexType == false)
                 {
                     WriteEFColumn(tableColumn.ColumnName, tableColumn.DataTypeName, namespaceOffset);
-                }
+                }*/
             }
         }
 
@@ -2352,9 +2373,9 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteColumn(IColumn column, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
         {
-            if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && dbObject.DbObjectType == DbObjectType.Table)
+            /*if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && dbObject.DbObjectType == DbObjectType.Table)
                 WriteEFComplexTypeColumn(column, isLastColumn, dbObject, namespaceOffset);
-            else
+            else*/
                 WriteDbColumn(column, isLastColumn, dbObject, namespaceOffset);
         }
 
@@ -2401,9 +2422,9 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteColumnDataType(IColumn column)
         {
-            if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && column is ComplexType)
+            /*if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && column is ComplexType)
                 WriteEFComplexTypeColumnDataType(column);
-            else
+            else*/
                 WriteDbColumnDataType(column);
         }
 
@@ -2452,7 +2473,7 @@ namespace POCOGenerator.POCOIterators
 
         #region EF
 
-        protected List<string> complexTypeNames;
+        /*protected List<string> complexTypeNames;
         protected List<ComplexTypeColumn> complexTypeColumns;
 
         protected virtual void WriteEFComplexTypeColumn(IColumn column, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
@@ -2487,7 +2508,7 @@ namespace POCOGenerator.POCOIterators
         protected virtual void WriteEFComplexTypeColumnDataType(IColumn column)
         {
             writer.WriteUserType(column.DataTypeDisplay);
-        }
+        }*/
 
         #endregion
 
@@ -3142,8 +3163,8 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteClassEnd(IDbObjectTraverse dbObject, string namespaceOffset)
         {
-            if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && dbObject.DbObjectType == DbObjectType.Table)
-                WriteEFComplexTypeClassEnd(dbObject, namespaceOffset);
+            /*if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && dbObject.DbObjectType == DbObjectType.Table)
+                WriteEFComplexTypeClassEnd(dbObject, namespaceOffset);*/
 
             WriteDbClassEnd(dbObject, namespaceOffset);
         }
@@ -3156,7 +3177,7 @@ namespace POCOGenerator.POCOIterators
 
         #region EF
 
-        protected virtual void WriteEFComplexTypeClassEnd(IDbObjectTraverse dbObject, string namespaceOffset)
+        /*protected virtual void WriteEFComplexTypeClassEnd(IDbObjectTraverse dbObject, string namespaceOffset)
         {
             if (complexTypeColumns.HasAny())
                 WriteComplexTypes(dbObject, namespaceOffset);
@@ -3193,7 +3214,7 @@ namespace POCOGenerator.POCOIterators
 
             // Class End
             WriteDbClassEnd(dbObject, namespaceOffset);
-        }
+        }*/
 
         #endregion
 

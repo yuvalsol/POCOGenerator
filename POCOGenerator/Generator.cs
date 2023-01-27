@@ -11,14 +11,6 @@ using POCOGenerator.POCOWriters;
 
 namespace POCOGenerator
 {
-    //debug
-
-    // fix ComplexType
-
-    // type mapping management
-
-    // xml comments to anything public in POCOGenerator namespace
-
     internal class Generator : IGenerator
     {
         internal readonly object lockObject = new object();
