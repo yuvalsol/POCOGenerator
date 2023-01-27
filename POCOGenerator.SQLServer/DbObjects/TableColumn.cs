@@ -111,6 +111,7 @@ namespace POCOGenerator.SQLServer.DbObjects
         public List<IForeignKeyColumn> ForeignKeyColumns { get; set; }
         public List<IForeignKeyColumn> PrimaryForeignKeyColumns { get; set; }
         public List<IIndexColumn> IndexColumns { get; set; }
+        public IComplexTypeTableColumn ComplexTypeTableColumn { get; set; }
 
         public string ColumnDefault { get { return column_default; } }
 

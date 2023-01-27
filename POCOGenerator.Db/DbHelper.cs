@@ -1567,29 +1567,39 @@ namespace POCOGenerator.Db
 
             // consolidate complex types
             // the same complex type table can appear within mutiple tables
-            List<IComplexType> complexTypes = ConsolidateComplexTypes(complexTypeTables);
+            // and can appear mutiple times in the same table
+            ConsolidateComplexTypes(complexTypeTables);
 
-            var toRename =
-                complexTypes.Select(complexType => new
-                {
-                    complexType,
-                    Names = complexType.ComplexTypeTables.Select(t => t.Name).Distinct().ToList()
-                })
-                .Where(x => x.Names.Count > 1);
-
-            foreach (var item in toRename)
+            // shipping address, billing address -> address
+            foreach (var t in complexTypeTables.Where(t => t.Name.Contains("Address")).Cast<ComplexTypeTable>())
             {
-                string newName = item.complexType.ComplexTypeTables[0].Name;
-
-                // shipping address, billing address -> address
-                if (item.Names.Any(n => n.Contains("Address")))
-                    newName = "Address";
-
-                foreach (var table in item.complexType.ComplexTypeTables.Cast<ComplexTypeTable>())
-                    table.Name = newName;
+                t.Name = "Address";
             }
 
-            database.ComplexTypes = complexTypes;
+            foreach (var t in complexTypeTables.Where(t => t.Name.Contains("Contact")).Cast<ComplexTypeTable>())
+            {
+                t.Name = "Contact";
+            }
+
+            // cross reference
+            foreach (var ctt in complexTypeTables)
+            {
+                foreach (var t in ctt.Tables)
+                {
+                    if (t.ComplexTypeTables == null)
+                        t.ComplexTypeTables = new List<IComplexTypeTable>();
+                    if (t.ComplexTypeTables.Contains(ctt) == false)
+                        t.ComplexTypeTables.Add(ctt);
+                }
+
+                foreach (var cttc in ctt.ComplexTypeTableColumns)
+                {
+                    foreach (var tc in cttc.TableColumns)
+                    {
+                        tc.ComplexTypeTableColumn = cttc;
+                    }
+                }
+            }
         }
 
         protected virtual List<IComplexTypeTable> GetComplexTypeTables(IDatabase database)
@@ -1604,7 +1614,7 @@ namespace POCOGenerator.Db
                     {
                         foreach (ITableColumn column in table.TableColumns)
                         {
-                            // column is not: primary key, unique key, foreign key, index, identity
+                            // column not: primary key, unique key, foreign key, index, identity
                             if (column.PrimaryKeyColumn == null &&
                                 column.UniqueKeyColumns.IsNullOrEmpty() &&
                                 column.ForeignKeyColumns.IsNullOrEmpty() &&
@@ -1620,16 +1630,14 @@ namespace POCOGenerator.Db
                                     string complexTypeTableName = column.ColumnName.Substring(0, index);
                                     string complexTypeColumnName = column.ColumnName.Substring(index + 1);
 
-                                    ComplexTypeTable complexTypeTable = null;
-                                    if (complexTypeTables.IsNullOrEmpty() == false)
-                                        complexTypeTable = (ComplexTypeTable)complexTypeTables.FirstOrDefault(t => t.Name == complexTypeTableName);
+                                    if (complexTypeTables == null)
+                                        complexTypeTables = new List<IComplexTypeTable>();
+
+                                    ComplexTypeTable complexTypeTable = complexTypeTables.FirstOrDefault(t => t.Name == complexTypeTableName) as ComplexTypeTable;
 
                                     // build complex type table
                                     if (complexTypeTable == null)
                                     {
-                                        if (complexTypeTables == null)
-                                            complexTypeTables = new List<IComplexTypeTable>();
-
                                         if (Support.IsSupportSchema)
                                         {
                                             complexTypeTable = new ComplexTypeTableWithSchema()
@@ -1642,49 +1650,26 @@ namespace POCOGenerator.Db
                                             complexTypeTable = new ComplexTypeTable();
                                         }
 
-                                        List<ITableColumn> complexTypeTableColumns = new List<ITableColumn>();
-
-                                        complexTypeTable.SourceTable = table;
-                                        complexTypeTable.PropertyName = complexTypeTableName;
-
-                                        #region IDbObjectTraverse
-
+                                        complexTypeTable.Tables = new List<ITable>() { table };
                                         complexTypeTable.Name = complexTypeTableName;
-                                        complexTypeTable.Columns = complexTypeTableColumns;
-                                        complexTypeTable.DbObjectType = table.DbObjectType;
+                                        complexTypeTable.Columns = complexTypeTable.ComplexTypeTableColumns = new List<IComplexTypeTableColumn>();
+                                        complexTypeTable.DbObjectType = DbObjectType.ComplexTypeTable;
                                         complexTypeTable.Database = table.Database;
                                         complexTypeTable.Error = null;
                                         complexTypeTable.ClassName = null;
-
-                                        #endregion
-
-                                        #region ITable
-
-                                        complexTypeTable.TableColumns = complexTypeTableColumns;
-                                        complexTypeTable.PrimaryKey = null;
-                                        complexTypeTable.UniqueKeys = null;
-                                        complexTypeTable.ForeignKeys = null;
-                                        complexTypeTable.PrimaryForeignKeys = null;
-                                        complexTypeTable.Indexes = null;
-                                        complexTypeTable.IsJoinTable = false;
-
-                                        #endregion
-
-                                        #region IDescription
-
-                                        complexTypeTable.Description = null;
-
-                                        #endregion
 
                                         complexTypeTables.Add(complexTypeTable);
                                     }
 
                                     // build complex type table column
-                                    ComplexTypeTableColumn complexTypeTableColumn = new ComplexTypeTableColumn()
+                                    complexTypeTable.ComplexTypeTableColumns.Add(new ComplexTypeTableColumn()
                                     {
-                                        SourceTableColumn = column,
+                                        ComplexTypeTable = complexTypeTable,
+                                        ColumnDefault = column.ColumnDefault,
+                                        TableColumns = new List<ITableColumn>() { column },
 
-                                        #region IColumn
+                                        toString = column.ToString().Replace(column.ColumnName, complexTypeColumnName),
+                                        toFullString = column.ToFullString().Replace(column.ColumnName, complexTypeColumnName),
 
                                         ColumnName = complexTypeColumnName,
                                         ColumnOrdinal = column.ColumnOrdinal,
@@ -1698,30 +1683,8 @@ namespace POCOGenerator.Db
                                         IsUnsigned = column.IsUnsigned,
                                         IsNullable = column.IsNullable,
                                         IsIdentity = column.IsIdentity,
-                                        IsComputed = column.IsComputed,
-
-                                        #endregion
-
-                                        #region ITableColumn
-
-                                        Table = complexTypeTable,
-                                        PrimaryKeyColumn = null,
-                                        UniqueKeyColumns = null,
-                                        ForeignKeyColumns = null,
-                                        PrimaryForeignKeyColumns = null,
-                                        IndexColumns = null,
-                                        ColumnDefault = column.ColumnDefault,
-
-                                        #endregion
-
-                                        #region IDescription
-
-                                        Description = null
-
-                                        #endregion
-                                    };
-
-                                    complexTypeTable.TableColumns.Add(complexTypeTableColumn);
+                                        IsComputed = column.IsComputed
+                                    });
                                 }
                             }
                         }
@@ -1732,40 +1695,80 @@ namespace POCOGenerator.Db
             return complexTypeTables;
         }
 
-        protected virtual List<IComplexType> ConsolidateComplexTypes(List<IComplexTypeTable> complexTypeTables)
+        protected virtual void ConsolidateComplexTypes(List<IComplexTypeTable> complexTypeTables)
         {
-            List<IComplexType> complexTypes = new List<IComplexType>();
+            List<List<IComplexTypeTable>> tablesGroups = new List<List<IComplexTypeTable>>();
 
             while (complexTypeTables.Count > 0)
             {
                 IComplexTypeTable t1 = complexTypeTables[0];
                 complexTypeTables.RemoveAt(0);
 
-                List<IComplexTypeTable> tables = new List<IComplexTypeTable>() { t1 };
+                List<IComplexTypeTable> tablesGroup = new List<IComplexTypeTable>() { t1 };
 
                 // two complex type tables are the same if they have the same column count and same columns
-                // two columns are the same if they have the same: name, data type, precision, unsigned, nullable, computed
-                tables.AddRange(complexTypeTables.Where(t2 =>
-                    t1.TableColumns.Count == t2.TableColumns.Count &&
-                    t1.TableColumns.All(c1 => t2.TableColumns.Any(c2 =>
+                // two columns are the same if they have the same: name, data type, precision, unsigned, nullable, computed, default value
+                tablesGroup.AddRange(complexTypeTables.Where(t2 =>
+                    t1.ComplexTypeTableColumns.Count == t2.ComplexTypeTableColumns.Count &&
+                    t1.ComplexTypeTableColumns.All(c1 => t2.ComplexTypeTableColumns.Any(c2 =>
                         c1.ColumnName == c2.ColumnName &&
                         c1.DataTypeName == c2.DataTypeName &&
                         c1.Precision == c2.Precision &&
                         c1.IsUnsigned == c2.IsUnsigned &&
                         c1.IsNullable == c2.IsNullable &&
-                        c1.IsComputed == c2.IsComputed
+                        c1.IsComputed == c2.IsComputed &&
+                        c1.ColumnDefault == c2.ColumnDefault
                     ))
                 ));
 
-                complexTypes.Add(new ComplexType()
-                {
-                    ComplexTypeTables = tables
-                });
+                tablesGroups.Add(tablesGroup);
 
-                complexTypeTables = complexTypeTables.Except(tables).ToList();
+                foreach (var table in tablesGroup)
+                    complexTypeTables.Remove(table);
             }
 
-            return complexTypes;
+            foreach (List<IComplexTypeTable> tablesGroup in tablesGroups)
+            {
+                IComplexTypeTable t1 = tablesGroup[0];
+
+                foreach (var t2 in tablesGroup)
+                {
+                    if (t1 != t2)
+                    {
+                        if (t1.Tables.Contains(t2.Tables[0]) == false)
+                            t1.Tables.Add(t2.Tables[0]);
+
+                        foreach (var c1 in t1.ComplexTypeTableColumns)
+                        {
+                            c1.TableColumns.AddRange(
+                                t2.ComplexTypeTableColumns.First(c2 =>
+                                    c1.ColumnName == c2.ColumnName &&
+                                    c1.DataTypeName == c2.DataTypeName &&
+                                    c1.Precision == c2.Precision &&
+                                    c1.IsUnsigned == c2.IsUnsigned &&
+                                    c1.IsNullable == c2.IsNullable &&
+                                    c1.IsComputed == c2.IsComputed &&
+                                    c1.ColumnDefault == c2.ColumnDefault
+                                ).TableColumns
+                            );
+                        }
+                    }
+                }
+
+                complexTypeTables.Add(t1);
+            }
+
+            foreach (var t in complexTypeTables)
+            {
+                t.ComplexTypeTableColumns.Sort((x, y) => (x.ColumnOrdinal ?? 0).CompareTo(y.ColumnOrdinal ?? 0));
+
+                int columnOrdinal = 1;
+                foreach (var c in t.ComplexTypeTableColumns.Cast<ComplexTypeTableColumn>())
+                {
+                    c.ColumnOrdinal = columnOrdinal;
+                    columnOrdinal++;
+                }
+            }
         }
 
         #endregion

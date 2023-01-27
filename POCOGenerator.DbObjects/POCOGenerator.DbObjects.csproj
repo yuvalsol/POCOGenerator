@@ -46,7 +46,8 @@
     </Compile>
     <Compile Include="DbObjectType.cs" />
     <Compile Include="IColumn.cs" />
-    <Compile Include="IComplexType.cs" />
+    <Compile Include="IComplexTypeTable.cs" />
+    <Compile Include="IComplexTypeTableColumn.cs" />
     <Compile Include="IComputedColumn.cs" />
     <Compile Include="IConnectionStringParser.cs" />
     <Compile Include="IDatabase.cs" />

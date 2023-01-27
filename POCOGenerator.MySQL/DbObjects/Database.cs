@@ -18,7 +18,6 @@ namespace POCOGenerator.MySQL.DbObjects
         public List<IProcedure> Procedures { get; set; }
         public List<IFunction> Functions { get; set; }
         public List<ITVP> TVPs { get; set; }
-        public List<IComplexType> ComplexTypes { get; set; }
         public List<Exception> Errors { get; set; }
 
         public string Name { get { return database_name; } }

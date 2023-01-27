@@ -106,6 +106,8 @@ namespace POCOGenerator.POCOIterators
 
             bool isFirstDbObject = true;
 
+            #region Servers
+
             var servers = dbObjects.GroupBy(x => x.Database.Server).OrderBy(x => x.Key.ToString());
             foreach (var server in servers)
             {
@@ -117,6 +119,8 @@ namespace POCOGenerator.POCOIterators
                     IteratorEnd(isExistDbObject);
                     return;
                 }
+
+                #region Databases
 
                 var databases = server.GroupBy(x => x.Database).OrderBy(x => x.Key.ToString());
                 foreach (var database in databases)
@@ -132,9 +136,13 @@ namespace POCOGenerator.POCOIterators
 
                     if (argsDatabaseGenerating == null || argsDatabaseGenerating.Skip == false)
                     {
+                        #region Tables
+
                         var tables = database.Where(x => x.DbObjectType == DbObjectType.Table).OrderBy(x => x.ToString());
                         if (tables.Any())
                         {
+                            List<IComplexTypeTable> complexTypeTables = null;
+
                             this.TablesGeneratingAsync.RaiseAsync(this, () => new TablesGeneratingAsyncEventArgs());
 
                             var argsTablesGenerating = this.TablesGenerating.Raise(this, () => new TablesGeneratingEventArgs());
@@ -151,6 +159,23 @@ namespace POCOGenerator.POCOIterators
                                     // don't write join table
                                     if (((ITable)table).IsJoinTable && settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable == false)
                                         continue;
+
+                                    // collect complex type tables
+                                    if (settings.POCOIteratorSettings.ComplexTypes && ((ITable)table).ComplexTypeTables.HasAny())
+                                    {
+                                        if (complexTypeTables == null)
+                                        {
+                                            complexTypeTables = new List<IComplexTypeTable>(((ITable)table).ComplexTypeTables);
+                                        }
+                                        else
+                                        {
+                                            foreach (var ctt in ((ITable)table).ComplexTypeTables)
+                                            {
+                                                if (complexTypeTables.Contains(ctt) == false)
+                                                    complexTypeTables.Add(ctt);
+                                            }
+                                        }
+                                    }
 
                                     bool stop = WriteDbObject(dbObjects, table, namespaceOffset, RaiseTableGeneratingEvent, RaiseTableGeneratedEvent, ref isFirstDbObject);
                                     if (stop)
@@ -171,26 +196,9 @@ namespace POCOGenerator.POCOIterators
                             }
                         }
 
+                        #endregion
 
-                        //debug
-                        if (settings.POCOIteratorSettings.ComplexTypes)
-                        {
-                            
-                            var complexTypeTables = database.Where(x => x.DbObjectType == DbObjectType.Table).OrderBy(x => x.ToString());
-                            if (complexTypeTables.Any())
-                            {
-                                foreach (IDbObjectTraverse complexTypeTable in complexTypeTables)
-                                {
-                                    bool stop = WriteDbObject(dbObjects, complexTypeTable, namespaceOffset, RaiseTableGeneratingEvent, RaiseTableGeneratedEvent, ref isFirstDbObject);
-                                    if (stop)
-                                    {
-                                        IteratorEnd(isExistDbObject);
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-
+                        #region Views
 
                         var views = database.Where(x => x.DbObjectType == DbObjectType.View).OrderBy(x => x.ToString());
                         if (views.Any())
@@ -227,6 +235,10 @@ namespace POCOGenerator.POCOIterators
                             }
                         }
 
+                        #endregion
+
+                        #region Procedures
+
                         var procedures = database.Where(x => x.DbObjectType == DbObjectType.Procedure).OrderBy(x => x.ToString());
                         if (procedures.Any())
                         {
@@ -261,6 +273,10 @@ namespace POCOGenerator.POCOIterators
                                 }
                             }
                         }
+
+                        #endregion
+
+                        #region Functions
 
                         var functions = database.Where(x => x.DbObjectType == DbObjectType.Function).OrderBy(x => x.ToString());
                         if (functions.Any())
@@ -297,6 +313,10 @@ namespace POCOGenerator.POCOIterators
                             }
                         }
 
+                        #endregion
+
+                        #region TVPs
+
                         var tvps = database.Where(x => x.DbObjectType == DbObjectType.TVP).OrderBy(x => x.ToString());
                         if (tvps.Any())
                         {
@@ -332,6 +352,8 @@ namespace POCOGenerator.POCOIterators
                             }
                         }
 
+                        #endregion
+
                         this.DatabaseGeneratedAsync.RaiseAsync(this, () => new DatabaseGeneratedAsyncEventArgs(database.Key));
 
                         var argsDatabaseGenerated = this.DatabaseGenerated.Raise(this, () => new DatabaseGeneratedEventArgs(database.Key));
@@ -343,6 +365,8 @@ namespace POCOGenerator.POCOIterators
                     }
                 }
 
+                #endregion
+
                 this.ServerGeneratedAsync.RaiseAsync(this, () => new ServerGeneratedAsyncEventArgs(server.Key));
 
                 var argsServerGenerated = this.ServerGenerated.Raise(this, () => new ServerGeneratedEventArgs(server.Key));
@@ -352,6 +376,8 @@ namespace POCOGenerator.POCOIterators
                     return;
                 }
             }
+
+            #endregion
 
             IteratorEnd(isExistDbObject);
         }
@@ -470,10 +496,40 @@ namespace POCOGenerator.POCOIterators
             // Columns
             if (dbObject.Columns.HasAny())
             {
-                var columns = dbObject.Columns.OrderBy<IColumn, int>(c => c.ColumnOrdinal ?? 0);
-                var lastColumn = columns.Last();
-                foreach (IColumn column in columns)
-                    WriteColumn(column, column == lastColumn, dbObject, namespaceOffset);
+                var columns = dbObject.Columns.OrderBy(c => c.ColumnOrdinal ?? 0);
+
+                if (settings.POCOIteratorSettings.ComplexTypes &&
+                    dbObject.DbObjectType == DbObjectType.Table &&
+                    ((ITable)dbObject).ComplexTypeTables.HasAny())
+                {
+                    ITable table = (ITable)dbObject;
+
+                    // for each group of columns, that are mapped to a complex type,
+                    // print just the first one, from each group, and ignore the rest of them
+                    var toIgnore = table.TableColumns
+                        .Where(c => c.ComplexTypeTableColumn != null)
+                        .GroupBy(c => new
+                        {
+                            c.ComplexTypeTableColumn.ComplexTypeTable,
+                            PropertyName = c.ColumnName.Substring(0, c.ColumnName.IndexOf('_'))
+                        })
+                        .SelectMany(g => g.Except(new ITableColumn[] { g.First() }));
+
+                    var tableColumns = table.TableColumns.Except(toIgnore).ToArray();
+
+                    var lastColumn = tableColumns.Last();
+                    foreach (ITableColumn column in tableColumns)
+                    {
+                        bool isColumnComplexType = (column.ComplexTypeTableColumn != null);
+                        WriteColumn(column, isColumnComplexType, column == lastColumn, dbObject, namespaceOffset);
+                    }
+                }
+                else
+                {
+                    var lastColumn = columns.Last();
+                    foreach (IColumn column in columns)
+                        WriteColumn(column, false, column == lastColumn, dbObject, namespaceOffset);
+                }
             }
 
             // Enums
@@ -2018,11 +2074,7 @@ namespace POCOGenerator.POCOIterators
             if ((settings.EFAnnotationsIteratorSettings.Column && (isPrimaryKey == false || isCompositePrimaryKey == false)) ||
                 (tableColumn.ColumnName != cleanColumnName))
             {
-                //debug
-                /*if (tableColumn is ComplexType == false)
-                {
-                    WriteEFColumn(tableColumn.ColumnName, tableColumn.DataTypeName, namespaceOffset);
-                }*/
+                WriteEFColumn(tableColumn.ColumnName, tableColumn.DataTypeName, namespaceOffset);
             }
         }
 
@@ -2371,11 +2423,11 @@ namespace POCOGenerator.POCOIterators
 
         #region Column
 
-        protected virtual void WriteColumn(IColumn column, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
+        protected virtual void WriteColumn(IColumn column, bool isColumnComplexType, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
         {
-            /*if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && dbObject.DbObjectType == DbObjectType.Table)
-                WriteEFComplexTypeColumn(column, isLastColumn, dbObject, namespaceOffset);
-            else*/
+            if (isColumnComplexType)
+                WriteComplexTypeColumn(column, isLastColumn, dbObject, namespaceOffset);
+            else
                 WriteDbColumn(column, isLastColumn, dbObject, namespaceOffset);
         }
 
@@ -2394,6 +2446,29 @@ namespace POCOGenerator.POCOIterators
             WriteColumnEnd();
 
             WriteColumnComments(column);
+
+            writer.WriteLine();
+
+            if (settings.POCOIteratorSettings.NewLineBetweenMembers && isLastColumn == false)
+                writer.WriteLine();
+        }
+
+        protected virtual void WriteComplexTypeColumn(IColumn column, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
+        {
+            ITableColumn tableColumn = (ITableColumn)column;
+
+            string complexTypeName = tableColumn.ComplexTypeTableColumn.ComplexTypeTable.Name;
+
+            string propertyName = tableColumn.ColumnName.Substring(0, tableColumn.ColumnName.IndexOf('_'));
+            string cleanColumnName = NameHelper.CleanName(propertyName);
+
+            WriteColumnStart(namespaceOffset);
+
+            WriteComplexTypeName(complexTypeName);
+
+            WriteColumnName(cleanColumnName);
+
+            WriteColumnEnd();
 
             writer.WriteLine();
 
@@ -2422,13 +2497,15 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteColumnDataType(IColumn column)
         {
-            /*if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && column is ComplexType)
-                WriteEFComplexTypeColumnDataType(column);
-            else*/
-                WriteDbColumnDataType(column);
+            WriteDbColumnDataType(column);
         }
 
         protected abstract void WriteDbColumnDataType(IColumn column);
+
+        protected virtual void WriteComplexTypeName(string complexTypeName)
+        {
+            writer.WriteUserType(complexTypeName);
+        }
 
         protected virtual void WriteColumnName(string columnName)
         {
@@ -2470,47 +2547,6 @@ namespace POCOGenerator.POCOIterators
                 }
             }
         }
-
-        #region EF
-
-        /*protected List<string> complexTypeNames;
-        protected List<ComplexTypeColumn> complexTypeColumns;
-
-        protected virtual void WriteEFComplexTypeColumn(IColumn column, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
-        {
-            string columnName = column.ColumnName.Trim();
-            int index = columnName.IndexOf('_');
-            if (index != -1 && index != 0 && index != columnName.Length - 1)
-            {
-                string complexTypeName = NameHelper.CleanName(columnName.Substring(0, index));
-                string complexTypeColumnName = columnName.Substring(index + 1);
-
-                if (complexTypeNames == null)
-                    complexTypeNames = new List<string>();
-                if (complexTypeNames.Contains(complexTypeName) == false)
-                {
-                    ComplexType complexType = new ComplexType(complexTypeName, column.ColumnOrdinal);
-                    WriteDbColumn(complexType, isLastColumn, dbObject, namespaceOffset);
-                    complexTypeNames.Add(complexTypeName);
-                }
-
-                ComplexTypeColumn complexTypeColumn = new ComplexTypeColumn(complexTypeName, complexTypeColumnName, (ITableColumn)column);
-                if (complexTypeColumns == null)
-                    complexTypeColumns = new List<ComplexTypeColumn>();
-                complexTypeColumns.Add(complexTypeColumn);
-            }
-            else
-            {
-                WriteDbColumn(column, isLastColumn, dbObject, namespaceOffset);
-            }
-        }
-
-        protected virtual void WriteEFComplexTypeColumnDataType(IColumn column)
-        {
-            writer.WriteUserType(column.DataTypeDisplay);
-        }*/
-
-        #endregion
 
         #region Column Data Types
 
@@ -2668,7 +2704,7 @@ namespace POCOGenerator.POCOIterators
                             .Where(c => c is IEnumColumn)
                             .Cast<IEnumColumn>()
                             .Where(c => c.IsEnumDataType || c.IsSetDataType)
-                            .OrderBy<IEnumColumn, int>(c => c.Column.ColumnOrdinal ?? 0)
+                            .OrderBy(c => c.Column.ColumnOrdinal ?? 0)
                             .ToList();
                     }
                 }
@@ -3163,9 +3199,6 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteClassEnd(IDbObjectTraverse dbObject, string namespaceOffset)
         {
-            /*if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && dbObject.DbObjectType == DbObjectType.Table)
-                WriteEFComplexTypeClassEnd(dbObject, namespaceOffset);*/
-
             WriteDbClassEnd(dbObject, namespaceOffset);
         }
 
@@ -3174,49 +3207,6 @@ namespace POCOGenerator.POCOIterators
             writer.Write(namespaceOffset);
             writer.WriteLine("}");
         }
-
-        #region EF
-
-        /*protected virtual void WriteEFComplexTypeClassEnd(IDbObjectTraverse dbObject, string namespaceOffset)
-        {
-            if (complexTypeColumns.HasAny())
-                WriteComplexTypes(dbObject, namespaceOffset);
-        }
-
-        protected virtual void WriteComplexTypes(IDbObjectTraverse dbObject, string namespaceOffset)
-        {
-            var complexTypes = complexTypeColumns.GroupBy(x => x.ComplexTypeName);
-            foreach (var columns in complexTypes)
-                WriteComplexType(columns.Key, columns, dbObject, namespaceOffset);
-        }
-
-        protected virtual void WriteComplexType(string complexTypeName, IEnumerable<ComplexTypeColumn> complexTypeColumns, IDbObjectTraverse dbObject, string namespaceOffset)
-        {
-            writer.WriteLine();
-
-            // Class Attribute
-            writer.Write(namespaceOffset);
-            writer.Write(settings.POCOIteratorSettings.Tab);
-            writer.Write("[");
-            writer.WriteUserType("ComplexType");
-            writer.WriteLine("]");
-
-            namespaceOffset += settings.POCOIteratorSettings.Tab;
-
-            // Class Start
-            WriteClassStart(complexTypeName, dbObject, namespaceOffset);
-
-            // Columns
-            var columns = complexTypeColumns.OrderBy<IColumn, int>(c => c.ColumnOrdinal ?? 0);
-            var lastColumn = columns.Last();
-            foreach (IColumn column in columns)
-                WriteDbColumn(column, column == lastColumn, dbObject, namespaceOffset);
-
-            // Class End
-            WriteDbClassEnd(dbObject, namespaceOffset);
-        }*/
-
-        #endregion
 
         #endregion
 

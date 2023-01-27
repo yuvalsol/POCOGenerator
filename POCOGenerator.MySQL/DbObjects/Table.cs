@@ -16,6 +16,7 @@ namespace POCOGenerator.MySQL.DbObjects
         public List<IForeignKey> ForeignKeys { get; set; }
         public List<IForeignKey> PrimaryForeignKeys { get; set; }
         public List<IIndex> Indexes { get; set; }
+        public List<IComplexTypeTable> ComplexTypeTables { get; set; }
         public bool IsJoinTable { get; set; }
         public Exception Error { get; set; }
         public string ClassName { get; set; }

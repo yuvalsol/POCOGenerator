@@ -33,6 +33,10 @@ namespace POCOGenerator.DbObjects
         TVPs = 26,
         TVP = 27,
         TVPColumns = 28,
-        TVPColumn = 29
+        TVPColumn = 29,
+        ComplexTypeTables = 30,
+        ComplexTypeTable = 31,
+        ComplexTypeTableColumns = 32,
+        ComplexTypeTableColumn = 33
     }
 }
