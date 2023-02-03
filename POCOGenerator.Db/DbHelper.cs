@@ -1570,16 +1570,19 @@ namespace POCOGenerator.Db
             // and can appear mutiple times in the same table
             ConsolidateComplexTypes(complexTypeTables);
 
-            // shipping address, billing address -> address
-            foreach (var t in complexTypeTables.Where(t => t.Name.Contains("Address")).Cast<ComplexTypeTable>())
+            // consolidate complex types schema
+            if (Support.IsSupportSchema)
             {
-                t.Name = "Address";
+                foreach (var ctt in complexTypeTables)
+                {
+                    var schemas = ctt.Tables.Cast<ISchema>();
+                    string schema = schemas.First().Schema;
+                    if (schemas.All(x => x.Schema == schema))
+                        ((ComplexTypeTableWithSchema)ctt).Schema = schema;
+                }
             }
 
-            foreach (var t in complexTypeTables.Where(t => t.Name.Contains("Contact")).Cast<ComplexTypeTable>())
-            {
-                t.Name = "Contact";
-            }
+            NamingComplexTypes(complexTypeTables);
 
             // cross reference
             foreach (var ctt in complexTypeTables)
@@ -1768,6 +1771,33 @@ namespace POCOGenerator.Db
                     c.ColumnOrdinal = columnOrdinal;
                     columnOrdinal++;
                 }
+            }
+        }
+
+        protected virtual void NamingComplexTypes(List<IComplexTypeTable> complexTypeTables)
+        {
+            // shipping address, billing address -> address
+            foreach (var t in complexTypeTables.Where(t => t.Name.Contains("Address")).Cast<ComplexTypeTable>())
+            {
+                t.Name = "Address";
+            }
+
+            foreach (var t in complexTypeTables.Where(t => t.Name.Contains("Contact")).Cast<ComplexTypeTable>())
+            {
+                t.Name = "Contact";
+            }
+
+            RenameDuplicateComplexTypes(complexTypeTables);
+        }
+
+        protected virtual void RenameDuplicateComplexTypes(List<IComplexTypeTable> complexTypeTables)
+        {
+            var cttGroups = complexTypeTables.GroupBy(p => p.Name).Where(g => g.Count() > 1);
+            foreach (var cttGroup in cttGroups)
+            {
+                int suffix = 1;
+                foreach (var ctt in cttGroup.Skip(1).Cast<ComplexTypeTable>())
+                    ctt.Name = ctt.Name + (suffix++);
             }
         }
 
