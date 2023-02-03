@@ -2162,6 +2162,34 @@ namespace POCOGenerator.POCOIterators
                     // Display
                     WriteEFDisplayAttribute(tableColumn, namespaceOffset);
                 }
+                else if (dbObject.DbObjectType == DbObjectType.ComplexTypeTable)
+                {
+                    IComplexTypeTableColumn complexTypeTableColumn = (IComplexTypeTableColumn)column;
+
+                    // MaxLength
+                    WriteEFMaxLengthAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // StringLength
+                    WriteEFStringLengthAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // Timestamp
+                    WriteEFTimestampAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // ConcurrencyCheck
+                    WriteEFConcurrencyCheckAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // DatabaseGenerated Identity
+                    WriteEFDatabaseGeneratedIdentityAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // DatabaseGenerated Computed
+                    WriteEFDatabaseGeneratedComputedAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // Required
+                    WriteEFRequiredAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // Display
+                    WriteEFDisplayAttribute(complexTypeTableColumn, namespaceOffset);
+                }
                 else if (dbObject.DbObjectType == DbObjectType.View)
                 {
                     ITableColumn tableColumn = (ITableColumn)column;
@@ -2217,13 +2245,13 @@ namespace POCOGenerator.POCOIterators
             }
         }
 
-        protected virtual void WriteEFMaxLengthAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFMaxLengthAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (IsEFAttributeMaxLength(tableColumn.DataTypeName))
                 WriteEFMaxLength(tableColumn.StringPrecision, namespaceOffset);
         }
 
-        protected virtual void WriteEFStringLengthAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFStringLengthAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (settings.EFAnnotationsIteratorSettings.StringLength)
             {
@@ -2235,13 +2263,13 @@ namespace POCOGenerator.POCOIterators
             }
         }
 
-        protected virtual void WriteEFTimestampAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFTimestampAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (IsEFAttributeTimestamp(tableColumn.DataTypeName))
                 WriteEFTimestamp(namespaceOffset);
         }
 
-        protected virtual void WriteEFConcurrencyCheckAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFConcurrencyCheckAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (settings.EFAnnotationsIteratorSettings.ConcurrencyCheck)
             {
@@ -2250,19 +2278,19 @@ namespace POCOGenerator.POCOIterators
             }
         }
 
-        protected virtual void WriteEFDatabaseGeneratedIdentityAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFDatabaseGeneratedIdentityAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (tableColumn.IsIdentity)
                 WriteEFDatabaseGeneratedIdentity(namespaceOffset);
         }
 
-        protected virtual void WriteEFDatabaseGeneratedComputedAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFDatabaseGeneratedComputedAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (tableColumn.IsComputed)
                 WriteEFDatabaseGeneratedComputed(namespaceOffset);
         }
 
-        protected virtual void WriteEFRequiredAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFRequiredAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (settings.EFAnnotationsIteratorSettings.Required || settings.EFAnnotationsIteratorSettings.RequiredWithErrorMessage)
             {
@@ -2277,7 +2305,7 @@ namespace POCOGenerator.POCOIterators
             }
         }
 
-        protected virtual void WriteEFDisplayAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFDisplayAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (settings.EFAnnotationsIteratorSettings.Display)
             {
