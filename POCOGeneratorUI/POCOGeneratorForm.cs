@@ -2930,10 +2930,21 @@ namespace POCOGeneratorUI
 
             void serverGenerating(object sender1, ServerGeneratingEventArgs e1)
             {
+                if (e1.Stop)
+                    return;
+
                 path = Path.Combine(
                     path,
                     string.Join("_", e1.Server.ToString().Split(Path.GetInvalidFileNameChars()))
                 );
+                
+                if (string.IsNullOrEmpty(this.generator.Settings.POCO.Namespace) == false)
+                {
+                    path = Path.Combine(
+                        path,
+                        string.Join("_", this.generator.Settings.POCO.Namespace.Split(Path.GetInvalidFileNameChars()))
+                    );
+                }
 
                 if (Directory.Exists(path) == false)
                     Directory.CreateDirectory(path);
@@ -2941,6 +2952,9 @@ namespace POCOGeneratorUI
 
             void databaseGenerating(object sender1, DatabaseGeneratingEventArgs e1)
             {
+                if (e1.Stop || e1.Skip)
+                    return;
+
                 path = Path.Combine(
                     path,
                     string.Join("_", e1.Database.ToString().Split(Path.GetInvalidFileNameChars()))
@@ -2952,6 +2966,9 @@ namespace POCOGeneratorUI
 
             void tablesGenerating(object sender1, TablesGeneratingEventArgs e1)
             {
+                if (e1.Stop || e1.Skip)
+                    return;
+
                 path = Path.Combine(path, "Tables");
 
                 if (Directory.Exists(path) == false)
@@ -2960,6 +2977,9 @@ namespace POCOGeneratorUI
 
             void complexTypeTablesGenerating(object sender1, ComplexTypeTablesGeneratingEventArgs e1)
             {
+                if (e1.Stop || e1.Skip)
+                    return;
+
                 path = Path.Combine(path, "Tables");
 
                 if (Directory.Exists(path) == false)
@@ -2968,6 +2988,9 @@ namespace POCOGeneratorUI
 
             void viewsGenerating(object sender1, ViewsGeneratingEventArgs e1)
             {
+                if (e1.Stop || e1.Skip)
+                    return;
+
                 path = Path.Combine(path, "Views");
 
                 if (Directory.Exists(path) == false)
@@ -2976,6 +2999,9 @@ namespace POCOGeneratorUI
 
             void proceduresGenerating(object sender1, ProceduresGeneratingEventArgs e1)
             {
+                if (e1.Stop || e1.Skip)
+                    return;
+
                 path = Path.Combine(path, "Procedures");
 
                 if (Directory.Exists(path) == false)
@@ -2984,6 +3010,9 @@ namespace POCOGeneratorUI
 
             void functionsGenerating(object sender1, FunctionsGeneratingEventArgs e1)
             {
+                if (e1.Stop || e1.Skip)
+                    return;
+
                 path = Path.Combine(path, "Functions");
 
                 if (Directory.Exists(path) == false)
@@ -2992,6 +3021,9 @@ namespace POCOGeneratorUI
 
             void tvpsGenerating(object sender1, TVPsGeneratingEventArgs e1)
             {
+                if (e1.Stop || e1.Skip)
+                    return;
+
                 path = Path.Combine(path, "TVPs");
 
                 if (Directory.Exists(path) == false)
