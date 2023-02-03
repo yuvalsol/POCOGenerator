@@ -14,11 +14,11 @@ GO
 CREATE TABLE [ComplexTypesDB].[dbo].[Customers](
 	[CustomerId] [int] NOT NULL,
 	[CustomerName] [nvarchar](50) NOT NULL,
-	[ShippingAddress_Street] [nvarchar](50) NULL,
-	[ShippingAddress_City] [nvarchar](50) NULL,
+	[ShippingAddress_Street] [nvarchar](50) NOT NULL,
+	[ShippingAddress_City] [nvarchar](50) NOT NULL,
 	[ShippingAddress_ZipCode] [nvarchar](50) NULL,
-	[BillingAddress_Street] [nvarchar](50) NULL,
-	[BillingAddress_City] [nvarchar](50) NULL,
+	[BillingAddress_Street] [nvarchar](50) NOT NULL,
+	[BillingAddress_City] [nvarchar](50) NOT NULL,
 	[BillingAddress_ZipCode] [nvarchar](50) NULL,
  CONSTRAINT [PK_Customers] PRIMARY KEY CLUSTERED 
 (
@@ -30,8 +30,8 @@ GO
 CREATE TABLE [ComplexTypesDB].[dbo].[Users](
 	[UserId] [int] NOT NULL,
 	[UserName] [nvarchar](50) NOT NULL,
-	[Address_Street] [nvarchar](50) NULL,
-	[Address_City] [nvarchar](50) NULL,
+	[Address_Street] [nvarchar](50) NOT NULL,
+	[Address_City] [nvarchar](50) NOT NULL,
 	[Address_ZipCode] [nvarchar](50) NULL,
  CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
 (
