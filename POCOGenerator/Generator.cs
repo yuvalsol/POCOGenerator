@@ -112,7 +112,8 @@ namespace POCOGenerator
                     isEnableTVPs
                 );
 
-                // get all the accessible objects, including the ones that are not listed in the user's settings (table foreign keys)
+                // get all the accessible objects, including the ones that are not listed in the user's settings
+                // tables that are accessible through foreign keys or complex types
                 List<DatabaseAccessibleObjects> databasesAccessibleObjects = GetDatabasesAccessibleObjects(server);
 
                 // set the db objects to generate
@@ -236,6 +237,16 @@ namespace POCOGenerator
                 this.tableGeneratedInternal = this.tableGenerated;
                 this.tablesGeneratedAsyncInternal = this.tablesGeneratedAsync;
                 this.tablesGeneratedInternal = this.tablesGenerated;
+                this.complexTypeTablesGeneratingAsyncInternal = this.complexTypeTablesGeneratingAsync;
+                this.complexTypeTablesGeneratingInternal = this.complexTypeTablesGenerating;
+                this.complexTypeTableGeneratingAsyncInternal = this.complexTypeTableGeneratingAsync;
+                this.complexTypeTableGeneratingInternal = this.complexTypeTableGenerating;
+                this.complexTypeTablePOCOAsyncInternal = this.complexTypeTablePOCOAsync;
+                this.complexTypeTablePOCOInternal = this.complexTypeTablePOCO;
+                this.complexTypeTableGeneratedAsyncInternal = this.complexTypeTableGeneratedAsync;
+                this.complexTypeTableGeneratedInternal = this.complexTypeTableGenerated;
+                this.complexTypeTablesGeneratedAsyncInternal = this.complexTypeTablesGeneratedAsync;
+                this.complexTypeTablesGeneratedInternal = this.complexTypeTablesGenerated;
                 this.viewsGeneratingAsyncInternal = this.viewsGeneratingAsync;
                 this.viewsGeneratingInternal = this.viewsGenerating;
                 this.viewGeneratingAsyncInternal = this.viewGeneratingAsync;
@@ -305,6 +316,16 @@ namespace POCOGenerator
             this.tableGeneratedInternal = null;
             this.tablesGeneratedAsyncInternal = null;
             this.tablesGeneratedInternal = null;
+            this.complexTypeTablesGeneratingAsyncInternal = null;
+            this.complexTypeTablesGeneratingInternal = null;
+            this.complexTypeTableGeneratingAsyncInternal = null;
+            this.complexTypeTableGeneratingInternal = null;
+            this.complexTypeTablePOCOAsyncInternal = null;
+            this.complexTypeTablePOCOInternal = null;
+            this.complexTypeTableGeneratedAsyncInternal = null;
+            this.complexTypeTableGeneratedInternal = null;
+            this.complexTypeTablesGeneratedAsyncInternal = null;
+            this.complexTypeTablesGeneratedInternal = null;
             this.viewsGeneratingAsyncInternal = null;
             this.viewsGeneratingInternal = null;
             this.viewGeneratingAsyncInternal = null;
@@ -597,12 +618,25 @@ namespace POCOGenerator
                         for (int i = fromIndex; i < tablesCount; i++)
                         {
                             ITable table = item.AccessibleTables[i];
+
                             if (table.ForeignKeys.HasAny())
                             {
                                 foreach (var foreignKey in table.ForeignKeys)
                                 {
                                     if (item.AccessibleTables.Contains(foreignKey.PrimaryTable) == false)
                                         item.AccessibleTables.Add(foreignKey.PrimaryTable);
+                                }
+                            }
+
+                            if (table.ComplexTypeTables.HasAny())
+                            {
+                                foreach (var complexTypeTable in table.ComplexTypeTables)
+                                {
+                                    foreach (var t in complexTypeTable.Tables)
+                                    {
+                                        if (item.AccessibleTables.Contains(t) == false)
+                                            item.AccessibleTables.Add(t);
+                                    }
                                 }
                             }
                         }
@@ -672,6 +706,16 @@ namespace POCOGenerator
         private event EventHandler<TableGeneratedEventArgs> tableGenerated;
         private event EventHandler<TablesGeneratedAsyncEventArgs> tablesGeneratedAsync;
         private event EventHandler<TablesGeneratedEventArgs> tablesGenerated;
+        private event EventHandler<ComplexTypeTablesGeneratingAsyncEventArgs> complexTypeTablesGeneratingAsync;
+        private event EventHandler<ComplexTypeTablesGeneratingEventArgs> complexTypeTablesGenerating;
+        private event EventHandler<ComplexTypeTableGeneratingAsyncEventArgs> complexTypeTableGeneratingAsync;
+        private event EventHandler<ComplexTypeTableGeneratingEventArgs> complexTypeTableGenerating;
+        private event EventHandler<ComplexTypeTablePOCOAsyncEventArgs> complexTypeTablePOCOAsync;
+        private event EventHandler<ComplexTypeTablePOCOEventArgs> complexTypeTablePOCO;
+        private event EventHandler<ComplexTypeTableGeneratedAsyncEventArgs> complexTypeTableGeneratedAsync;
+        private event EventHandler<ComplexTypeTableGeneratedEventArgs> complexTypeTableGenerated;
+        private event EventHandler<ComplexTypeTablesGeneratedAsyncEventArgs> complexTypeTablesGeneratedAsync;
+        private event EventHandler<ComplexTypeTablesGeneratedEventArgs> complexTypeTablesGenerated;
         private event EventHandler<ViewsGeneratingAsyncEventArgs> viewsGeneratingAsync;
         private event EventHandler<ViewsGeneratingEventArgs> viewsGenerating;
         private event EventHandler<ViewGeneratingAsyncEventArgs> viewGeneratingAsync;
@@ -717,6 +761,7 @@ namespace POCOGenerator
         private event EventHandler<ServerGeneratedAsyncEventArgs> serverGeneratedAsync;
         private event EventHandler<ServerGeneratedEventArgs> serverGenerated;
 
+        // in order of execution
         private event EventHandler<ServerBuiltAsyncEventArgs> serverBuiltAsyncInternal;
         private event EventHandler<ServerBuiltEventArgs> serverBuiltInternal;
         private event EventHandler<ServerGeneratingAsyncEventArgs> serverGeneratingAsyncInternal;
@@ -733,6 +778,16 @@ namespace POCOGenerator
         private event EventHandler<TableGeneratedEventArgs> tableGeneratedInternal;
         private event EventHandler<TablesGeneratedAsyncEventArgs> tablesGeneratedAsyncInternal;
         private event EventHandler<TablesGeneratedEventArgs> tablesGeneratedInternal;
+        private event EventHandler<ComplexTypeTablesGeneratingAsyncEventArgs> complexTypeTablesGeneratingAsyncInternal;
+        private event EventHandler<ComplexTypeTablesGeneratingEventArgs> complexTypeTablesGeneratingInternal;
+        private event EventHandler<ComplexTypeTableGeneratingAsyncEventArgs> complexTypeTableGeneratingAsyncInternal;
+        private event EventHandler<ComplexTypeTableGeneratingEventArgs> complexTypeTableGeneratingInternal;
+        private event EventHandler<ComplexTypeTablePOCOAsyncEventArgs> complexTypeTablePOCOAsyncInternal;
+        private event EventHandler<ComplexTypeTablePOCOEventArgs> complexTypeTablePOCOInternal;
+        private event EventHandler<ComplexTypeTableGeneratedAsyncEventArgs> complexTypeTableGeneratedAsyncInternal;
+        private event EventHandler<ComplexTypeTableGeneratedEventArgs> complexTypeTableGeneratedInternal;
+        private event EventHandler<ComplexTypeTablesGeneratedAsyncEventArgs> complexTypeTablesGeneratedAsyncInternal;
+        private event EventHandler<ComplexTypeTablesGeneratedEventArgs> complexTypeTablesGeneratedInternal;
         private event EventHandler<ViewsGeneratingAsyncEventArgs> viewsGeneratingAsyncInternal;
         private event EventHandler<ViewsGeneratingEventArgs> viewsGeneratingInternal;
         private event EventHandler<ViewGeneratingAsyncEventArgs> viewGeneratingAsyncInternal;
@@ -778,6 +833,7 @@ namespace POCOGenerator
         private event EventHandler<ServerGeneratedAsyncEventArgs> serverGeneratedAsyncInternal;
         private event EventHandler<ServerGeneratedEventArgs> serverGeneratedInternal;
 
+        // in order of execution
         public event EventHandler<ServerBuiltAsyncEventArgs> ServerBuiltAsync { add { lock (this.lockObject) { this.serverBuiltAsync += value; } } remove { lock (this.lockObject) { this.serverBuiltAsync -= value; } } }
         public event EventHandler<ServerBuiltEventArgs> ServerBuilt { add { lock (this.lockObject) { this.serverBuilt += value; } } remove { lock (this.lockObject) { this.serverBuilt -= value; } } }
         public event EventHandler<ServerGeneratingAsyncEventArgs> ServerGeneratingAsync { add { lock (this.lockObject) { this.serverGeneratingAsync += value; } } remove { lock (this.lockObject) { this.serverGeneratingAsync -= value; } } }
@@ -794,6 +850,16 @@ namespace POCOGenerator
         public event EventHandler<TableGeneratedEventArgs> TableGenerated { add { lock (this.lockObject) { this.tableGenerated += value; } } remove { lock (this.lockObject) { this.tableGenerated -= value; } } }
         public event EventHandler<TablesGeneratedAsyncEventArgs> TablesGeneratedAsync { add { lock (this.lockObject) { this.tablesGeneratedAsync += value; } } remove { lock (this.lockObject) { this.tablesGeneratedAsync -= value; } } }
         public event EventHandler<TablesGeneratedEventArgs> TablesGenerated { add { lock (this.lockObject) { this.tablesGenerated += value; } } remove { lock (this.lockObject) { this.tablesGenerated -= value; } } }
+        public event EventHandler<ComplexTypeTablesGeneratingAsyncEventArgs> ComplexTypeTablesGeneratingAsync { add { lock (this.lockObject) { this.complexTypeTablesGeneratingAsync += value; } } remove { lock (this.lockObject) { this.complexTypeTablesGeneratingAsync -= value; } } }
+        public event EventHandler<ComplexTypeTablesGeneratingEventArgs> ComplexTypeTablesGenerating { add { lock (this.lockObject) { this.complexTypeTablesGenerating += value; } } remove { lock (this.lockObject) { this.complexTypeTablesGenerating -= value; } } }
+        public event EventHandler<ComplexTypeTableGeneratingAsyncEventArgs> ComplexTypeTableGeneratingAsync { add { lock (this.lockObject) { this.complexTypeTableGeneratingAsync += value; } } remove { lock (this.lockObject) { this.complexTypeTableGeneratingAsync -= value; } } }
+        public event EventHandler<ComplexTypeTableGeneratingEventArgs> ComplexTypeTableGenerating { add { lock (this.lockObject) { this.complexTypeTableGenerating += value; } } remove { lock (this.lockObject) { this.complexTypeTableGenerating -= value; } } }
+        public event EventHandler<ComplexTypeTablePOCOAsyncEventArgs> ComplexTypeTablePOCOAsync { add { lock (this.lockObject) { this.complexTypeTablePOCOAsync += value; } } remove { lock (this.lockObject) { this.complexTypeTablePOCOAsync -= value; } } }
+        public event EventHandler<ComplexTypeTablePOCOEventArgs> ComplexTypeTablePOCO { add { lock (this.lockObject) { this.complexTypeTablePOCO += value; } } remove { lock (this.lockObject) { this.complexTypeTablePOCO -= value; } } }
+        public event EventHandler<ComplexTypeTableGeneratedAsyncEventArgs> ComplexTypeTableGeneratedAsync { add { lock (this.lockObject) { this.complexTypeTableGeneratedAsync += value; } } remove { lock (this.lockObject) { this.complexTypeTableGeneratedAsync -= value; } } }
+        public event EventHandler<ComplexTypeTableGeneratedEventArgs> ComplexTypeTableGenerated { add { lock (this.lockObject) { this.complexTypeTableGenerated += value; } } remove { lock (this.lockObject) { this.complexTypeTableGenerated -= value; } } }
+        public event EventHandler<ComplexTypeTablesGeneratedAsyncEventArgs> ComplexTypeTablesGeneratedAsync { add { lock (this.lockObject) { this.complexTypeTablesGeneratedAsync += value; } } remove { lock (this.lockObject) { this.complexTypeTablesGeneratedAsync -= value; } } }
+        public event EventHandler<ComplexTypeTablesGeneratedEventArgs> ComplexTypeTablesGenerated { add { lock (this.lockObject) { this.complexTypeTablesGenerated += value; } } remove { lock (this.lockObject) { this.complexTypeTablesGenerated -= value; } } }
         public event EventHandler<ViewsGeneratingAsyncEventArgs> ViewsGeneratingAsync { add { lock (this.lockObject) { this.viewsGeneratingAsync += value; } } remove { lock (this.lockObject) { this.viewsGeneratingAsync -= value; } } }
         public event EventHandler<ViewsGeneratingEventArgs> ViewsGenerating { add { lock (this.lockObject) { this.viewsGenerating += value; } } remove { lock (this.lockObject) { this.viewsGenerating -= value; } } }
         public event EventHandler<ViewGeneratingAsyncEventArgs> ViewGeneratingAsync { add { lock (this.lockObject) { this.viewGeneratingAsync += value; } } remove { lock (this.lockObject) { this.viewGeneratingAsync -= value; } } }
@@ -1014,6 +1080,132 @@ namespace POCOGenerator
                 {
                     var args = new TablesGeneratedEventArgs();
                     this.tablesGeneratedInternal.Raise(this, args);
+                    e.Stop = args.Stop;
+                };
+            }
+
+            if (this.complexTypeTablesGeneratingAsyncInternal != null)
+            {
+                iterator.ComplexTypeTablesGeneratingAsync += (sender, e) =>
+                {
+                    this.complexTypeTablesGeneratingAsyncInternal.RaiseAsync(
+                        this,
+                        new ComplexTypeTablesGeneratingAsyncEventArgs()
+                    );
+                };
+            }
+
+            if (this.complexTypeTablesGeneratingInternal != null)
+            {
+                iterator.ComplexTypeTablesGenerating += (sender, e) =>
+                {
+                    var args = new ComplexTypeTablesGeneratingEventArgs();
+                    this.complexTypeTablesGeneratingInternal.Raise(this, args);
+                    e.Skip = args.Skip;
+                    e.Stop = args.Stop;
+                };
+            }
+
+            if (this.complexTypeTableGeneratingAsyncInternal != null)
+            {
+                iterator.ComplexTypeTableGeneratingAsync += (sender, e) =>
+                {
+                    this.complexTypeTableGeneratingAsyncInternal.RaiseAsync(
+                        this,
+                        new ComplexTypeTableGeneratingAsyncEventArgs(
+                            proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                            e.Namespace
+                        )
+                    );
+                };
+            }
+
+            if (this.complexTypeTableGeneratingInternal != null)
+            {
+                iterator.ComplexTypeTableGenerating += (sender, e) =>
+                {
+                    var args = new ComplexTypeTableGeneratingEventArgs(
+                        proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                        e.Namespace
+                    );
+                    this.complexTypeTableGeneratingInternal.Raise(this, args);
+                    e.Namespace = args.Namespace;
+                    e.Skip = args.Skip;
+                    e.Stop = args.Stop;
+                };
+            }
+
+            if (this.complexTypeTablePOCOAsyncInternal != null)
+            {
+                iterator.ComplexTypeTablePOCOAsync += (sender, e) =>
+                {
+                    this.complexTypeTablePOCOAsyncInternal.RaiseAsync(
+                        this,
+                        new ComplexTypeTablePOCOAsyncEventArgs(
+                            proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                            e.POCO
+                        )
+                    );
+                };
+            }
+
+            if (this.complexTypeTablePOCOInternal != null)
+            {
+                iterator.ComplexTypeTablePOCO += (sender, e) =>
+                {
+                    var args = new ComplexTypeTablePOCOEventArgs(
+                        proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                        e.POCO
+                    );
+                    this.complexTypeTablePOCOInternal.Raise(this, args);
+                    e.Stop = args.Stop;
+                };
+            }
+
+            if (this.complexTypeTableGeneratedAsyncInternal != null)
+            {
+                iterator.ComplexTypeTableGeneratedAsync += (sender, e) =>
+                {
+                    this.complexTypeTableGeneratedAsyncInternal.RaiseAsync(
+                        this,
+                        new ComplexTypeTableGeneratedAsyncEventArgs(
+                            proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                            e.Namespace
+                        )
+                    );
+                };
+            }
+
+            if (this.complexTypeTableGeneratedInternal != null)
+            {
+                iterator.ComplexTypeTableGenerated += (sender, e) =>
+                {
+                    var args = new ComplexTypeTableGeneratedEventArgs(
+                        proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                        e.Namespace
+                    );
+                    this.complexTypeTableGeneratedInternal.Raise(this, args);
+                    e.Stop = args.Stop;
+                };
+            }
+
+            if (this.complexTypeTablesGeneratedAsyncInternal != null)
+            {
+                iterator.ComplexTypeTablesGeneratedAsync += (sender, e) =>
+                {
+                    this.complexTypeTablesGeneratedAsyncInternal.RaiseAsync(
+                        this,
+                        new ComplexTypeTablesGeneratedAsyncEventArgs()
+                    );
+                };
+            }
+
+            if (this.complexTypeTablesGeneratedInternal != null)
+            {
+                iterator.ComplexTypeTablesGenerated += (sender, e) =>
+                {
+                    var args = new ComplexTypeTablesGeneratedEventArgs();
+                    this.complexTypeTablesGeneratedInternal.Raise(this, args);
                     e.Stop = args.Stop;
                 };
             }

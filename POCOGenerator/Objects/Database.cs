@@ -71,6 +71,8 @@ namespace POCOGenerator.Objects
             }
         }
 
+        internal List<ComplexTypeTable> ComplexTypeTables { get; set; }
+
         private CachedEnumerable<POCOGenerator.DbObjects.IView, View> views;
         public IEnumerable<View> Views
         {

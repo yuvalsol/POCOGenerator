@@ -141,6 +141,21 @@ namespace POCOGenerator.Objects
             }
         }
 
+        public ComplexTypeTableColumn ComplexTypeTableColumn
+        {
+            get
+            {
+                var complexTypeTableColumn = this.tableColumn.ComplexTypeTableColumn;
+                if (complexTypeTableColumn == null)
+                    return null;
+
+                // debug TableColumn this needs to be tested
+                return this.Table.ComplexTypeTables
+                    .SelectMany(ctt => ctt.ComplexTypeTableColumns)
+                    .First(cttc => cttc.InternalEquals(complexTypeTableColumn));
+            }
+        }
+
         public string ColumnName { get { return this.tableColumn.ColumnName; } }
         public int? ColumnOrdinal { get { return this.tableColumn.ColumnOrdinal; } }
         public string DataTypeName { get { return this.tableColumn.DataTypeName; } }
