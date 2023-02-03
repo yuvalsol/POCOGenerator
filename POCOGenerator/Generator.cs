@@ -1113,7 +1113,7 @@ namespace POCOGenerator
                     this.complexTypeTableGeneratingAsyncInternal.RaiseAsync(
                         this,
                         new ComplexTypeTableGeneratingAsyncEventArgs(
-                            proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                            proxyServer.Databases.Where(d => d.ComplexTypeTables.HasAny()).SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
                             e.Namespace
                         )
                     );
@@ -1125,7 +1125,7 @@ namespace POCOGenerator
                 iterator.ComplexTypeTableGenerating += (sender, e) =>
                 {
                     var args = new ComplexTypeTableGeneratingEventArgs(
-                        proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                        proxyServer.Databases.Where(d => d.ComplexTypeTables.HasAny()).SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
                         e.Namespace
                     );
                     this.complexTypeTableGeneratingInternal.Raise(this, args);
@@ -1142,7 +1142,7 @@ namespace POCOGenerator
                     this.complexTypeTablePOCOAsyncInternal.RaiseAsync(
                         this,
                         new ComplexTypeTablePOCOAsyncEventArgs(
-                            proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                            proxyServer.Databases.Where(d => d.ComplexTypeTables.HasAny()).SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
                             e.POCO
                         )
                     );
@@ -1154,7 +1154,7 @@ namespace POCOGenerator
                 iterator.ComplexTypeTablePOCO += (sender, e) =>
                 {
                     var args = new ComplexTypeTablePOCOEventArgs(
-                        proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                        proxyServer.Databases.Where(d => d.ComplexTypeTables.HasAny()).SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
                         e.POCO
                     );
                     this.complexTypeTablePOCOInternal.Raise(this, args);
@@ -1169,7 +1169,7 @@ namespace POCOGenerator
                     this.complexTypeTableGeneratedAsyncInternal.RaiseAsync(
                         this,
                         new ComplexTypeTableGeneratedAsyncEventArgs(
-                            proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                            proxyServer.Databases.Where(d => d.ComplexTypeTables.HasAny()).SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
                             e.Namespace
                         )
                     );
@@ -1181,7 +1181,7 @@ namespace POCOGenerator
                 iterator.ComplexTypeTableGenerated += (sender, e) =>
                 {
                     var args = new ComplexTypeTableGeneratedEventArgs(
-                        proxyServer.Databases.SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
+                        proxyServer.Databases.Where(d => d.ComplexTypeTables.HasAny()).SelectMany(d => d.ComplexTypeTables).First(t => t.InternalEquals(e.ComplexTypeTable)),
                         e.Namespace
                     );
                     this.complexTypeTableGeneratedInternal.Raise(this, args);

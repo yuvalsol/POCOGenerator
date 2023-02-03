@@ -1488,6 +1488,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1504,8 +1505,8 @@ namespace POCOGeneratorUI
                 selectedTables.Remove(e.Table);
 
                 e.Stop =
-                    this.generator.Settings.POCO.ComplexTypes == false &&
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1517,6 +1518,7 @@ namespace POCOGeneratorUI
                 e.Skip = selectedComplexTypeTables.IsNullOrEmpty();
 
                 e.Stop =
+                    selectedTables.IsNullOrEmpty() &&
                     selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
@@ -1534,6 +1536,7 @@ namespace POCOGeneratorUI
                 selectedComplexTypeTables.Remove(e.ComplexTypeTable);
 
                 e.Stop =
+                    selectedTables.IsNullOrEmpty() &&
                     selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
@@ -1547,6 +1550,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1564,6 +1568,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1576,6 +1581,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1593,6 +1599,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1605,6 +1612,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1622,6 +1630,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1634,6 +1643,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1651,6 +1661,7 @@ namespace POCOGeneratorUI
 
                 e.Stop =
                     selectedTables.IsNullOrEmpty() &&
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
