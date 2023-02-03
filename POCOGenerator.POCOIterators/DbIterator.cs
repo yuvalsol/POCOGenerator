@@ -2624,7 +2624,13 @@ namespace POCOGenerator.POCOIterators
         {
             ITableColumn tableColumn = (ITableColumn)column;
 
-            string complexTypeName = tableColumn.ComplexTypeTableColumn.ComplexTypeTable.Name;
+            IComplexTypeTable complexTypeTable = tableColumn.ComplexTypeTableColumn.ComplexTypeTable;
+            string complexTypeName = GetClassName(
+                dbObject.Database.ToString(),
+                (complexTypeTable is ISchema ? ((ISchema)complexTypeTable).Schema : null),
+                complexTypeTable.Name,
+                complexTypeTable.DbObjectType
+            );
 
             string propertyName = tableColumn.ColumnName.Substring(0, tableColumn.ColumnName.IndexOf('_'));
             string cleanColumnName = NameHelper.CleanName(propertyName);
