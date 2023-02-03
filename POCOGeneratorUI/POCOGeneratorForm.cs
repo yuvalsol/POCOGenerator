@@ -1404,6 +1404,7 @@ namespace POCOGeneratorUI
             List<Procedure> selectedProcedures = null;
             List<Function> selectedFunctions = null;
             List<TVP> selectedTVPs = null;
+            List<ComplexTypeTable> selectedComplexTypeTables = null;
 
             if (this.generatePOCOsFromCheckedTreeNodes)
             {
@@ -1464,6 +1465,9 @@ namespace POCOGeneratorUI
                 }
             }
 
+            if (chkComplexTypes.Checked && selectedTables.HasAny())
+                selectedComplexTypeTables = new List<ComplexTypeTable>(selectedTables.SelectMany(t => t.ComplexTypeTables).Distinct().OrderBy(t => t.Name));
+
             List<Database> selectedDatabases =
                 (selectedTables.HasAny() ? selectedTables.Select(t => t.Database) : Enumerable.Empty<Database>())
                 .Union(selectedViews.HasAny() ? selectedViews.Select(v => v.Database) : Enumerable.Empty<Database>())
@@ -1500,7 +1504,37 @@ namespace POCOGeneratorUI
                 selectedTables.Remove(e.Table);
 
                 e.Stop =
+                    this.generator.Settings.POCO.ComplexTypes == false &&
                     selectedTables.IsNullOrEmpty() &&
+                    selectedViews.IsNullOrEmpty() &&
+                    selectedProcedures.IsNullOrEmpty() &&
+                    selectedFunctions.IsNullOrEmpty() &&
+                    selectedTVPs.IsNullOrEmpty();
+            }
+
+            void complexTypeTablesGenerating(object sender, ComplexTypeTablesGeneratingEventArgs e)
+            {
+                e.Skip = selectedComplexTypeTables.IsNullOrEmpty();
+
+                e.Stop =
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
+                    selectedViews.IsNullOrEmpty() &&
+                    selectedProcedures.IsNullOrEmpty() &&
+                    selectedFunctions.IsNullOrEmpty() &&
+                    selectedTVPs.IsNullOrEmpty();
+            }
+
+            void complexTypeTableGenerating(object sender, ComplexTypeTableGeneratingEventArgs e)
+            {
+                e.Skip = (selectedComplexTypeTables.Contains(e.ComplexTypeTable) == false);
+            }
+
+            void complexTypeTableGenerated(object sender, ComplexTypeTableGeneratedEventArgs e)
+            {
+                selectedComplexTypeTables.Remove(e.ComplexTypeTable);
+
+                e.Stop =
+                    selectedComplexTypeTables.IsNullOrEmpty() &&
                     selectedViews.IsNullOrEmpty() &&
                     selectedProcedures.IsNullOrEmpty() &&
                     selectedFunctions.IsNullOrEmpty() &&
@@ -1634,6 +1668,9 @@ namespace POCOGeneratorUI
             this.generator.TablesGenerating += tablesGenerating;
             this.generator.TableGenerating += tableGenerating;
             this.generator.TableGenerated += tableGenerated;
+            this.generator.ComplexTypeTablesGenerating += complexTypeTablesGenerating;
+            this.generator.ComplexTypeTableGenerating += complexTypeTableGenerating;
+            this.generator.ComplexTypeTableGenerated += complexTypeTableGenerated;
             this.generator.ViewsGenerating += viewsGenerating;
             this.generator.ViewGenerating += viewGenerating;
             this.generator.ViewGenerated += viewGenerated;
@@ -1662,6 +1699,9 @@ namespace POCOGeneratorUI
             this.generator.TablesGenerating -= tablesGenerating;
             this.generator.TableGenerating -= tableGenerating;
             this.generator.TableGenerated -= tableGenerated;
+            this.generator.ComplexTypeTablesGenerating -= complexTypeTablesGenerating;
+            this.generator.ComplexTypeTableGenerating -= complexTypeTableGenerating;
+            this.generator.ComplexTypeTableGenerated -= complexTypeTableGenerated;
             this.generator.ViewsGenerating -= viewsGenerating;
             this.generator.ViewGenerating -= viewGenerating;
             this.generator.ViewGenerated -= viewGenerated;
@@ -2794,6 +2834,12 @@ namespace POCOGeneratorUI
                     filesCount++;
             }
 
+            void complexTypeTablePOCO(object sender1, ComplexTypeTablePOCOEventArgs e1)
+            {
+                if (Export_MultipleFiles_WritePOCOToFile(e1.ClassName, e1.POCO, folder, exportErrors))
+                    filesCount++;
+            }
+
             void viewPOCO(object sender1, ViewPOCOEventArgs e1)
             {
                 if (Export_MultipleFiles_WritePOCOToFile(e1.ClassName, e1.POCO, folder, exportErrors))
@@ -2824,6 +2870,7 @@ namespace POCOGeneratorUI
                     g.Settings.POCO.WrapAroundEachClass = true;
                     g.ClearOut();
                     g.TablePOCO += tablePOCO;
+                    g.ComplexTypeTablePOCO += complexTypeTablePOCO;
                     g.ViewPOCO += viewPOCO;
                     g.ProcedurePOCO += procedurePOCO;
                     g.FunctionPOCO += functionPOCO;
@@ -2832,6 +2879,7 @@ namespace POCOGeneratorUI
                 g =>
                 {
                     g.TablePOCO -= tablePOCO;
+                    g.ComplexTypeTablePOCO -= complexTypeTablePOCO;
                     g.ViewPOCO -= viewPOCO;
                     g.ProcedurePOCO -= procedurePOCO;
                     g.FunctionPOCO -= functionPOCO;
@@ -2899,6 +2947,14 @@ namespace POCOGeneratorUI
                     Directory.CreateDirectory(path);
             }
 
+            void complexTypeTablesGenerating(object sender1, ComplexTypeTablesGeneratingEventArgs e1)
+            {
+                path = Path.Combine(path, "Tables");
+
+                if (Directory.Exists(path) == false)
+                    Directory.CreateDirectory(path);
+            }
+
             void viewsGenerating(object sender1, ViewsGeneratingEventArgs e1)
             {
                 path = Path.Combine(path, "Views");
@@ -2936,6 +2992,11 @@ namespace POCOGeneratorUI
                 e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.Table.Database, "Tables", e1.Table.Schema);
             }
 
+            void complexTypeTableGenerating(object sender1, ComplexTypeTableGeneratingEventArgs e1)
+            {
+                e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.ComplexTypeTable.Database, "Tables", e1.ComplexTypeTable.Schema);
+            }
+
             void viewGenerating(object sender1, ViewGeneratingEventArgs e1)
             {
                 e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.View.Database, "Views", e1.View.Schema);
@@ -2959,6 +3020,12 @@ namespace POCOGeneratorUI
             void tablePOCO(object sender1, TablePOCOEventArgs e1)
             {
                 if (Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(e1.ClassName, e1.POCO, e1.Table.Schema, path, exportErrors))
+                    filesCount++;
+            }
+
+            void complexTypeTablePOCO(object sender1, ComplexTypeTablePOCOEventArgs e1)
+            {
+                if (Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(e1.ClassName, e1.POCO, e1.ComplexTypeTable.Schema, path, exportErrors))
                     filesCount++;
             }
 
@@ -2987,6 +3054,11 @@ namespace POCOGeneratorUI
             }
 
             void tablesGenerated(object sender1, TablesGeneratedEventArgs e1)
+            {
+                path = Path.GetDirectoryName(path);
+            }
+
+            void complexTypeTablesGenerated(object sender1, ComplexTypeTablesGeneratedEventArgs e1)
             {
                 path = Path.GetDirectoryName(path);
             }
@@ -3029,21 +3101,25 @@ namespace POCOGeneratorUI
                     g.ServerGenerating += serverGenerating;
                     g.DatabaseGenerating += databaseGenerating;
                     g.TablesGenerating += tablesGenerating;
+                    g.ComplexTypeTablesGenerating += complexTypeTablesGenerating;
                     g.ViewsGenerating += viewsGenerating;
                     g.ProceduresGenerating += proceduresGenerating;
                     g.FunctionsGenerating += functionsGenerating;
                     g.TVPsGenerating += tvpsGenerating;
                     g.TableGenerating += tableGenerating;
+                    g.ComplexTypeTableGenerating += complexTypeTableGenerating;
                     g.ViewGenerating += viewGenerating;
                     g.ProcedureGenerating += procedureGenerating;
                     g.FunctionGenerating += functionGenerating;
                     g.TVPGenerating += tvpGenerating;
                     g.TablePOCO += tablePOCO;
+                    g.ComplexTypeTablePOCO += complexTypeTablePOCO;
                     g.ViewPOCO += viewPOCO;
                     g.ProcedurePOCO += procedurePOCO;
                     g.FunctionPOCO += functionPOCO;
                     g.TVPPOCO += tvpPOCO;
                     g.TablesGenerated += tablesGenerated;
+                    g.ComplexTypeTablesGenerated += complexTypeTablesGenerated;
                     g.ViewsGenerated += viewsGenerated;
                     g.ProceduresGenerated += proceduresGenerated;
                     g.FunctionsGenerated += functionsGenerated;
@@ -3056,21 +3132,25 @@ namespace POCOGeneratorUI
                     g.ServerGenerating -= serverGenerating;
                     g.DatabaseGenerating -= databaseGenerating;
                     g.TablesGenerating -= tablesGenerating;
+                    g.ComplexTypeTablesGenerating -= complexTypeTablesGenerating;
                     g.ViewsGenerating -= viewsGenerating;
                     g.ProceduresGenerating -= proceduresGenerating;
                     g.FunctionsGenerating -= functionsGenerating;
                     g.TVPsGenerating -= tvpsGenerating;
                     g.TableGenerating -= tableGenerating;
+                    g.ComplexTypeTableGenerating -= complexTypeTableGenerating;
                     g.ViewGenerating -= viewGenerating;
                     g.ProcedureGenerating -= procedureGenerating;
                     g.FunctionGenerating -= functionGenerating;
                     g.TVPGenerating -= tvpGenerating;
                     g.TablePOCO -= tablePOCO;
+                    g.ComplexTypeTablePOCO -= complexTypeTablePOCO;
                     g.ViewPOCO -= viewPOCO;
                     g.ProcedurePOCO -= procedurePOCO;
                     g.FunctionPOCO -= functionPOCO;
                     g.TVPPOCO -= tvpPOCO;
                     g.TablesGenerated -= tablesGenerated;
+                    g.ComplexTypeTablesGenerated -= complexTypeTablesGenerated;
                     g.ViewsGenerated -= viewsGenerated;
                     g.ProceduresGenerated -= proceduresGenerated;
                     g.FunctionsGenerated -= functionsGenerated;
