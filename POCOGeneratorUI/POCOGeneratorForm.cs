@@ -1021,6 +1021,9 @@ namespace POCOGeneratorUI
             lblSchemaSeparator.Visible = isSupportSchema;
             txtSchemaSeparator.Visible = isSupportSchema;
 
+            rdbFileNameSchemaName.Visible = isSupportSchema;
+            rdbFileNameDatabaseSchemaName.Visible = isSupportSchema;
+
             if (isSupportSchema)
             {
                 foreach (var item in this.controlsOriginalLocation)
@@ -2725,13 +2728,13 @@ namespace POCOGeneratorUI
                     string fileName = Export_SingleFile_GetFileName(selectedDbObjectsCount, dbObject);
                     Export_SingleFile(fileName);
                 }
-                else if (rdbMultipleFiles.Checked)
+                else if (rdbMultipleFilesSingleFolder.Checked)
                 {
-                    Export_MultipleFiles();
+                    Export_MultipleFiles_SingleFolder();
                 }
-                else if (rdbMultipleFilesRelativeNamespace.Checked)
+                else if (rdbMultipleFilesRelativeFolders.Checked)
                 {
-                    Export_MultipleFiles_RelativeNamespace();
+                    Export_MultipleFiles_RelativeFolders();
                 }
             }
             catch (Exception ex)
@@ -2830,7 +2833,7 @@ namespace POCOGeneratorUI
             return string.Join("_", dbObjectName.Split(Path.GetInvalidFileNameChars())) + ".cs";
         }
 
-        private void Export_MultipleFiles()
+        private void Export_MultipleFiles_SingleFolder()
         {
             string folder = Path.GetFullPath(txtFolder.Text);
             if (Directory.Exists(folder) == false)
@@ -2841,37 +2844,37 @@ namespace POCOGeneratorUI
 
             void tablePOCO(object sender1, TablePOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_WritePOCOToFile(e1.ClassName, e1.POCO, folder, exportErrors))
+                if (Export_MultipleFiles_SingleFolder_WritePOCOToFile(e1.ClassName, e1.Table.Schema, e1.Table.Database.Name, e1.POCO, folder, exportErrors))
                     filesCount++;
             }
 
             void complexTypeTablePOCO(object sender1, ComplexTypeTablePOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_WritePOCOToFile(e1.ClassName, e1.POCO, folder, exportErrors))
+                if (Export_MultipleFiles_SingleFolder_WritePOCOToFile(e1.ClassName, e1.ComplexTypeTable.Schema, e1.ComplexTypeTable.Database.Name, e1.POCO, folder, exportErrors))
                     filesCount++;
             }
 
             void viewPOCO(object sender1, ViewPOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_WritePOCOToFile(e1.ClassName, e1.POCO, folder, exportErrors))
+                if (Export_MultipleFiles_SingleFolder_WritePOCOToFile(e1.ClassName, e1.View.Schema, e1.View.Database.Name, e1.POCO, folder, exportErrors))
                     filesCount++;
             }
 
             void procedurePOCO(object sender1, ProcedurePOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_WritePOCOToFile(e1.ClassName, e1.POCO, folder, exportErrors))
+                if (Export_MultipleFiles_SingleFolder_WritePOCOToFile(e1.ClassName, e1.Procedure.Schema, e1.Procedure.Database.Name, e1.POCO, folder, exportErrors))
                     filesCount++;
             }
 
             void functionPOCO(object sender1, FunctionPOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_WritePOCOToFile(e1.ClassName, e1.POCO, folder, exportErrors))
+                if (Export_MultipleFiles_SingleFolder_WritePOCOToFile(e1.ClassName, e1.Function.Schema, e1.Function.Database.Name, e1.POCO, folder, exportErrors))
                     filesCount++;
             }
 
             void tvpPOCO(object sender1, TVPPOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_WritePOCOToFile(e1.ClassName, e1.POCO, folder, exportErrors))
+                if (Export_MultipleFiles_SingleFolder_WritePOCOToFile(e1.ClassName, e1.TVP.Schema, e1.TVP.Database.Name, e1.POCO, folder, exportErrors))
                     filesCount++;
             }
 
@@ -2902,11 +2905,11 @@ namespace POCOGeneratorUI
             Export_MultipleFiles_SetExportMessage(exportErrors, folder, filesCount);
         }
 
-        private bool Export_MultipleFiles_WritePOCOToFile(string className, string poco, string folder, List<Tuple<string, Exception>> exportErrors)
+        private bool Export_MultipleFiles_SingleFolder_WritePOCOToFile(string className, string schema, string database, string poco, string folder, List<Tuple<string, Exception>> exportErrors)
         {
             try
             {
-                string fileName = string.Join("_", className.Split(Path.GetInvalidFileNameChars())) + ".cs";
+                string fileName = Export_MultipleFiles_GetFileName(className, schema, database);
                 string path = Path.Combine(folder, fileName);
                 File.WriteAllText(path, poco);
                 return true;
@@ -2918,7 +2921,7 @@ namespace POCOGeneratorUI
             }
         }
 
-        private void Export_MultipleFiles_RelativeNamespace()
+        private void Export_MultipleFiles_RelativeFolders()
         {
             string folder = Path.GetFullPath(txtFolder.Text);
             if (Directory.Exists(folder) == false)
@@ -2937,7 +2940,7 @@ namespace POCOGeneratorUI
                     path,
                     string.Join("_", e1.Server.ToString().Split(Path.GetInvalidFileNameChars()))
                 );
-                
+
                 if (string.IsNullOrEmpty(this.generator.Settings.POCO.Namespace) == false)
                 {
                     path = Path.Combine(
@@ -3032,67 +3035,67 @@ namespace POCOGeneratorUI
 
             void tableGenerating(object sender1, TableGeneratingEventArgs e1)
             {
-                e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.Table.Database, "Tables", e1.Table.Schema);
+                e1.Namespace = Export_MultipleFiles_RelativeFolders_GetNamespace(e1.Namespace, e1.Table.Database, "Tables", e1.Table.Schema);
             }
 
             void complexTypeTableGenerating(object sender1, ComplexTypeTableGeneratingEventArgs e1)
             {
-                e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.ComplexTypeTable.Database, "Tables", e1.ComplexTypeTable.Schema);
+                e1.Namespace = Export_MultipleFiles_RelativeFolders_GetNamespace(e1.Namespace, e1.ComplexTypeTable.Database, "Tables", e1.ComplexTypeTable.Schema);
             }
 
             void viewGenerating(object sender1, ViewGeneratingEventArgs e1)
             {
-                e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.View.Database, "Views", e1.View.Schema);
+                e1.Namespace = Export_MultipleFiles_RelativeFolders_GetNamespace(e1.Namespace, e1.View.Database, "Views", e1.View.Schema);
             }
 
             void procedureGenerating(object sender1, ProcedureGeneratingEventArgs e1)
             {
-                e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.Procedure.Database, "Procedures", e1.Procedure.Schema);
+                e1.Namespace = Export_MultipleFiles_RelativeFolders_GetNamespace(e1.Namespace, e1.Procedure.Database, "Procedures", e1.Procedure.Schema);
             }
 
             void functionGenerating(object sender1, FunctionGeneratingEventArgs e1)
             {
-                e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.Function.Database, "Functions", e1.Function.Schema);
+                e1.Namespace = Export_MultipleFiles_RelativeFolders_GetNamespace(e1.Namespace, e1.Function.Database, "Functions", e1.Function.Schema);
             }
 
             void tvpGenerating(object sender1, TVPGeneratingEventArgs e1)
             {
-                e1.Namespace = Export_MultipleFiles_RelativeNamespace_GetNamespace(e1.Namespace, e1.TVP.Database, "TVPs", e1.TVP.Schema);
+                e1.Namespace = Export_MultipleFiles_RelativeFolders_GetNamespace(e1.Namespace, e1.TVP.Database, "TVPs", e1.TVP.Schema);
             }
 
             void tablePOCO(object sender1, TablePOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(e1.ClassName, e1.POCO, e1.Table.Schema, path, exportErrors))
+                if (Export_MultipleFiles_RelativeFolders_WritePOCOToFile(e1.ClassName, e1.Table.Schema, e1.Table.Database.Name, e1.POCO, path, exportErrors))
                     filesCount++;
             }
 
             void complexTypeTablePOCO(object sender1, ComplexTypeTablePOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(e1.ClassName, e1.POCO, e1.ComplexTypeTable.Schema, path, exportErrors))
+                if (Export_MultipleFiles_RelativeFolders_WritePOCOToFile(e1.ClassName, e1.ComplexTypeTable.Schema, e1.ComplexTypeTable.Database.Name, e1.POCO, path, exportErrors))
                     filesCount++;
             }
 
             void viewPOCO(object sender1, ViewPOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(e1.ClassName, e1.POCO, e1.View.Schema, path, exportErrors))
+                if (Export_MultipleFiles_RelativeFolders_WritePOCOToFile(e1.ClassName, e1.View.Schema, e1.View.Database.Name, e1.POCO, path, exportErrors))
                     filesCount++;
             }
 
             void procedurePOCO(object sender1, ProcedurePOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(e1.ClassName, e1.POCO, e1.Procedure.Schema, path, exportErrors))
+                if (Export_MultipleFiles_RelativeFolders_WritePOCOToFile(e1.ClassName, e1.Procedure.Schema, e1.Procedure.Database.Name, e1.POCO, path, exportErrors))
                     filesCount++;
             }
 
             void functionPOCO(object sender1, FunctionPOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(e1.ClassName, e1.POCO, e1.Function.Schema, path, exportErrors))
+                if (Export_MultipleFiles_RelativeFolders_WritePOCOToFile(e1.ClassName, e1.Function.Schema, e1.Function.Database.Name, e1.POCO, path, exportErrors))
                     filesCount++;
             }
 
             void tvpPOCO(object sender1, TVPPOCOEventArgs e1)
             {
-                if (Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(e1.ClassName, e1.POCO, e1.TVP.Schema, path, exportErrors))
+                if (Export_MultipleFiles_RelativeFolders_WritePOCOToFile(e1.ClassName, e1.TVP.Schema, e1.TVP.Database.Name, e1.POCO, path, exportErrors))
                     filesCount++;
             }
 
@@ -3207,7 +3210,7 @@ namespace POCOGeneratorUI
             Export_MultipleFiles_SetExportMessage(exportErrors, folder, filesCount);
         }
 
-        private string Export_MultipleFiles_RelativeNamespace_GetNamespace(string @namespace, Database database, string dbGroup, string schema)
+        private string Export_MultipleFiles_RelativeFolders_GetNamespace(string @namespace, Database database, string dbGroup, string schema)
         {
             if (string.IsNullOrEmpty(@namespace))
                 @namespace = string.Format("{0}.{1}", database, dbGroup);
@@ -3218,7 +3221,7 @@ namespace POCOGeneratorUI
             return @namespace;
         }
 
-        private bool Export_MultipleFiles_RelativeNamespace_WritePOCOToFile(string className, string poco, string schema, string path, List<Tuple<string, Exception>> exportErrors)
+        private bool Export_MultipleFiles_RelativeFolders_WritePOCOToFile(string className, string schema, string database, string poco, string path, List<Tuple<string, Exception>> exportErrors)
         {
             try
             {
@@ -3229,7 +3232,7 @@ namespace POCOGeneratorUI
                 if (Directory.Exists(path) == false)
                     Directory.CreateDirectory(path);
 
-                string fileName = string.Join("_", className.Split(Path.GetInvalidFileNameChars())) + ".cs";
+                string fileName = Export_MultipleFiles_GetFileName(className, schema, database);
                 path = Path.Combine(path, fileName);
                 File.WriteAllText(path, poco);
                 return true;
@@ -3239,6 +3242,21 @@ namespace POCOGeneratorUI
                 exportErrors.Add(new Tuple<string, Exception>(className, ex));
                 return false;
             }
+        }
+
+        private string Export_MultipleFiles_GetFileName(string className, string schema, string database)
+        {
+            string fileName = null;
+            if (rdbFileNameName.Checked)
+                fileName = className;
+            else if (rdbFileNameSchemaName.Checked)
+                fileName = schema + "." + className;
+            else if (rdbFileNameDatabaseName.Checked)
+                fileName = database + "." + className;
+            else if (rdbFileNameDatabaseSchemaName.Checked)
+                fileName = database + "." + schema + "." + className;
+            fileName = string.Join("_", fileName.Split(Path.GetInvalidFileNameChars())) + ".cs";
+            return fileName;
         }
 
         private void Export_MultipleFiles_SetExportMessage(List<Tuple<string, Exception>> exportErrors, string path, int filesCount)
@@ -3729,8 +3747,12 @@ namespace POCOGeneratorUI
                 // Export To Files
                 txtFolder_Text = txtFolder.Text,
                 rdbSingleFile_Checked = rdbSingleFile.Checked,
-                rdbMultipleFiles_Checked = rdbMultipleFiles.Checked,
-                rdbMultipleFilesRelativeNamespace_Checked = rdbMultipleFilesRelativeNamespace.Checked
+                rdbMultipleFilesSingleFolder_Checked = rdbMultipleFilesSingleFolder.Checked,
+                rdbMultipleFilesRelativeFolders_Checked = rdbMultipleFilesRelativeFolders.Checked,
+                rdbFileNameName_Checked = rdbFileNameName.Checked,
+                rdbFileNameSchemaName_Checked = rdbFileNameSchemaName.Checked,
+                rdbFileNameDatabaseName_Checked = rdbFileNameDatabaseName.Checked,
+                rdbFileNameDatabaseSchemaName_Checked = rdbFileNameDatabaseSchemaName.Checked
             };
         }
 
@@ -3813,8 +3835,12 @@ namespace POCOGeneratorUI
             // Export To Files
             txtFolder.Text = settings.txtFolder_Text;
             rdbSingleFile.Checked = settings.rdbSingleFile_Checked;
-            rdbMultipleFiles.Checked = settings.rdbMultipleFiles_Checked;
-            rdbMultipleFilesRelativeNamespace.Checked = settings.rdbMultipleFilesRelativeNamespace_Checked;
+            rdbMultipleFilesSingleFolder.Checked = settings.rdbMultipleFilesSingleFolder_Checked;
+            rdbMultipleFilesRelativeFolders.Checked = settings.rdbMultipleFilesRelativeFolders_Checked;
+            rdbFileNameName.Checked = settings.rdbFileNameName_Checked;
+            rdbFileNameSchemaName.Checked = settings.rdbFileNameSchemaName_Checked;
+            rdbFileNameDatabaseName.Checked = settings.rdbFileNameDatabaseName_Checked;
+            rdbFileNameDatabaseSchemaName.Checked = settings.rdbFileNameDatabaseSchemaName_Checked;
 
             SetFormControls(settings.SupportSchema, settings.SupportTVPs, settings.SupportEnumDataType);
         }

@@ -46,6 +46,7 @@
             this.btnDisclaimer = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.grbPOCO = new System.Windows.Forms.GroupBox();
+            this.chkComplexTypes = new System.Windows.Forms.CheckBox();
             this.chkUsingInsideNamespace = new System.Windows.Forms.CheckBox();
             this.panelEnum = new System.Windows.Forms.Panel();
             this.rdbEnumSQLTypeToEnumInt = new System.Windows.Forms.RadioButton();
@@ -79,9 +80,15 @@
             this.chkShowManyToManyJoinTable = new System.Windows.Forms.CheckBox();
             this.chkOverrideNavigationProperties = new System.Windows.Forms.CheckBox();
             this.grbExportToFiles = new System.Windows.Forms.GroupBox();
-            this.rdbMultipleFilesRelativeNamespace = new System.Windows.Forms.RadioButton();
-            this.rdbMultipleFiles = new System.Windows.Forms.RadioButton();
+            this.grbFileName = new System.Windows.Forms.GroupBox();
+            this.rdbFileNameDatabaseSchemaName = new System.Windows.Forms.RadioButton();
+            this.rdbFileNameDatabaseName = new System.Windows.Forms.RadioButton();
+            this.rdbFileNameSchemaName = new System.Windows.Forms.RadioButton();
+            this.rdbFileNameName = new System.Windows.Forms.RadioButton();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.rdbSingleFile = new System.Windows.Forms.RadioButton();
+            this.rdbMultipleFilesSingleFolder = new System.Windows.Forms.RadioButton();
+            this.rdbMultipleFilesRelativeFolders = new System.Windows.Forms.RadioButton();
             this.btnFolder = new System.Windows.Forms.Button();
             this.txtFolder = new System.Windows.Forms.TextBox();
             this.btnExport = new System.Windows.Forms.Button();
@@ -135,7 +142,6 @@
             this.checkReferencedTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkReferencingTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkAccessibleTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chkComplexTypes = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -153,6 +159,8 @@
             this.grbNavigationProperties.SuspendLayout();
             this.panelNavigationProperties1.SuspendLayout();
             this.grbExportToFiles.SuspendLayout();
+            this.grbFileName.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.grbClassName.SuspendLayout();
             this.grbEFAnnotations.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -373,6 +381,7 @@
             this.grbPOCO.Controls.Add(this.chkNewLineBetweenMembers);
             this.grbPOCO.ForeColor = System.Drawing.SystemColors.ControlText;
             this.grbPOCO.Location = new System.Drawing.Point(12, 5);
+            this.grbPOCO.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbPOCO.Name = "grbPOCO";
             this.grbPOCO.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbPOCO.Size = new System.Drawing.Size(285, 221);
@@ -380,6 +389,18 @@
             this.grbPOCO.TabStop = false;
             this.grbPOCO.Text = "POCO";
             this.grbPOCO.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
+            // 
+            // chkComplexTypes
+            // 
+            this.chkComplexTypes.AutoSize = true;
+            this.chkComplexTypes.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkComplexTypes.Location = new System.Drawing.Point(181, 166);
+            this.chkComplexTypes.Name = "chkComplexTypes";
+            this.chkComplexTypes.Size = new System.Drawing.Size(98, 17);
+            this.chkComplexTypes.TabIndex = 14;
+            this.chkComplexTypes.Text = "Complex Types";
+            this.chkComplexTypes.UseVisualStyleBackColor = true;
+            this.chkComplexTypes.CheckedChanged += new System.EventHandler(this.chkComplexTypes_CheckedChanged);
             // 
             // chkUsingInsideNamespace
             // 
@@ -649,6 +670,7 @@
             this.grbNavigationProperties.Controls.Add(this.chkShowManyToManyJoinTable);
             this.grbNavigationProperties.Controls.Add(this.chkOverrideNavigationProperties);
             this.grbNavigationProperties.Location = new System.Drawing.Point(12, 229);
+            this.grbNavigationProperties.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbNavigationProperties.MinimumSize = new System.Drawing.Size(285, 0);
             this.grbNavigationProperties.Name = "grbNavigationProperties";
             this.grbNavigationProperties.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
@@ -778,55 +800,132 @@
             this.grbExportToFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.grbExportToFiles.AutoSize = true;
             this.grbExportToFiles.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.grbExportToFiles.Controls.Add(this.rdbMultipleFilesRelativeNamespace);
-            this.grbExportToFiles.Controls.Add(this.rdbMultipleFiles);
-            this.grbExportToFiles.Controls.Add(this.rdbSingleFile);
+            this.grbExportToFiles.Controls.Add(this.grbFileName);
+            this.grbExportToFiles.Controls.Add(this.flowLayoutPanel1);
             this.grbExportToFiles.Controls.Add(this.btnFolder);
             this.grbExportToFiles.Controls.Add(this.txtFolder);
             this.grbExportToFiles.Controls.Add(this.btnExport);
-            this.grbExportToFiles.Location = new System.Drawing.Point(703, 171);
+            this.grbExportToFiles.Location = new System.Drawing.Point(703, 72);
+            this.grbExportToFiles.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbExportToFiles.Name = "grbExportToFiles";
             this.grbExportToFiles.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.grbExportToFiles.Size = new System.Drawing.Size(325, 114);
+            this.grbExportToFiles.Size = new System.Drawing.Size(325, 213);
             this.grbExportToFiles.TabIndex = 5;
             this.grbExportToFiles.TabStop = false;
             this.grbExportToFiles.Text = "Export to Files";
             this.grbExportToFiles.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
             // 
-            // rdbMultipleFilesRelativeNamespace
+            // grbFileName
             // 
-            this.rdbMultipleFilesRelativeNamespace.AutoSize = true;
-            this.rdbMultipleFilesRelativeNamespace.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rdbMultipleFilesRelativeNamespace.Location = new System.Drawing.Point(6, 81);
-            this.rdbMultipleFilesRelativeNamespace.Name = "rdbMultipleFilesRelativeNamespace";
-            this.rdbMultipleFilesRelativeNamespace.Size = new System.Drawing.Size(193, 17);
-            this.rdbMultipleFilesRelativeNamespace.TabIndex = 6;
-            this.rdbMultipleFilesRelativeNamespace.Text = "Multiple Files - Relative Namespace";
-            this.rdbMultipleFilesRelativeNamespace.UseVisualStyleBackColor = true;
+            this.grbFileName.AutoSize = true;
+            this.grbFileName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grbFileName.Controls.Add(this.rdbFileNameDatabaseSchemaName);
+            this.grbFileName.Controls.Add(this.rdbFileNameDatabaseName);
+            this.grbFileName.Controls.Add(this.rdbFileNameSchemaName);
+            this.grbFileName.Controls.Add(this.rdbFileNameName);
+            this.grbFileName.Location = new System.Drawing.Point(6, 125);
+            this.grbFileName.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.grbFileName.Name = "grbFileName";
+            this.grbFileName.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.grbFileName.Size = new System.Drawing.Size(263, 75);
+            this.grbFileName.TabIndex = 5;
+            this.grbFileName.TabStop = false;
+            this.grbFileName.Text = "File Name";
+            this.grbFileName.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
             // 
-            // rdbMultipleFiles
+            // rdbFileNameDatabaseSchemaName
             // 
-            this.rdbMultipleFiles.AutoSize = true;
-            this.rdbMultipleFiles.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rdbMultipleFiles.Location = new System.Drawing.Point(6, 64);
-            this.rdbMultipleFiles.Name = "rdbMultipleFiles";
-            this.rdbMultipleFiles.Size = new System.Drawing.Size(85, 17);
-            this.rdbMultipleFiles.TabIndex = 5;
-            this.rdbMultipleFiles.Text = "Multiple Files";
-            this.rdbMultipleFiles.UseVisualStyleBackColor = true;
+            this.rdbFileNameDatabaseSchemaName.AutoSize = true;
+            this.rdbFileNameDatabaseSchemaName.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbFileNameDatabaseSchemaName.Location = new System.Drawing.Point(113, 42);
+            this.rdbFileNameDatabaseSchemaName.Name = "rdbFileNameDatabaseSchemaName";
+            this.rdbFileNameDatabaseSchemaName.Size = new System.Drawing.Size(144, 17);
+            this.rdbFileNameDatabaseSchemaName.TabIndex = 4;
+            this.rdbFileNameDatabaseSchemaName.Text = "Database.Schema.Name";
+            this.rdbFileNameDatabaseSchemaName.UseVisualStyleBackColor = true;
+            // 
+            // rdbFileNameDatabaseName
+            // 
+            this.rdbFileNameDatabaseName.AutoSize = true;
+            this.rdbFileNameDatabaseName.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbFileNameDatabaseName.Location = new System.Drawing.Point(3, 42);
+            this.rdbFileNameDatabaseName.Name = "rdbFileNameDatabaseName";
+            this.rdbFileNameDatabaseName.Size = new System.Drawing.Size(102, 17);
+            this.rdbFileNameDatabaseName.TabIndex = 3;
+            this.rdbFileNameDatabaseName.Text = "Database.Name";
+            this.rdbFileNameDatabaseName.UseVisualStyleBackColor = true;
+            // 
+            // rdbFileNameSchemaName
+            // 
+            this.rdbFileNameSchemaName.AutoSize = true;
+            this.rdbFileNameSchemaName.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbFileNameSchemaName.Location = new System.Drawing.Point(64, 19);
+            this.rdbFileNameSchemaName.Name = "rdbFileNameSchemaName";
+            this.rdbFileNameSchemaName.Size = new System.Drawing.Size(95, 17);
+            this.rdbFileNameSchemaName.TabIndex = 2;
+            this.rdbFileNameSchemaName.Text = "Schema.Name";
+            this.rdbFileNameSchemaName.UseVisualStyleBackColor = true;
+            // 
+            // rdbFileNameName
+            // 
+            this.rdbFileNameName.AutoSize = true;
+            this.rdbFileNameName.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbFileNameName.Checked = true;
+            this.rdbFileNameName.Location = new System.Drawing.Point(3, 19);
+            this.rdbFileNameName.Name = "rdbFileNameName";
+            this.rdbFileNameName.Size = new System.Drawing.Size(53, 17);
+            this.rdbFileNameName.TabIndex = 1;
+            this.rdbFileNameName.TabStop = true;
+            this.rdbFileNameName.Text = "Name";
+            this.rdbFileNameName.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.Controls.Add(this.rdbSingleFile);
+            this.flowLayoutPanel1.Controls.Add(this.rdbMultipleFilesSingleFolder);
+            this.flowLayoutPanel1.Controls.Add(this.rdbMultipleFilesRelativeFolders);
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(6, 50);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(176, 69);
+            this.flowLayoutPanel1.TabIndex = 4;
             // 
             // rdbSingleFile
             // 
             this.rdbSingleFile.AutoSize = true;
             this.rdbSingleFile.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rdbSingleFile.Checked = true;
-            this.rdbSingleFile.Location = new System.Drawing.Point(6, 47);
+            this.rdbSingleFile.Location = new System.Drawing.Point(3, 3);
             this.rdbSingleFile.Name = "rdbSingleFile";
             this.rdbSingleFile.Size = new System.Drawing.Size(73, 17);
-            this.rdbSingleFile.TabIndex = 4;
+            this.rdbSingleFile.TabIndex = 1;
             this.rdbSingleFile.TabStop = true;
             this.rdbSingleFile.Text = "Single File";
             this.rdbSingleFile.UseVisualStyleBackColor = true;
+            // 
+            // rdbMultipleFilesSingleFolder
+            // 
+            this.rdbMultipleFilesSingleFolder.AutoSize = true;
+            this.rdbMultipleFilesSingleFolder.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbMultipleFilesSingleFolder.Location = new System.Drawing.Point(3, 26);
+            this.rdbMultipleFilesSingleFolder.Name = "rdbMultipleFilesSingleFolder";
+            this.rdbMultipleFilesSingleFolder.Size = new System.Drawing.Size(155, 17);
+            this.rdbMultipleFilesSingleFolder.TabIndex = 2;
+            this.rdbMultipleFilesSingleFolder.Text = "Multiple Files - Single Folder";
+            this.rdbMultipleFilesSingleFolder.UseVisualStyleBackColor = true;
+            // 
+            // rdbMultipleFilesRelativeFolders
+            // 
+            this.rdbMultipleFilesRelativeFolders.AutoSize = true;
+            this.rdbMultipleFilesRelativeFolders.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbMultipleFilesRelativeFolders.Location = new System.Drawing.Point(3, 49);
+            this.rdbMultipleFilesRelativeFolders.Name = "rdbMultipleFilesRelativeFolders";
+            this.rdbMultipleFilesRelativeFolders.Size = new System.Drawing.Size(170, 17);
+            this.rdbMultipleFilesRelativeFolders.TabIndex = 3;
+            this.rdbMultipleFilesRelativeFolders.Text = "Multiple Files - Relative Folders";
+            this.rdbMultipleFilesRelativeFolders.UseVisualStyleBackColor = true;
             // 
             // btnFolder
             // 
@@ -891,6 +990,7 @@
             this.grbClassName.Controls.Add(this.txtSchemaSeparator);
             this.grbClassName.Controls.Add(this.lblSingularDesc);
             this.grbClassName.Location = new System.Drawing.Point(305, 5);
+            this.grbClassName.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbClassName.Name = "grbClassName";
             this.grbClassName.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbClassName.Size = new System.Drawing.Size(390, 194);
@@ -1172,6 +1272,7 @@
             this.grbEFAnnotations.Controls.Add(this.lblEF);
             this.grbEFAnnotations.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbEFAnnotations.Location = new System.Drawing.Point(305, 207);
+            this.grbEFAnnotations.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbEFAnnotations.MinimumSize = new System.Drawing.Size(390, 0);
             this.grbEFAnnotations.Name = "grbEFAnnotations";
             this.grbEFAnnotations.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
@@ -1411,18 +1512,6 @@
             this.checkAccessibleTablesToolStripMenuItem.Text = "Check Recursively Tables Accessible From && To This Table";
             this.checkAccessibleTablesToolStripMenuItem.Click += new System.EventHandler(this.checkAccessibleTablesToolStripMenuItem_Click);
             // 
-            // chkComplexTypes
-            // 
-            this.chkComplexTypes.AutoSize = true;
-            this.chkComplexTypes.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkComplexTypes.Location = new System.Drawing.Point(181, 166);
-            this.chkComplexTypes.Name = "chkComplexTypes";
-            this.chkComplexTypes.Size = new System.Drawing.Size(98, 17);
-            this.chkComplexTypes.TabIndex = 14;
-            this.chkComplexTypes.Text = "Complex Types";
-            this.chkComplexTypes.UseVisualStyleBackColor = true;
-            this.chkComplexTypes.CheckedChanged += new System.EventHandler(this.chkComplexTypes_CheckedChanged);
-            // 
             // POCOGeneratorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1430,7 +1519,7 @@
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(1039, 712);
             this.Controls.Add(this.splitContainer1);
-            this.MinimumSize = new System.Drawing.Size(1055, 550);
+            this.MinimumSize = new System.Drawing.Size(1055, 750);
             this.Name = "POCOGeneratorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "POCO Generator";
@@ -1461,6 +1550,10 @@
             this.panelNavigationProperties1.PerformLayout();
             this.grbExportToFiles.ResumeLayout(false);
             this.grbExportToFiles.PerformLayout();
+            this.grbFileName.ResumeLayout(false);
+            this.grbFileName.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.grbClassName.ResumeLayout(false);
             this.grbClassName.PerformLayout();
             this.grbEFAnnotations.ResumeLayout(false);
@@ -1575,10 +1668,16 @@
         private System.Windows.Forms.ToolStripMenuItem checkReferencingTablesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkAccessibleTablesToolStripMenuItem;
         private System.Windows.Forms.RadioButton rdbSingleFile;
-        private System.Windows.Forms.RadioButton rdbMultipleFilesRelativeNamespace;
-        private System.Windows.Forms.RadioButton rdbMultipleFiles;
+        private System.Windows.Forms.RadioButton rdbMultipleFilesRelativeFolders;
+        private System.Windows.Forms.RadioButton rdbMultipleFilesSingleFolder;
         private System.Windows.Forms.CheckBox chkUsingInsideNamespace;
         private System.Windows.Forms.Button btnDisclaimer;
         private System.Windows.Forms.CheckBox chkComplexTypes;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.RadioButton rdbFileNameName;
+        private System.Windows.Forms.RadioButton rdbFileNameSchemaName;
+        private System.Windows.Forms.RadioButton rdbFileNameDatabaseName;
+        private System.Windows.Forms.RadioButton rdbFileNameDatabaseSchemaName;
+        private System.Windows.Forms.GroupBox grbFileName;
     }
 }

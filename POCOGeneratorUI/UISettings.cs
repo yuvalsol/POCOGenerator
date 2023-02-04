@@ -83,7 +83,11 @@ namespace POCOGeneratorUI
         // Export To Files
         public string txtFolder_Text { get; set; }
         public bool rdbSingleFile_Checked { get; set; }
-        public bool rdbMultipleFiles_Checked { get; set; }
-        public bool rdbMultipleFilesRelativeNamespace_Checked { get; set; }
+        public bool rdbMultipleFilesSingleFolder_Checked { get; set; }
+        public bool rdbMultipleFilesRelativeFolders_Checked { get; set; }
+        public bool rdbFileNameName_Checked { get; set; }
+        public bool rdbFileNameSchemaName_Checked { get; set; }
+        public bool rdbFileNameDatabaseName_Checked { get; set; }
+        public bool rdbFileNameDatabaseSchemaName_Checked { get; set; }
     }
 }
