@@ -1021,6 +1021,9 @@ namespace POCOGeneratorUI
             lblSchemaSeparator.Visible = isSupportSchema;
             txtSchemaSeparator.Visible = isSupportSchema;
 
+            rdbFileNameSchemaName.Visible = isSupportSchema;
+            rdbFileNameDatabaseSchemaName.Visible = isSupportSchema;
+
             if (isSupportSchema)
             {
                 foreach (var item in this.controlsOriginalLocation)
