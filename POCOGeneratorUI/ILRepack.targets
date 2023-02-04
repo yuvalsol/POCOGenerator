@@ -8,14 +8,14 @@
 
         <ILRepack
             Parallel="true"
-            DebugInfo="true"
+            DebugInfo="false"
             XmlDocumentation="false"
             Union="true"
-            Internalize="false"
+            Internalize="true"
             AllowDuplicateResources="false"
             InputAssemblies="@(InputAssemblies)"
             TargetKind="SameAsPrimaryAssembly"
-            OutputFile="..\Output\$(TargetName)\$(TargetName)$(TargetExt)"
+            OutputFile="..\Output\$(Configuration)\$(TargetName)\$(TargetName)$(TargetExt)"
         />
     </Target>
 </Project>
