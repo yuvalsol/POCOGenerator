@@ -145,14 +145,12 @@ namespace POCOGenerator.Objects
         {
             get
             {
-                var complexTypeTableColumn = this.tableColumn.ComplexTypeTableColumn;
-                if (complexTypeTableColumn == null)
+                if (this.tableColumn.ComplexTypeTableColumn == null)
                     return null;
 
-                // debug TableColumn this needs to be tested
                 return this.Table.ComplexTypeTables
                     .SelectMany(ctt => ctt.ComplexTypeTableColumns)
-                    .First(cttc => cttc.InternalEquals(complexTypeTableColumn));
+                    .First(cttc => cttc.InternalEquals(this.tableColumn.ComplexTypeTableColumn));
             }
         }
 

@@ -35,7 +35,6 @@ namespace POCOGenerator.Objects
                 {
                     this.tableColumns = new CachedEnumerable<POCOGenerator.DbObjects.ITableColumn, TableColumn>(
                         this.complexTypeTableColumn.TableColumns,
-                        // debug ComplexTypeTableColumn this needs to be tested
                         c1 => this.ComplexTypeTable.Tables.First(t => t.InternalEquals(c1.Table)).TableColumns.First(c2 => c2.InternalEquals(c1))
                     );
                 }

@@ -190,7 +190,6 @@ namespace POCOGenerator.Objects
                 {
                     this.complexTypeTables = new CachedEnumerable<POCOGenerator.DbObjects.IComplexTypeTable, ComplexTypeTable>(
                         this.table.ComplexTypeTables,
-                         // debug Table this needs to be tested
                          ctt1 => this.Database.ComplexTypeTables.First(ctt2 => ctt2.InternalEquals(ctt1))
                     );
                 }
