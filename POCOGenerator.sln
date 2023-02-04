@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCOGenerator.Utils", "POCO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationPropertiesDemo", "Demos\ServerTree\NavigationPropertiesDemo\NavigationPropertiesDemo.csproj", "{0D76D75D-1D22-4F25-9082-A598F9CA6B4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplexTypesDemo", "Demos\GeneratePOCOs\ComplexTypesDemo\ComplexTypesDemo.csproj", "{7585CD83-7D6E-4D7E-B0BE-037137EB60DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -213,6 +215,10 @@ Global
 		{0D76D75D-1D22-4F25-9082-A598F9CA6B4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D76D75D-1D22-4F25-9082-A598F9CA6B4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D76D75D-1D22-4F25-9082-A598F9CA6B4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7585CD83-7D6E-4D7E-B0BE-037137EB60DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7585CD83-7D6E-4D7E-B0BE-037137EB60DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7585CD83-7D6E-4D7E-B0BE-037137EB60DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7585CD83-7D6E-4D7E-B0BE-037137EB60DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -243,6 +249,7 @@ Global
 		{4E5EE695-498A-4E5E-A002-91B3B027D667} = {1E4C9604-78EF-4142-95D6-0E54D19E955B}
 		{9E561CAC-5E32-4734-B678-16CE057265E1} = {D4E1E196-880B-4FBE-97BE-C848E3CFBEFC}
 		{0D76D75D-1D22-4F25-9082-A598F9CA6B4F} = {B5934ED9-1AE4-4BFA-9F96-BFA91087CE1C}
+		{7585CD83-7D6E-4D7E-B0BE-037137EB60DB} = {2E4F6DA4-908F-4DD3-85FB-BC5447213594}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B151279D-E4E7-4770-96DC-B5BBC39AA6B6}

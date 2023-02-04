@@ -44,6 +44,16 @@ namespace POCOGenerator.POCOIterators
         public event EventHandler<TableGeneratedEventArgs> TableGenerated;
         public event EventHandler<TablesGeneratedAsyncEventArgs> TablesGeneratedAsync;
         public event EventHandler<TablesGeneratedEventArgs> TablesGenerated;
+        public event EventHandler<ComplexTypeTablesGeneratingAsyncEventArgs> ComplexTypeTablesGeneratingAsync;
+        public event EventHandler<ComplexTypeTablesGeneratingEventArgs> ComplexTypeTablesGenerating;
+        public event EventHandler<ComplexTypeTableGeneratingAsyncEventArgs> ComplexTypeTableGeneratingAsync;
+        public event EventHandler<ComplexTypeTableGeneratingEventArgs> ComplexTypeTableGenerating;
+        public event EventHandler<ComplexTypeTablePOCOAsyncEventArgs> ComplexTypeTablePOCOAsync;
+        public event EventHandler<ComplexTypeTablePOCOEventArgs> ComplexTypeTablePOCO;
+        public event EventHandler<ComplexTypeTableGeneratedAsyncEventArgs> ComplexTypeTableGeneratedAsync;
+        public event EventHandler<ComplexTypeTableGeneratedEventArgs> ComplexTypeTableGenerated;
+        public event EventHandler<ComplexTypeTablesGeneratedAsyncEventArgs> ComplexTypeTablesGeneratedAsync;
+        public event EventHandler<ComplexTypeTablesGeneratedEventArgs> ComplexTypeTablesGenerated;
         public event EventHandler<ViewsGeneratingAsyncEventArgs> ViewsGeneratingAsync;
         public event EventHandler<ViewsGeneratingEventArgs> ViewsGenerating;
         public event EventHandler<ViewGeneratingAsyncEventArgs> ViewGeneratingAsync;
@@ -106,6 +116,14 @@ namespace POCOGenerator.POCOIterators
 
             bool isFirstDbObject = true;
 
+            if (IterateServers(dbObjects, namespaceOffset, ref isFirstDbObject, isExistDbObject))
+                return;
+
+            IteratorEnd(isExistDbObject);
+        }
+
+        protected virtual bool IterateServers(IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset, ref bool isFirstDbObject, bool isExistDbObject)
+        {
             var servers = dbObjects.GroupBy(x => x.Database.Server).OrderBy(x => x.Key.ToString());
             foreach (var server in servers)
             {
@@ -115,212 +133,11 @@ namespace POCOGenerator.POCOIterators
                 if (argsServerGenerating != null && argsServerGenerating.Stop)
                 {
                     IteratorEnd(isExistDbObject);
-                    return;
+                    return true;
                 }
 
-                var databases = server.GroupBy(x => x.Database).OrderBy(x => x.Key.ToString());
-                foreach (var database in databases)
-                {
-                    this.DatabaseGeneratingAsync.RaiseAsync(this, () => new DatabaseGeneratingAsyncEventArgs(database.Key));
-
-                    var argsDatabaseGenerating = this.DatabaseGenerating.Raise(this, () => new DatabaseGeneratingEventArgs(database.Key));
-                    if (argsDatabaseGenerating != null && argsDatabaseGenerating.Stop)
-                    {
-                        IteratorEnd(isExistDbObject);
-                        return;
-                    }
-
-                    if (argsDatabaseGenerating == null || argsDatabaseGenerating.Skip == false)
-                    {
-                        var tables = database.Where(x => x.DbObjectType == DbObjectType.Table).OrderBy(x => x.ToString());
-                        if (tables.Any())
-                        {
-                            this.TablesGeneratingAsync.RaiseAsync(this, () => new TablesGeneratingAsyncEventArgs());
-
-                            var argsTablesGenerating = this.TablesGenerating.Raise(this, () => new TablesGeneratingEventArgs());
-                            if (argsTablesGenerating != null && argsTablesGenerating.Stop)
-                            {
-                                IteratorEnd(isExistDbObject);
-                                return;
-                            }
-
-                            if (argsTablesGenerating == null || argsTablesGenerating.Skip == false)
-                            {
-                                foreach (IDbObjectTraverse table in tables)
-                                {
-                                    // don't write join table
-                                    if (((ITable)table).IsJoinTable && settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable == false)
-                                        continue;
-
-                                    bool stop = WriteDbObject(dbObjects, table, namespaceOffset, RaiseTableGeneratingEvent, RaiseTableGeneratedEvent, ref isFirstDbObject);
-                                    if (stop)
-                                    {
-                                        IteratorEnd(isExistDbObject);
-                                        return;
-                                    }
-                                }
-
-                                this.TablesGeneratedAsync.RaiseAsync(this, () => new TablesGeneratedAsyncEventArgs());
-
-                                var argsTablesGenerated = this.TablesGenerated.Raise(this, () => new TablesGeneratedEventArgs());
-                                if (argsTablesGenerated != null && argsTablesGenerated.Stop)
-                                {
-                                    IteratorEnd(isExistDbObject);
-                                    return;
-                                }
-                            }
-                        }
-
-                        var views = database.Where(x => x.DbObjectType == DbObjectType.View).OrderBy(x => x.ToString());
-                        if (views.Any())
-                        {
-                            this.ViewsGeneratingAsync.RaiseAsync(this, () => new ViewsGeneratingAsyncEventArgs());
-
-                            var argsViewsGenerating = this.ViewsGenerating.Raise(this, () => new ViewsGeneratingEventArgs());
-                            if (argsViewsGenerating != null && argsViewsGenerating.Stop)
-                            {
-                                IteratorEnd(isExistDbObject);
-                                return;
-                            }
-
-                            if (argsViewsGenerating == null || argsViewsGenerating.Skip == false)
-                            {
-                                foreach (IDbObjectTraverse view in views)
-                                {
-                                    bool stop = WriteDbObject(dbObjects, view, namespaceOffset, RaiseViewGeneratingEvent, RaiseViewGeneratedEvent, ref isFirstDbObject);
-                                    if (stop)
-                                    {
-                                        IteratorEnd(isExistDbObject);
-                                        return;
-                                    }
-                                }
-
-                                this.ViewsGeneratedAsync.RaiseAsync(this, () => new ViewsGeneratedAsyncEventArgs());
-
-                                var argsViewsGenerated = this.ViewsGenerated.Raise(this, () => new ViewsGeneratedEventArgs());
-                                if (argsViewsGenerated != null && argsViewsGenerated.Stop)
-                                {
-                                    IteratorEnd(isExistDbObject);
-                                    return;
-                                }
-                            }
-                        }
-
-                        var procedures = database.Where(x => x.DbObjectType == DbObjectType.Procedure).OrderBy(x => x.ToString());
-                        if (procedures.Any())
-                        {
-                            this.ProceduresGeneratingAsync.RaiseAsync(this, () => new ProceduresGeneratingAsyncEventArgs());
-
-                            var argsProceduresGenerating = this.ProceduresGenerating.Raise(this, () => new ProceduresGeneratingEventArgs());
-                            if (argsProceduresGenerating != null && argsProceduresGenerating.Stop)
-                            {
-                                IteratorEnd(isExistDbObject);
-                                return;
-                            }
-
-                            if (argsProceduresGenerating == null || argsProceduresGenerating.Skip == false)
-                            {
-                                foreach (IDbObjectTraverse procedure in procedures)
-                                {
-                                    bool stop = WriteDbObject(dbObjects, procedure, namespaceOffset, RaiseProcedureGeneratingEvent, RaiseProcedureGeneratedEvent, ref isFirstDbObject);
-                                    if (stop)
-                                    {
-                                        IteratorEnd(isExistDbObject);
-                                        return;
-                                    }
-                                }
-
-                                this.ProceduresGeneratedAsync.RaiseAsync(this, () => new ProceduresGeneratedAsyncEventArgs());
-
-                                var argsProceduresGenerated = this.ProceduresGenerated.Raise(this, () => new ProceduresGeneratedEventArgs());
-                                if (argsProceduresGenerated != null && argsProceduresGenerated.Stop)
-                                {
-                                    IteratorEnd(isExistDbObject);
-                                    return;
-                                }
-                            }
-                        }
-
-                        var functions = database.Where(x => x.DbObjectType == DbObjectType.Function).OrderBy(x => x.ToString());
-                        if (functions.Any())
-                        {
-                            this.FunctionsGeneratingAsync.RaiseAsync(this, () => new FunctionsGeneratingAsyncEventArgs());
-
-                            var argsFunctionsGenerating = this.FunctionsGenerating.Raise(this, () => new FunctionsGeneratingEventArgs());
-                            if (argsFunctionsGenerating != null && argsFunctionsGenerating.Stop)
-                            {
-                                IteratorEnd(isExistDbObject);
-                                return;
-                            }
-
-                            if (argsFunctionsGenerating == null || argsFunctionsGenerating.Skip == false)
-                            {
-                                foreach (IDbObjectTraverse function in functions)
-                                {
-                                    bool stop = WriteDbObject(dbObjects, function, namespaceOffset, RaiseFunctionGeneratingEvent, RaiseFunctionGeneratedEvent, ref isFirstDbObject);
-                                    if (stop)
-                                    {
-                                        IteratorEnd(isExistDbObject);
-                                        return;
-                                    }
-                                }
-
-                                this.FunctionsGeneratedAsync.RaiseAsync(this, () => new FunctionsGeneratedAsyncEventArgs());
-
-                                var argsFunctionsGenerated = this.FunctionsGenerated.Raise(this, () => new FunctionsGeneratedEventArgs());
-                                if (argsFunctionsGenerated != null && argsFunctionsGenerated.Stop)
-                                {
-                                    IteratorEnd(isExistDbObject);
-                                    return;
-                                }
-                            }
-                        }
-
-                        var tvps = database.Where(x => x.DbObjectType == DbObjectType.TVP).OrderBy(x => x.ToString());
-                        if (tvps.Any())
-                        {
-                            this.TVPsGeneratingAsync.RaiseAsync(this, () => new TVPsGeneratingAsyncEventArgs());
-
-                            var argsTVPsGenerating = this.TVPsGenerating.Raise(this, () => new TVPsGeneratingEventArgs());
-                            if (argsTVPsGenerating != null && argsTVPsGenerating.Stop)
-                            {
-                                IteratorEnd(isExistDbObject);
-                                return;
-                            }
-
-                            if (argsTVPsGenerating == null || argsTVPsGenerating.Skip == false)
-                            {
-                                foreach (IDbObjectTraverse tvp in tvps)
-                                {
-                                    bool stop = WriteDbObject(dbObjects, tvp, namespaceOffset, RaiseTVPGeneratingEvent, RaiseTVPGeneratedEvent, ref isFirstDbObject);
-                                    if (stop)
-                                    {
-                                        IteratorEnd(isExistDbObject);
-                                        return;
-                                    }
-                                }
-
-                                this.TVPsGeneratedAsync.RaiseAsync(this, () => new TVPsGeneratedAsyncEventArgs());
-
-                                var argsTVPsGenerated = this.TVPsGenerated.Raise(this, () => new TVPsGeneratedEventArgs());
-                                if (argsTVPsGenerated != null && argsTVPsGenerated.Stop)
-                                {
-                                    IteratorEnd(isExistDbObject);
-                                    return;
-                                }
-                            }
-                        }
-
-                        this.DatabaseGeneratedAsync.RaiseAsync(this, () => new DatabaseGeneratedAsyncEventArgs(database.Key));
-
-                        var argsDatabaseGenerated = this.DatabaseGenerated.Raise(this, () => new DatabaseGeneratedEventArgs(database.Key));
-                        if (argsDatabaseGenerated != null && argsDatabaseGenerated.Stop)
-                        {
-                            IteratorEnd(isExistDbObject);
-                            return;
-                        }
-                    }
-                }
+                if (IterateDatabases(server, dbObjects, namespaceOffset, ref isFirstDbObject, isExistDbObject))
+                    return true;
 
                 this.ServerGeneratedAsync.RaiseAsync(this, () => new ServerGeneratedAsyncEventArgs(server.Key));
 
@@ -328,11 +145,321 @@ namespace POCOGenerator.POCOIterators
                 if (argsServerGenerated != null && argsServerGenerated.Stop)
                 {
                     IteratorEnd(isExistDbObject);
-                    return;
+                    return true;
                 }
             }
 
-            IteratorEnd(isExistDbObject);
+            return false;
+        }
+
+        protected virtual bool IterateDatabases(IGrouping<IServer, IDbObjectTraverse> server, IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset, ref bool isFirstDbObject, bool isExistDbObject)
+        {
+            var databases = server.GroupBy(x => x.Database).OrderBy(x => x.Key.ToString());
+            foreach (var database in databases)
+            {
+                this.DatabaseGeneratingAsync.RaiseAsync(this, () => new DatabaseGeneratingAsyncEventArgs(database.Key));
+
+                var argsDatabaseGenerating = this.DatabaseGenerating.Raise(this, () => new DatabaseGeneratingEventArgs(database.Key));
+                if (argsDatabaseGenerating != null && argsDatabaseGenerating.Stop)
+                {
+                    IteratorEnd(isExistDbObject);
+                    return true;
+                }
+
+                if (argsDatabaseGenerating == null || argsDatabaseGenerating.Skip == false)
+                {
+                    if (IterateTables(database, dbObjects, namespaceOffset, ref isFirstDbObject, isExistDbObject))
+                        return true;
+
+                    if (IterateViews(database, dbObjects, namespaceOffset, ref isFirstDbObject, isExistDbObject))
+                        return true;
+
+                    if (IterateProcedures(database, dbObjects, namespaceOffset, ref isFirstDbObject, isExistDbObject))
+                        return true;
+
+                    if (IterateFunctions(database, dbObjects, namespaceOffset, ref isFirstDbObject, isExistDbObject))
+                        return true;
+
+                    if (IterateTVPs(database, dbObjects, namespaceOffset, ref isFirstDbObject, isExistDbObject))
+                        return true;
+
+                    this.DatabaseGeneratedAsync.RaiseAsync(this, () => new DatabaseGeneratedAsyncEventArgs(database.Key));
+
+                    var argsDatabaseGenerated = this.DatabaseGenerated.Raise(this, () => new DatabaseGeneratedEventArgs(database.Key));
+                    if (argsDatabaseGenerated != null && argsDatabaseGenerated.Stop)
+                    {
+                        IteratorEnd(isExistDbObject);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        protected virtual bool IterateTables(IGrouping<IDatabase, IDbObjectTraverse> database, IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset, ref bool isFirstDbObject, bool isExistDbObject)
+        {
+            var tables = database.Where(x => x.DbObjectType == DbObjectType.Table).OrderBy(x => x.ToString());
+            if (tables.Any())
+            {
+                this.TablesGeneratingAsync.RaiseAsync(this, () => new TablesGeneratingAsyncEventArgs());
+
+                var argsTablesGenerating = this.TablesGenerating.Raise(this, () => new TablesGeneratingEventArgs());
+                if (argsTablesGenerating != null && argsTablesGenerating.Stop)
+                {
+                    IteratorEnd(isExistDbObject);
+                    return true;
+                }
+
+                if (argsTablesGenerating == null || argsTablesGenerating.Skip == false)
+                {
+                    List<IComplexTypeTable> complexTypeTables = null;
+
+                    foreach (IDbObjectTraverse table in tables)
+                    {
+                        // don't write join table
+                        if (((ITable)table).IsJoinTable && settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable == false)
+                            continue;
+
+                        // collect complex type tables
+                        if (settings.POCOIteratorSettings.ComplexTypes && ((ITable)table).ComplexTypeTables.HasAny())
+                        {
+                            if (complexTypeTables == null)
+                            {
+                                complexTypeTables = new List<IComplexTypeTable>(((ITable)table).ComplexTypeTables);
+                            }
+                            else
+                            {
+                                foreach (var ctt in ((ITable)table).ComplexTypeTables)
+                                {
+                                    if (complexTypeTables.Contains(ctt) == false)
+                                        complexTypeTables.Add(ctt);
+                                }
+                            }
+                        }
+
+                        bool stop = WriteDbObject(dbObjects, table, namespaceOffset, RaiseTableGeneratingEvent, RaiseTableGeneratedEvent, ref isFirstDbObject);
+                        if (stop)
+                        {
+                            IteratorEnd(isExistDbObject);
+                            return true;
+                        }
+                    }
+
+                    this.TablesGeneratedAsync.RaiseAsync(this, () => new TablesGeneratedAsyncEventArgs());
+
+                    var argsTablesGenerated = this.TablesGenerated.Raise(this, () => new TablesGeneratedEventArgs());
+                    if (argsTablesGenerated != null && argsTablesGenerated.Stop)
+                    {
+                        IteratorEnd(isExistDbObject);
+                        return true;
+                    }
+
+                    if (IterateComplexTypeTables(complexTypeTables, dbObjects, namespaceOffset, ref isFirstDbObject, isExistDbObject))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected virtual bool IterateComplexTypeTables(List<IComplexTypeTable> complexTypeTables, IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset, ref bool isFirstDbObject, bool isExistDbObject)
+        {
+            if (complexTypeTables.HasAny())
+            {
+                this.ComplexTypeTablesGeneratingAsync.RaiseAsync(this, () => new ComplexTypeTablesGeneratingAsyncEventArgs());
+
+                var argsComplexTypeTablesGenerating = this.ComplexTypeTablesGenerating.Raise(this, () => new ComplexTypeTablesGeneratingEventArgs());
+                if (argsComplexTypeTablesGenerating != null && argsComplexTypeTablesGenerating.Stop)
+                {
+                    IteratorEnd(isExistDbObject);
+                    return true;
+                }
+
+                if (argsComplexTypeTablesGenerating == null || argsComplexTypeTablesGenerating.Skip == false)
+                {
+                    foreach (IComplexTypeTable complexTypeTable in complexTypeTables)
+                    {
+                        bool stop = WriteDbObject(dbObjects, complexTypeTable, namespaceOffset, RaiseComplexTypeTableGeneratingEvent, RaiseComplexTypeTableGeneratedEvent, ref isFirstDbObject);
+                        if (stop)
+                        {
+                            IteratorEnd(isExistDbObject);
+                            return true;
+                        }
+                    }
+
+                    this.ComplexTypeTablesGeneratedAsync.RaiseAsync(this, () => new ComplexTypeTablesGeneratedAsyncEventArgs());
+
+                    var argsComplexTypeTablesGenerated = this.ComplexTypeTablesGenerated.Raise(this, () => new ComplexTypeTablesGeneratedEventArgs());
+                    if (argsComplexTypeTablesGenerated != null && argsComplexTypeTablesGenerated.Stop)
+                    {
+                        IteratorEnd(isExistDbObject);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        protected virtual bool IterateViews(IGrouping<IDatabase, IDbObjectTraverse> database, IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset, ref bool isFirstDbObject, bool isExistDbObject)
+        {
+            var views = database.Where(x => x.DbObjectType == DbObjectType.View).OrderBy(x => x.ToString());
+            if (views.Any())
+            {
+                this.ViewsGeneratingAsync.RaiseAsync(this, () => new ViewsGeneratingAsyncEventArgs());
+
+                var argsViewsGenerating = this.ViewsGenerating.Raise(this, () => new ViewsGeneratingEventArgs());
+                if (argsViewsGenerating != null && argsViewsGenerating.Stop)
+                {
+                    IteratorEnd(isExistDbObject);
+                    return true;
+                }
+
+                if (argsViewsGenerating == null || argsViewsGenerating.Skip == false)
+                {
+                    foreach (IDbObjectTraverse view in views)
+                    {
+                        bool stop = WriteDbObject(dbObjects, view, namespaceOffset, RaiseViewGeneratingEvent, RaiseViewGeneratedEvent, ref isFirstDbObject);
+                        if (stop)
+                        {
+                            IteratorEnd(isExistDbObject);
+                            return true;
+                        }
+                    }
+
+                    this.ViewsGeneratedAsync.RaiseAsync(this, () => new ViewsGeneratedAsyncEventArgs());
+
+                    var argsViewsGenerated = this.ViewsGenerated.Raise(this, () => new ViewsGeneratedEventArgs());
+                    if (argsViewsGenerated != null && argsViewsGenerated.Stop)
+                    {
+                        IteratorEnd(isExistDbObject);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        protected virtual bool IterateProcedures(IGrouping<IDatabase, IDbObjectTraverse> database, IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset, ref bool isFirstDbObject, bool isExistDbObject)
+        {
+            var procedures = database.Where(x => x.DbObjectType == DbObjectType.Procedure).OrderBy(x => x.ToString());
+            if (procedures.Any())
+            {
+                this.ProceduresGeneratingAsync.RaiseAsync(this, () => new ProceduresGeneratingAsyncEventArgs());
+
+                var argsProceduresGenerating = this.ProceduresGenerating.Raise(this, () => new ProceduresGeneratingEventArgs());
+                if (argsProceduresGenerating != null && argsProceduresGenerating.Stop)
+                {
+                    IteratorEnd(isExistDbObject);
+                    return true;
+                }
+
+                if (argsProceduresGenerating == null || argsProceduresGenerating.Skip == false)
+                {
+                    foreach (IDbObjectTraverse procedure in procedures)
+                    {
+                        bool stop = WriteDbObject(dbObjects, procedure, namespaceOffset, RaiseProcedureGeneratingEvent, RaiseProcedureGeneratedEvent, ref isFirstDbObject);
+                        if (stop)
+                        {
+                            IteratorEnd(isExistDbObject);
+                            return true;
+                        }
+                    }
+
+                    this.ProceduresGeneratedAsync.RaiseAsync(this, () => new ProceduresGeneratedAsyncEventArgs());
+
+                    var argsProceduresGenerated = this.ProceduresGenerated.Raise(this, () => new ProceduresGeneratedEventArgs());
+                    if (argsProceduresGenerated != null && argsProceduresGenerated.Stop)
+                    {
+                        IteratorEnd(isExistDbObject);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        protected virtual bool IterateFunctions(IGrouping<IDatabase, IDbObjectTraverse> database, IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset, ref bool isFirstDbObject, bool isExistDbObject)
+        {
+            var functions = database.Where(x => x.DbObjectType == DbObjectType.Function).OrderBy(x => x.ToString());
+            if (functions.Any())
+            {
+                this.FunctionsGeneratingAsync.RaiseAsync(this, () => new FunctionsGeneratingAsyncEventArgs());
+
+                var argsFunctionsGenerating = this.FunctionsGenerating.Raise(this, () => new FunctionsGeneratingEventArgs());
+                if (argsFunctionsGenerating != null && argsFunctionsGenerating.Stop)
+                {
+                    IteratorEnd(isExistDbObject);
+                    return true;
+                }
+
+                if (argsFunctionsGenerating == null || argsFunctionsGenerating.Skip == false)
+                {
+                    foreach (IDbObjectTraverse function in functions)
+                    {
+                        bool stop = WriteDbObject(dbObjects, function, namespaceOffset, RaiseFunctionGeneratingEvent, RaiseFunctionGeneratedEvent, ref isFirstDbObject);
+                        if (stop)
+                        {
+                            IteratorEnd(isExistDbObject);
+                            return true;
+                        }
+                    }
+
+                    this.FunctionsGeneratedAsync.RaiseAsync(this, () => new FunctionsGeneratedAsyncEventArgs());
+
+                    var argsFunctionsGenerated = this.FunctionsGenerated.Raise(this, () => new FunctionsGeneratedEventArgs());
+                    if (argsFunctionsGenerated != null && argsFunctionsGenerated.Stop)
+                    {
+                        IteratorEnd(isExistDbObject);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        protected virtual bool IterateTVPs(IGrouping<IDatabase, IDbObjectTraverse> database, IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset, ref bool isFirstDbObject, bool isExistDbObject)
+        {
+            var tvps = database.Where(x => x.DbObjectType == DbObjectType.TVP).OrderBy(x => x.ToString());
+            if (tvps.Any())
+            {
+                this.TVPsGeneratingAsync.RaiseAsync(this, () => new TVPsGeneratingAsyncEventArgs());
+
+                var argsTVPsGenerating = this.TVPsGenerating.Raise(this, () => new TVPsGeneratingEventArgs());
+                if (argsTVPsGenerating != null && argsTVPsGenerating.Stop)
+                {
+                    IteratorEnd(isExistDbObject);
+                    return true;
+                }
+
+                if (argsTVPsGenerating == null || argsTVPsGenerating.Skip == false)
+                {
+                    foreach (IDbObjectTraverse tvp in tvps)
+                    {
+                        bool stop = WriteDbObject(dbObjects, tvp, namespaceOffset, RaiseTVPGeneratingEvent, RaiseTVPGeneratedEvent, ref isFirstDbObject);
+                        if (stop)
+                        {
+                            IteratorEnd(isExistDbObject);
+                            return true;
+                        }
+                    }
+
+                    this.TVPsGeneratedAsync.RaiseAsync(this, () => new TVPsGeneratedAsyncEventArgs());
+
+                    var argsTVPsGenerated = this.TVPsGenerated.Raise(this, () => new TVPsGeneratedEventArgs());
+                    if (argsTVPsGenerated != null && argsTVPsGenerated.Stop)
+                    {
+                        IteratorEnd(isExistDbObject);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         protected virtual string ItereatorStart(bool isExistDbObject, IEnumerable<IDbObjectTraverse> dbObjects)
@@ -449,10 +576,40 @@ namespace POCOGenerator.POCOIterators
             // Columns
             if (dbObject.Columns.HasAny())
             {
-                var columns = dbObject.Columns.OrderBy<IColumn, int>(c => c.ColumnOrdinal ?? 0);
-                var lastColumn = columns.Last();
-                foreach (IColumn column in columns)
-                    WriteColumn(column, column == lastColumn, dbObject, namespaceOffset);
+                var columns = dbObject.Columns.OrderBy(c => c.ColumnOrdinal ?? 0);
+
+                if (settings.POCOIteratorSettings.ComplexTypes &&
+                    dbObject.DbObjectType == DbObjectType.Table &&
+                    ((ITable)dbObject).ComplexTypeTables.HasAny())
+                {
+                    ITable table = (ITable)dbObject;
+
+                    // for each group of columns, that are mapped to a complex type,
+                    // print just the first one, from each group, and ignore the rest of them
+                    var toIgnore = table.TableColumns
+                        .Where(c => c.ComplexTypeTableColumn != null)
+                        .GroupBy(c => new
+                        {
+                            c.ComplexTypeTableColumn.ComplexTypeTable,
+                            PropertyName = c.ColumnName.Substring(0, c.ColumnName.IndexOf('_'))
+                        })
+                        .SelectMany(g => g.Except(new ITableColumn[] { g.First() }));
+
+                    var tableColumns = table.TableColumns.Except(toIgnore).ToArray();
+
+                    var lastColumn = tableColumns.Last();
+                    foreach (ITableColumn column in tableColumns)
+                    {
+                        bool isComplexTypeTableColumn = (column.ComplexTypeTableColumn != null);
+                        WriteColumn(column, isComplexTypeTableColumn, column == lastColumn, dbObject, namespaceOffset);
+                    }
+                }
+                else
+                {
+                    var lastColumn = columns.Last();
+                    foreach (IColumn column in columns)
+                        WriteColumn(column, false, column == lastColumn, dbObject, namespaceOffset);
+                }
             }
 
             // Enums
@@ -500,6 +657,30 @@ namespace POCOGenerator.POCOIterators
             }
 
             if (this.TablePOCO != null || this.TablePOCOAsync != null)
+                writer.StartSnapshot();
+
+            return false;
+        }
+
+        protected virtual bool RaiseComplexTypeTableGeneratingEvent(IDbObjectTraverse dbObject, ref string @namespace, ref bool skip)
+        {
+            string argsNamespace = @namespace;
+
+            this.ComplexTypeTableGeneratingAsync.RaiseAsync(this, () => new ComplexTypeTableGeneratingAsyncEventArgs((IComplexTypeTable)dbObject, argsNamespace));
+
+            var argsComplexTypeTable = this.ComplexTypeTableGenerating.Raise(this, () => new ComplexTypeTableGeneratingEventArgs((IComplexTypeTable)dbObject, argsNamespace));
+
+            if (argsComplexTypeTable != null)
+            {
+                if (argsComplexTypeTable.Stop)
+                    return true;
+                skip = argsComplexTypeTable.Skip;
+                if (skip)
+                    return false;
+                @namespace = argsComplexTypeTable.Namespace;
+            }
+
+            if (this.ComplexTypeTablePOCO != null || this.ComplexTypeTablePOCOAsync != null)
                 writer.StartSnapshot();
 
             return false;
@@ -620,6 +801,28 @@ namespace POCOGenerator.POCOIterators
 
             var argsTable = this.TableGenerated.Raise(this, () => new TableGeneratedEventArgs((ITable)dbObject, @namespace));
             if (argsTable != null && argsTable.Stop)
+                return true;
+
+            return false;
+        }
+
+        protected virtual bool RaiseComplexTypeTableGeneratedEvent(IDbObjectTraverse dbObject, string @namespace)
+        {
+            if (this.ComplexTypeTablePOCO != null || this.ComplexTypeTablePOCOAsync != null)
+            {
+                string poco = writer.EndSnapshot().ToString().Trim();
+
+                this.ComplexTypeTablePOCOAsync.RaiseAsync(this, () => new ComplexTypeTablePOCOAsyncEventArgs((IComplexTypeTable)dbObject, poco));
+
+                var argsPOCO = this.ComplexTypeTablePOCO.Raise(this, () => new ComplexTypeTablePOCOEventArgs((IComplexTypeTable)dbObject, poco));
+                if (argsPOCO != null && argsPOCO.Stop)
+                    return true;
+            }
+
+            this.ComplexTypeTableGeneratedAsync.RaiseAsync(this, () => new ComplexTypeTableGeneratedAsyncEventArgs((IComplexTypeTable)dbObject, @namespace));
+
+            var argsComplexTypeTable = this.ComplexTypeTableGenerated.Raise(this, () => new ComplexTypeTableGeneratedEventArgs((IComplexTypeTable)dbObject, @namespace));
+            if (argsComplexTypeTable != null && argsComplexTypeTable.Stop)
                 return true;
 
             return false;
@@ -881,6 +1084,11 @@ namespace POCOGenerator.POCOIterators
                 {
                     WriteEFTable(dbObject, namespaceOffset);
                 }
+                else if (dbObject.DbObjectType == DbObjectType.ComplexTypeTable)
+                {
+                    if (settings.EFAnnotationsIteratorSettings.ComplexType)
+                        WriteEFComplexType(dbObject, namespaceOffset);
+                }
 
                 if (settings.EFAnnotationsIteratorSettings.Description && dbObject is IDescription)
                 {
@@ -915,6 +1123,14 @@ namespace POCOGenerator.POCOIterators
             writer.WriteString(dbObject.Name);
             writer.WriteString("\"");
             writer.WriteLine(")]");
+        }
+
+        protected virtual void WriteEFComplexType(IDbObjectTraverse dbObject, string namespaceOffset)
+        {
+            writer.Write(namespaceOffset);
+            writer.Write("[");
+            writer.WriteUserType("ComplexType");
+            writer.WriteLine("]");
         }
 
         #endregion
@@ -1946,6 +2162,34 @@ namespace POCOGenerator.POCOIterators
                     // Display
                     WriteEFDisplayAttribute(tableColumn, namespaceOffset);
                 }
+                else if (dbObject.DbObjectType == DbObjectType.ComplexTypeTable)
+                {
+                    IComplexTypeTableColumn complexTypeTableColumn = (IComplexTypeTableColumn)column;
+
+                    // MaxLength
+                    WriteEFMaxLengthAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // StringLength
+                    WriteEFStringLengthAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // Timestamp
+                    WriteEFTimestampAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // ConcurrencyCheck
+                    WriteEFConcurrencyCheckAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // DatabaseGenerated Identity
+                    WriteEFDatabaseGeneratedIdentityAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // DatabaseGenerated Computed
+                    WriteEFDatabaseGeneratedComputedAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // Required
+                    WriteEFRequiredAttribute(complexTypeTableColumn, namespaceOffset);
+
+                    // Display
+                    WriteEFDisplayAttribute(complexTypeTableColumn, namespaceOffset);
+                }
                 else if (dbObject.DbObjectType == DbObjectType.View)
                 {
                     ITableColumn tableColumn = (ITableColumn)column;
@@ -1997,21 +2241,17 @@ namespace POCOGenerator.POCOIterators
             if ((settings.EFAnnotationsIteratorSettings.Column && (isPrimaryKey == false || isCompositePrimaryKey == false)) ||
                 (tableColumn.ColumnName != cleanColumnName))
             {
-                //debug
-                if (tableColumn is ComplexType == false)
-                {
-                    WriteEFColumn(tableColumn.ColumnName, tableColumn.DataTypeName, namespaceOffset);
-                }
+                WriteEFColumn(tableColumn.ColumnName, tableColumn.DataTypeName, namespaceOffset);
             }
         }
 
-        protected virtual void WriteEFMaxLengthAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFMaxLengthAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (IsEFAttributeMaxLength(tableColumn.DataTypeName))
                 WriteEFMaxLength(tableColumn.StringPrecision, namespaceOffset);
         }
 
-        protected virtual void WriteEFStringLengthAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFStringLengthAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (settings.EFAnnotationsIteratorSettings.StringLength)
             {
@@ -2023,13 +2263,13 @@ namespace POCOGenerator.POCOIterators
             }
         }
 
-        protected virtual void WriteEFTimestampAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFTimestampAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (IsEFAttributeTimestamp(tableColumn.DataTypeName))
                 WriteEFTimestamp(namespaceOffset);
         }
 
-        protected virtual void WriteEFConcurrencyCheckAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFConcurrencyCheckAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (settings.EFAnnotationsIteratorSettings.ConcurrencyCheck)
             {
@@ -2038,19 +2278,19 @@ namespace POCOGenerator.POCOIterators
             }
         }
 
-        protected virtual void WriteEFDatabaseGeneratedIdentityAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFDatabaseGeneratedIdentityAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (tableColumn.IsIdentity)
                 WriteEFDatabaseGeneratedIdentity(namespaceOffset);
         }
 
-        protected virtual void WriteEFDatabaseGeneratedComputedAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFDatabaseGeneratedComputedAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (tableColumn.IsComputed)
                 WriteEFDatabaseGeneratedComputed(namespaceOffset);
         }
 
-        protected virtual void WriteEFRequiredAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFRequiredAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (settings.EFAnnotationsIteratorSettings.Required || settings.EFAnnotationsIteratorSettings.RequiredWithErrorMessage)
             {
@@ -2065,7 +2305,7 @@ namespace POCOGenerator.POCOIterators
             }
         }
 
-        protected virtual void WriteEFDisplayAttribute(ITableColumn tableColumn, string namespaceOffset)
+        protected virtual void WriteEFDisplayAttribute(IColumn tableColumn, string namespaceOffset)
         {
             if (settings.EFAnnotationsIteratorSettings.Display)
             {
@@ -2350,10 +2590,10 @@ namespace POCOGenerator.POCOIterators
 
         #region Column
 
-        protected virtual void WriteColumn(IColumn column, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
+        protected virtual void WriteColumn(IColumn column, bool isComplexTypeTableColumn, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
         {
-            if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && dbObject.DbObjectType == DbObjectType.Table)
-                WriteEFComplexTypeColumn(column, isLastColumn, dbObject, namespaceOffset);
+            if (isComplexTypeTableColumn)
+                WriteComplexTypeTableColumn(column, isLastColumn, dbObject, namespaceOffset);
             else
                 WriteDbColumn(column, isLastColumn, dbObject, namespaceOffset);
         }
@@ -2373,6 +2613,35 @@ namespace POCOGenerator.POCOIterators
             WriteColumnEnd();
 
             WriteColumnComments(column);
+
+            writer.WriteLine();
+
+            if (settings.POCOIteratorSettings.NewLineBetweenMembers && isLastColumn == false)
+                writer.WriteLine();
+        }
+
+        protected virtual void WriteComplexTypeTableColumn(IColumn column, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
+        {
+            ITableColumn tableColumn = (ITableColumn)column;
+
+            IComplexTypeTable complexTypeTable = tableColumn.ComplexTypeTableColumn.ComplexTypeTable;
+            string complexTypeName = GetClassName(
+                dbObject.Database.ToString(),
+                (complexTypeTable is ISchema ? ((ISchema)complexTypeTable).Schema : null),
+                complexTypeTable.Name,
+                complexTypeTable.DbObjectType
+            );
+
+            string propertyName = tableColumn.ColumnName.Substring(0, tableColumn.ColumnName.IndexOf('_'));
+            string cleanColumnName = NameHelper.CleanName(propertyName);
+
+            WriteColumnStart(namespaceOffset);
+
+            WriteComplexTypeName(complexTypeName);
+
+            WriteColumnName(cleanColumnName);
+
+            WriteColumnEnd();
 
             writer.WriteLine();
 
@@ -2401,13 +2670,15 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteColumnDataType(IColumn column)
         {
-            if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && column is ComplexType)
-                WriteEFComplexTypeColumnDataType(column);
-            else
-                WriteDbColumnDataType(column);
+            WriteDbColumnDataType(column);
         }
 
         protected abstract void WriteDbColumnDataType(IColumn column);
+
+        protected virtual void WriteComplexTypeName(string complexTypeName)
+        {
+            writer.WriteUserType(complexTypeName);
+        }
 
         protected virtual void WriteColumnName(string columnName)
         {
@@ -2449,47 +2720,6 @@ namespace POCOGenerator.POCOIterators
                 }
             }
         }
-
-        #region EF
-
-        protected List<string> complexTypeNames;
-        protected List<ComplexTypeColumn> complexTypeColumns;
-
-        protected virtual void WriteEFComplexTypeColumn(IColumn column, bool isLastColumn, IDbObjectTraverse dbObject, string namespaceOffset)
-        {
-            string columnName = column.ColumnName.Trim();
-            int index = columnName.IndexOf('_');
-            if (index != -1 && index != 0 && index != columnName.Length - 1)
-            {
-                string complexTypeName = NameHelper.CleanName(columnName.Substring(0, index));
-                string complexTypeColumnName = columnName.Substring(index + 1);
-
-                if (complexTypeNames == null)
-                    complexTypeNames = new List<string>();
-                if (complexTypeNames.Contains(complexTypeName) == false)
-                {
-                    ComplexType complexType = new ComplexType(complexTypeName, column.ColumnOrdinal);
-                    WriteDbColumn(complexType, isLastColumn, dbObject, namespaceOffset);
-                    complexTypeNames.Add(complexTypeName);
-                }
-
-                ComplexTypeColumn complexTypeColumn = new ComplexTypeColumn(complexTypeName, complexTypeColumnName, (ITableColumn)column);
-                if (complexTypeColumns == null)
-                    complexTypeColumns = new List<ComplexTypeColumn>();
-                complexTypeColumns.Add(complexTypeColumn);
-            }
-            else
-            {
-                WriteDbColumn(column, isLastColumn, dbObject, namespaceOffset);
-            }
-        }
-
-        protected virtual void WriteEFComplexTypeColumnDataType(IColumn column)
-        {
-            writer.WriteUserType(column.DataTypeDisplay);
-        }
-
-        #endregion
 
         #region Column Data Types
 
@@ -2647,7 +2877,7 @@ namespace POCOGenerator.POCOIterators
                             .Where(c => c is IEnumColumn)
                             .Cast<IEnumColumn>()
                             .Where(c => c.IsEnumDataType || c.IsSetDataType)
-                            .OrderBy<IEnumColumn, int>(c => c.Column.ColumnOrdinal ?? 0)
+                            .OrderBy(c => c.Column.ColumnOrdinal ?? 0)
                             .ToList();
                     }
                 }
@@ -3142,9 +3372,6 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteClassEnd(IDbObjectTraverse dbObject, string namespaceOffset)
         {
-            if (settings.EFAnnotationsIteratorSettings.Enable && settings.EFAnnotationsIteratorSettings.ComplexType && dbObject.DbObjectType == DbObjectType.Table)
-                WriteEFComplexTypeClassEnd(dbObject, namespaceOffset);
-
             WriteDbClassEnd(dbObject, namespaceOffset);
         }
 
@@ -3153,49 +3380,6 @@ namespace POCOGenerator.POCOIterators
             writer.Write(namespaceOffset);
             writer.WriteLine("}");
         }
-
-        #region EF
-
-        protected virtual void WriteEFComplexTypeClassEnd(IDbObjectTraverse dbObject, string namespaceOffset)
-        {
-            if (complexTypeColumns.HasAny())
-                WriteComplexTypes(dbObject, namespaceOffset);
-        }
-
-        protected virtual void WriteComplexTypes(IDbObjectTraverse dbObject, string namespaceOffset)
-        {
-            var complexTypes = complexTypeColumns.GroupBy(x => x.ComplexTypeName);
-            foreach (var columns in complexTypes)
-                WriteComplexType(columns.Key, columns, dbObject, namespaceOffset);
-        }
-
-        protected virtual void WriteComplexType(string complexTypeName, IEnumerable<ComplexTypeColumn> complexTypeColumns, IDbObjectTraverse dbObject, string namespaceOffset)
-        {
-            writer.WriteLine();
-
-            // Class Attribute
-            writer.Write(namespaceOffset);
-            writer.Write(settings.POCOIteratorSettings.Tab);
-            writer.Write("[");
-            writer.WriteUserType("ComplexType");
-            writer.WriteLine("]");
-
-            namespaceOffset += settings.POCOIteratorSettings.Tab;
-
-            // Class Start
-            WriteClassStart(complexTypeName, dbObject, namespaceOffset);
-
-            // Columns
-            var columns = complexTypeColumns.OrderBy<IColumn, int>(c => c.ColumnOrdinal ?? 0);
-            var lastColumn = columns.Last();
-            foreach (IColumn column in columns)
-                WriteDbColumn(column, column == lastColumn, dbObject, namespaceOffset);
-
-            // Class End
-            WriteDbClassEnd(dbObject, namespaceOffset);
-        }
-
-        #endregion
 
         #endregion
 

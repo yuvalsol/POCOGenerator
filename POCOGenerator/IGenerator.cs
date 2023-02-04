@@ -30,6 +30,16 @@ namespace POCOGenerator
         event EventHandler<TableGeneratedEventArgs> TableGenerated;
         event EventHandler<TablesGeneratedAsyncEventArgs> TablesGeneratedAsync;
         event EventHandler<TablesGeneratedEventArgs> TablesGenerated;
+        event EventHandler<ComplexTypeTablesGeneratingAsyncEventArgs> ComplexTypeTablesGeneratingAsync;
+        event EventHandler<ComplexTypeTablesGeneratingEventArgs> ComplexTypeTablesGenerating;
+        event EventHandler<ComplexTypeTableGeneratingAsyncEventArgs> ComplexTypeTableGeneratingAsync;
+        event EventHandler<ComplexTypeTableGeneratingEventArgs> ComplexTypeTableGenerating;
+        event EventHandler<ComplexTypeTablePOCOAsyncEventArgs> ComplexTypeTablePOCOAsync;
+        event EventHandler<ComplexTypeTablePOCOEventArgs> ComplexTypeTablePOCO;
+        event EventHandler<ComplexTypeTableGeneratedAsyncEventArgs> ComplexTypeTableGeneratedAsync;
+        event EventHandler<ComplexTypeTableGeneratedEventArgs> ComplexTypeTableGenerated;
+        event EventHandler<ComplexTypeTablesGeneratedAsyncEventArgs> ComplexTypeTablesGeneratedAsync;
+        event EventHandler<ComplexTypeTablesGeneratedEventArgs> ComplexTypeTablesGenerated;
         event EventHandler<ViewsGeneratingAsyncEventArgs> ViewsGeneratingAsync;
         event EventHandler<ViewsGeneratingEventArgs> ViewsGenerating;
         event EventHandler<ViewGeneratingAsyncEventArgs> ViewGeneratingAsync;

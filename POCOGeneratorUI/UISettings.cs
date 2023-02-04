@@ -34,6 +34,7 @@ namespace POCOGeneratorUI
         public string txtInherit_Text { get; set; }
         public bool chkColumnDefaults_Checked { get; set; }
         public bool chkNewLineBetweenMembers_Checked { get; set; }
+        public bool chkComplexTypes_Checked { get; set; }
         public bool rdbEnumSQLTypeToString_Checked { get; set; }
         public bool rdbEnumSQLTypeToEnumUShort_Checked { get; set; }
         public bool rdbEnumSQLTypeToEnumInt_Checked { get; set; }

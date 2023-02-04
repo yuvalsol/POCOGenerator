@@ -242,6 +242,131 @@ namespace POCOGenerator
 
     #endregion
 
+    #region Complex Type Table
+
+    public sealed class ComplexTypeTablesGeneratingAsyncEventArgs : EventArgs
+    {
+        internal ComplexTypeTablesGeneratingAsyncEventArgs()
+        {
+        }
+    }
+
+    public sealed class ComplexTypeTablesGeneratingEventArgs : EventArgs
+    {
+        internal ComplexTypeTablesGeneratingEventArgs()
+        {
+        }
+
+        public bool Skip { get; set; }
+        public bool Stop { get; set; }
+    }
+
+    public sealed class ComplexTypeTableGeneratingAsyncEventArgs : EventArgs
+    {
+        internal ComplexTypeTableGeneratingAsyncEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
+        {
+            this.ComplexTypeTable = complexTypeTable;
+            this.Namespace = @namespace;
+        }
+
+        public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
+        public string Error { get { return this.ComplexTypeTable.Error; } }
+        public string Namespace { get; private set; }
+    }
+
+    public sealed class ComplexTypeTableGeneratingEventArgs : EventArgs
+    {
+        internal ComplexTypeTableGeneratingEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
+        {
+            this.ComplexTypeTable = complexTypeTable;
+            this.Namespace = @namespace;
+        }
+
+        public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
+        public string Error { get { return this.ComplexTypeTable.Error; } }
+        public string Namespace { get; set; }
+        public bool Skip { get; set; }
+        public bool Stop { get; set; }
+    }
+
+    public sealed class ComplexTypeTablePOCOAsyncEventArgs : EventArgs
+    {
+        internal ComplexTypeTablePOCOAsyncEventArgs(ComplexTypeTable complexTypeTable, string poco)
+        {
+            this.ComplexTypeTable = complexTypeTable;
+            this.POCO = poco;
+        }
+
+        public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
+        public string Error { get { return this.ComplexTypeTable.Error; } }
+        public string POCO { get; private set; }
+    }
+
+    public sealed class ComplexTypeTablePOCOEventArgs : EventArgs
+    {
+        internal ComplexTypeTablePOCOEventArgs(ComplexTypeTable complexTypeTable, string poco)
+        {
+            this.ComplexTypeTable = complexTypeTable;
+            this.POCO = poco;
+        }
+
+        public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
+        public string Error { get { return this.ComplexTypeTable.Error; } }
+        public string POCO { get; private set; }
+        public bool Stop { get; set; }
+    }
+
+    public sealed class ComplexTypeTableGeneratedAsyncEventArgs : EventArgs
+    {
+        internal ComplexTypeTableGeneratedAsyncEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
+        {
+            this.ComplexTypeTable = complexTypeTable;
+            this.Namespace = @namespace;
+        }
+
+        public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
+        public string Error { get { return this.ComplexTypeTable.Error; } }
+        public string Namespace { get; private set; }
+    }
+
+    public sealed class ComplexTypeTableGeneratedEventArgs : EventArgs
+    {
+        internal ComplexTypeTableGeneratedEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
+        {
+            this.ComplexTypeTable = complexTypeTable;
+            this.Namespace = @namespace;
+        }
+
+        public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
+        public string Error { get { return this.ComplexTypeTable.Error; } }
+        public string Namespace { get; private set; }
+        public bool Stop { get; set; }
+    }
+
+    public sealed class ComplexTypeTablesGeneratedAsyncEventArgs : EventArgs
+    {
+        internal ComplexTypeTablesGeneratedAsyncEventArgs()
+        {
+        }
+    }
+
+    public sealed class ComplexTypeTablesGeneratedEventArgs : EventArgs
+    {
+        internal ComplexTypeTablesGeneratedEventArgs()
+        {
+        }
+
+        public bool Stop { get; set; }
+    }
+
+    #endregion
+
     #region View
 
     public sealed class ViewsGeneratingAsyncEventArgs : EventArgs

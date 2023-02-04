@@ -4,16 +4,32 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{23B91F6A-9A25-47CE-8EE3-62C0F99750DD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>POCOGenerator.Db</RootNamespace>
-    <AssemblyName>POCOGenerator.Db</AssemblyName>
+    <ProjectGuid>{7585CD83-7D6E-4D7E-B0BE-037137EB60DB}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ComplexTypesDemo</RootNamespace>
+    <AssemblyName>ComplexTypesDemo</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,12 +39,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ComplexTypesDemo.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -41,43 +61,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Solution Items\SolutionAssemblyInfo.cs">
+    <Compile Include="..\..\..\Solution Items\SolutionAssemblyInfo.cs">
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ConnectionStringParser.cs" />
-    <Compile Include="DbHelper.cs" />
-    <Compile Include="DbObjects\ComplexTypeTable.cs" />
-    <Compile Include="DbObjects\ComplexTypeTableColumn.cs" />
-    <Compile Include="DbObjects\ComputedColumnBase.cs" />
-    <Compile Include="DbObjects\DbObjectDescriptionBase.cs" />
-    <Compile Include="DbObjects\ForeignKey.cs" />
-    <Compile Include="DbObjects\ForeignKeyColumn.cs" />
-    <Compile Include="DbObjects\IdentityColumnBase.cs" />
-    <Compile Include="DbObjects\Index.cs" />
-    <Compile Include="DbObjects\IndexColumn.cs" />
-    <Compile Include="DbObjects\InternalIndex.cs" />
-    <Compile Include="DbObjects\InternalForeignKey.cs" />
-    <Compile Include="DbObjects\InternalKey.cs" />
-    <Compile Include="DbObjects\PrimaryKey.cs" />
-    <Compile Include="DbObjects\PrimaryKeyColumn.cs" />
-    <Compile Include="DbObjects\UniqueKey.cs" />
-    <Compile Include="DbObjects\UniqueKeyColumn.cs" />
-    <Compile Include="DbObjects\NavigationProperty.cs" />
-    <Compile Include="DbObjects\ServerBase.cs" />
-    <Compile Include="DbObjects\SystemObjectBase.cs" />
-    <Compile Include="DbObjects\DbSupportBase.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\POCOGenerator.DbObjects\POCOGenerator.DbObjects.csproj">
-      <Project>{a5523067-8ed9-4ecc-bb40-37835890f193}</Project>
-      <Name>POCOGenerator.DbObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\POCOGenerator.Utils\POCOGenerator.Utils.csproj">
-      <Project>{74e97281-c6ce-4241-a201-f3a8ca566a0e}</Project>
-      <Name>POCOGenerator.Utils</Name>
+    <ProjectReference Include="..\..\..\POCOGenerator\POCOGenerator.csproj">
+      <Project>{8e9f1307-4dad-4f02-97f0-c0bce59b1b86}</Project>
+      <Name>POCOGenerator</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ComplexTypesDB.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

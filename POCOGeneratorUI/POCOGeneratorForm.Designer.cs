@@ -43,6 +43,7 @@
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.btnDisclaimer = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.grbPOCO = new System.Windows.Forms.GroupBox();
             this.chkUsingInsideNamespace = new System.Windows.Forms.CheckBox();
@@ -134,7 +135,7 @@
             this.checkReferencedTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkReferencingTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkAccessibleTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnDisclaimer = new System.Windows.Forms.Button();
+            this.chkComplexTypes = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -323,6 +324,19 @@
             this.panelMain.Size = new System.Drawing.Size(1039, 359);
             this.panelMain.TabIndex = 0;
             // 
+            // btnDisclaimer
+            // 
+            this.btnDisclaimer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDisclaimer.AutoSize = true;
+            this.btnDisclaimer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnDisclaimer.Location = new System.Drawing.Point(859, 303);
+            this.btnDisclaimer.Name = "btnDisclaimer";
+            this.btnDisclaimer.Size = new System.Drawing.Size(65, 23);
+            this.btnDisclaimer.TabIndex = 9;
+            this.btnDisclaimer.Text = "Disclaimer";
+            this.btnDisclaimer.UseVisualStyleBackColor = true;
+            this.btnDisclaimer.Click += new System.EventHandler(this.btnDisclaimer_Click);
+            // 
             // btnConnect
             // 
             this.btnConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -340,6 +354,7 @@
             // 
             this.grbPOCO.AutoSize = true;
             this.grbPOCO.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grbPOCO.Controls.Add(this.chkComplexTypes);
             this.grbPOCO.Controls.Add(this.chkUsingInsideNamespace);
             this.grbPOCO.Controls.Add(this.panelEnum);
             this.grbPOCO.Controls.Add(this.panelProperties);
@@ -370,10 +385,10 @@
             // 
             this.chkUsingInsideNamespace.AutoSize = true;
             this.chkUsingInsideNamespace.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkUsingInsideNamespace.Location = new System.Drawing.Point(65, 116);
+            this.chkUsingInsideNamespace.Location = new System.Drawing.Point(73, 116);
             this.chkUsingInsideNamespace.Name = "chkUsingInsideNamespace";
             this.chkUsingInsideNamespace.Size = new System.Drawing.Size(142, 17);
-            this.chkUsingInsideNamespace.TabIndex = 9;
+            this.chkUsingInsideNamespace.TabIndex = 10;
             this.chkUsingInsideNamespace.Text = "using Inside Namespace";
             this.chkUsingInsideNamespace.UseVisualStyleBackColor = true;
             this.chkUsingInsideNamespace.CheckedChanged += new System.EventHandler(this.chkUsingInsideNamespace_CheckedChanged);
@@ -389,15 +404,15 @@
             this.panelEnum.Location = new System.Drawing.Point(6, 188);
             this.panelEnum.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.panelEnum.Name = "panelEnum";
-            this.panelEnum.Size = new System.Drawing.Size(270, 20);
-            this.panelEnum.TabIndex = 14;
+            this.panelEnum.Size = new System.Drawing.Size(263, 20);
+            this.panelEnum.TabIndex = 15;
             this.panelEnum.TabStop = true;
             // 
             // rdbEnumSQLTypeToEnumInt
             // 
             this.rdbEnumSQLTypeToEnumInt.AutoSize = true;
             this.rdbEnumSQLTypeToEnumInt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rdbEnumSQLTypeToEnumInt.Location = new System.Drawing.Point(202, 0);
+            this.rdbEnumSQLTypeToEnumInt.Location = new System.Drawing.Point(195, 0);
             this.rdbEnumSQLTypeToEnumInt.Name = "rdbEnumSQLTypeToEnumInt";
             this.rdbEnumSQLTypeToEnumInt.Size = new System.Drawing.Size(65, 17);
             this.rdbEnumSQLTypeToEnumInt.TabIndex = 3;
@@ -419,7 +434,7 @@
             // 
             this.rdbEnumSQLTypeToEnumUShort.AutoSize = true;
             this.rdbEnumSQLTypeToEnumUShort.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rdbEnumSQLTypeToEnumUShort.Location = new System.Drawing.Point(119, 0);
+            this.rdbEnumSQLTypeToEnumUShort.Location = new System.Drawing.Point(112, 0);
             this.rdbEnumSQLTypeToEnumUShort.Name = "rdbEnumSQLTypeToEnumUShort";
             this.rdbEnumSQLTypeToEnumUShort.Size = new System.Drawing.Size(83, 17);
             this.rdbEnumSQLTypeToEnumUShort.TabIndex = 2;
@@ -433,7 +448,7 @@
             this.rdbEnumSQLTypeToString.AutoSize = true;
             this.rdbEnumSQLTypeToString.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rdbEnumSQLTypeToString.Checked = true;
-            this.rdbEnumSQLTypeToString.Location = new System.Drawing.Point(69, 0);
+            this.rdbEnumSQLTypeToString.Location = new System.Drawing.Point(62, 0);
             this.rdbEnumSQLTypeToString.Name = "rdbEnumSQLTypeToString";
             this.rdbEnumSQLTypeToString.Size = new System.Drawing.Size(50, 17);
             this.rdbEnumSQLTypeToString.TabIndex = 1;
@@ -488,7 +503,7 @@
             this.chkVirtualProperties.Location = new System.Drawing.Point(6, 47);
             this.chkVirtualProperties.Name = "chkVirtualProperties";
             this.chkVirtualProperties.Size = new System.Drawing.Size(105, 17);
-            this.chkVirtualProperties.TabIndex = 2;
+            this.chkVirtualProperties.TabIndex = 3;
             this.chkVirtualProperties.Text = "Virtual Properties";
             this.chkVirtualProperties.UseVisualStyleBackColor = true;
             this.chkVirtualProperties.CheckedChanged += new System.EventHandler(this.chkVirtualProperties_CheckedChanged);
@@ -497,7 +512,7 @@
             // 
             this.chkStructTypesNullable.AutoSize = true;
             this.chkStructTypesNullable.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkStructTypesNullable.Location = new System.Drawing.Point(97, 70);
+            this.chkStructTypesNullable.Location = new System.Drawing.Point(6, 70);
             this.chkStructTypesNullable.Name = "chkStructTypesNullable";
             this.chkStructTypesNullable.Size = new System.Drawing.Size(127, 17);
             this.chkStructTypesNullable.TabIndex = 5;
@@ -512,7 +527,7 @@
             this.chkComments.Location = new System.Drawing.Point(6, 93);
             this.chkComments.Name = "chkComments";
             this.chkComments.Size = new System.Drawing.Size(75, 17);
-            this.chkComments.TabIndex = 6;
+            this.chkComments.TabIndex = 7;
             this.chkComments.Text = "Comments";
             this.chkComments.UseVisualStyleBackColor = true;
             this.chkComments.CheckedChanged += new System.EventHandler(this.chkComments_CheckedChanged);
@@ -521,10 +536,10 @@
             // 
             this.chkCommentsWithoutNull.AutoSize = true;
             this.chkCommentsWithoutNull.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkCommentsWithoutNull.Location = new System.Drawing.Point(85, 93);
+            this.chkCommentsWithoutNull.Location = new System.Drawing.Point(97, 93);
             this.chkCommentsWithoutNull.Name = "chkCommentsWithoutNull";
             this.chkCommentsWithoutNull.Size = new System.Drawing.Size(134, 17);
-            this.chkCommentsWithoutNull.TabIndex = 7;
+            this.chkCommentsWithoutNull.TabIndex = 8;
             this.chkCommentsWithoutNull.Text = "Comments Without null";
             this.chkCommentsWithoutNull.UseVisualStyleBackColor = true;
             this.chkCommentsWithoutNull.CheckedChanged += new System.EventHandler(this.chkCommentsWithoutNull_CheckedChanged);
@@ -533,10 +548,10 @@
             // 
             this.chkColumnDefaults.AutoSize = true;
             this.chkColumnDefaults.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkColumnDefaults.Location = new System.Drawing.Point(6, 163);
+            this.chkColumnDefaults.Location = new System.Drawing.Point(149, 70);
             this.chkColumnDefaults.Name = "chkColumnDefaults";
             this.chkColumnDefaults.Size = new System.Drawing.Size(103, 17);
-            this.chkColumnDefaults.TabIndex = 12;
+            this.chkColumnDefaults.TabIndex = 6;
             this.chkColumnDefaults.Text = "Column Defaults";
             this.chkColumnDefaults.UseVisualStyleBackColor = true;
             this.chkColumnDefaults.CheckedChanged += new System.EventHandler(this.chkColumnDefaults_CheckedChanged);
@@ -554,10 +569,10 @@
             // 
             this.chkOverrideProperties.AutoSize = true;
             this.chkOverrideProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkOverrideProperties.Location = new System.Drawing.Point(119, 47);
+            this.chkOverrideProperties.Location = new System.Drawing.Point(127, 47);
             this.chkOverrideProperties.Name = "chkOverrideProperties";
             this.chkOverrideProperties.Size = new System.Drawing.Size(116, 17);
-            this.chkOverrideProperties.TabIndex = 3;
+            this.chkOverrideProperties.TabIndex = 4;
             this.chkOverrideProperties.Text = "Override Properties";
             this.chkOverrideProperties.UseVisualStyleBackColor = true;
             this.chkOverrideProperties.CheckedChanged += new System.EventHandler(this.chkOverrideProperties_CheckedChanged);
@@ -567,7 +582,7 @@
             this.txtNamespace.Location = new System.Drawing.Point(70, 138);
             this.txtNamespace.Name = "txtNamespace";
             this.txtNamespace.Size = new System.Drawing.Size(75, 20);
-            this.txtNamespace.TabIndex = 10;
+            this.txtNamespace.TabIndex = 11;
             this.txtNamespace.TextChanged += new System.EventHandler(this.txtNamespace_TextChanged);
             // 
             // txtInherit
@@ -575,7 +590,7 @@
             this.txtInherit.Location = new System.Drawing.Point(189, 138);
             this.txtInherit.Name = "txtInherit";
             this.txtInherit.Size = new System.Drawing.Size(75, 20);
-            this.txtInherit.TabIndex = 11;
+            this.txtInherit.TabIndex = 12;
             this.txtInherit.TextChanged += new System.EventHandler(this.txtInherit_TextChanged);
             // 
             // chkUsing
@@ -585,7 +600,7 @@
             this.chkUsing.Location = new System.Drawing.Point(6, 116);
             this.chkUsing.Name = "chkUsing";
             this.chkUsing.Size = new System.Drawing.Size(51, 17);
-            this.chkUsing.TabIndex = 8;
+            this.chkUsing.TabIndex = 9;
             this.chkUsing.Text = "using";
             this.chkUsing.UseVisualStyleBackColor = true;
             this.chkUsing.CheckedChanged += new System.EventHandler(this.chkUsing_CheckedChanged);
@@ -603,10 +618,10 @@
             // 
             this.chkPartialClass.AutoSize = true;
             this.chkPartialClass.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkPartialClass.Location = new System.Drawing.Point(6, 70);
+            this.chkPartialClass.Location = new System.Drawing.Point(157, 21);
             this.chkPartialClass.Name = "chkPartialClass";
             this.chkPartialClass.Size = new System.Drawing.Size(83, 17);
-            this.chkPartialClass.TabIndex = 4;
+            this.chkPartialClass.TabIndex = 2;
             this.chkPartialClass.Text = "Partial Class";
             this.chkPartialClass.UseVisualStyleBackColor = true;
             this.chkPartialClass.CheckedChanged += new System.EventHandler(this.chkPartialClass_CheckedChanged);
@@ -615,7 +630,7 @@
             // 
             this.chkNewLineBetweenMembers.AutoSize = true;
             this.chkNewLineBetweenMembers.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkNewLineBetweenMembers.Location = new System.Drawing.Point(117, 163);
+            this.chkNewLineBetweenMembers.Location = new System.Drawing.Point(6, 166);
             this.chkNewLineBetweenMembers.Name = "chkNewLineBetweenMembers";
             this.chkNewLineBetweenMembers.Size = new System.Drawing.Size(162, 17);
             this.chkNewLineBetweenMembers.TabIndex = 13;
@@ -1396,18 +1411,17 @@
             this.checkAccessibleTablesToolStripMenuItem.Text = "Check Recursively Tables Accessible From && To This Table";
             this.checkAccessibleTablesToolStripMenuItem.Click += new System.EventHandler(this.checkAccessibleTablesToolStripMenuItem_Click);
             // 
-            // btnDisclaimer
+            // chkComplexTypes
             // 
-            this.btnDisclaimer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDisclaimer.AutoSize = true;
-            this.btnDisclaimer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnDisclaimer.Location = new System.Drawing.Point(859, 303);
-            this.btnDisclaimer.Name = "btnDisclaimer";
-            this.btnDisclaimer.Size = new System.Drawing.Size(65, 23);
-            this.btnDisclaimer.TabIndex = 9;
-            this.btnDisclaimer.Text = "Disclaimer";
-            this.btnDisclaimer.UseVisualStyleBackColor = true;
-            this.btnDisclaimer.Click += new System.EventHandler(this.btnDisclaimer_Click);
+            this.chkComplexTypes.AutoSize = true;
+            this.chkComplexTypes.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkComplexTypes.Location = new System.Drawing.Point(181, 166);
+            this.chkComplexTypes.Name = "chkComplexTypes";
+            this.chkComplexTypes.Size = new System.Drawing.Size(98, 17);
+            this.chkComplexTypes.TabIndex = 14;
+            this.chkComplexTypes.Text = "Complex Types";
+            this.chkComplexTypes.UseVisualStyleBackColor = true;
+            this.chkComplexTypes.CheckedChanged += new System.EventHandler(this.chkComplexTypes_CheckedChanged);
             // 
             // POCOGeneratorForm
             // 
@@ -1565,5 +1579,6 @@
         private System.Windows.Forms.RadioButton rdbMultipleFiles;
         private System.Windows.Forms.CheckBox chkUsingInsideNamespace;
         private System.Windows.Forms.Button btnDisclaimer;
+        private System.Windows.Forms.CheckBox chkComplexTypes;
     }
 }

@@ -33,6 +33,7 @@ namespace POCOGenerator.POCOIterators
         string Inherit { get; set; }
         bool ColumnDefaults { get; set; }
         bool NewLineBetweenMembers { get; set; }
+        bool ComplexTypes { get; set; }
         bool EnumSQLTypeToString { get; set; }
         bool EnumSQLTypeToEnumUShort { get; set; }
         bool EnumSQLTypeToEnumInt { get; set; }

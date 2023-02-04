@@ -67,6 +67,8 @@
     <Compile Include="Objects\Procedure.cs" />
     <Compile Include="Objects\ProcedureColumn.cs" />
     <Compile Include="Objects\ProcedureParameter.cs" />
+    <Compile Include="Objects\ComplexTypeTable.cs" />
+    <Compile Include="Objects\ComplexTypeTableColumn.cs" />
     <Compile Include="Objects\Version.cs" />
     <Compile Include="Objects\Server.cs" />
     <Compile Include="Objects\Table.cs" />

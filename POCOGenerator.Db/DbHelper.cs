@@ -418,6 +418,18 @@ namespace POCOGenerator.Db
             {
                 database.Errors.Add(new Exception("Failed to get descriptions.", ex));
             }
+
+            if (isEnableTables)
+            {
+                try
+                {
+                    BuildComplexTypes(database);
+                }
+                catch (Exception ex)
+                {
+                    database.Errors.Add(ex);
+                }
+            }
         }
 
         #endregion
@@ -1541,6 +1553,253 @@ namespace POCOGenerator.Db
         }
 
         #endregion
+
+        #endregion
+
+        #region Complex Types
+
+        protected virtual void BuildComplexTypes(IDatabase database)
+        {
+            // build all the complex type tables across all tables
+            List<IComplexTypeTable> complexTypeTables = GetComplexTypeTables(database);
+            if (complexTypeTables.IsNullOrEmpty())
+                return;
+
+            // consolidate complex types
+            // the same complex type table can appear within mutiple tables
+            // and can appear mutiple times in the same table
+            ConsolidateComplexTypes(complexTypeTables);
+
+            // consolidate complex types schema
+            if (Support.IsSupportSchema)
+            {
+                foreach (var ctt in complexTypeTables)
+                {
+                    var schemas = ctt.Tables.Cast<ISchema>();
+                    string schema = schemas.First().Schema;
+                    if (schemas.All(x => x.Schema == schema))
+                        ((ComplexTypeTableWithSchema)ctt).Schema = schema;
+                }
+            }
+
+            NamingComplexTypes(complexTypeTables);
+
+            // cross reference
+            foreach (var ctt in complexTypeTables)
+            {
+                foreach (var t in ctt.Tables)
+                {
+                    if (t.ComplexTypeTables == null)
+                        t.ComplexTypeTables = new List<IComplexTypeTable>();
+                    if (t.ComplexTypeTables.Contains(ctt) == false)
+                        t.ComplexTypeTables.Add(ctt);
+                }
+
+                foreach (var cttc in ctt.ComplexTypeTableColumns)
+                {
+                    foreach (var tc in cttc.TableColumns)
+                    {
+                        tc.ComplexTypeTableColumn = cttc;
+                    }
+                }
+            }
+        }
+
+        protected virtual List<IComplexTypeTable> GetComplexTypeTables(IDatabase database)
+        {
+            List<IComplexTypeTable> complexTypeTables = null;
+
+            if (database.Tables.HasAny())
+            {
+                foreach (ITable table in database.Tables)
+                {
+                    if (table.TableColumns.HasAny())
+                    {
+                        foreach (ITableColumn column in table.TableColumns)
+                        {
+                            // column not: primary key, unique key, foreign key, index, identity
+                            if (column.PrimaryKeyColumn == null &&
+                                column.UniqueKeyColumns.IsNullOrEmpty() &&
+                                column.ForeignKeyColumns.IsNullOrEmpty() &&
+                                column.PrimaryForeignKeyColumns.IsNullOrEmpty() &&
+                                column.IndexColumns.IsNullOrEmpty() &&
+                                column.IsIdentity == false)
+                            {
+                                int index = column.ColumnName.IndexOf('_');
+                                // underscore exists and first underscore not at the start and first underscore not at the end
+                                if (0 < index && index < column.ColumnName.Length - 1)
+                                {
+                                    // complexTable_complexColumn
+                                    string complexTypeTableName = column.ColumnName.Substring(0, index);
+                                    string complexTypeColumnName = column.ColumnName.Substring(index + 1);
+
+                                    if (complexTypeTables == null)
+                                        complexTypeTables = new List<IComplexTypeTable>();
+
+                                    ComplexTypeTable complexTypeTable = complexTypeTables.FirstOrDefault(t => t.Name == complexTypeTableName) as ComplexTypeTable;
+
+                                    // build complex type table
+                                    if (complexTypeTable == null)
+                                    {
+                                        if (Support.IsSupportSchema)
+                                        {
+                                            complexTypeTable = new ComplexTypeTableWithSchema()
+                                            {
+                                                Schema = Support.DefaultSchema
+                                            };
+                                        }
+                                        else
+                                        {
+                                            complexTypeTable = new ComplexTypeTable();
+                                        }
+
+                                        complexTypeTable.Tables = new List<ITable>() { table };
+                                        complexTypeTable.Name = complexTypeTableName;
+                                        complexTypeTable.Columns = complexTypeTable.ComplexTypeTableColumns = new List<IComplexTypeTableColumn>();
+                                        complexTypeTable.DbObjectType = DbObjectType.ComplexTypeTable;
+                                        complexTypeTable.Database = table.Database;
+                                        complexTypeTable.Error = null;
+                                        complexTypeTable.ClassName = null;
+
+                                        complexTypeTables.Add(complexTypeTable);
+                                    }
+
+                                    // build complex type table column
+                                    complexTypeTable.ComplexTypeTableColumns.Add(new ComplexTypeTableColumn()
+                                    {
+                                        ComplexTypeTable = complexTypeTable,
+                                        ColumnDefault = column.ColumnDefault,
+                                        TableColumns = new List<ITableColumn>() { column },
+
+                                        toString = column.ToString().Replace(column.ColumnName, complexTypeColumnName),
+                                        toFullString = column.ToFullString().Replace(column.ColumnName, complexTypeColumnName),
+
+                                        ColumnName = complexTypeColumnName,
+                                        ColumnOrdinal = column.ColumnOrdinal,
+                                        DataTypeName = column.DataTypeName,
+                                        DataTypeDisplay = column.DataTypeDisplay,
+                                        Precision = column.Precision,
+                                        StringPrecision = column.StringPrecision,
+                                        NumericPrecision = column.NumericPrecision,
+                                        NumericScale = column.NumericScale,
+                                        DateTimePrecision = column.DateTimePrecision,
+                                        IsUnsigned = column.IsUnsigned,
+                                        IsNullable = column.IsNullable,
+                                        IsIdentity = column.IsIdentity,
+                                        IsComputed = column.IsComputed
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return complexTypeTables;
+        }
+
+        protected virtual void ConsolidateComplexTypes(List<IComplexTypeTable> complexTypeTables)
+        {
+            List<List<IComplexTypeTable>> tablesGroups = new List<List<IComplexTypeTable>>();
+
+            while (complexTypeTables.Count > 0)
+            {
+                IComplexTypeTable t1 = complexTypeTables[0];
+                complexTypeTables.RemoveAt(0);
+
+                List<IComplexTypeTable> tablesGroup = new List<IComplexTypeTable>() { t1 };
+
+                // two complex type tables are the same if they have the same column count and same columns
+                // two columns are the same if they have the same: name, data type, precision, unsigned, nullable, computed, default value
+                tablesGroup.AddRange(complexTypeTables.Where(t2 =>
+                    t1.ComplexTypeTableColumns.Count == t2.ComplexTypeTableColumns.Count &&
+                    t1.ComplexTypeTableColumns.All(c1 => t2.ComplexTypeTableColumns.Any(c2 =>
+                        c1.ColumnName == c2.ColumnName &&
+                        c1.DataTypeName == c2.DataTypeName &&
+                        c1.Precision == c2.Precision &&
+                        c1.IsUnsigned == c2.IsUnsigned &&
+                        c1.IsNullable == c2.IsNullable &&
+                        c1.IsComputed == c2.IsComputed &&
+                        c1.ColumnDefault == c2.ColumnDefault
+                    ))
+                ));
+
+                tablesGroups.Add(tablesGroup);
+
+                foreach (var table in tablesGroup)
+                    complexTypeTables.Remove(table);
+            }
+
+            foreach (List<IComplexTypeTable> tablesGroup in tablesGroups)
+            {
+                IComplexTypeTable t1 = tablesGroup[0];
+
+                foreach (var t2 in tablesGroup)
+                {
+                    if (t1 != t2)
+                    {
+                        if (t1.Tables.Contains(t2.Tables[0]) == false)
+                            t1.Tables.Add(t2.Tables[0]);
+
+                        foreach (var c1 in t1.ComplexTypeTableColumns)
+                        {
+                            c1.TableColumns.AddRange(
+                                t2.ComplexTypeTableColumns.First(c2 =>
+                                    c1.ColumnName == c2.ColumnName &&
+                                    c1.DataTypeName == c2.DataTypeName &&
+                                    c1.Precision == c2.Precision &&
+                                    c1.IsUnsigned == c2.IsUnsigned &&
+                                    c1.IsNullable == c2.IsNullable &&
+                                    c1.IsComputed == c2.IsComputed &&
+                                    c1.ColumnDefault == c2.ColumnDefault
+                                ).TableColumns
+                            );
+                        }
+                    }
+                }
+
+                complexTypeTables.Add(t1);
+            }
+
+            foreach (var t in complexTypeTables)
+            {
+                t.ComplexTypeTableColumns.Sort((x, y) => (x.ColumnOrdinal ?? 0).CompareTo(y.ColumnOrdinal ?? 0));
+
+                int columnOrdinal = 1;
+                foreach (var c in t.ComplexTypeTableColumns.Cast<ComplexTypeTableColumn>())
+                {
+                    c.ColumnOrdinal = columnOrdinal;
+                    columnOrdinal++;
+                }
+            }
+        }
+
+        protected virtual void NamingComplexTypes(List<IComplexTypeTable> complexTypeTables)
+        {
+            // shipping address, billing address -> address
+            foreach (var t in complexTypeTables.Where(t => t.Name.Contains("Address")).Cast<ComplexTypeTable>())
+            {
+                t.Name = "Address";
+            }
+
+            foreach (var t in complexTypeTables.Where(t => t.Name.Contains("Contact")).Cast<ComplexTypeTable>())
+            {
+                t.Name = "Contact";
+            }
+
+            RenameDuplicateComplexTypes(complexTypeTables);
+        }
+
+        protected virtual void RenameDuplicateComplexTypes(List<IComplexTypeTable> complexTypeTables)
+        {
+            var cttGroups = complexTypeTables.GroupBy(p => p.Name).Where(g => g.Count() > 1);
+            foreach (var cttGroup in cttGroups)
+            {
+                int suffix = 1;
+                foreach (var ctt in cttGroup.Skip(1).Cast<ComplexTypeTable>())
+                    ctt.Name = ctt.Name + (suffix++);
+            }
+        }
 
         #endregion
 
