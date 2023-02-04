@@ -191,19 +191,7 @@ namespace POCOGenerator.Objects
                     this.complexTypeTables = new CachedEnumerable<POCOGenerator.DbObjects.IComplexTypeTable, ComplexTypeTable>(
                         this.table.ComplexTypeTables,
                          // debug Table this needs to be tested
-                         ctt1 =>
-                         {
-                             var complexTypeTable = this.Database.ComplexTypeTables?.FirstOrDefault(ctt2 => ctt2.InternalEquals(ctt1));
-                             if (complexTypeTable == null)
-                             {
-                                 if (this.Database.ComplexTypeTables == null)
-                                     this.Database.ComplexTypeTables = new List<ComplexTypeTable>();
-
-                                 complexTypeTable = new ComplexTypeTable(ctt1, this.Database);
-                                 this.Database.ComplexTypeTables.Add(complexTypeTable);
-                             }
-                             return complexTypeTable;
-                         }
+                         ctt1 => this.Database.ComplexTypeTables.First(ctt2 => ctt2.InternalEquals(ctt1))
                     );
                 }
 

@@ -71,7 +71,27 @@ namespace POCOGenerator.Objects
             }
         }
 
-        internal List<ComplexTypeTable> ComplexTypeTables { get; set; }
+        private CachedEnumerable<POCOGenerator.DbObjects.IComplexTypeTable, ComplexTypeTable> complexTypeTables;
+        internal IEnumerable<ComplexTypeTable> ComplexTypeTables
+        {
+            get
+            {
+                if (this.database.Tables.IsNullOrEmpty())
+                    yield break;
+
+                if (this.complexTypeTables == null)
+                {
+                    var tables = this.database.Tables.Intersect(this.databaseAccessibleObjects.Tables);
+                    var source = tables.Where(t => t.ComplexTypeTables.HasAny()).SelectMany(t => t.ComplexTypeTables).Distinct().OrderBy(t => t.Name).ToList();
+                    this.complexTypeTables = new CachedEnumerable<POCOGenerator.DbObjects.IComplexTypeTable, ComplexTypeTable>(source, t => new ComplexTypeTable(t, this));
+                }
+
+                foreach (var complexTypeTable in this.complexTypeTables)
+                {
+                    yield return complexTypeTable;
+                }
+            }
+        }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IView, View> views;
         public IEnumerable<View> Views
