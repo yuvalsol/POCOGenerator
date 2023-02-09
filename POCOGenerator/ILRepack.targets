@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Target Name="ILRepacker" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <Target Name="ILRepacker" AfterTargets="Build" Condition="$(Configuration.Contains('Release'))">
         <ItemGroup>
             <InputAssemblies Include="$(OutputPath)$(TargetName)$(TargetExt)"/>
             <InputAssemblies Include="$(OutputPath)*.dll" Exclude="$(OutputPath)$(TargetName)$(TargetExt)"/>
@@ -15,7 +15,17 @@
             AllowDuplicateResources="false"
             InputAssemblies="@(InputAssemblies)"
             TargetKind="SameAsPrimaryAssembly"
-            OutputFile="..\Output\$(Configuration)\$(TargetName)\$(TargetName)$(TargetExt)"
+            OutputFile="$(OutputPath)$(TargetName)$(TargetExt)"
         />
+    </Target>
+    <Target Name="ClearReferenceCopyLocalPaths" AfterTargets="ILRepacker" Condition="$(Configuration.Contains('Release'))">
+        <Delete Files="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)%(Filename)%(Extension)')" />
+        <ItemGroup>
+            <Directories Include="$([System.IO.Directory]::GetDirectories('$(OutDir)%(DestinationSubDirectory)', '*', System.IO.SearchOption.AllDirectories))" />
+            <Directories>
+                <Files>$([System.IO.Directory]::GetFiles("%(Directories.Identity)", "*", System.IO.SearchOption.AllDirectories).get_Length())</Files>
+            </Directories>
+        </ItemGroup>
+        <RemoveDir Directories="@(Directories)" Condition="%(Files)=='0'" />
     </Target>
 </Project>
