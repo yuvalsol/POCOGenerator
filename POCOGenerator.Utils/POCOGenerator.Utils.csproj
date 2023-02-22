@@ -47,6 +47,7 @@
     <Compile Include="..\Solution Items\SolutionAssemblyInfo.cs">
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CachedEnumerable.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="DataTableExtensions.cs" />
     <Compile Include="EventExtensions.cs" />
