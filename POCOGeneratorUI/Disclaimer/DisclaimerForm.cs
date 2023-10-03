@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace POCOGeneratorUI.TypesMapping
+namespace POCOGeneratorUI.Disclaimer
 {
     public partial class DisclaimerForm : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace POCOGeneratorUI.TypesMapping
+﻿namespace POCOGeneratorUI.Disclaimer
 {
     partial class DisclaimerForm
     {

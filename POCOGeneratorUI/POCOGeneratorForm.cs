@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using POCOGenerator;
 using POCOGenerator.Objects;
 using POCOGeneratorUI.ConnectionDialog;
+using POCOGeneratorUI.Disclaimer;
 using POCOGeneratorUI.Filtering;
 using POCOGeneratorUI.TypesMapping;
 
@@ -3656,7 +3657,7 @@ namespace POCOGeneratorUI
         private void ShowDisclaimer()
         {
             if (DisclaimerForm == null)
-                DisclaimerForm = new DisclaimerForm(Disclaimer.Message);
+                DisclaimerForm = new DisclaimerForm(POCOGenerator.Disclaimer.Message);
             DisclaimerForm.ShowDialog(this);
         }
 
