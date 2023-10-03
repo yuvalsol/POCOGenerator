@@ -96,6 +96,12 @@
     <Compile Include="DbObjectsForm.Designer.cs">
       <DependentUpon>DbObjectsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Disclaimer\DisclaimerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Disclaimer\DisclaimerForm.Designer.cs">
+      <DependentUpon>DisclaimerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\GroupBoxExtensions.cs" />
     <Compile Include="Extensions\TreeNodeExtensions.cs" />
@@ -130,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DbObjectsForm.resx">
       <DependentUpon>DbObjectsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Disclaimer\DisclaimerForm.resx">
+      <DependentUpon>DisclaimerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Filtering\FilterSettingsForm.resx">
       <DependentUpon>FilterSettingsForm.cs</DependentUpon>

@@ -3651,9 +3651,13 @@ namespace POCOGeneratorUI
             ShowDisclaimer();
         }
 
+        private DisclaimerForm DisclaimerForm;
+
         private void ShowDisclaimer()
         {
-            MessageBox.Show(this, Disclaimer.Message, "Disclaimer", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (DisclaimerForm == null)
+                DisclaimerForm = new DisclaimerForm(Disclaimer.Message);
+            DisclaimerForm.ShowDialog(this);
         }
 
         #endregion
