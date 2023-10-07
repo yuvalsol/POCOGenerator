@@ -69,7 +69,7 @@ namespace POCOGenerator
             this.NavigationProperties.Enable = settings.NavigationProperties.Enable;
             this.NavigationProperties.VirtualNavigationProperties = settings.NavigationProperties.VirtualNavigationProperties;
             this.NavigationProperties.OverrideNavigationProperties = settings.NavigationProperties.OverrideNavigationProperties;
-            this.NavigationProperties.ShowManyToManyJoinTable = settings.NavigationProperties.ShowManyToManyJoinTable;
+            this.NavigationProperties.ManyToManyJoinTable = settings.NavigationProperties.ManyToManyJoinTable;
             this.NavigationProperties.Comments = settings.NavigationProperties.Comments;
             this.NavigationProperties.ListNavigationProperties = settings.NavigationProperties.ListNavigationProperties;
             this.NavigationProperties.ICollectionNavigationProperties = settings.NavigationProperties.ICollectionNavigationProperties;
@@ -857,7 +857,7 @@ namespace POCOGenerator
                     this.Enable = false;
                     this.VirtualNavigationProperties = false;
                     this.OverrideNavigationProperties = false;
-                    this.ShowManyToManyJoinTable = false;
+                    this.ManyToManyJoinTable = false;
                     this.Comments = false;
                     this.ListNavigationProperties = true;
                     this.ICollectionNavigationProperties = false;
@@ -938,14 +938,14 @@ namespace POCOGenerator
                 }
             }
 
-            private bool showManyToManyJoinTable;
-            public bool ShowManyToManyJoinTable
+            private bool manyToManyJoinTable;
+            public bool ManyToManyJoinTable
             {
                 get
                 {
                     lock (lockObject)
                     {
-                        return showManyToManyJoinTable;
+                        return manyToManyJoinTable;
                     }
                 }
 
@@ -953,7 +953,7 @@ namespace POCOGenerator
                 {
                     lock (lockObject)
                     {
-                        showManyToManyJoinTable = value;
+                        manyToManyJoinTable = value;
                     }
                 }
             }
@@ -2410,7 +2410,7 @@ namespace POCOGenerator
         /// Gets or sets a value indicating whether to generate a join table in a many-to-many relationship. In a many-to-many relationship, the join table is hidden by default.
         /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
         /// </summary>
-        bool ShowManyToManyJoinTable { get; set; }
+        bool ManyToManyJoinTable { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate a comment of the original SQL Server foreign key.

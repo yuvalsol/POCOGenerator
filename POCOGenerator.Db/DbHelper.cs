@@ -1395,27 +1395,27 @@ namespace POCOGenerator.Db
                             }
                         };
 
-                        // the concrete non-virtual navigation properties are visible when ShowManyToManyJoinTable is on
-                        // they are not visible when ShowManyToManyJoinTable is off
+                        // the concrete non-virtual navigation properties are visible when ManyToManyJoinTable is on
+                        // they are not visible when ManyToManyJoinTable is off
 
-                        // ShowManyToManyJoinTable = true -> show join table navigation properties
-                        // ShowManyToManyJoinTable = false -> hide join table navigation properties
+                        // ManyToManyJoinTable = true -> show join table navigation properties
+                        // ManyToManyJoinTable = false -> hide join table navigation properties
 
                         NavigationProperty otherFK_NavigationPropertyFromForeignToPrimary = (NavigationProperty)item.otherFK.NavigationPropertyFromForeignToPrimary;
-                        otherFK_NavigationPropertyFromForeignToPrimary.IsVisibleWhenShowManyToManyJoinTableIsOn = true;
-                        otherFK_NavigationPropertyFromForeignToPrimary.IsVisibleWhenShowManyToManyJoinTableIsOff = false;
+                        otherFK_NavigationPropertyFromForeignToPrimary.IsVisibleWhenManyToManyJoinTableIsOn = true;
+                        otherFK_NavigationPropertyFromForeignToPrimary.IsVisibleWhenManyToManyJoinTableIsOff = false;
 
                         NavigationProperty otherFK_NavigationPropertyFromPrimaryToForeign = (NavigationProperty)item.otherFK.NavigationPropertyFromPrimaryToForeign;
-                        otherFK_NavigationPropertyFromPrimaryToForeign.IsVisibleWhenShowManyToManyJoinTableIsOn = true;
-                        otherFK_NavigationPropertyFromPrimaryToForeign.IsVisibleWhenShowManyToManyJoinTableIsOff = false;
+                        otherFK_NavigationPropertyFromPrimaryToForeign.IsVisibleWhenManyToManyJoinTableIsOn = true;
+                        otherFK_NavigationPropertyFromPrimaryToForeign.IsVisibleWhenManyToManyJoinTableIsOff = false;
 
                         NavigationProperty thisFK_NavigationPropertyFromForeignToPrimary = (NavigationProperty)item.thisFK.NavigationPropertyFromForeignToPrimary;
-                        thisFK_NavigationPropertyFromForeignToPrimary.IsVisibleWhenShowManyToManyJoinTableIsOn = true;
-                        thisFK_NavigationPropertyFromForeignToPrimary.IsVisibleWhenShowManyToManyJoinTableIsOff = false;
+                        thisFK_NavigationPropertyFromForeignToPrimary.IsVisibleWhenManyToManyJoinTableIsOn = true;
+                        thisFK_NavigationPropertyFromForeignToPrimary.IsVisibleWhenManyToManyJoinTableIsOff = false;
 
                         NavigationProperty thisFK_NavigationPropertyFromPrimaryToForeign = (NavigationProperty)item.thisFK.NavigationPropertyFromPrimaryToForeign;
-                        thisFK_NavigationPropertyFromPrimaryToForeign.IsVisibleWhenShowManyToManyJoinTableIsOn = true;
-                        thisFK_NavigationPropertyFromPrimaryToForeign.IsVisibleWhenShowManyToManyJoinTableIsOff = false;
+                        thisFK_NavigationPropertyFromPrimaryToForeign.IsVisibleWhenManyToManyJoinTableIsOn = true;
+                        thisFK_NavigationPropertyFromPrimaryToForeign.IsVisibleWhenManyToManyJoinTableIsOff = false;
 
                         return new { item.thisFK, virtualFK };
                     })
@@ -1426,17 +1426,17 @@ namespace POCOGenerator.Db
                         var virtualNP = (NavigationProperty)GetNavigationPropertyFromPrimaryToForeign(item.virtualFK, true);
                         var virtualInverseProperty = (NavigationProperty)GetNavigationPropertyFromForeignToPrimary(item.virtualFK, true);
 
-                        // the virtual navigation properties are visible when ShowManyToManyJoinTable is off
-                        // they are not visible when ShowManyToManyJoinTable is on
+                        // the virtual navigation properties are visible when ManyToManyJoinTable is off
+                        // they are not visible when ManyToManyJoinTable is on
 
-                        // ShowManyToManyJoinTable = true -> hide virtual navigation properties
-                        // ShowManyToManyJoinTable = false -> show virtual navigation properties
+                        // ManyToManyJoinTable = true -> hide virtual navigation properties
+                        // ManyToManyJoinTable = false -> show virtual navigation properties
 
-                        virtualNP.IsVisibleWhenShowManyToManyJoinTableIsOn = false;
-                        virtualNP.IsVisibleWhenShowManyToManyJoinTableIsOff = true;
+                        virtualNP.IsVisibleWhenManyToManyJoinTableIsOn = false;
+                        virtualNP.IsVisibleWhenManyToManyJoinTableIsOff = true;
 
-                        virtualInverseProperty.IsVisibleWhenShowManyToManyJoinTableIsOn = false;
-                        virtualInverseProperty.IsVisibleWhenShowManyToManyJoinTableIsOff = true;
+                        virtualInverseProperty.IsVisibleWhenManyToManyJoinTableIsOn = false;
+                        virtualInverseProperty.IsVisibleWhenManyToManyJoinTableIsOff = true;
 
                         return new
                         {
@@ -1477,8 +1477,8 @@ namespace POCOGenerator.Db
                 IsCollection = false,
                 PropertyName = GetNavigationPropertyPrimaryPropertyName(fk),
                 IsVirtualNavigationProperty = isVirtualNavigationProperty,
-                IsVisibleWhenShowManyToManyJoinTableIsOn = true,
-                IsVisibleWhenShowManyToManyJoinTableIsOff = true
+                IsVisibleWhenManyToManyJoinTableIsOn = true,
+                IsVisibleWhenManyToManyJoinTableIsOff = true
             };
         }
 
@@ -1491,8 +1491,8 @@ namespace POCOGenerator.Db
                 IsCollection = (fk.Is_One_To_One == false),
                 PropertyName = GetNavigationPropertyForeignPropertyName(fk, fk.Is_One_To_One == false),
                 IsVirtualNavigationProperty = isVirtualNavigationProperty,
-                IsVisibleWhenShowManyToManyJoinTableIsOn = true,
-                IsVisibleWhenShowManyToManyJoinTableIsOff = true
+                IsVisibleWhenManyToManyJoinTableIsOn = true,
+                IsVisibleWhenManyToManyJoinTableIsOff = true
             };
         }
 

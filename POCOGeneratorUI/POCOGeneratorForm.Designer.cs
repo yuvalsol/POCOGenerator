@@ -77,7 +77,7 @@
             this.rdbICollectionNavigationProperties = new System.Windows.Forms.RadioButton();
             this.rdbListNavigationProperties = new System.Windows.Forms.RadioButton();
             this.chkNavigationPropertiesComments = new System.Windows.Forms.CheckBox();
-            this.chkShowManyToManyJoinTable = new System.Windows.Forms.CheckBox();
+            this.chkManyToManyJoinTable = new System.Windows.Forms.CheckBox();
             this.chkOverrideNavigationProperties = new System.Windows.Forms.CheckBox();
             this.grbExportToFiles = new System.Windows.Forms.GroupBox();
             this.grbFileName = new System.Windows.Forms.GroupBox();
@@ -233,26 +233,26 @@
             this.filterSettingsToolStripMenuItem,
             this.clearCheckBoxesToolStripMenuItem});
             this.contextMenu.Name = "contextMenuServerTree";
-            this.contextMenu.Size = new System.Drawing.Size(168, 70);
+            this.contextMenu.Size = new System.Drawing.Size(169, 70);
             // 
             // removeFilterToolStripMenuItem
             // 
             this.removeFilterToolStripMenuItem.Name = "removeFilterToolStripMenuItem";
-            this.removeFilterToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.removeFilterToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.removeFilterToolStripMenuItem.Text = "Remove Filter";
             this.removeFilterToolStripMenuItem.Click += new System.EventHandler(this.removeFilterToolStripMenuItem_Click);
             // 
             // filterSettingsToolStripMenuItem
             // 
             this.filterSettingsToolStripMenuItem.Name = "filterSettingsToolStripMenuItem";
-            this.filterSettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.filterSettingsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.filterSettingsToolStripMenuItem.Text = "Filter Settings";
             this.filterSettingsToolStripMenuItem.Click += new System.EventHandler(this.filterSettingsToolStripMenuItem_Click);
             // 
             // clearCheckBoxesToolStripMenuItem
             // 
             this.clearCheckBoxesToolStripMenuItem.Name = "clearCheckBoxesToolStripMenuItem";
-            this.clearCheckBoxesToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.clearCheckBoxesToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.clearCheckBoxesToolStripMenuItem.Text = "Clear Checkboxes";
             this.clearCheckBoxesToolStripMenuItem.Click += new System.EventHandler(this.clearCheckBoxesToolStripMenuItem_Click);
             // 
@@ -667,14 +667,14 @@
             this.grbNavigationProperties.Controls.Add(this.chkVirtualNavigationProperties);
             this.grbNavigationProperties.Controls.Add(this.panelNavigationProperties1);
             this.grbNavigationProperties.Controls.Add(this.chkNavigationPropertiesComments);
-            this.grbNavigationProperties.Controls.Add(this.chkShowManyToManyJoinTable);
+            this.grbNavigationProperties.Controls.Add(this.chkManyToManyJoinTable);
             this.grbNavigationProperties.Controls.Add(this.chkOverrideNavigationProperties);
             this.grbNavigationProperties.Location = new System.Drawing.Point(12, 229);
             this.grbNavigationProperties.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbNavigationProperties.MinimumSize = new System.Drawing.Size(285, 0);
             this.grbNavigationProperties.Name = "grbNavigationProperties";
             this.grbNavigationProperties.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.grbNavigationProperties.Size = new System.Drawing.Size(285, 102);
+            this.grbNavigationProperties.Size = new System.Drawing.Size(286, 102);
             this.grbNavigationProperties.TabIndex = 3;
             this.grbNavigationProperties.TabStop = false;
             this.grbNavigationProperties.Text = "Navigation Properties";
@@ -697,10 +697,10 @@
             // 
             this.chkVirtualNavigationProperties.AutoSize = true;
             this.chkVirtualNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkVirtualNavigationProperties.Location = new System.Drawing.Point(141, 19);
+            this.chkVirtualNavigationProperties.Location = new System.Drawing.Point(6, 44);
             this.chkVirtualNavigationProperties.Name = "chkVirtualNavigationProperties";
             this.chkVirtualNavigationProperties.Size = new System.Drawing.Size(55, 17);
-            this.chkVirtualNavigationProperties.TabIndex = 2;
+            this.chkVirtualNavigationProperties.TabIndex = 3;
             this.chkVirtualNavigationProperties.Text = "Virtual";
             this.chkVirtualNavigationProperties.UseVisualStyleBackColor = true;
             this.chkVirtualNavigationProperties.CheckedChanged += new System.EventHandler(this.chkVirtualNavigationProperties_CheckedChanged);
@@ -763,34 +763,34 @@
             // 
             this.chkNavigationPropertiesComments.AutoSize = true;
             this.chkNavigationPropertiesComments.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkNavigationPropertiesComments.Location = new System.Drawing.Point(189, 44);
+            this.chkNavigationPropertiesComments.Location = new System.Drawing.Point(141, 19);
             this.chkNavigationPropertiesComments.Name = "chkNavigationPropertiesComments";
             this.chkNavigationPropertiesComments.Size = new System.Drawing.Size(75, 17);
-            this.chkNavigationPropertiesComments.TabIndex = 5;
+            this.chkNavigationPropertiesComments.TabIndex = 2;
             this.chkNavigationPropertiesComments.Text = "Comments";
             this.chkNavigationPropertiesComments.UseVisualStyleBackColor = true;
             this.chkNavigationPropertiesComments.CheckedChanged += new System.EventHandler(this.chkNavigationPropertiesComments_CheckedChanged);
             // 
-            // chkShowManyToManyJoinTable
+            // chkManyToManyJoinTable
             // 
-            this.chkShowManyToManyJoinTable.AutoSize = true;
-            this.chkShowManyToManyJoinTable.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkShowManyToManyJoinTable.Location = new System.Drawing.Point(6, 44);
-            this.chkShowManyToManyJoinTable.Name = "chkShowManyToManyJoinTable";
-            this.chkShowManyToManyJoinTable.Size = new System.Drawing.Size(175, 17);
-            this.chkShowManyToManyJoinTable.TabIndex = 4;
-            this.chkShowManyToManyJoinTable.Text = "Show Many-to-Many Join Table";
-            this.chkShowManyToManyJoinTable.UseVisualStyleBackColor = true;
-            this.chkShowManyToManyJoinTable.CheckedChanged += new System.EventHandler(this.chkShowManyToManyJoinTable_CheckedChanged);
+            this.chkManyToManyJoinTable.AutoSize = true;
+            this.chkManyToManyJoinTable.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkManyToManyJoinTable.Location = new System.Drawing.Point(131, 44);
+            this.chkManyToManyJoinTable.Name = "chkManyToManyJoinTable";
+            this.chkManyToManyJoinTable.Size = new System.Drawing.Size(149, 17);
+            this.chkManyToManyJoinTable.TabIndex = 5;
+            this.chkManyToManyJoinTable.Text = "Many-To-Many Join Table";
+            this.chkManyToManyJoinTable.UseVisualStyleBackColor = true;
+            this.chkManyToManyJoinTable.CheckedChanged += new System.EventHandler(this.chkManyToManyJoinTable_CheckedChanged);
             // 
             // chkOverrideNavigationProperties
             // 
             this.chkOverrideNavigationProperties.AutoSize = true;
             this.chkOverrideNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkOverrideNavigationProperties.Location = new System.Drawing.Point(204, 19);
+            this.chkOverrideNavigationProperties.Location = new System.Drawing.Point(63, 44);
             this.chkOverrideNavigationProperties.Name = "chkOverrideNavigationProperties";
             this.chkOverrideNavigationProperties.Size = new System.Drawing.Size(66, 17);
-            this.chkOverrideNavigationProperties.TabIndex = 3;
+            this.chkOverrideNavigationProperties.TabIndex = 4;
             this.chkOverrideNavigationProperties.Text = "Override";
             this.chkOverrideNavigationProperties.UseVisualStyleBackColor = true;
             this.chkOverrideNavigationProperties.CheckedChanged += new System.EventHandler(this.chkOverrideNavigationProperties_CheckedChanged);
@@ -1489,26 +1489,26 @@
             this.checkReferencingTablesToolStripMenuItem,
             this.checkAccessibleTablesToolStripMenuItem});
             this.contextMenuTable.Name = "contextMenuTable";
-            this.contextMenuTable.Size = new System.Drawing.Size(383, 70);
+            this.contextMenuTable.Size = new System.Drawing.Size(376, 70);
             // 
             // checkReferencedTablesToolStripMenuItem
             // 
             this.checkReferencedTablesToolStripMenuItem.Name = "checkReferencedTablesToolStripMenuItem";
-            this.checkReferencedTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkReferencedTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.checkReferencedTablesToolStripMenuItem.Text = "Check Tables Referenced From This Table";
             this.checkReferencedTablesToolStripMenuItem.Click += new System.EventHandler(this.checkReferencedTablesToolStripMenuItem_Click);
             // 
             // checkReferencingTablesToolStripMenuItem
             // 
             this.checkReferencingTablesToolStripMenuItem.Name = "checkReferencingTablesToolStripMenuItem";
-            this.checkReferencingTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkReferencingTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.checkReferencingTablesToolStripMenuItem.Text = "Check Tables Referencing To This Table";
             this.checkReferencingTablesToolStripMenuItem.Click += new System.EventHandler(this.checkReferencingTablesToolStripMenuItem_Click);
             // 
             // checkAccessibleTablesToolStripMenuItem
             // 
             this.checkAccessibleTablesToolStripMenuItem.Name = "checkAccessibleTablesToolStripMenuItem";
-            this.checkAccessibleTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkAccessibleTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.checkAccessibleTablesToolStripMenuItem.Text = "Check Recursively Tables Accessible From && To This Table";
             this.checkAccessibleTablesToolStripMenuItem.Click += new System.EventHandler(this.checkAccessibleTablesToolStripMenuItem_Click);
             // 
@@ -1646,7 +1646,7 @@
         private System.Windows.Forms.RadioButton rdbListNavigationProperties;
         private System.Windows.Forms.CheckBox chkEFForeignKeyAndInverseProperty;
         private System.Windows.Forms.CheckBox chkNavigationPropertiesComments;
-        private System.Windows.Forms.CheckBox chkShowManyToManyJoinTable;
+        private System.Windows.Forms.CheckBox chkManyToManyJoinTable;
         private System.Windows.Forms.TextBox txtInherit;
         private System.Windows.Forms.Label lblInherit;
         private System.Windows.Forms.CheckBox chkEFDescription;

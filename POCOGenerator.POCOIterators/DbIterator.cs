@@ -218,7 +218,7 @@ namespace POCOGenerator.POCOIterators
                     foreach (IDbObjectTraverse table in tables)
                     {
                         // don't write join table
-                        if (((ITable)table).IsJoinTable && settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable == false)
+                        if (((ITable)table).IsJoinTable && settings.NavigationPropertiesIteratorSettings.ManyToManyJoinTable == false)
                             continue;
 
                         // collect complex type tables
@@ -3045,10 +3045,10 @@ namespace POCOGenerator.POCOIterators
 
                     foreach (var fk in table.ForeignKeys)
                     {
-                        if ((settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable &&
-                            fk.NavigationPropertyFromForeignToPrimary.IsVisibleWhenShowManyToManyJoinTableIsOn) ||
-                            (settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable == false &&
-                            fk.NavigationPropertyFromForeignToPrimary.IsVisibleWhenShowManyToManyJoinTableIsOff))
+                        if ((settings.NavigationPropertiesIteratorSettings.ManyToManyJoinTable &&
+                            fk.NavigationPropertyFromForeignToPrimary.IsVisibleWhenManyToManyJoinTableIsOn) ||
+                            (settings.NavigationPropertiesIteratorSettings.ManyToManyJoinTable == false &&
+                            fk.NavigationPropertyFromForeignToPrimary.IsVisibleWhenManyToManyJoinTableIsOff))
                         {
                             string className = GetClassName(
                                 dbObject.Database.ToString(),
@@ -3070,10 +3070,10 @@ namespace POCOGenerator.POCOIterators
 
                     foreach (var fk in table.PrimaryForeignKeys)
                     {
-                        if ((settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable &&
-                            fk.NavigationPropertyFromPrimaryToForeign.IsVisibleWhenShowManyToManyJoinTableIsOn) ||
-                            (settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable == false &&
-                            fk.NavigationPropertyFromPrimaryToForeign.IsVisibleWhenShowManyToManyJoinTableIsOff))
+                        if ((settings.NavigationPropertiesIteratorSettings.ManyToManyJoinTable &&
+                            fk.NavigationPropertyFromPrimaryToForeign.IsVisibleWhenManyToManyJoinTableIsOn) ||
+                            (settings.NavigationPropertiesIteratorSettings.ManyToManyJoinTable == false &&
+                            fk.NavigationPropertyFromPrimaryToForeign.IsVisibleWhenManyToManyJoinTableIsOff))
                         {
                             string className = GetClassName(
                                 dbObject.Database.ToString(),
@@ -3090,10 +3090,10 @@ namespace POCOGenerator.POCOIterators
                         {
                             foreach (var vnp in fk.VirtualNavigationProperties)
                             {
-                                if ((settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable &&
-                                    vnp.IsVisibleWhenShowManyToManyJoinTableIsOn) ||
-                                    (settings.NavigationPropertiesIteratorSettings.ShowManyToManyJoinTable == false &&
-                                    vnp.IsVisibleWhenShowManyToManyJoinTableIsOff))
+                                if ((settings.NavigationPropertiesIteratorSettings.ManyToManyJoinTable &&
+                                    vnp.IsVisibleWhenManyToManyJoinTableIsOn) ||
+                                    (settings.NavigationPropertiesIteratorSettings.ManyToManyJoinTable == false &&
+                                    vnp.IsVisibleWhenManyToManyJoinTableIsOff))
                                 {
                                     var vfk = vnp.ForeignKey;
 

@@ -49,7 +49,7 @@ namespace POCOGenerator.POCOIterators
         bool Enable { get; set; }
         bool VirtualNavigationProperties { get; set; }
         bool OverrideNavigationProperties { get; set; }
-        bool ShowManyToManyJoinTable { get; set; }
+        bool ManyToManyJoinTable { get; set; }
         bool Comments { get; set; }
         bool ListNavigationProperties { get; set; }
         bool ICollectionNavigationProperties { get; set; }

@@ -23,8 +23,8 @@ namespace POCOGenerator.Objects
         public string PropertyName { get { return this.ToString(); } }
         public bool IsCollection { get { return this.navigationProperty.IsCollection; } }
         public bool IsVirtualNavigationProperty { get { return this.navigationProperty.IsVirtualNavigationProperty; } }
-        public bool IsVisibleWhenShowManyToManyJoinTableIsOn { get { return this.navigationProperty.IsVisibleWhenShowManyToManyJoinTableIsOn; } }
-        public bool IsVisibleWhenShowManyToManyJoinTableIsOff { get { return this.navigationProperty.IsVisibleWhenShowManyToManyJoinTableIsOff; } }
+        public bool IsVisibleWhenManyToManyJoinTableIsOn { get { return this.navigationProperty.IsVisibleWhenManyToManyJoinTableIsOn; } }
+        public bool IsVisibleWhenManyToManyJoinTableIsOff { get { return this.navigationProperty.IsVisibleWhenManyToManyJoinTableIsOff; } }
 
         private Table toTable;
         public Table ToTable
