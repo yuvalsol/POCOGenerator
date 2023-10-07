@@ -2250,25 +2250,31 @@ namespace POCOGeneratorUI
 
         #region Set Control
 
-        private void SetCheckBox(CheckBox chk, EventHandler checkedChangedHandler, bool isChecked)
+        private bool SetCheckBox(CheckBox chk, EventHandler checkedChangedHandler, bool isChecked)
         {
             chk.CheckedChanged -= checkedChangedHandler;
+            bool isSettingChanged = chk.Checked != isChecked;
             chk.Checked = isChecked;
             chk.CheckedChanged += checkedChangedHandler;
+            return isSettingChanged;
         }
 
-        private void SetRadioButton(RadioButton rdb, EventHandler checkedChangedHandler, bool isChecked)
+        private bool SetRadioButton(RadioButton rdb, EventHandler checkedChangedHandler, bool isChecked)
         {
             rdb.CheckedChanged -= checkedChangedHandler;
+            bool isSettingChanged = rdb.Checked != isChecked;
             rdb.Checked = isChecked;
             rdb.CheckedChanged += checkedChangedHandler;
+            return isSettingChanged;
         }
 
-        private void SetTextBox(TextBox txt, EventHandler textChangedHandler, string text)
+        private bool SetTextBox(TextBox txt, EventHandler textChangedHandler, string text)
         {
             txt.TextChanged -= textChangedHandler;
+            bool isSettingChanged = (txt.Text ?? string.Empty) != (text ?? string.Empty);
             txt.Text = text;
             txt.TextChanged += textChangedHandler;
+            return isSettingChanged;
         }
 
         #endregion
@@ -2664,6 +2670,126 @@ namespace POCOGeneratorUI
                 SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
 
             POCOOptionChanged();
+        }
+
+        #endregion
+
+        #region Reset
+
+        private void btnResetPOCOSettings_Click(object sender, EventArgs e)
+        {
+            bool isAnySettingChanged = ResetPOCOSettings();
+            if (isAnySettingChanged)
+                POCOOptionChanged();
+        }
+
+        private bool ResetPOCOSettings()
+        {
+            bool isAnySettingChanged = false;
+            isAnySettingChanged |= SetRadioButton(rdbProperties, rdbProperties_CheckedChanged, true);
+            isAnySettingChanged |= SetRadioButton(rdbFields, rdbFields_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkVirtualProperties, chkVirtualProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkOverrideProperties, chkOverrideProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkPartialClass, chkPartialClass_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkStructTypesNullable, chkStructTypesNullable_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkComments, chkComments_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkCommentsWithoutNull, chkCommentsWithoutNull_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkUsing, chkUsing_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkUsingInsideNamespace, chkUsingInsideNamespace_CheckedChanged, false);
+            isAnySettingChanged |= SetTextBox(txtNamespace, txtNamespace_TextChanged, string.Empty);
+            isAnySettingChanged |= SetTextBox(txtInherit, txtInherit_TextChanged, string.Empty);
+            isAnySettingChanged |= SetCheckBox(chkColumnDefaults, chkColumnDefaults_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkNewLineBetweenMembers, chkNewLineBetweenMembers_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkComplexTypes, chkComplexTypes_CheckedChanged, false);
+            isAnySettingChanged |= SetRadioButton(rdbEnumSQLTypeToString, rdbEnumSQLTypeToString_CheckedChanged, true);
+            isAnySettingChanged |= SetRadioButton(rdbEnumSQLTypeToEnumUShort, rdbEnumSQLTypeToEnumUShort_CheckedChanged, false);
+            isAnySettingChanged |= SetRadioButton(rdbEnumSQLTypeToEnumInt, rdbEnumSQLTypeToEnumInt_CheckedChanged, false);
+            return isAnySettingChanged;
+        }
+
+        private void btnResetNavigationPropertiesSettings_Click(object sender, EventArgs e)
+        {
+            bool isAnySettingChanged = ResetNavigationPropertiesSettings();
+            if (isAnySettingChanged)
+                POCOOptionChanged();
+        }
+
+        private bool ResetNavigationPropertiesSettings()
+        {
+            bool isAnySettingChanged = false;
+            isAnySettingChanged |= SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkManyToManyJoinTable, chkManyToManyJoinTable_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkNavigationPropertiesComments, chkNavigationPropertiesComments_CheckedChanged, false);
+            isAnySettingChanged |= SetRadioButton(rdbListNavigationProperties, rdbListNavigationProperties_CheckedChanged, true);
+            isAnySettingChanged |= SetRadioButton(rdbICollectionNavigationProperties, rdbICollectionNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetRadioButton(rdbIEnumerableNavigationProperties, rdbIEnumerableNavigationProperties_CheckedChanged, false);
+            return isAnySettingChanged;
+        }
+
+        private void btnResetClassNameSettings_Click(object sender, EventArgs e)
+        {
+            bool isAnySettingChanged = ResetClassNameSettings();
+            if (isAnySettingChanged)
+                POCOOptionChanged();
+        }
+
+        private bool ResetClassNameSettings()
+        {
+            bool isAnySettingChanged = false;
+            isAnySettingChanged |= SetCheckBox(chkSingular, chkSingular_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkIncludeDB, chkIncludeDB_CheckedChanged, false);
+            isAnySettingChanged |= SetTextBox(txtDBSeparator, txtDBSeparator_TextChanged, string.Empty);
+            isAnySettingChanged |= SetCheckBox(chkIncludeSchema, chkIncludeSchema_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkIgnoreDboSchema, chkIgnoreDboSchema_CheckedChanged, false);
+            isAnySettingChanged |= SetTextBox(txtSchemaSeparator, txtSchemaSeparator_TextChanged, string.Empty);
+            isAnySettingChanged |= SetTextBox(txtWordsSeparator, txtWordsSeparator_TextChanged, string.Empty);
+            isAnySettingChanged |= SetCheckBox(chkCamelCase, chkCamelCase_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkUpperCase, chkUpperCase_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkLowerCase, chkLowerCase_CheckedChanged, false);
+            isAnySettingChanged |= SetTextBox(txtSearch, txtSearch_TextChanged, string.Empty);
+            isAnySettingChanged |= SetTextBox(txtReplace, txtReplace_TextChanged, string.Empty);
+            isAnySettingChanged |= SetCheckBox(chkSearchIgnoreCase, chkSearchIgnoreCase_CheckedChanged, false);
+            isAnySettingChanged |= SetTextBox(txtFixedClassName, txtFixedClassName_TextChanged, string.Empty);
+            isAnySettingChanged |= SetTextBox(txtPrefix, txtPrefix_TextChanged, string.Empty);
+            isAnySettingChanged |= SetTextBox(txtSuffix, txtSuffix_TextChanged, string.Empty);
+            return isAnySettingChanged;
+        }
+
+        private void btnResetEFAnnotationsSettings_Click(object sender, EventArgs e)
+        {
+            bool isAnySettingChanged = ResetEFAnnotationsSettings();
+            if (isAnySettingChanged)
+                POCOOptionChanged();
+        }
+
+        private bool ResetEFAnnotationsSettings()
+        {
+            bool isAnySettingChanged = false;
+            isAnySettingChanged |= SetCheckBox(chkEF, chkEF_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFColumn, chkEFColumn_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFRequired, chkEFRequired_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFRequiredWithErrorMessage, chkEFRequiredWithErrorMessage_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFConcurrencyCheck, chkEFConcurrencyCheck_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFStringLength, chkEFStringLength_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFDisplay, chkEFDisplay_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFDescription, chkEFDescription_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFComplexType, chkEFComplexType_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFIndex, chkEFIndex_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkEFForeignKeyAndInverseProperty, chkEFForeignKeyAndInverseProperty_CheckedChanged, false);
+            return isAnySettingChanged;
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            bool isAnySettingChanged =
+                ResetPOCOSettings() |
+                ResetNavigationPropertiesSettings() |
+                ResetClassNameSettings() |
+                ResetEFAnnotationsSettings();
+            if (isAnySettingChanged)
+                POCOOptionChanged();
         }
 
         #endregion
