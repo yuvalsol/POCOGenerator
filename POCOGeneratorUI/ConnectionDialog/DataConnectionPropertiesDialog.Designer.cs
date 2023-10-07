@@ -98,6 +98,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(410, 460);
             this.Name = "DataConnectionPropertiesDialog";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Connection Properties";
             this.Load += new System.EventHandler(this.DataConnectionPropertiesDialog_Load);

@@ -16,7 +16,7 @@ namespace POCOGeneratorUI.TypesMapping
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Escape)
+            if (keyData == Keys.Enter || keyData == Keys.Escape)
             {
                 this.Close();
                 return true;
