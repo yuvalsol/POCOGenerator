@@ -1598,7 +1598,7 @@
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(1039, 712);
             this.Controls.Add(this.splitContainer1);
-            this.MinimumSize = new System.Drawing.Size(1055, 750);
+            this.MinimumSize = new System.Drawing.Size(1055, 751);
             this.Name = "POCOGeneratorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "POCO Generator";
