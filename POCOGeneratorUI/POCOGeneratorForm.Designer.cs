@@ -43,6 +43,7 @@
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.btnReset = new System.Windows.Forms.Button();
             this.btnDisclaimer = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.grbPOCO = new System.Windows.Forms.GroupBox();
@@ -53,6 +54,7 @@
             this.lblSQLEnum = new System.Windows.Forms.Label();
             this.rdbEnumSQLTypeToEnumUShort = new System.Windows.Forms.RadioButton();
             this.rdbEnumSQLTypeToString = new System.Windows.Forms.RadioButton();
+            this.btnResetPOCOSettings = new System.Windows.Forms.Button();
             this.panelProperties = new System.Windows.Forms.Panel();
             this.rdbProperties = new System.Windows.Forms.RadioButton();
             this.rdbFields = new System.Windows.Forms.RadioButton();
@@ -72,12 +74,13 @@
             this.grbNavigationProperties = new System.Windows.Forms.GroupBox();
             this.chkNavigationProperties = new System.Windows.Forms.CheckBox();
             this.chkVirtualNavigationProperties = new System.Windows.Forms.CheckBox();
+            this.btnResetNavigationPropertiesSettings = new System.Windows.Forms.Button();
             this.panelNavigationProperties1 = new System.Windows.Forms.Panel();
             this.rdbIEnumerableNavigationProperties = new System.Windows.Forms.RadioButton();
             this.rdbICollectionNavigationProperties = new System.Windows.Forms.RadioButton();
             this.rdbListNavigationProperties = new System.Windows.Forms.RadioButton();
             this.chkNavigationPropertiesComments = new System.Windows.Forms.CheckBox();
-            this.chkShowManyToManyJoinTable = new System.Windows.Forms.CheckBox();
+            this.chkManyToManyJoinTable = new System.Windows.Forms.CheckBox();
             this.chkOverrideNavigationProperties = new System.Windows.Forms.CheckBox();
             this.grbExportToFiles = new System.Windows.Forms.GroupBox();
             this.grbFileName = new System.Windows.Forms.GroupBox();
@@ -94,6 +97,7 @@
             this.btnExport = new System.Windows.Forms.Button();
             this.grbClassName = new System.Windows.Forms.GroupBox();
             this.chkSingular = new System.Windows.Forms.CheckBox();
+            this.btnResetClassNameSettings = new System.Windows.Forms.Button();
             this.txtFixedClassName = new System.Windows.Forms.TextBox();
             this.chkCamelCase = new System.Windows.Forms.CheckBox();
             this.chkUpperCase = new System.Windows.Forms.CheckBox();
@@ -120,6 +124,7 @@
             this.txtSchemaSeparator = new System.Windows.Forms.TextBox();
             this.lblSingularDesc = new System.Windows.Forms.Label();
             this.grbEFAnnotations = new System.Windows.Forms.GroupBox();
+            this.btnResetEFAnnotationsSettings = new System.Windows.Forms.Button();
             this.chkEF = new System.Windows.Forms.CheckBox();
             this.chkEFColumn = new System.Windows.Forms.CheckBox();
             this.chkEFConcurrencyCheck = new System.Windows.Forms.CheckBox();
@@ -233,26 +238,26 @@
             this.filterSettingsToolStripMenuItem,
             this.clearCheckBoxesToolStripMenuItem});
             this.contextMenu.Name = "contextMenuServerTree";
-            this.contextMenu.Size = new System.Drawing.Size(168, 70);
+            this.contextMenu.Size = new System.Drawing.Size(169, 70);
             // 
             // removeFilterToolStripMenuItem
             // 
             this.removeFilterToolStripMenuItem.Name = "removeFilterToolStripMenuItem";
-            this.removeFilterToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.removeFilterToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.removeFilterToolStripMenuItem.Text = "Remove Filter";
             this.removeFilterToolStripMenuItem.Click += new System.EventHandler(this.removeFilterToolStripMenuItem_Click);
             // 
             // filterSettingsToolStripMenuItem
             // 
             this.filterSettingsToolStripMenuItem.Name = "filterSettingsToolStripMenuItem";
-            this.filterSettingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.filterSettingsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.filterSettingsToolStripMenuItem.Text = "Filter Settings";
             this.filterSettingsToolStripMenuItem.Click += new System.EventHandler(this.filterSettingsToolStripMenuItem_Click);
             // 
             // clearCheckBoxesToolStripMenuItem
             // 
             this.clearCheckBoxesToolStripMenuItem.Name = "clearCheckBoxesToolStripMenuItem";
-            this.clearCheckBoxesToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.clearCheckBoxesToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.clearCheckBoxesToolStripMenuItem.Text = "Clear Checkboxes";
             this.clearCheckBoxesToolStripMenuItem.Click += new System.EventHandler(this.clearCheckBoxesToolStripMenuItem_Click);
             // 
@@ -315,6 +320,7 @@
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.btnReset);
             this.panelMain.Controls.Add(this.btnDisclaimer);
             this.panelMain.Controls.Add(this.btnConnect);
             this.panelMain.Controls.Add(this.grbPOCO);
@@ -332,15 +338,28 @@
             this.panelMain.Size = new System.Drawing.Size(1039, 359);
             this.panelMain.TabIndex = 0;
             // 
+            // btnReset
+            // 
+            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReset.AutoSize = true;
+            this.btnReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnReset.Location = new System.Drawing.Point(765, 303);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(45, 23);
+            this.btnReset.TabIndex = 8;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // btnDisclaimer
             // 
             this.btnDisclaimer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDisclaimer.AutoSize = true;
             this.btnDisclaimer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnDisclaimer.Location = new System.Drawing.Point(859, 303);
+            this.btnDisclaimer.Location = new System.Drawing.Point(905, 303);
             this.btnDisclaimer.Name = "btnDisclaimer";
             this.btnDisclaimer.Size = new System.Drawing.Size(65, 23);
-            this.btnDisclaimer.TabIndex = 9;
+            this.btnDisclaimer.TabIndex = 10;
             this.btnDisclaimer.Text = "Disclaimer";
             this.btnDisclaimer.UseVisualStyleBackColor = true;
             this.btnDisclaimer.Click += new System.EventHandler(this.btnDisclaimer_Click);
@@ -365,6 +384,7 @@
             this.grbPOCO.Controls.Add(this.chkComplexTypes);
             this.grbPOCO.Controls.Add(this.chkUsingInsideNamespace);
             this.grbPOCO.Controls.Add(this.panelEnum);
+            this.grbPOCO.Controls.Add(this.btnResetPOCOSettings);
             this.grbPOCO.Controls.Add(this.panelProperties);
             this.grbPOCO.Controls.Add(this.chkVirtualProperties);
             this.grbPOCO.Controls.Add(this.chkStructTypesNullable);
@@ -477,6 +497,20 @@
             this.rdbEnumSQLTypeToString.Text = "string";
             this.rdbEnumSQLTypeToString.UseVisualStyleBackColor = true;
             this.rdbEnumSQLTypeToString.CheckedChanged += new System.EventHandler(this.rdbEnumSQLTypeToString_CheckedChanged);
+            // 
+            // btnResetPOCOSettings
+            // 
+            this.btnResetPOCOSettings.AutoSize = true;
+            this.btnResetPOCOSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnResetPOCOSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnResetPOCOSettings.Location = new System.Drawing.Point(261, 9);
+            this.btnResetPOCOSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.btnResetPOCOSettings.Name = "btnResetPOCOSettings";
+            this.btnResetPOCOSettings.Size = new System.Drawing.Size(21, 19);
+            this.btnResetPOCOSettings.TabIndex = 16;
+            this.btnResetPOCOSettings.Text = "R";
+            this.btnResetPOCOSettings.UseVisualStyleBackColor = true;
+            this.btnResetPOCOSettings.Click += new System.EventHandler(this.btnResetPOCOSettings_Click);
             // 
             // panelProperties
             // 
@@ -665,16 +699,17 @@
             this.grbNavigationProperties.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.grbNavigationProperties.Controls.Add(this.chkNavigationProperties);
             this.grbNavigationProperties.Controls.Add(this.chkVirtualNavigationProperties);
+            this.grbNavigationProperties.Controls.Add(this.btnResetNavigationPropertiesSettings);
             this.grbNavigationProperties.Controls.Add(this.panelNavigationProperties1);
             this.grbNavigationProperties.Controls.Add(this.chkNavigationPropertiesComments);
-            this.grbNavigationProperties.Controls.Add(this.chkShowManyToManyJoinTable);
+            this.grbNavigationProperties.Controls.Add(this.chkManyToManyJoinTable);
             this.grbNavigationProperties.Controls.Add(this.chkOverrideNavigationProperties);
             this.grbNavigationProperties.Location = new System.Drawing.Point(12, 229);
             this.grbNavigationProperties.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.grbNavigationProperties.MinimumSize = new System.Drawing.Size(285, 0);
             this.grbNavigationProperties.Name = "grbNavigationProperties";
             this.grbNavigationProperties.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.grbNavigationProperties.Size = new System.Drawing.Size(285, 102);
+            this.grbNavigationProperties.Size = new System.Drawing.Size(286, 102);
             this.grbNavigationProperties.TabIndex = 3;
             this.grbNavigationProperties.TabStop = false;
             this.grbNavigationProperties.Text = "Navigation Properties";
@@ -697,13 +732,27 @@
             // 
             this.chkVirtualNavigationProperties.AutoSize = true;
             this.chkVirtualNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkVirtualNavigationProperties.Location = new System.Drawing.Point(141, 19);
+            this.chkVirtualNavigationProperties.Location = new System.Drawing.Point(6, 44);
             this.chkVirtualNavigationProperties.Name = "chkVirtualNavigationProperties";
             this.chkVirtualNavigationProperties.Size = new System.Drawing.Size(55, 17);
-            this.chkVirtualNavigationProperties.TabIndex = 2;
+            this.chkVirtualNavigationProperties.TabIndex = 3;
             this.chkVirtualNavigationProperties.Text = "Virtual";
             this.chkVirtualNavigationProperties.UseVisualStyleBackColor = true;
             this.chkVirtualNavigationProperties.CheckedChanged += new System.EventHandler(this.chkVirtualNavigationProperties_CheckedChanged);
+            // 
+            // btnResetNavigationPropertiesSettings
+            // 
+            this.btnResetNavigationPropertiesSettings.AutoSize = true;
+            this.btnResetNavigationPropertiesSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnResetNavigationPropertiesSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnResetNavigationPropertiesSettings.Location = new System.Drawing.Point(261, 9);
+            this.btnResetNavigationPropertiesSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.btnResetNavigationPropertiesSettings.Name = "btnResetNavigationPropertiesSettings";
+            this.btnResetNavigationPropertiesSettings.Size = new System.Drawing.Size(21, 19);
+            this.btnResetNavigationPropertiesSettings.TabIndex = 7;
+            this.btnResetNavigationPropertiesSettings.Text = "R";
+            this.btnResetNavigationPropertiesSettings.UseVisualStyleBackColor = true;
+            this.btnResetNavigationPropertiesSettings.Click += new System.EventHandler(this.btnResetNavigationPropertiesSettings_Click);
             // 
             // panelNavigationProperties1
             // 
@@ -763,34 +812,34 @@
             // 
             this.chkNavigationPropertiesComments.AutoSize = true;
             this.chkNavigationPropertiesComments.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkNavigationPropertiesComments.Location = new System.Drawing.Point(189, 44);
+            this.chkNavigationPropertiesComments.Location = new System.Drawing.Point(141, 19);
             this.chkNavigationPropertiesComments.Name = "chkNavigationPropertiesComments";
             this.chkNavigationPropertiesComments.Size = new System.Drawing.Size(75, 17);
-            this.chkNavigationPropertiesComments.TabIndex = 5;
+            this.chkNavigationPropertiesComments.TabIndex = 2;
             this.chkNavigationPropertiesComments.Text = "Comments";
             this.chkNavigationPropertiesComments.UseVisualStyleBackColor = true;
             this.chkNavigationPropertiesComments.CheckedChanged += new System.EventHandler(this.chkNavigationPropertiesComments_CheckedChanged);
             // 
-            // chkShowManyToManyJoinTable
+            // chkManyToManyJoinTable
             // 
-            this.chkShowManyToManyJoinTable.AutoSize = true;
-            this.chkShowManyToManyJoinTable.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkShowManyToManyJoinTable.Location = new System.Drawing.Point(6, 44);
-            this.chkShowManyToManyJoinTable.Name = "chkShowManyToManyJoinTable";
-            this.chkShowManyToManyJoinTable.Size = new System.Drawing.Size(175, 17);
-            this.chkShowManyToManyJoinTable.TabIndex = 4;
-            this.chkShowManyToManyJoinTable.Text = "Show Many-to-Many Join Table";
-            this.chkShowManyToManyJoinTable.UseVisualStyleBackColor = true;
-            this.chkShowManyToManyJoinTable.CheckedChanged += new System.EventHandler(this.chkShowManyToManyJoinTable_CheckedChanged);
+            this.chkManyToManyJoinTable.AutoSize = true;
+            this.chkManyToManyJoinTable.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkManyToManyJoinTable.Location = new System.Drawing.Point(131, 44);
+            this.chkManyToManyJoinTable.Name = "chkManyToManyJoinTable";
+            this.chkManyToManyJoinTable.Size = new System.Drawing.Size(149, 17);
+            this.chkManyToManyJoinTable.TabIndex = 5;
+            this.chkManyToManyJoinTable.Text = "Many-To-Many Join Table";
+            this.chkManyToManyJoinTable.UseVisualStyleBackColor = true;
+            this.chkManyToManyJoinTable.CheckedChanged += new System.EventHandler(this.chkManyToManyJoinTable_CheckedChanged);
             // 
             // chkOverrideNavigationProperties
             // 
             this.chkOverrideNavigationProperties.AutoSize = true;
             this.chkOverrideNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkOverrideNavigationProperties.Location = new System.Drawing.Point(204, 19);
+            this.chkOverrideNavigationProperties.Location = new System.Drawing.Point(63, 44);
             this.chkOverrideNavigationProperties.Name = "chkOverrideNavigationProperties";
             this.chkOverrideNavigationProperties.Size = new System.Drawing.Size(66, 17);
-            this.chkOverrideNavigationProperties.TabIndex = 3;
+            this.chkOverrideNavigationProperties.TabIndex = 4;
             this.chkOverrideNavigationProperties.Text = "Override";
             this.chkOverrideNavigationProperties.UseVisualStyleBackColor = true;
             this.chkOverrideNavigationProperties.CheckedChanged += new System.EventHandler(this.chkOverrideNavigationProperties_CheckedChanged);
@@ -964,6 +1013,7 @@
             this.grbClassName.AutoSize = true;
             this.grbClassName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.grbClassName.Controls.Add(this.chkSingular);
+            this.grbClassName.Controls.Add(this.btnResetClassNameSettings);
             this.grbClassName.Controls.Add(this.txtFixedClassName);
             this.grbClassName.Controls.Add(this.chkCamelCase);
             this.grbClassName.Controls.Add(this.chkUpperCase);
@@ -1010,6 +1060,20 @@
             this.chkSingular.Text = "Singular";
             this.chkSingular.UseVisualStyleBackColor = true;
             this.chkSingular.CheckedChanged += new System.EventHandler(this.chkSingular_CheckedChanged);
+            // 
+            // btnResetClassNameSettings
+            // 
+            this.btnResetClassNameSettings.AutoSize = true;
+            this.btnResetClassNameSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnResetClassNameSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnResetClassNameSettings.Location = new System.Drawing.Point(366, 9);
+            this.btnResetClassNameSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.btnResetClassNameSettings.Name = "btnResetClassNameSettings";
+            this.btnResetClassNameSettings.Size = new System.Drawing.Size(21, 19);
+            this.btnResetClassNameSettings.TabIndex = 17;
+            this.btnResetClassNameSettings.Text = "R";
+            this.btnResetClassNameSettings.UseVisualStyleBackColor = true;
+            this.btnResetClassNameSettings.Click += new System.EventHandler(this.btnResetClassNameSettings_Click);
             // 
             // txtFixedClassName
             // 
@@ -1258,6 +1322,7 @@
             // 
             this.grbEFAnnotations.AutoSize = true;
             this.grbEFAnnotations.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.grbEFAnnotations.Controls.Add(this.btnResetEFAnnotationsSettings);
             this.grbEFAnnotations.Controls.Add(this.chkEF);
             this.grbEFAnnotations.Controls.Add(this.chkEFColumn);
             this.grbEFAnnotations.Controls.Add(this.chkEFConcurrencyCheck);
@@ -1281,6 +1346,20 @@
             this.grbEFAnnotations.TabStop = false;
             this.grbEFAnnotations.Text = "EF Annotations";
             this.grbEFAnnotations.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox_Paint);
+            // 
+            // btnResetEFAnnotationsSettings
+            // 
+            this.btnResetEFAnnotationsSettings.AutoSize = true;
+            this.btnResetEFAnnotationsSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnResetEFAnnotationsSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnResetEFAnnotationsSettings.Location = new System.Drawing.Point(366, 9);
+            this.btnResetEFAnnotationsSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.btnResetEFAnnotationsSettings.Name = "btnResetEFAnnotationsSettings";
+            this.btnResetEFAnnotationsSettings.Size = new System.Drawing.Size(21, 19);
+            this.btnResetEFAnnotationsSettings.TabIndex = 12;
+            this.btnResetEFAnnotationsSettings.Text = "R";
+            this.btnResetEFAnnotationsSettings.UseVisualStyleBackColor = true;
+            this.btnResetEFAnnotationsSettings.Click += new System.EventHandler(this.btnResetEFAnnotationsSettings_Click);
             // 
             // chkEF
             // 
@@ -1460,10 +1539,10 @@
             this.btnTypeMapping.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTypeMapping.AutoSize = true;
             this.btnTypeMapping.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnTypeMapping.Location = new System.Drawing.Point(768, 303);
+            this.btnTypeMapping.Location = new System.Drawing.Point(815, 303);
             this.btnTypeMapping.Name = "btnTypeMapping";
             this.btnTypeMapping.Size = new System.Drawing.Size(85, 23);
-            this.btnTypeMapping.TabIndex = 8;
+            this.btnTypeMapping.TabIndex = 9;
             this.btnTypeMapping.Text = "Type Mapping";
             this.btnTypeMapping.UseVisualStyleBackColor = true;
             this.btnTypeMapping.Click += new System.EventHandler(this.btnTypeMapping_Click);
@@ -1477,7 +1556,7 @@
             this.btnClose.Location = new System.Drawing.Point(985, 303);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(43, 23);
-            this.btnClose.TabIndex = 10;
+            this.btnClose.TabIndex = 11;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -1489,26 +1568,26 @@
             this.checkReferencingTablesToolStripMenuItem,
             this.checkAccessibleTablesToolStripMenuItem});
             this.contextMenuTable.Name = "contextMenuTable";
-            this.contextMenuTable.Size = new System.Drawing.Size(383, 70);
+            this.contextMenuTable.Size = new System.Drawing.Size(376, 70);
             // 
             // checkReferencedTablesToolStripMenuItem
             // 
             this.checkReferencedTablesToolStripMenuItem.Name = "checkReferencedTablesToolStripMenuItem";
-            this.checkReferencedTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkReferencedTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.checkReferencedTablesToolStripMenuItem.Text = "Check Tables Referenced From This Table";
             this.checkReferencedTablesToolStripMenuItem.Click += new System.EventHandler(this.checkReferencedTablesToolStripMenuItem_Click);
             // 
             // checkReferencingTablesToolStripMenuItem
             // 
             this.checkReferencingTablesToolStripMenuItem.Name = "checkReferencingTablesToolStripMenuItem";
-            this.checkReferencingTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkReferencingTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.checkReferencingTablesToolStripMenuItem.Text = "Check Tables Referencing To This Table";
             this.checkReferencingTablesToolStripMenuItem.Click += new System.EventHandler(this.checkReferencingTablesToolStripMenuItem_Click);
             // 
             // checkAccessibleTablesToolStripMenuItem
             // 
             this.checkAccessibleTablesToolStripMenuItem.Name = "checkAccessibleTablesToolStripMenuItem";
-            this.checkAccessibleTablesToolStripMenuItem.Size = new System.Drawing.Size(382, 22);
+            this.checkAccessibleTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
             this.checkAccessibleTablesToolStripMenuItem.Text = "Check Recursively Tables Accessible From && To This Table";
             this.checkAccessibleTablesToolStripMenuItem.Click += new System.EventHandler(this.checkAccessibleTablesToolStripMenuItem_Click);
             // 
@@ -1519,7 +1598,7 @@
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(1039, 712);
             this.Controls.Add(this.splitContainer1);
-            this.MinimumSize = new System.Drawing.Size(1055, 750);
+            this.MinimumSize = new System.Drawing.Size(1055, 751);
             this.Name = "POCOGeneratorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "POCO Generator";
@@ -1646,7 +1725,7 @@
         private System.Windows.Forms.RadioButton rdbListNavigationProperties;
         private System.Windows.Forms.CheckBox chkEFForeignKeyAndInverseProperty;
         private System.Windows.Forms.CheckBox chkNavigationPropertiesComments;
-        private System.Windows.Forms.CheckBox chkShowManyToManyJoinTable;
+        private System.Windows.Forms.CheckBox chkManyToManyJoinTable;
         private System.Windows.Forms.TextBox txtInherit;
         private System.Windows.Forms.Label lblInherit;
         private System.Windows.Forms.CheckBox chkEFDescription;
@@ -1679,5 +1758,10 @@
         private System.Windows.Forms.RadioButton rdbFileNameDatabaseName;
         private System.Windows.Forms.RadioButton rdbFileNameDatabaseSchemaName;
         private System.Windows.Forms.GroupBox grbFileName;
+        private System.Windows.Forms.Button btnResetPOCOSettings;
+        private System.Windows.Forms.Button btnResetNavigationPropertiesSettings;
+        private System.Windows.Forms.Button btnResetClassNameSettings;
+        private System.Windows.Forms.Button btnResetEFAnnotationsSettings;
+        private System.Windows.Forms.Button btnReset;
     }
 }

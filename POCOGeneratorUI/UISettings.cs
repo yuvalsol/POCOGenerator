@@ -43,7 +43,7 @@ namespace POCOGeneratorUI
         public bool chkNavigationProperties_Checked { get; set; }
         public bool chkVirtualNavigationProperties_Checked { get; set; }
         public bool chkOverrideNavigationProperties_Checked { get; set; }
-        public bool chkShowManyToManyJoinTable_Checked { get; set; }
+        public bool chkManyToManyJoinTable_Checked { get; set; }
         public bool chkNavigationPropertiesComments_Checked { get; set; }
         public bool rdbListNavigationProperties_Checked { get; set; }
         public bool rdbICollectionNavigationProperties_Checked { get; set; }

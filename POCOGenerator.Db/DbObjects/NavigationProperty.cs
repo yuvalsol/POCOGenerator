@@ -14,8 +14,8 @@ namespace POCOGenerator.Db.DbObjects
 
         public bool IsVirtualNavigationProperty { get; set; }
 
-        public bool IsVisibleWhenShowManyToManyJoinTableIsOn { get; set; }
-        public bool IsVisibleWhenShowManyToManyJoinTableIsOff { get; set; }
+        public bool IsVisibleWhenManyToManyJoinTableIsOn { get; set; }
+        public bool IsVisibleWhenManyToManyJoinTableIsOff { get; set; }
 
         public string RenamedPropertyName { get; set; }
         public string ClassName { get; set; }

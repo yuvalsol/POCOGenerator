@@ -38,17 +38,17 @@ namespace NavigationPropertiesDemo
             generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
             generator.Settings.Tables.IncludeAll = true;
-            generator.Settings.NavigationProperties.ShowManyToManyJoinTable = false;
+            generator.Settings.NavigationProperties.ManyToManyJoinTable = false;
 
             generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>
             {
                 Server server = e.Server;
-                bool showManyToManyJoinTable = generator.Settings.NavigationProperties.ShowManyToManyJoinTable;
+                bool manyToManyJoinTable = generator.Settings.NavigationProperties.ManyToManyJoinTable;
 
-                Console.WriteLine("Show Many-To-Many Join Table = {0}", showManyToManyJoinTable);
+                Console.WriteLine("Many-To-Many Join Table = {0}", manyToManyJoinTable);
                 Console.WriteLine();
 
-                PrintServer(server, showManyToManyJoinTable);
+                PrintServer(server, manyToManyJoinTable);
 
                 // do not generate classes
                 e.Stop = true;
@@ -76,13 +76,13 @@ namespace NavigationPropertiesDemo
 
         private const int INDENT_SIZE = 3;
 
-        private static void PrintServer(Server server, bool showManyToManyJoinTable)
+        private static void PrintServer(Server server, bool manyToManyJoinTable)
         {
             Console.WriteLine(server.ToStringWithVersion());
-            PrintDatabases(server, showManyToManyJoinTable, INDENT_SIZE);
+            PrintDatabases(server, manyToManyJoinTable, INDENT_SIZE);
         }
 
-        private static void PrintDatabases(Server server, bool showManyToManyJoinTable, int indent)
+        private static void PrintDatabases(Server server, bool manyToManyJoinTable, int indent)
         {
             if (server.Databases.Any())
             {
@@ -90,19 +90,19 @@ namespace NavigationPropertiesDemo
 
                 indent += INDENT_SIZE;
                 foreach (Database database in server.Databases)
-                    PrintDatabase(database, showManyToManyJoinTable, indent);
+                    PrintDatabase(database, manyToManyJoinTable, indent);
             }
         }
 
-        private static void PrintDatabase(Database database, bool showManyToManyJoinTable, int indent)
+        private static void PrintDatabase(Database database, bool manyToManyJoinTable, int indent)
         {
             Console.WriteLine("{0}{1}", new string(' ', indent), database);
 
             indent += INDENT_SIZE;
-            PrintTables(database, showManyToManyJoinTable, indent);
+            PrintTables(database, manyToManyJoinTable, indent);
         }
 
-        private static void PrintTables(Database database, bool showManyToManyJoinTable, int indent)
+        private static void PrintTables(Database database, bool manyToManyJoinTable, int indent)
         {
             if (database.Tables.Any())
             {
@@ -110,14 +110,14 @@ namespace NavigationPropertiesDemo
 
                 indent += INDENT_SIZE;
                 foreach (Table table in database.Tables)
-                    PrintTable(table, showManyToManyJoinTable, indent);
+                    PrintTable(table, manyToManyJoinTable, indent);
             }
         }
 
-        private static void PrintTable(Table table, bool showManyToManyJoinTable, int indent)
+        private static void PrintTable(Table table, bool manyToManyJoinTable, int indent)
         {
             // don't print join table
-            if (table.IsJoinTable && showManyToManyJoinTable == false)
+            if (table.IsJoinTable && manyToManyJoinTable == false)
                 return;
 
             Console.WriteLine("{0}{1}", new string(' ', indent), table);
@@ -126,7 +126,7 @@ namespace NavigationPropertiesDemo
             PrintTableColumns(table, indent);
             PrintTablePrimaryKey(table, indent);
             PrintTableForeignKeys(table, indent);
-            PrintTableNavigationProperties(table, showManyToManyJoinTable, indent);
+            PrintTableNavigationProperties(table, manyToManyJoinTable, indent);
         }
 
         private static void PrintTableColumns(Table table, int indent)
@@ -177,7 +177,7 @@ namespace NavigationPropertiesDemo
                 Console.WriteLine("{0}{1}.{2} -> {3}.{4}", new string(' ', indent), foreignKey.ForeignTable, column.ForeignTableColumn.ColumnName, foreignKey.PrimaryTable, column.PrimaryTableColumn.ColumnName);
         }
 
-        private static void PrintTableNavigationProperties(Table table, bool showManyToManyJoinTable, int indent)
+        private static void PrintTableNavigationProperties(Table table, bool manyToManyJoinTable, int indent)
         {
             if (table.NavigationProperties.Any())
             {
@@ -185,14 +185,14 @@ namespace NavigationPropertiesDemo
 
                 indent += INDENT_SIZE;
                 foreach (NavigationProperty navigationProperty in table.NavigationProperties)
-                    PrintTableNavigationProperty(navigationProperty, showManyToManyJoinTable, indent);
+                    PrintTableNavigationProperty(navigationProperty, manyToManyJoinTable, indent);
             }
         }
 
-        private static void PrintTableNavigationProperty(NavigationProperty navigationProperty, bool showManyToManyJoinTable, int indent)
+        private static void PrintTableNavigationProperty(NavigationProperty navigationProperty, bool manyToManyJoinTable, int indent)
         {
-            if ((showManyToManyJoinTable && navigationProperty.IsVisibleWhenShowManyToManyJoinTableIsOn) ||
-                (showManyToManyJoinTable == false && navigationProperty.IsVisibleWhenShowManyToManyJoinTableIsOff))
+            if ((manyToManyJoinTable && navigationProperty.IsVisibleWhenManyToManyJoinTableIsOn) ||
+                (manyToManyJoinTable == false && navigationProperty.IsVisibleWhenManyToManyJoinTableIsOff))
             {
                 PrintNavigationProperty(navigationProperty, indent);
                 PrintInverseProperty(navigationProperty, indent);
