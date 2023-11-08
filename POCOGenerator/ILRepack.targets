@@ -28,4 +28,7 @@
         </ItemGroup>
         <RemoveDir Directories="@(Directories)" Condition="%(Files)=='0'" />
     </Target>
+    <Target Name="CopyToOutput" AfterTargets="ClearReferenceCopyLocalPaths" Condition="$(Configuration.Contains('Release'))">
+        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\POCOGenerator"></Copy>
+    </Target>
 </Project>
