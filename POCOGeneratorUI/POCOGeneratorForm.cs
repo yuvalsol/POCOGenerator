@@ -26,14 +26,17 @@ namespace POCOGeneratorUI
             this.Text += " " + Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         }
 
+        private bool hasUISettings;
+
         private void POCOGeneratorForm_Load(object sender, EventArgs e)
         {
-            LoadUISettings();
+            hasUISettings = LoadUISettings();
         }
 
         private void POCOGeneratorForm_Shown(object sender, EventArgs e)
         {
-            ShowDisclaimer();
+            if (hasUISettings == false)
+                ShowDisclaimer();
         }
 
         private void POCOGeneratorForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -3887,11 +3890,11 @@ namespace POCOGeneratorUI
             };
         }
 
-        private void LoadUISettings()
+        private bool LoadUISettings()
         {
             UISettings settings = DeserializeUISettings();
             if (settings == null)
-                return;
+                return false;
 
             this.rdbms = settings.RDBMS;
             this.connectionString = settings.ConnectionString;
@@ -3974,6 +3977,8 @@ namespace POCOGeneratorUI
             rdbFileNameDatabaseSchemaName.Checked = settings.rdbFileNameDatabaseSchemaName_Checked;
 
             SetFormControls(settings.SupportSchema, settings.SupportTVPs, settings.SupportEnumDataType);
+
+            return true;
         }
 
         private const string settingsFileName = "POCOGeneratorUI.settings";
