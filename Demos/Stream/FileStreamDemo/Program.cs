@@ -38,16 +38,23 @@ namespace FileStreamDemo
                 Console.WriteLine("File {0} was saved successfully", fileName);
                 Console.WriteLine("File size is {0} bytes", length);
 
-                Console.WriteLine("Deleting file...");
-                try
+                Console.WriteLine();
+                Console.WriteLine("Delete file? [y/n]");
+                ConsoleKeyInfo key = Console.ReadKey();
+                if (key.KeyChar == 'y' || key.KeyChar == 'Y')
                 {
-                    File.Delete(filePath);
-                    Console.WriteLine("File {0} was deleted", fileName);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: Filed to delete File {0}", fileName);
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine();
+                    Console.WriteLine("Deleting file...");
+                    try
+                    {
+                        File.Delete(filePath);
+                        Console.WriteLine("File {0} was deleted", fileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error: Filed to delete File {0}", fileName);
+                        Console.WriteLine(ex.Message);
+                    }
                 }
             }
             else
@@ -57,7 +64,7 @@ namespace FileStreamDemo
 
             Console.WriteLine();
             Console.WriteLine("Press any key to continue . . .");
-            Console.ReadKey();
+            Console.ReadKey(true);
         }
 
         private static void PrintError(GeneratorResults results, Exception Error)

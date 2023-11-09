@@ -9,9 +9,7 @@ namespace SkipAndStopDemo
     {
         static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-
-            IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
+            IGenerator generator = GeneratorFactory.GetConsoleGenerator();
             try { generator.Settings.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
             if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
                 generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
@@ -45,7 +43,7 @@ namespace SkipAndStopDemo
 
             Console.WriteLine();
             Console.WriteLine("Press any key to continue . . .");
-            Console.ReadKey();
+            Console.ReadKey(true);
         }
 
         private static void PrintError(GeneratorResults results, Exception Error)

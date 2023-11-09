@@ -25,7 +25,7 @@ namespace ConsoleDemo
 
             Console.WriteLine();
             Console.WriteLine("Press any key to continue . . .");
-            Console.ReadKey();
+            Console.ReadKey(true);
         }
 
         private static void PrintError(GeneratorResults results, Exception Error)
