@@ -3894,7 +3894,11 @@ namespace POCOGeneratorUI
         {
             UISettings settings = DeserializeUISettings();
             if (settings == null)
+            {
+                // fallback to SQL Server
+                SetFormControls(true /*SupportSchema*/, true /*SupportTVPs*/, false /*SupportEnumDataType*/);
                 return false;
+            }
 
             this.rdbms = settings.RDBMS;
             this.connectionString = settings.ConnectionString;
