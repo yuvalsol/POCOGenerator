@@ -74,6 +74,12 @@ namespace MultipleFilesDemo
                 DbGroupGenerating("Tables", ref path, ref indent, ref filesCount);
             };
 
+            // create ComplexTypeTables folder
+            generator.ComplexTypeTablesGenerating += (object sender, ComplexTypeTablesGeneratingEventArgs e) =>
+            {
+                DbGroupGenerating("ComplexTypeTables", ref path, ref indent, ref filesCount);
+            };
+
             // create Views folder
             generator.ViewsGenerating += (object sender, ViewsGeneratingEventArgs e) =>
             {
@@ -102,6 +108,12 @@ namespace MultipleFilesDemo
             generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
             {
                 e.Namespace = GetNamespace(e.Namespace, e.Table.Database, "Tables", e.Table.Schema);
+            };
+
+            // get namespace for complex type table
+            generator.ComplexTypeTableGenerating += (object sender, ComplexTypeTableGeneratingEventArgs e) =>
+            {
+                e.Namespace = GetNamespace(e.Namespace, e.ComplexTypeTable.Database, "ComplexTypeTables", e.ComplexTypeTable.Schema);
             };
 
             // get namespace for view
@@ -134,6 +146,12 @@ namespace MultipleFilesDemo
                 DbObjectPOCO(e.ClassName, e.POCO, e.Table.Schema, path, ref filesCount);
             };
 
+            // save table complex type table poco
+            generator.ComplexTypeTablePOCO += (object sender, ComplexTypeTablePOCOEventArgs e) =>
+            {
+                DbObjectPOCO(e.ClassName, e.POCO, e.ComplexTypeTable.Schema, path, ref filesCount);
+            };
+
             // save view poco
             generator.ViewPOCO += (object sender, ViewPOCOEventArgs e) =>
             {
@@ -160,6 +178,12 @@ namespace MultipleFilesDemo
 
             // take the path one step up once all the tables are written
             generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
+            {
+                DbGroupGenerated(ref path, ref indent, ref filesCount);
+            };
+
+            // take the path one step up once all the complex type tables are written
+            generator.ComplexTypeTablesGenerated += (object sender, ComplexTypeTablesGeneratedEventArgs e) =>
             {
                 DbGroupGenerated(ref path, ref indent, ref filesCount);
             };

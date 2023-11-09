@@ -81,6 +81,48 @@ namespace EventsDemo
                 e.Stop = false;
             };
 
+            generator.ComplexTypeTablesGenerating += (object sender, ComplexTypeTablesGeneratingEventArgs e) =>
+            {
+                e.Skip = false;
+                e.Stop = false;
+            };
+
+            generator.ComplexTypeTableGenerating += (object sender, ComplexTypeTableGeneratingEventArgs e) =>
+            {
+                ComplexTypeTable table = e.ComplexTypeTable;
+                string className = e.ClassName;
+                string error = e.Error;
+                e.Namespace = e.Namespace;
+                e.Skip = false;
+                e.Stop = false;
+            };
+
+            generator.ComplexTypeTablePOCO += (object sender, ComplexTypeTablePOCOEventArgs e) =>
+            {
+                ComplexTypeTable table = e.ComplexTypeTable;
+                string className = e.ClassName;
+                string error = e.Error;
+                string poco = e.POCO;
+                e.Stop = false;
+
+                Console.WriteLine(poco);
+                Console.WriteLine();
+            };
+
+            generator.ComplexTypeTableGenerated += (object sender, ComplexTypeTableGeneratedEventArgs e) =>
+            {
+                ComplexTypeTable table = e.ComplexTypeTable;
+                string className = e.ClassName;
+                string error = e.Error;
+                string @namespace = e.Namespace;
+                e.Stop = false;
+            };
+
+            generator.ComplexTypeTablesGenerated += (object sender, ComplexTypeTablesGeneratedEventArgs e) =>
+            {
+                e.Stop = false;
+            };
+
             generator.ViewsGenerating += (object sender, ViewsGeneratingEventArgs e) =>
             {
                 e.Skip = false;
