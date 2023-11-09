@@ -29,6 +29,7 @@
         <RemoveDir Directories="@(Directories)" Condition="%(Files)=='0'" />
     </Target>
     <Target Name="CopyToOutput" AfterTargets="ClearReferenceCopyLocalPaths" Condition="$(Configuration.Contains('Release'))">
-        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\Demos\SelectingObjects"></Copy>
+        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\Demos\SelectingObjects\SelectingObjectsDemo"></Copy>
+        <Copy SourceFiles="$(OutputPath)ConnectionString.txt" DestinationFolder="$(SolutionDir)Output\Demos\SelectingObjects\SelectingObjectsDemo"></Copy>
     </Target>
 </Project>

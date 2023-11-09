@@ -18,7 +18,9 @@ namespace FileStreamDemo
             using (FileStream stream = File.Open(filePath, FileMode.Create))
             {
                 IGenerator generator = GeneratorFactory.GetGenerator(stream);
-                generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
+                try { generator.Settings.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
+                if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
+                    generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
                 generator.Settings.RDBMS = RDBMS.SQLServer;
                 generator.Settings.Tables.IncludeAll = true;
                 generator.Settings.POCO.CommentsWithoutNull = true;
@@ -52,6 +54,10 @@ namespace FileStreamDemo
             {
                 Console.WriteLine("Error: File {0} wasn't saved", fileName);
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue . . .");
+            Console.ReadKey();
         }
 
         private static void PrintError(GeneratorResults results, Exception Error)

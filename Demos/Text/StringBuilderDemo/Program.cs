@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using POCOGenerator;
 
@@ -11,7 +12,9 @@ namespace StringBuilderDemo
             StringBuilder stringBuilder = new StringBuilder();
 
             IGenerator generator = GeneratorFactory.GetGenerator(stringBuilder);
-            generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
+            try { generator.Settings.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
+            if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
+                generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
             generator.Settings.Tables.IncludeAll = true;
             generator.Settings.POCO.CommentsWithoutNull = true;
@@ -25,6 +28,10 @@ namespace StringBuilderDemo
                 Console.WriteLine(stringBuilder.ToString());
 
             PrintError(results, generator.Error);
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue . . .");
+            Console.ReadKey();
         }
 
         private static void PrintError(GeneratorResults results, Exception Error)

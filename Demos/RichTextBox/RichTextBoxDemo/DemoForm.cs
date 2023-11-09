@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 using POCOGenerator;
 
@@ -14,7 +16,9 @@ namespace RichTextBoxDemo
 
         private void DemoForm_Load(object sender, EventArgs e)
         {
-            txtConnectionString.Text = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
+            try { txtConnectionString.Text = File.ReadAllText("ConnectionString.txt"); } catch { }
+            if (string.IsNullOrEmpty(txtConnectionString.Text))
+                txtConnectionString.Text = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)

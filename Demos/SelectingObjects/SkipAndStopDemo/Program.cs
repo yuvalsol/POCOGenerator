@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using POCOGenerator;
 using POCOGenerator.Objects;
 
@@ -11,7 +12,9 @@ namespace SkipAndStopDemo
             Console.ForegroundColor = ConsoleColor.Red;
 
             IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
-            generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
+            try { generator.Settings.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
+            if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
+                generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
 
             generator.Settings.ClassName.IncludeSchema = true;
@@ -39,6 +42,10 @@ namespace SkipAndStopDemo
             GeneratorResults results = generator.Generate();
 
             PrintError(results, generator.Error);
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue . . .");
+            Console.ReadKey();
         }
 
         private static void PrintError(GeneratorResults results, Exception Error)

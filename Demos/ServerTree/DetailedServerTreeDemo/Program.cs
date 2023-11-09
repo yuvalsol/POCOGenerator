@@ -15,27 +15,29 @@ namespace DetailedServerTreeDemo
             if (redirectToFile)
                 ToFile();
             else
-                Run();
+                ToConsole();
         }
 
         private static void ToFile()
         {
-            using (FileStream fs = File.Open(@"C:\DetailedServerTreeDemo.txt", FileMode.Create))
+            using (FileStream fs = File.Open(@"DetailedServerTreeDemo.txt", FileMode.Create))
             {
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
                     TextWriter writer = Console.Out;
                     Console.SetOut(sw);
-                    Run();
+                    ToConsole();
                     Console.SetOut(writer);
                 }
             }
         }
 
-        private static void Run()
+        private static void ToConsole()
         {
             IGenerator generator = GeneratorFactory.GetGenerator();
-            generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
+            try { generator.Settings.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
+            if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
+                generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
             generator.Settings.IncludeAll = true;
 
@@ -51,6 +53,10 @@ namespace DetailedServerTreeDemo
             GeneratorResults results = generator.Generate();
 
             PrintError(results, generator.Error);
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue . . .");
+            Console.ReadKey();
         }
 
         private static void PrintError(GeneratorResults results, Exception Error)
