@@ -29,6 +29,9 @@
         <RemoveDir Directories="@(Directories)" Condition="%(Files)=='0'" />
     </Target>
     <Target Name="CopyToOutput" AfterTargets="ClearReferenceCopyLocalPaths" Condition="$(Configuration.Contains('Release'))">
-        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\POCOGenerator"></Copy>
+        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\POCOGenerator">
+            <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
+        </Copy>
+        <Message Importance="high" Text="Copy To Output '%(CopiedSuccessfully.Identity)'"></Message>
     </Target>
 </Project>
