@@ -2340,11 +2340,17 @@ namespace POCOGeneratorUI
 
         private void chkUsing_CheckedChanged(object sender, EventArgs e)
         {
+            if (chkUsing.Checked == false && chkUsingInsideNamespace.Checked)
+                SetCheckBox(chkUsingInsideNamespace, chkUsingInsideNamespace_CheckedChanged, false);
+
             POCOOptionChanged();
         }
 
         private void chkUsingInsideNamespace_CheckedChanged(object sender, EventArgs e)
         {
+            if (chkUsingInsideNamespace.Checked && chkUsing.Checked == false)
+                SetCheckBox(chkUsing, chkUsing_CheckedChanged, true);
+
             POCOOptionChanged();
         }
 
