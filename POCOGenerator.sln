@@ -1,21 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.33214.272
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{12341E5A-90D2-44FC-BD12-0B825EA4975C}"
-	ProjectSection(SolutionItems) = preProject
-		Docs\codeproject.txt = Docs\codeproject.txt
-		Docs\connections.txt = Docs\connections.txt
-		Docs\dependencies.txt = Docs\dependencies.txt
-		Docs\ef core.txt = Docs\ef core.txt
-		Docs\mysql.txt = Docs\mysql.txt
-		Docs\roadmap.txt = Docs\roadmap.txt
-		Docs\simple injector.txt = Docs\simple injector.txt
-		Docs\sqlserver.txt = Docs\sqlserver.txt
-		Docs\todo.txt = Docs\todo.txt
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44EA7805-F94D-4681-AE3F-F9C6622DB8CF}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\SolutionAssemblyInfo.cs = Solution Items\SolutionAssemblyInfo.cs
