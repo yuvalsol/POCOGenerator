@@ -5,6 +5,7 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44EA7805-F94D-4681-AE3F-F9C6622DB8CF}"
 	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
 		Solution Items\SolutionAssemblyInfo.cs = Solution Items\SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
@@ -83,6 +84,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavigationPropertiesDemo", "Demos\ServerTree\NavigationPropertiesDemo\NavigationPropertiesDemo.csproj", "{0D76D75D-1D22-4F25-9082-A598F9CA6B4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplexTypesDemo", "Demos\GeneratePOCOs\ComplexTypesDemo\ComplexTypesDemo.csproj", "{7585CD83-7D6E-4D7E-B0BE-037137EB60DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{177A5F2F-A12D-4C55-A06F-70B5C9AF18F7}"
+	ProjectSection(SolutionItems) = preProject
+		Solution Items\Images\ClassNameSettings.jpg = Solution Items\Images\ClassNameSettings.jpg
+		Solution Items\Images\EFAnnotationsSettings.jpg = Solution Items\Images\EFAnnotationsSettings.jpg
+		Solution Items\Images\ExportToFilesSettings.jpg = Solution Items\Images\ExportToFilesSettings.jpg
+		Solution Items\Images\FilterSettings.jpg = Solution Items\Images\FilterSettings.jpg
+		Solution Items\Images\NavigationPropertiesSettings.jpg = Solution Items\Images\NavigationPropertiesSettings.jpg
+		Solution Items\Images\PersonTableAndPOCO.jpg = Solution Items\Images\PersonTableAndPOCO.jpg
+		Solution Items\Images\POCOGeneratorUI.jpg = Solution Items\Images\POCOGeneratorUI.jpg
+		Solution Items\Images\POCOSettings.jpg = Solution Items\Images\POCOSettings.jpg
+		Solution Items\Images\TableContextMenu.jpg = Solution Items\Images\TableContextMenu.jpg
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -237,6 +251,7 @@ Global
 		{9E561CAC-5E32-4734-B678-16CE057265E1} = {D4E1E196-880B-4FBE-97BE-C848E3CFBEFC}
 		{0D76D75D-1D22-4F25-9082-A598F9CA6B4F} = {B5934ED9-1AE4-4BFA-9F96-BFA91087CE1C}
 		{7585CD83-7D6E-4D7E-B0BE-037137EB60DB} = {2E4F6DA4-908F-4DD3-85FB-BC5447213594}
+		{177A5F2F-A12D-4C55-A06F-70B5C9AF18F7} = {44EA7805-F94D-4681-AE3F-F9C6622DB8CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B151279D-E4E7-4770-96DC-B5BBC39AA6B6}
