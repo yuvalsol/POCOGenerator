@@ -297,7 +297,7 @@ Server <i>[(LocalDB)_MSSQLLocalDB]</i>
                     *.cs
 </pre>
 
-Each POCO is wrapped in the following namespace structure **Namespace.Database.Database Object.Schema**.
+Each POCO is wrapped in the following namespace structure **Namespace.Database.Data Object.Schema**.
 
 Example: If the Namespace setting is set to "CustomNamespace", the Person.Person table is wrapped in this namespace
 
@@ -433,23 +433,19 @@ The context menu of a table object shows several options for quickly selecting o
 
 ## Filter Settings
 
-The context menu of a data group (Tables, Views...) shows the filter settings. The filter selects specific data objects, within that data group, by their name and schema.
+The context menu of a data group (Tables, Views...) shows the filter settings. The filter selects, or excludes, specific data objects, within that data group, by their name and schema.
 
 ![Filter Settings](./Solution%20Items/Images/FilterSettings.jpg "Filter Settings")
 
-# Stored Procedures with Many Result Sets
-
-There is no way to determine if a stored procedure returns more than one result set. During the process of retrieving the schema of a stored procedure, only the **first** result set is returned. There is no way to get to the schema of any result set after the first one.
-
-The "solution" is more of a hack than anything else. In the stored procedure, remark the first `select` query and alter the stored procedure. Then, go to the UI and right-click on the stored procedure. Click on Refresh from the context menu. Once the new POCO shows up, copy it or export it for further use. Continue with this process up to the last result set. When you're done, undo the remarks and restore the stored procedure.
-
 # Schemas
 
-The process of retrieving schema of SQL Server data objects is mainly done through `GetSchema` methods from `DbConnection` class. The class `DbConnection`, which `SqlConnection` inherits from, has several `GetSchema` methods which do exactly as their name suggests. They return the schema information from the specified data source. You can pass, to the `GetSchema` method, the type of object that you're looking for and list of restrictions which are usually used to filter on database name, schema name and the name of the object. A full list of object types and restricts can be found on these pages [Schema Collections](http://msdn.microsoft.com/en-us/library/ms254969.aspx) and [Schema Restrictions](http://msdn.microsoft.com/en-us/library/cc716722.aspx).
+The process of retrieving the schema of data objects (tables, views...) is mainly done through `GetSchema()` methods from `DbConnection` class. The class `DbConnection`, which `SqlConnection` and `MySqlConnection` inherit from, has several `GetSchema()` methods which do exactly as their name suggests. They return the schema information from the specified data source. You can pass, to the `GetSchema()` method, the type of object that you're looking for and list of restrictions which are usually used to filter on database name, schema name and the name of the object. A full list of object types and restricts can be found on these pages [SQL Server Schema Collections
+](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-schema-collections "SQL Server Schema Collections
+") and [Schema Restrictions](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/schema-restrictions "Schema Restrictions").
 
-# Tables & Views
+## Tables and Views
 
-The schema type for both tables and views is "`Tables`". For tables, put the `string` "`BASE TABLE`" on the last restriction which is a table type restriction. For views, put the `string` "`VIEW`" on the table type restriction.
+The schema type for both tables and views is "`Tables`". For tables, set the table type restriction to "`BASE TABLE`". For views, set the table type restriction to "`VIEW`".
 
 Tables:
 
@@ -477,9 +473,31 @@ using (SqlConnection connection = new SqlConnection(connectionString))
 }
 ```
 
-# User-Defined Table Types (TVP)
+For each table, we query again for its list of columns. The schema type is "`Columns`" for SQL Server and for MySQL.
 
-TVP schema can't be retrieved through `GetSchema` methods or at least not retrieved reliably. Getting TVP schemas require a little querying on the SQL Server side. This first query gets all the TVPs on the database.
+```cs
+using (SqlConnection connection = new SqlConnection(connectionString))
+{
+    connection.Open();
+    DataTable routineParameters = connection.GetSchema("Columns",
+        new string[] { database_name, schema_name, table_name, null });
+}
+```
+
+And for views, the schema type is "`Columns`" for SQL Server and "`ViewColumns`" for MySQL.
+
+```cs
+using (SqlConnection connection = new SqlConnection(connectionString))
+{
+    connection.Open();
+    DataTable routineParameters = connection.GetSchema("Columns",
+        new string[] { database_name, schema_name, view_name, null });
+}
+```
+
+## User-Defined Table Types (TVP)
+
+TVP schema can't be retrieved through `GetSchema()` methods or at least not retrieved reliably. Getting a TVP schema requires querying on the SQL Server side (TVPs are not supported on MySQL). The first query gets all the TVPs on the database.
 
 ```sql
 select
@@ -490,20 +508,22 @@ from sys.table_types stt
 inner join sys.schemas ss on stt.schema_id = ss.schema_id
 ```
 
-and for each TVP, we get its list of columns. `@tvp_id` parameter is the `type_table_object_id` column from the previous query.
+For each TVP, we query again for its list of columns. The `@tvp_id` parameter is the `type_table_object_id` column from the previous query.
 
 ```sql
 select
     sc.*,
     data_type = st.name
 from sys.columns sc
-inner join sys.types st on sc.system_type_id = st.system_type_id and sc.user_type_id = st.user_type_id
+inner join sys.types st
+    on sc.system_type_id = st.system_type_id
+    and sc.user_type_id = st.user_type_id
 where sc.object_id = @tvp_id
 ```
 
-# Stored Procedures & Table-valued Functions
+## Stored Procedures and Table-valued Functions
 
-The schema type for both stored procedures and functions is "`Procedures`". For stored procedures, put the `string` "`PROCEDURE`" on the last restriction which is a routine type restriction. For functions, put the `string` "`FUNCTION`" on the routine type restriction.
+The schema type for both stored procedures and table-valued functions is "`Procedures`". For stored procedures, set the routine type restriction to "`PROCEDURE`". For table-valued functions, set the routine type restriction to "`FUNCTION`". Table-valued functions are not supported on MySQL.
 
 Stored Procedures:
 
@@ -518,7 +538,7 @@ using (SqlConnection connection = new SqlConnection(connectionString))
 }
 ```
 
-and Functions:
+and Table-valued Functions:
 
 ```cs
 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -531,7 +551,7 @@ using (SqlConnection connection = new SqlConnection(connectionString))
 }
 ```
 
-For each routine, we need to get its parameters. The schema type is "`ProcedureParameters`".
+For each routine, we query again for its list of parameters. The schema type is "`ProcedureParameters`" for SQL Server and "`Procedure Parameters`" for MySQL.
 
 ```cs
 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -542,9 +562,9 @@ using (SqlConnection connection = new SqlConnection(connectionString))
 }
 ```
 
-At this point, we can filter out anything that is not a `Table`-valued function, meaning we need to remove Scalar functions. A scalar function has a single return parameter which is the result of the function and that's how we find them.
+At this point, we can filter out anything that is not a table-valued function, meaning removing scalar functions. A scalar function has a single return parameter which is the result of the function and that's how we find them.
 
-Once we have the routine parameters, we will build an empty `SqlParameter` for each one. An empty `SqlParameter` is a parameter with `DBNull.Value` set as its value. For a TVP parameter, we will build a parameter with `SqlDbType.Structured` type and an empty `DataTable` as its value.
+Once we have the routine parameters, we build an empty `SqlParameter` (or `MySqlParameter` for MySQL) for each one. An empty parameter is a parameter with `DBNull.Value` set as its value. For a TVP parameter (for SQL Server), we build a parameter with `SqlDbType.Structured` type and an empty `DataTable` as its value.
 
 This is a very abridged code snippet of how a `SqlParameter` is built.
 
@@ -569,9 +589,9 @@ switch (data_type)
 
 // size for string type
 // character_maximum_length comes from the parameter schema
-if (data_type == "binary" || data_type == "char" ||
-data_type == "nchar" || data_type == "nvarchar" ||
-data_type == "varbinary" || data_type == "varchar")
+if (data_type == "binary" || data_type == "varbinary" ||
+    data_type == "char" || data_type == "nchar" ||
+    data_type == "nvarchar" || data_type == "varchar")
 {
     if (character_maximum_length == -1 || character_maximum_length > 0)
         sqlParameter.Size = character_maximum_length;
@@ -586,9 +606,9 @@ else if (parameter_mode == "OUT")
     sqlParameter.Direction = ParameterDirection.Output;
 ```
 
-Now, we are ready to get the columns of the routine. When it comes to routines, we will use `SqlDataReader.GetSchemaTable()` method to get the routine schema with `CommandBehavior.SchemaOnly` flag.
+Now, we are ready to get the routine columns. We use `SqlDataReader.GetSchemaTable()` method to get the routine schema with `CommandBehavior.SchemaOnly` flag.
 
-For stored procedures, we can use `CommandType.StoredProcedure`.
+For stored procedures, the command type is set to `CommandType.StoredProcedure`.
 
 ```cs
 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -601,15 +621,15 @@ using (SqlConnection connection = new SqlConnection(connectionString))
 
         // for each routine parameter, build it and add it to command.Parameters
 
-        using (SqlDataReader reader = command.ExecuteReader(**CommandBehavior.SchemaOnly**))
+        using (SqlDataReader reader = command.ExecuteReader(CommandBehavior.SchemaOnly))
         {
-            DataTable schemaTable = reader.**GetSchemaTable()**;
+            DataTable schemaTable = reader.GetSchemaTable();
         }
     }
 }
 ```
 
-and for `Table`-valued functions, we need to construct a query that selects all the columns from the function.
+For table-valued functions, we construct a query that selects all the columns from the function.
 
 ```cs
 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -619,78 +639,105 @@ using (SqlConnection connection = new SqlConnection(connectionString))
         command.Connection = connection;
         command.CommandType = CommandType.Text;
 
-        command.CommandText = string.Format("select * from [{0}].[{1}](", routine_schema, routine_name);
+        command.CommandText =
+            string.Format("select * from [{0}].[{1}](", routine_schema, routine_name);
 
         // for each routine parameter, build it and add it
         // to command.Parameters and add its name to command.CommandText
 
         command.CommandText += ")";
 
-        using (SqlDataReader reader = command.ExecuteReader(**CommandBehavior.SchemaOnly**))
+        using (SqlDataReader reader = command.ExecuteReader(CommandBehavior.SchemaOnly))
         {
-            DataTable schemaTable = reader.**GetSchemaTable()**;
+            DataTable schemaTable = reader.GetSchemaTable();
         }
     }
 }
 ```
 
-# Primary Keys and Foreign Keys
+## Stored Procedures With Many Result Sets
 
-I use SQL queries to retrieve information about primary keys and foreign keys. The `GetSchema` method is not detailed enough for that.
+There is no way to determine if a stored procedure returns more than one result set. During the process of retrieving the schema of a stored procedure, only the **first** result set is returned. There is no way to get to the schema of any result set after the first one.
 
-Given below is the query for primary keys.
+## Primary Keys and Foreign Keys
+
+Retrieving information about primary keys and foreign keys must be done by SQL queries. The `GetSchema()` methods are not detailed enough for that.
+
+The following are abridged queries for SQL Server but the full SQL script retrieves information about primary keys, unique keys, foreign keys, one-to-many relationships, one-to-one relationships and many-to-many relationships. Script for SQL Server is  [SQLServer_Keys.sql](POCOGenerator.SQLServer/Scripts/SQLServer_Keys.sql) and script for MySQL is [MySQL_Keys.sql](POCOGenerator.MySQL/Scripts/MySQL_Keys.sql).
+
+Query for primary keys on SQL Server. The table, that holds information about primary keys, is `sys.key_constraints`.
 
 ```sql
 select
-    Name = kc.name,
-    Schema_Name = ss.name,
-    Table_Name = object_name(kc.parent_object_id),
+    Id = kc.object_id,
+    [Name] = kc.name,
+    [Schema_Id] = s.schema_id,
+    [Schema] = s.name,
+    Table_Id = t.object_id,
+    Table_Name = t.name,
     Ordinal = ic.key_ordinal,
+    Column_Id = c.column_id,
     Column_Name = c.name,
     Is_Descending = ic.is_descending_key,
     Is_Identity = c.is_identity,
     Is_Computed = c.is_computed
 from sys.key_constraints kc
+inner join sys.tables t on kc.parent_object_id = t.object_id
+inner join sys.schemas s on t.schema_id = s.schema_id
 inner join sys.index_columns ic
-    on kc.parent_object_id = ic.object_id and kc.unique_index_id = ic.index_id and kc.type = 'PK'
-inner join sys.columns c on ic.object_id = c.object_id and ic.column_id = c.column_id
-inner join sys.schemas ss on kc.schema_id = ss.schema_id
-order by Schema_Name, Table_Name, Ordinal
+    on t.object_id = ic.object_id
+    and kc.unique_index_id = ic.index_id
+    and kc.type = 'PK'
+inner join sys.columns c
+    on ic.object_id = c.object_id
+    and ic.column_id = c.column_id
+order by [Name], [Schema], Table_Name, Ordinal
 ```
 
-Given below is the query for foreign keys.
+Query for foreign keys on SQL Server. The tables, that hold information about foreign keys, are `sys.foreign_keys` and `sys.foreign_key_columns`.
 
 ```sql
 select
-    Name = f.name,
-    Foreign_Schema = ssf.name,
-    Foreign_Table = object_name(f.parent_object_id),
+    Id = fk.object_id,
+    [Name] = fk.name,
+    Is_Cascade_Delete = (case when fk.delete_referential_action = 1 then 1 else 0 end),
+    Is_Cascade_Update = (case when fk.update_referential_action = 1 then 1 else 0 end),
+    Foreign_Schema_Id = fs.schema_id,
+    Foreign_Schema = fs.name,
+    Foreign_Table_Id = ft.object_id,
+    Foreign_Table = ft.name,
+    Foreign_Column_Id = fc.parent_column_id,
     Foreign_Column = col_name(fc.parent_object_id, fc.parent_column_id),
-    Primary_Schema = ssp.name,
-    Primary_Table = object_name (f.referenced_object_id),
+    Primary_Schema_Id = ps.schema_id,
+    Primary_Schema = ps.name,
+    Primary_Table_Id = pt.object_id,
+    Primary_Table = pt.name,
+    Primary_Column_Id = fc.referenced_column_id,
     Primary_Column = col_name(fc.referenced_object_id, fc.referenced_column_id),
     Ordinal = fc.constraint_column_id
-from sys.foreign_keys f
-inner join sys.foreign_key_columns fc on f.object_id = fc.constraint_object_id
-inner join sys.schemas ssf on f.schema_id = ssf.schema_id
-inner join sys.tables st on f.referenced_object_id = st.object_id
-inner join sys.schemas ssp on st.schema_id = ssp.schema_id
-order by Foreign_Schema, Foreign_Table, Ordinal
+from sys.foreign_keys fk
+inner join sys.tables ft on fk.parent_object_id = ft.object_id
+inner join sys.schemas fs on ft.schema_id = fs.schema_id
+inner join sys.tables pt on fk.referenced_object_id = pt.object_id
+inner join sys.schemas ps on pt.schema_id = ps.schema_id
+inner join sys.foreign_key_columns fc on fk.object_id = fc.constraint_object_id
+where fk.type = 'F'
+order by [Name], Foreign_Schema, Foreign_Table, Ordinal
 ```
 
-# Navigation Properties
+## Navigation Properties
 
-Navigation properties define the relationship between POCOs and are reflections of foreign keys between database tables. There are 3 types of relationships: One-to-Many, One-to-One, Many-to-Many.
-
-I attached a SQL file _Keys.sql_ to the source code as a solution item. When executed in any database, it will output the database's primary keys, unique keys & foreign keys. For the foreign keys, it will also output their type of relationship and some other useful properties.
-
-Further reading: [Entity Relationships](http://www.entityframeworktutorial.net/entity-relationships.aspx), [One-to-Many Relationship](http://www.entityframeworktutorial.net/code-first/configure-one-to-many-relationship-in-code-first.aspx), [One-to-One Relationship](http://www.entityframeworktutorial.net/code-first/configure-one-to-one-relationship-in-code-first.aspx), [Many-to-Many Relationship](http://www.entityframeworktutorial.net/code-first/configure-many-to-many-relationship-in-code-first.aspx).
+Navigation properties define the relationship between POCOs and are reflections of foreign keys between database tables. There are 3 types of relationships: One-to-Many, One-to-One, Many-to-Many. Further reading:
+- [Relationships between Entities in Entity Framework 6](https://www.entityframeworktutorial.net/entityframework6/entity-relationships.aspx "Relationships between Entities in Entity Framework 6")
+- [Configure One-to-Many Relationships in EF 6](https://www.entityframeworktutorial.net/code-first/configure-one-to-many-relationship-in-code-first.aspx "Configure One-to-Many Relationships in EF 6")
+- [Configure One-to-Zero-or-One Relationship in Entity Framework 6](https://www.entityframeworktutorial.net/code-first/configure-one-to-one-relationship-in-code-first.aspx "Configure One-to-Zero-or-One Relationship in Entity Framework 6")
+- [Configure Many-to-Many Relationships in Code-First](https://www.entityframeworktutorial.net/code-first/configure-many-to-many-relationship-in-code-first.aspx "Configure Many-to-Many Relationships in Code-First")
 
 ### One-to-Many Relationship
 
 A single foreign key, without any special constraints, is a database implementation of a One-to-Many relationship between two tables.
 
-In this example, the foreign key is from `Product.ProductModelID` to `ProductModel.ProductModelID`. `ProductModelID` is the primary key of `ProductModel` table. This foreign key defines a One-to-Many relationship between `Product` and `ProductModel`. The `Product` POCO has a singular navigation property to `ProductModel` and the `ProductModel` POCO has a collection navigation property to `Product`.
+In this example, the foreign key is from `Product.ProductModelID` to `ProductModel.ProductModelID`. `ProductModelID` is the primary key of `ProductModel` table. This foreign key defines a One-to-Many relationship between `Product` and `ProductModel`. The `Product` POCO class has a singular navigation property to `ProductModel` and the `ProductModel` POCO class has a collection navigation property to `Product`.
 
 ```cs
 public class Product
@@ -716,7 +763,7 @@ public class ProductModel
 
 ### One-to-One Relationship
 
-A database implementation of One-to-One relationship is when the primary key of one table is also a foreign key to the primary key of another table. POCO Generator doesn't recognize unique key/unique index database implementation of One-to-One relationship. The SQL Server implementation of One-to-One relationship is technically 1-to-0 or 1.
+A database implementation of One-to-One relationship is when the primary key of one table is also a foreign key to the primary key of another table. POCO Generator doesn't recognize unique key/unique index database implementation of One-to-One relationship. The SQL Server implementation of One-to-One relationship is technically One-to-Zero-or-One relationship.
 
 In this example, the foreign key is from `Employee.BusinessEntityID` to `Person.BusinessEntityID`. `Person.BusinessEntityID` is the primary key of `Person` and `Employee.BusinessEntityID` is **both** the primary key of `Employee` and a foreign key to the primary key of `Person`.
 
@@ -738,11 +785,11 @@ public class Person
 
 ### Many-to-Many Relationship
 
-Many-to-Many relationship is when two or more entities have multiple references to all the other entities in the relationship. A database implementation of Many-to-Many relationship is a `join` table, or intuitively a table "in the middle", that is a construct of all the primary keys of all the tables that take part in the relationship. Every primary key in the join table is also a foreign key to the appropriate primary key in the other corresponding table. The tables in the Many-to-Many relationship don't reference each other directly but rather go through the `join` table, hence the table "in the middle".
+Many-to-Many relationship is when two or more entities have multiple references to all the other entities in the relationship. A database implementation of Many-to-Many relationship is a join table, or intuitively a table "in the middle", that is a construct of all the primary keys of all the tables that take part in the relationship. Every primary key in the join table is also a foreign key to the appropriate primary key in the other corresponding table. The tables in the Many-to-Many relationship don't reference each other directly but rather go through the join table, hence the table "in the middle".
 
-If the join table has more columns than the foreign keys to the other primary keys, for example a create time column, then POCO Generator will treat this relationship as One-To-Many relationship between the join table and each of the other tables in the relationship. This will also take effect when the Show Many-to-Many Join Table option is checked.
+If the join table has more columns than the foreign keys to the other primary keys, for example a create time column, then POCO Generator will treat this relationship as One-To-Many relationship between the join table and each of the other tables in the relationship. This will also take effect when the **Many-to-Many Join Table** setting is enabled.
 
-In this example, a product can be in several warehouses and every warehouse stores many different products. The join table is `WarehouseProducts`. All the columns of `WarehouseProducts` are primary keys and each column is a foreign key to Product primary key or Warehouse primary key appropriately.
+In this example, a product can be in several warehouses and every warehouse stores several products. The join table is `WarehouseProducts`. All the columns of `WarehouseProducts` are primary keys and each column is a foreign key to `Product` primary key or `Warehouse` primary key appropriately.
 
 ```cs
 public class Product
@@ -757,7 +804,7 @@ public class Product
     public virtual ICollection<Warehouse> Warehouses { get; set; }
 }
 
-// this poco is not rendered. only for illustration
+// this poco is not generated. only for illustration
 public class WarehouseProducts
 {
     public int ProductID { get; set; } // primary key, foreign key
