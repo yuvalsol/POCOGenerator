@@ -17,6 +17,8 @@ POCO Generator also detects primary keys, foreign keys, unique keys, indexes and
 
 POCO Generator requires .NET Framework 4.6.2 Runtime.
 
+Original article and previous version of [POCO Generator on CodeProject](https://www.codeproject.com/Articles/892233/POCO-Generator "POCO Generator on CodeProject").
+
 # Disclaimer
 
 <span style="color: DarkRed;">**One person reported data loss after using this utility (Comments section in the original article on CodeProject [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss")). Some tables were cleared of all their records but they were able to restore them from backup. This error is NOT resolved despite my efforts to replicate and solve it. Backup your database before using this utility or use it at your own risk.**</span>
@@ -437,6 +439,91 @@ The context menu of a data group (Tables, Views...) shows the filter settings. T
 
 ![Filter Settings](./Solution%20Items/Images/FilterSettings.jpg "Filter Settings")
 
+# POCO Generator Class Library
+
+The class library, **POCOGenerator.dll**, provides the whole functionality of POCO Generator. In fact, the POCO Generator UI is just the front-end for the class library and they are decoupled from each other. With the class library, you can integrate it within your own project.
+
+todo:
+- instancing
+- settings
+- events
+- run
+- run again
+
+## Demos
+
+The demos are code examples of how to integrate POCO Generator in various scenarios. The code is pretty straightforward and most often short. You can test the demos by downloading them from [Releases](releases/latest "Releases"). Under each demo folder there is a file **ConnectionString.txt** from which the demo reads the database connection string, so edit that before running the demo.
+
+### Text
+
+#### StringBuilderDemo
+Demo code in [StringBuilderDemo/Program.cs](Demos/Text/StringBuilderDemo/Program.cs "StringBuilderDemo/Program.cs")
+
+#### TextWriterDemo
+Demo code in [TextWriterDemo/Program.cs](Demos/Text/TextWriterDemo/Program.cs "TextWriterDemo/Program.cs")
+
+### Stream
+
+#### MemoryStreamDemo
+Demo code in [MemoryStreamDemo/Program.cs](Demos/Stream/MemoryStreamDemo/Program.cs "MemoryStreamDemo/Program.cs")
+
+#### FileStreamDemo
+Demo code in [FileStreamDemo/Program.cs](Demos/Stream/FileStreamDemo/Program.cs "FileStreamDemo/Program.cs")
+
+### Console
+
+#### ConsoleDemo
+Demo code in [ConsoleDemo/Program.cs](Demos/Console/ConsoleDemo/Program.cs "ConsoleDemo/Program.cs")
+
+#### ConsoleColorDemo
+Demo code in [ConsoleColorDemo/Program.cs](Demos/Console/ConsoleColorDemo/Program.cs "ConsoleColorDemo/Program.cs")
+
+#### ConsoleColorDarkThemeDemo
+Demo code in [ConsoleColorDarkThemeDemo/Program.cs](Demos/Console/ConsoleColorDarkThemeDemo/Program.cs "ConsoleColorDarkThemeDemo/Program.cs")
+
+### RichTextBox
+
+#### RichTextBoxDemo
+Demo code in [RichTextBoxDemo/DemoForm.cs](Demos/RichTextBox/RichTextBoxDemo/DemoForm.cs "RichTextBoxDemo/DemoForm.cs")
+
+### Events
+
+#### EventsDemo
+Demo code in [EventsDemo/Program.cs](Demos/Events/EventsDemo/Program.cs "EventsDemo/Program.cs")
+
+#### MultipleFilesDemo
+Demo code in [MultipleFilesDemo/Program.cs](Demos/Events/MultipleFilesDemo/Program.cs "MultipleFilesDemo/Program.cs")
+
+### Generate POCOs
+
+#### GeneratePOCOsDemo
+Demo code in [GeneratePOCOsDemo/Program.cs](Demos/GeneratePOCOs/GeneratePOCOsDemo/Program.cs "GeneratePOCOsDemo/Program.cs")
+
+#### ComplexTypesDemo
+Demo code in [ComplexTypesDemo/Program.cs](Demos/GeneratePOCOs/ComplexTypesDemo/Program.cs "ComplexTypesDemo/Program.cs")
+
+### Selecting Objects
+
+#### SelectingObjectsDemo
+Demo code in [SelectingObjectsDemo/Program.cs](Demos/SelectingObjects/SelectingObjectsDemo/Program.cs "SelectingObjectsDemo/Program.cs")
+
+#### WildcardsDemo
+Demo code in [WildcardsDemo/Program.cs](Demos/SelectingObjects/WildcardsDemo/Program.cs "WildcardsDemo/Program.cs")
+
+#### SkipAndStopDemo
+Demo code in [SkipAndStopDemo/Program.cs](Demos/SelectingObjects/SkipAndStopDemo/Program.cs "SkipAndStopDemo/Program.cs")
+
+### Server Tree
+
+#### ServerTreeDemo
+Demo code in [ServerTreeDemo/Program.cs](Demos/ServerTree/ServerTreeDemo/Program.cs "ServerTreeDemo/Program.cs")
+
+#### DetailedServerTreeDemo
+Demo code in [DetailedServerTreeDemo/Program.cs](Demos/ServerTree/DetailedServerTreeDemo/Program.cs "DetailedServerTreeDemo/Program.cs")
+
+#### NavigationPropertiesDemo
+Demo code in [NavigationPropertiesDemo/Program.cs](Demos/ServerTree/NavigationPropertiesDemo/Program.cs "NavigationPropertiesDemo/Program.cs")
+
 # Schemas
 
 The process of retrieving the schema of data objects (tables, views...) is mainly done through `GetSchema()` methods from `DbConnection` class. The class `DbConnection`, which `SqlConnection` and `MySqlConnection` inherit from, has several `GetSchema()` methods which do exactly as their name suggests. They return the schema information from the specified data source. You can pass, to the `GetSchema()` method, the type of object that you're looking for and list of restrictions which are usually used to filter on database name, schema name and the name of the object. A full list of object types and restricts can be found on these pages [SQL Server Schema Collections
@@ -663,7 +750,7 @@ There is no way to determine if a stored procedure returns more than one result 
 
 Retrieving information about primary keys and foreign keys must be done by SQL queries. The `GetSchema()` methods are not detailed enough for that.
 
-The following are abridged queries for SQL Server but the full SQL script retrieves information about primary keys, unique keys, foreign keys, one-to-many relationships, one-to-one relationships and many-to-many relationships. Script for SQL Server is  [SQLServer_Keys.sql](POCOGenerator.SQLServer/Scripts/SQLServer_Keys.sql) and script for MySQL is [MySQL_Keys.sql](POCOGenerator.MySQL/Scripts/MySQL_Keys.sql).
+The following are abridged queries for SQL Server but the full SQL script retrieves information about primary keys, unique keys, foreign keys, one-to-many relationships, one-to-one relationships and many-to-many relationships. Script for SQL Server is  [SQLServer_Keys.sql](POCOGenerator.SQLServer/Scripts/SQLServer_Keys.sql "SQLServer_Keys.sql") and script for MySQL is [MySQL_Keys.sql](POCOGenerator.MySQL/Scripts/MySQL_Keys.sql "MySQL_Keys.sql").
 
 Query for primary keys on SQL Server. The table, that holds information about primary keys, is `sys.key_constraints`.
 
@@ -804,7 +891,7 @@ public class Product
     public virtual ICollection<Warehouse> Warehouses { get; set; }
 }
 
-// this poco is not generated. only for illustration
+// this POCO is not generated. only for illustration
 public class WarehouseProducts
 {
     public int ProductID { get; set; } // primary key, foreign key
