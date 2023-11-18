@@ -1,8 +1,8 @@
 -- set @database_name = database();
 
 select
-	true as Is_Table_Index,
-	false as Is_View_Index,
+    true as Is_Table_Index,
+    false as Is_View_Index,
     s.index_name as Name,
     s.table_name as Table_Name,
     (s.non_unique = 0) as Is_Unique,
