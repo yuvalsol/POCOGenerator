@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44EA7805-F94D-4681-AE3F-F9C6622DB8CF}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\Disclaimer.txt = Solution Items\Disclaimer.txt
+		LICENSE = LICENSE
 		README.md = README.md
 		Solution Items\SolutionAssemblyInfo.cs = Solution Items\SolutionAssemblyInfo.cs
 	EndProjectSection
