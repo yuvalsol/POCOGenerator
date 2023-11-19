@@ -2,7 +2,7 @@
 
 # POCO Generator
 
-POCO Generator traverses databases and generates POCOs from various data objects.
+POCO Generator traverses databases and generates POCOs from data objects, such as tables and views.
 POCO Generator supports SQL Server and MySQL.
 
 There are five types of database objects that POCOs are generated from:
@@ -447,7 +447,7 @@ More about MySQL data type mappings on this page [Entity Framework Data Type Map
 
 The class library, **POCOGenerator.dll**, provides the whole functionality of POCO Generator. POCO Generator UI is just the front-end for the class library and they are decoupled from each other. You can incorporate the class library within your own project by referencing POCOGenerator.dll.
 
-Right now, there is no plan to wrap the class library in a NuGet package, and it will be this way until the issue of [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss") is resolved, so you have to download it directly from Releases. Downloading the class library means you have read the [Disclaimer](README.md#disclaimer "Disclaimer") and understand the risk.
+Right now, there is no plan to wrap the class library in a NuGet package, and it will be this way until the issue of [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss") is resolved, so you have to download it directly from Releases. Downloading the class library means you have read the [Disclaimer](#disclaimer "Disclaimer") and understand the risk.
 
 todo:
 - instancing
