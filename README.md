@@ -325,9 +325,29 @@ namespace AdventureWorks2014.Tables.Sales
 
 **File Name** - This setting determines the file names of the exported POCOs. It is applicable when exporting to multiple files. For RDBMS that doesn't support schema (MySQL), the options with **Schema** are not available.
 
-## Type Mapping
+## Tables and Foreign Keys
 
-The following lists the mapping from RDBMS data types to .NET data types.
+The context menu of a table object shows several options for quickly selecting other tables that are referenced from or referencing to the selected table.
+
+![Table Context Menu](./Solution%20Items/Images/TableContextMenu.jpg "Table Context Menu")
+
+**Referenced From** select all other tables that are connected from the selected table by foreign keys.
+
+**Referencing To** select all other tables that are connected to the selected table by foreign keys.
+
+**Recursively Accessible From & To** select all other tables that are directly or indirectly connected from or connected to the selected table.
+
+## Filter Settings
+
+The context menu of a data group (Tables, Views...) shows the filter settings. The filter selects, or excludes, specific data objects, within that data group, by their name and schema.
+
+![Filter Settings](./Solution%20Items/Images/FilterSettings.jpg "Filter Settings")
+
+# Type Mapping
+
+Mapping from RDBMS data types to .NET data types.
+
+## SQL Server Type Mapping
 
 More about SQL Server data type mappings on this page [SQL Server Data Type Mappings](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings "SQL Server Data Type Mappings").
 
@@ -369,6 +389,8 @@ More about SQL Server data type mappings on this page [SQL Server Data Type Mapp
 | varchar          | string                                   |
 | xml              | string                                   |
 | else             | object                                   |
+
+## MySQL Type Mapping
 
 More about MySQL data type mappings on this page [Entity Framework Data Type Mapping](https://docs.devart.com/dotconnect/mysql/datatypemapping.html "Entity Framework Data Type Mapping") and data type mappings from SQL Server to MySQL on this page [Microsoft SQL Server Type Mapping](https://dev.mysql.com/doc/workbench/en/wb-migration-database-mssql-typemapping.html "Microsoft SQL Server Type Mapping").
 
@@ -421,27 +443,11 @@ More about MySQL data type mappings on this page [Entity Framework Data Type Map
 | year                                       | short                          |
 | else                                       | object                         |
 
-## Tables and Foreign Keys
-
-The context menu of a table object shows several options for quickly selecting other tables that are referenced from or referencing to the selected table.
-
-![Table Context Menu](./Solution%20Items/Images/TableContextMenu.jpg "Table Context Menu")
-
-**Referenced From** select all other tables that are connected from the selected table by foreign keys.
-
-**Referencing To** select all other tables that are connected to the selected table by foreign keys.
-
-**Recursively Accessible From & To** select all other tables that are directly or indirectly connected from or connected to the selected table.
-
-## Filter Settings
-
-The context menu of a data group (Tables, Views...) shows the filter settings. The filter selects, or excludes, specific data objects, within that data group, by their name and schema.
-
-![Filter Settings](./Solution%20Items/Images/FilterSettings.jpg "Filter Settings")
-
 # POCO Generator Class Library
 
-The class library, **POCOGenerator.dll**, provides the whole functionality of POCO Generator. In fact, the POCO Generator UI is just the front-end for the class library and they are decoupled from each other. With the class library, you can integrate it within your own project.
+The class library, **POCOGenerator.dll**, provides the whole functionality of POCO Generator. POCO Generator UI is just the front-end for the class library and they are decoupled from each other. You can incorporate the class library within your own project by referencing POCOGenerator.dll.
+
+Right now, there is no plan to wrap the class library in a NuGet package, and it will be this way until the issue of [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss") is resolved, so you have to download it directly from Releases. Downloading the class library means you have read the [Disclaimer](README.md#disclaimer "Disclaimer") and understand the risk.
 
 todo:
 - instancing
@@ -449,80 +455,144 @@ todo:
 - events
 - run
 - run again
+- return value - check for errors
 
 ## Demos
 
-The demos are code examples of how to integrate POCO Generator in various scenarios. The code is pretty straightforward and most often short. You can test the demos by downloading them from [Releases](releases/latest "Releases"). Under each demo folder there is a file **ConnectionString.txt** from which the demo reads the database connection string, so edit that before running the demo.
+The demos are code examples of how to integrate POCO Generator in various scenarios. You can test the demos by downloading them from Releases. Under each demo folder there is a file **ConnectionString.txt** from which the demo reads the database connection string, so edit that before running the demo.
 
 ### Text
 
 #### StringBuilderDemo
-Demo code in [StringBuilderDemo/Program.cs](Demos/Text/StringBuilderDemo/Program.cs "StringBuilderDemo/Program.cs")
+Demo code [StringBuilderDemo/Program.cs](Demos/Text/StringBuilderDemo/Program.cs "StringBuilderDemo/Program.cs").
+
+The demo demonstrates how to write POCOs to a `StringBuilder`.
+
+```cs
+StringBuilder stringBuilder = new StringBuilder();
+IGenerator generator = GeneratorFactory.GetGenerator(stringBuilder);
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+generator.Settings.Tables.IncludeAll = true;
+generator.Generate();
+string output = stringBuilder.ToString();
+Console.WriteLine(output);
+```
 
 #### TextWriterDemo
-Demo code in [TextWriterDemo/Program.cs](Demos/Text/TextWriterDemo/Program.cs "TextWriterDemo/Program.cs")
+Demo code [TextWriterDemo/Program.cs](Demos/Text/TextWriterDemo/Program.cs "TextWriterDemo/Program.cs").
+
+The demo demonstrates how to write POCOs to a `TextWriter` (abstract base class of `StreamWriter` and `StringWriter`).
+
+```cs
+using (MemoryStream stream = new MemoryStream())
+{
+    using (TextWriter textWriter = new StreamWriter(stream))
+    {
+        IGenerator generator = GeneratorFactory.GetGenerator(textWriter);
+        generator.Settings.ConnectionString =
+            @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+        generator.Settings.Tables.IncludeAll = true;
+        generator.Generate();
+    }
+
+    byte[] bytes = stream.ToArray();
+    string output = System.Text.Encoding.ASCII.GetString(bytes);
+    Console.WriteLine(output);
+}
+```
 
 ### Stream
 
 #### MemoryStreamDemo
-Demo code in [MemoryStreamDemo/Program.cs](Demos/Stream/MemoryStreamDemo/Program.cs "MemoryStreamDemo/Program.cs")
+Demo code [MemoryStreamDemo/Program.cs](Demos/Stream/MemoryStreamDemo/Program.cs "MemoryStreamDemo/Program.cs").
+
+The demo demonstrates how to write POCOs to a `MemoryStream`.
+
+```cs
+using (MemoryStream stream = new MemoryStream())
+{
+    IGenerator generator = GeneratorFactory.GetGenerator(stream);
+    generator.Settings.ConnectionString =
+        @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+    generator.Settings.Tables.IncludeAll = true;
+    generator.Generate();
+    byte[] bytes = stream.ToArray();
+    string output = System.Text.Encoding.ASCII.GetString(bytes);
+    Console.WriteLine(output);
+}
+```
 
 #### FileStreamDemo
-Demo code in [FileStreamDemo/Program.cs](Demos/Stream/FileStreamDemo/Program.cs "FileStreamDemo/Program.cs")
+Demo code [FileStreamDemo/Program.cs](Demos/Stream/FileStreamDemo/Program.cs "FileStreamDemo/Program.cs").
+
+The demo demonstrates how to write POCOs to a `FileStream`.
+
+```cs
+string filePath = @"C:\Path\To\AdventureWorks2014.cs";
+using (FileStream stream = File.Open(filePath, FileMode.Create))
+{
+    IGenerator generator = GeneratorFactory.GetGenerator(stream);
+    generator.Settings.ConnectionString =
+        @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+    generator.Settings.Tables.IncludeAll = true;
+    generator.Generate();
+}
+```
 
 ### Console
 
 #### ConsoleDemo
-Demo code in [ConsoleDemo/Program.cs](Demos/Console/ConsoleDemo/Program.cs "ConsoleDemo/Program.cs")
+Demo code [ConsoleDemo/Program.cs](Demos/Console/ConsoleDemo/Program.cs "ConsoleDemo/Program.cs").
 
 #### ConsoleColorDemo
-Demo code in [ConsoleColorDemo/Program.cs](Demos/Console/ConsoleColorDemo/Program.cs "ConsoleColorDemo/Program.cs")
+Demo code [ConsoleColorDemo/Program.cs](Demos/Console/ConsoleColorDemo/Program.cs "ConsoleColorDemo/Program.cs").
 
 #### ConsoleColorDarkThemeDemo
-Demo code in [ConsoleColorDarkThemeDemo/Program.cs](Demos/Console/ConsoleColorDarkThemeDemo/Program.cs "ConsoleColorDarkThemeDemo/Program.cs")
+Demo code [ConsoleColorDarkThemeDemo/Program.cs](Demos/Console/ConsoleColorDarkThemeDemo/Program.cs "ConsoleColorDarkThemeDemo/Program.cs").
 
 ### RichTextBox
 
 #### RichTextBoxDemo
-Demo code in [RichTextBoxDemo/DemoForm.cs](Demos/RichTextBox/RichTextBoxDemo/DemoForm.cs "RichTextBoxDemo/DemoForm.cs")
+Demo code [RichTextBoxDemo/DemoForm.cs](Demos/RichTextBox/RichTextBoxDemo/DemoForm.cs "RichTextBoxDemo/DemoForm.cs").
 
 ### Events
 
 #### EventsDemo
-Demo code in [EventsDemo/Program.cs](Demos/Events/EventsDemo/Program.cs "EventsDemo/Program.cs")
+Demo code [EventsDemo/Program.cs](Demos/Events/EventsDemo/Program.cs "EventsDemo/Program.cs").
 
 #### MultipleFilesDemo
-Demo code in [MultipleFilesDemo/Program.cs](Demos/Events/MultipleFilesDemo/Program.cs "MultipleFilesDemo/Program.cs")
-
-### Generate POCOs
-
-#### GeneratePOCOsDemo
-Demo code in [GeneratePOCOsDemo/Program.cs](Demos/GeneratePOCOs/GeneratePOCOsDemo/Program.cs "GeneratePOCOsDemo/Program.cs")
-
-#### ComplexTypesDemo
-Demo code in [ComplexTypesDemo/Program.cs](Demos/GeneratePOCOs/ComplexTypesDemo/Program.cs "ComplexTypesDemo/Program.cs")
+Demo code [MultipleFilesDemo/Program.cs](Demos/Events/MultipleFilesDemo/Program.cs "MultipleFilesDemo/Program.cs").
 
 ### Selecting Objects
 
 #### SelectingObjectsDemo
-Demo code in [SelectingObjectsDemo/Program.cs](Demos/SelectingObjects/SelectingObjectsDemo/Program.cs "SelectingObjectsDemo/Program.cs")
+Demo code [SelectingObjectsDemo/Program.cs](Demos/SelectingObjects/SelectingObjectsDemo/Program.cs "SelectingObjectsDemo/Program.cs").
 
 #### WildcardsDemo
-Demo code in [WildcardsDemo/Program.cs](Demos/SelectingObjects/WildcardsDemo/Program.cs "WildcardsDemo/Program.cs")
+Demo code [WildcardsDemo/Program.cs](Demos/SelectingObjects/WildcardsDemo/Program.cs "WildcardsDemo/Program.cs").
 
 #### SkipAndStopDemo
-Demo code in [SkipAndStopDemo/Program.cs](Demos/SelectingObjects/SkipAndStopDemo/Program.cs "SkipAndStopDemo/Program.cs")
+Demo code [SkipAndStopDemo/Program.cs](Demos/SelectingObjects/SkipAndStopDemo/Program.cs "SkipAndStopDemo/Program.cs").
 
 ### Server Tree
 
 #### ServerTreeDemo
-Demo code in [ServerTreeDemo/Program.cs](Demos/ServerTree/ServerTreeDemo/Program.cs "ServerTreeDemo/Program.cs")
+Demo code [ServerTreeDemo/Program.cs](Demos/ServerTree/ServerTreeDemo/Program.cs "ServerTreeDemo/Program.cs").
 
 #### DetailedServerTreeDemo
-Demo code in [DetailedServerTreeDemo/Program.cs](Demos/ServerTree/DetailedServerTreeDemo/Program.cs "DetailedServerTreeDemo/Program.cs")
+Demo code [DetailedServerTreeDemo/Program.cs](Demos/ServerTree/DetailedServerTreeDemo/Program.cs "DetailedServerTreeDemo/Program.cs").
 
 #### NavigationPropertiesDemo
-Demo code in [NavigationPropertiesDemo/Program.cs](Demos/ServerTree/NavigationPropertiesDemo/Program.cs "NavigationPropertiesDemo/Program.cs")
+Demo code [NavigationPropertiesDemo/Program.cs](Demos/ServerTree/NavigationPropertiesDemo/Program.cs "NavigationPropertiesDemo/Program.cs").
+
+### Generate POCOs
+
+#### GeneratePOCOsDemo
+Demo code [GeneratePOCOsDemo/Program.cs](Demos/GeneratePOCOs/GeneratePOCOsDemo/Program.cs "GeneratePOCOsDemo/Program.cs").
+
+#### ComplexTypesDemo
+Demo code [ComplexTypesDemo/Program.cs](Demos/GeneratePOCOs/ComplexTypesDemo/Program.cs "ComplexTypesDemo/Program.cs") and SQL Server database `ComplexTypesDB` script [ComplexTypesDemo/ComplexTypesDB.sql](Demos/GeneratePOCOs/ComplexTypesDemo/ComplexTypesDB.sql "ComplexTypesDemo/ComplexTypesDB.sql").
 
 # Schemas
 
