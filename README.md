@@ -475,6 +475,7 @@ generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.Tables.IncludeAll = true;
 generator.Generate();
+
 string output = stringBuilder.ToString();
 Console.WriteLine(output);
 ```
@@ -517,6 +518,7 @@ using (MemoryStream stream = new MemoryStream())
         @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
     generator.Settings.Tables.IncludeAll = true;
     generator.Generate();
+
     byte[] bytes = stream.ToArray();
     string output = System.Text.Encoding.ASCII.GetString(bytes);
     Console.WriteLine(output);
@@ -545,16 +547,78 @@ using (FileStream stream = File.Open(filePath, FileMode.Create))
 #### ConsoleDemo
 Demo code [ConsoleDemo/Program.cs](Demos/Console/ConsoleDemo/Program.cs "ConsoleDemo/Program.cs").
 
+The demo demonstrates how to write POCOs to the Console.
+
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+generator.Settings.Tables.IncludeAll = true;
+generator.Generate();
+```
+
 #### ConsoleColorDemo
 Demo code [ConsoleColorDemo/Program.cs](Demos/Console/ConsoleColorDemo/Program.cs "ConsoleColorDemo/Program.cs").
 
+The demo demonstrates how to write POCOs to the Console with syntax highlight using predefined colors.
+
+|            | RGB                | Hex     |
+|------------|--------------------|---------|
+| Text       | RGB(0, 0, 0)       | #000000 |
+| Keyword    | RGB(0, 0, 255)     | #0000ff |
+| UserType   | RGB(43, 145, 175)  | #2b91af |
+| String     | RGB(163, 21, 21)   | #a31515 |
+| Comment    | RGB(0, 128, 0)     | #008000 |
+| Error      | RGB(255, 0, 0)     | #ff0000 |
+| Background | RGB(255, 255, 255) | #ffffff |
+
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+generator.Settings.Tables.IncludeAll = true;
+generator.Generate();
+```
+
 #### ConsoleColorDarkThemeDemo
 Demo code [ConsoleColorDarkThemeDemo/Program.cs](Demos/Console/ConsoleColorDarkThemeDemo/Program.cs "ConsoleColorDarkThemeDemo/Program.cs").
+
+The demo demonstrates how to write POCOs to the Console with custom syntax highlight.
+
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+generator.Settings.Tables.IncludeAll = true;
+
+generator.Settings.SyntaxHighlight.Text = Color.FromArgb(255, 255, 255);
+generator.Settings.SyntaxHighlight.Keyword = Color.FromArgb(86, 156, 214);
+generator.Settings.SyntaxHighlight.UserType = Color.FromArgb(78, 201, 176);
+generator.Settings.SyntaxHighlight.String = Color.FromArgb(214, 157, 133);
+generator.Settings.SyntaxHighlight.Comment = Color.FromArgb(96, 139, 78);
+generator.Settings.SyntaxHighlight.Error = Color.FromArgb(255, 0, 0);
+generator.Settings.SyntaxHighlight.Background = Color.FromArgb(0, 0, 0);
+
+generator.Generate();
+```
 
 ### RichTextBox
 
 #### RichTextBoxDemo
 Demo code [RichTextBoxDemo/DemoForm.cs](Demos/RichTextBox/RichTextBoxDemo/DemoForm.cs "RichTextBoxDemo/DemoForm.cs").
+
+The demo demonstrates how to write POCOs to WinForms `RichTextBox` control.
+
+![RichTextBox Demo](./Solution%20Items/Images/RichTextBoxDemo.jpg "RichTextBox Demo")
+
+```cs
+RichTextBox txtPocoEditor = new System.Windows.Forms.RichTextBox();
+IGenerator generator = GeneratorWinFormsFactory.GetGenerator(txtPocoEditor);
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+generator.Settings.Tables.IncludeAll = true;
+generator.Generate();
+```
 
 ### Events
 
