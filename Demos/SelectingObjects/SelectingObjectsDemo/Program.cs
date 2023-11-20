@@ -15,17 +15,17 @@ namespace SelectingObjectsDemo
                 generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
 
-            // db object is selected when:
+            // database object is selected when:
             // 1. explicitly included: Settings.IncludeAll, Settings.Tables.IncludeAll, Settings.Tables.Include.Add(), ...
             // 2. not explicitly excluded. it doesn't appear in any excluding setting: Settings.Tables.ExcludeAll, Settings.Tables.Exclude.Add(), ...
 
-            // select all the tables under HumanResources & Purchasing schema
+            // select all the tables under HumanResources & Purchasing schemas
             // and select table Production.Product
             generator.Settings.Tables.Include.Add("HumanResources.*");
             generator.Settings.Tables.Include.Add("Purchasing.*");
             generator.Settings.Tables.Include.Add("Production.Product");
 
-            // select all views except view under Production & Sales schema
+            // select all views except views under Production & Sales schemas
             // and except view Person.vAdditionalContactInfo
             generator.Settings.Views.IncludeAll = true;
             generator.Settings.Views.Exclude.Add("Production.*");
@@ -42,8 +42,8 @@ namespace SelectingObjectsDemo
                         Console.WriteLine(table);
                     Console.WriteLine();
 
-                    Console.WriteLine("View:");
-                    Console.WriteLine("-----");
+                    Console.WriteLine("Views:");
+                    Console.WriteLine("------");
                     foreach (View view in database.Views)
                         Console.WriteLine(view);
                     Console.WriteLine();

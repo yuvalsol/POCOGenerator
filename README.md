@@ -2,7 +2,7 @@
 
 # POCO Generator
 
-POCO Generator traverses databases and generates POCOs from data objects, such as tables and views.
+POCO Generator traverses databases and generates POCOs from database objects, such as tables and views.
 POCO Generator supports SQL Server and MySQL.
 
 There are five types of database objects that POCOs are generated from:
@@ -21,11 +21,11 @@ Original article and previous version of [POCO Generator on CodeProject](https:/
 
 # Disclaimer
 
-<span style="color: DarkRed;">**One person reported data loss after using this utility (Comments section in the original article on CodeProject [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss")). Some tables were cleared of all their records but they were able to restore them from backup. This error is NOT resolved despite my efforts to replicate and solve it. Backup your database before using this utility or use it at your own risk.**</span>
+<span style='color: DarkRed;'>**One person reported data loss after using this utility (Comments section in the original article on CodeProject [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss")). Some tables were cleared of all their records but they were able to restore them from backup. This error is NOT resolved despite my efforts to replicate and solve it. Backup your database before using this utility or use it at your own risk.**</span>
 
 # POCO Generator UI
 
-The RDBMS tree lists all the databases on that instance and each database lists its data objects - tables, views, procedures, functions & TVPs.
+The RDBMS tree lists all the databases on that instance and each database lists its database objects - tables, views, procedures, functions & TVPs.
 The checkboxes on the tree are for picking specific database objects.
 The upper right side of the window shows the current generated POCOs, based on what is selected on the tree.
 The setting panels, at the bottom, manipulate how the POCOs are constructed and handle exporting them to files.
@@ -118,23 +118,23 @@ public class Address
 How POCO Generator detects and builds complex types:
 
 1. For every table, select columns that
-- have underscore in the column name
-- are not part of the table's primary key
-- are not part of unique key
-- are not part of foreign key
-- are not referenced by a foreign key from another table
-- are not part of an index
-- are not identity column
+    - have underscore in the column name
+    - are not part of the table's primary key
+    - are not part of unique key
+    - are not part of foreign key
+    - are not referenced by a foreign key from another table
+    - are not part of an index
+    - are not identity column
 2. Split the column on the _first_ underscore. The prefix is the name of the complex type table. The suffix is the name of the complex type column.
 3. Group the complex type columns by the name of the complex type table.
 4. Consolidate complex types that may appear in several database tables. Two complex types are the same if they have the same complex type columns and no more. Two complex type columns are the same if they have
-- same name
-- same data type
-- same precision
-- same unsigned property
-- same nullable property
-- same computed property
-- same column default
+    - same name
+    - same data type
+    - same precision
+    - same unsigned property
+    - same nullable property
+    - same computed property
+    - same column default
 
 **Enum Type** - Determines how enum and set type columns are generated. This setting is applicable when the RDBMS, such as MySQL, supports enum types.
 
@@ -179,7 +179,7 @@ public enum Number : int        public enum Numbers : int
 
 ![Class Name Settings](./Solution%20Items/Images/ClassNameSettings.jpg "Class Name Settings")
 
-The name of the POCO class is set to the name of the data object, whether it is a valid C# class name or not. These settings modify the initial class name.
+The name of the POCO class is set to the name of the database object, whether it is a valid C# class name or not. These settings modify the initial class name.
 
 **Singular** - Change the class name from plural to singular. Applicable only for tables, views & TVPs.
 
@@ -339,7 +339,7 @@ The context menu of a table object shows several options for quickly selecting o
 
 ## Filter Settings
 
-The context menu of a data group (Tables, Views...) shows the filter settings. The filter selects, or excludes, specific data objects, within that data group, by their name and schema.
+The context menu of a database group (Tables, Views...) shows the filter settings. The filter selects, or excludes, specific database objects, within that database group, by their name and schema.
 
 ![Filter Settings](./Solution%20Items/Images/FilterSettings.jpg "Filter Settings")
 
@@ -562,15 +562,15 @@ Demo code [ConsoleColorDemo/Program.cs](Demos/Console/ConsoleColorDemo/Program.c
 
 The demo demonstrates how to write POCOs to the Console with syntax highlight using predefined colors.
 
-|            | RGB                | Hex     |
-|------------|--------------------|---------|
-| Text       | RGB(0, 0, 0)       | #000000 |
-| Keyword    | RGB(0, 0, 255)     | #0000ff |
-| UserType   | RGB(43, 145, 175)  | #2b91af |
-| String     | RGB(163, 21, 21)   | #a31515 |
-| Comment    | RGB(0, 128, 0)     | #008000 |
-| Error      | RGB(255, 0, 0)     | #ff0000 |
-| Background | RGB(255, 255, 255) | #ffffff |
+|            | RGB           | Hex     |
+|------------|---------------|---------|
+| Text       | 0, 0, 0       | #000000 |
+| Keyword    | 0, 0, 255     | #0000ff |
+| UserType   | 43, 145, 175  | #2b91af |
+| String     | 163, 21, 21   | #a31515 |
+| Comment    | 0, 128, 0     | #008000 |
+| Error      | 255, 0, 0     | #ff0000 |
+| Background | 255, 255, 255 | #ffffff |
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
@@ -620,6 +620,143 @@ generator.Settings.Tables.IncludeAll = true;
 generator.Generate();
 ```
 
+### Selecting Objects
+
+#### SelectingObjectsDemo
+Demo code [SelectingObjectsDemo/Program.cs](Demos/SelectingObjects/SelectingObjectsDemo/Program.cs "SelectingObjectsDemo/Program.cs").
+
+The demo demonstrates how to select specific database objects for POCO generating.
+
+A database object is selected when these two conditions are met:
+1. Explicitly included. Selecting a database object is done by `Settings` properties and methods that have `Include` in their name, such as
+    - Settings.IncludeAll
+    - Settings.Tables.IncludeAll
+    - Settings.Tables.Include.Add(names)
+2. Not explicitly excluded. The database object doesn't appear in any excluding setting, which have `Exclude` in their name, such as
+    - Settings.Tables.ExcludeAll
+    - Settings.Tables.Exclude.Add(names)
+
+The tables code snippet shows picking just specific tables.
+The views code snippet shows selecting all the views and then excluding the views that are not needed.
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+
+// select all the tables under HumanResources & Purchasing schemas
+// and select table Production.Product
+generator.Settings.Tables.Include.Add("HumanResources.*");
+generator.Settings.Tables.Include.Add("Purchasing.*");
+generator.Settings.Tables.Include.Add("Production.Product");
+
+// select all views except views under Production & Sales schemas
+// and except view Person.vAdditionalContactInfo
+generator.Settings.Views.IncludeAll = true;
+generator.Settings.Views.Exclude.Add("Production.*");
+generator.Settings.Views.Exclude.Add("Sales.*");
+generator.Settings.Views.Exclude.Add("Person.vAdditionalContactInfo");
+
+generator.Generate();
+```
+
+The list of selected tables and views:
+
+```
+Tables:
+-------
+HumanResources.Department
+HumanResources.Employee
+HumanResources.EmployeeDepartmentHistory
+HumanResources.EmployeePayHistory
+HumanResources.JobCandidate
+HumanResources.Shift
+Production.Product
+Purchasing.ProductVendor
+Purchasing.PurchaseOrderDetail
+Purchasing.PurchaseOrderHeader
+Purchasing.ShipMethod
+Purchasing.Vendor
+
+Views:
+------
+HumanResources.vEmployee
+HumanResources.vEmployeeDepartment
+HumanResources.vEmployeeDepartmentHistory
+HumanResources.vJobCandidate
+HumanResources.vJobCandidateEducation
+HumanResources.vJobCandidateEmployment
+Person.vStateProvinceCountryRegion
+Purchasing.vVendorWithAddresses
+Purchasing.vVendorWithContacts
+```
+
+#### WildcardsDemo
+Demo code [WildcardsDemo/Program.cs](Demos/SelectingObjects/WildcardsDemo/Program.cs "WildcardsDemo/Program.cs").
+
+The demo demonstrates the usage of wildcards when select specific database objects for POCO generating.
+
+The asterisk (*) matches any sequence of characters.
+The question mark (?) matches any single character.
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+
+// all the tables under Sales schema
+generator.Settings.Tables.Include.Add("Sales.*");
+
+// HumanResources.Employee but not HumanResources.EmployeeDepartmentHistory
+// or HumanResources.EmployeePayHistory
+generator.Settings.Tables.Include.Add("Employe?");
+
+generator.Generate();
+```
+
+#### SkipAndStopDemo
+Demo code [SkipAndStopDemo/Program.cs](Demos/SelectingObjects/SkipAndStopDemo/Program.cs "SkipAndStopDemo/Program.cs").
+
+The demo demonstrates how to _skip_ database objects from POCO generating and how to _stop_ the generator from continuing generating POCOs.
+This is a dynamic way of picking which database objects to process by utilizing events `Skip` and `Stop` properties.
+
+At first, all the data objects - tables, views, procedures, functions, TVPs - are selected.
+
+```cs
+generator.Settings.IncludeAll = true;
+```
+
+Then the generator start running.
+
+For each table, the generator fires the event `TableGenerating` **before** generating a table POCO. If the event argument's `Skip` property is set to `true`, the generator will skip generating a POCO from that table and continue to the next one.
+
+The generator fires the event `TablesGenerated` **after** it has finished processing all the tables. Once the event argument's `Stop` property is set to `true`, the generator will stop generating POCOs out of the rest of the data objects.
+
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+
+// select everything
+generator.Settings.IncludeAll = true;
+
+generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
+{
+    // skip any table that is not under Sales schema
+    if (e.Table.Schema != "Sales")
+        e.Skip = true;
+};
+
+generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
+{
+    // stop the generator
+    // views, procedures, functions and TVPs will not be generated
+    e.Stop = true;
+};
+
+generator.Generate();
+```
+
 ### Events
 
 #### EventsDemo
@@ -627,17 +764,6 @@ Demo code [EventsDemo/Program.cs](Demos/Events/EventsDemo/Program.cs "EventsDemo
 
 #### MultipleFilesDemo
 Demo code [MultipleFilesDemo/Program.cs](Demos/Events/MultipleFilesDemo/Program.cs "MultipleFilesDemo/Program.cs").
-
-### Selecting Objects
-
-#### SelectingObjectsDemo
-Demo code [SelectingObjectsDemo/Program.cs](Demos/SelectingObjects/SelectingObjectsDemo/Program.cs "SelectingObjectsDemo/Program.cs").
-
-#### WildcardsDemo
-Demo code [WildcardsDemo/Program.cs](Demos/SelectingObjects/WildcardsDemo/Program.cs "WildcardsDemo/Program.cs").
-
-#### SkipAndStopDemo
-Demo code [SkipAndStopDemo/Program.cs](Demos/SelectingObjects/SkipAndStopDemo/Program.cs "SkipAndStopDemo/Program.cs").
 
 ### Server Tree
 
@@ -660,7 +786,7 @@ Demo code [ComplexTypesDemo/Program.cs](Demos/GeneratePOCOs/ComplexTypesDemo/Pro
 
 # Schemas
 
-The process of retrieving the schema of data objects (tables, views...) is mainly done through `GetSchema()` methods from `DbConnection` class. The class `DbConnection`, which `SqlConnection` and `MySqlConnection` inherit from, has several `GetSchema()` methods which do exactly as their name suggests. They return the schema information from the specified data source. You can pass, to the `GetSchema()` method, the type of object that you're looking for and list of restrictions which are usually used to filter on database name, schema name and the name of the object. A full list of object types and restricts can be found on these pages [SQL Server Schema Collections
+The process of retrieving the schema of database objects (tables, views...) is mainly done through `GetSchema()` methods from `DbConnection` class. The class `DbConnection`, which `SqlConnection` and `MySqlConnection` inherit from, has several `GetSchema()` methods which do exactly as their name suggests. They return the schema information from the specified data source. You can pass, to the `GetSchema()` method, the type of object that you're looking for and list of restrictions which are usually used to filter on database name, schema name and the name of the object. A full list of object types and restricts can be found on these pages [SQL Server Schema Collections
 ](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-schema-collections "SQL Server Schema Collections
 ") and [Schema Restrictions](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/schema-restrictions "Schema Restrictions").
 
