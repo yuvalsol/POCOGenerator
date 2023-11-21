@@ -21,7 +21,7 @@ Original article and previous version of [POCO Generator on CodeProject](https:/
 
 # Disclaimer
 
-<span style='color: DarkRed;'>**One person reported data loss after using this utility (Comments section in the original article on CodeProject [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss")). Some tables were cleared of all their records but they were able to restore them from backup. This error is NOT resolved despite my efforts to replicate and solve it. Backup your database before using this utility or use it at your own risk.**</span>
+**One person reported data loss after using this utility (Comments section in the original article on CodeProject [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss")). Some tables were cleared of all their records but they were able to restore them from backup. This error is NOT resolved despite my efforts to replicate and solve it. Backup your database before using this utility or use it at your own risk.**
 
 # POCO Generator UI
 
@@ -694,7 +694,7 @@ Purchasing.vVendorWithContacts
 #### WildcardsDemo
 Demo code [WildcardsDemo/Program.cs](Demos/SelectingObjects/WildcardsDemo/Program.cs "WildcardsDemo/Program.cs").
 
-The demo demonstrates the usage of wildcards when select specific database objects for POCO generating.
+The demo demonstrates the usage of wildcards when selecting specific database objects for POCO generating.
 
 The asterisk (*) matches any sequence of characters.
 The question mark (?) matches any single character.
@@ -718,19 +718,19 @@ generator.Generate();
 Demo code [SkipAndStopDemo/Program.cs](Demos/SelectingObjects/SkipAndStopDemo/Program.cs "SkipAndStopDemo/Program.cs").
 
 The demo demonstrates how to _skip_ database objects from POCO generating and how to _stop_ the generator from continuing generating POCOs.
-This is a dynamic way of picking which database objects to process by utilizing events `Skip` and `Stop` properties.
+This is a dynamic way of picking which database objects to process by utilizing the `Skip` and `Stop` properties while the generator is running.
 
-At first, all the data objects - tables, views, procedures, functions, TVPs - are selected.
+At first, all the database objects - tables, views, procedures, functions, TVPs - are selected.
 
 ```cs
 generator.Settings.IncludeAll = true;
 ```
 
-Then the generator start running.
+Then the generator starts running.
 
-For each table, the generator fires the event `TableGenerating` **before** generating a table POCO. If the event argument's `Skip` property is set to `true`, the generator will skip generating a POCO from that table and continue to the next one.
+For each table, the generator fires the event `TableGenerating` **before** generating a POCO out of the table. If the event argument's `Skip` property is set to `true`, the generator will skip generating a POCO from that table and continue to the next one.
 
-The generator fires the event `TablesGenerated` **after** it has finished processing all the tables. Once the event argument's `Stop` property is set to `true`, the generator will stop generating POCOs out of the rest of the data objects.
+The generator fires the event `TablesGenerated` **after** it has finished processing all the tables. Once the event argument's `Stop` property is set to `true`, the generator will stop generating POCOs out of the rest of the database objects.
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleGenerator();
@@ -761,6 +761,39 @@ generator.Generate();
 
 #### EventsDemo
 Demo code [EventsDemo/Program.cs](Demos/Events/EventsDemo/Program.cs "EventsDemo/Program.cs").
+
+The demo shows all the events the generator fires while running, how to register to them and lists the properties their event arguments expose.
+
+The generator doesn't write directly to the Console, but rather create an output-empty generator and register to events (among others) that handle POCO text. The POCO text is then passed from the event argument and written to the Console.
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+
+// select everything
+generator.Settings.IncludeAll = true;
+
+generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
+{
+    string poco = e.POCO;
+    Console.WriteLine(poco);
+    Console.WriteLine();
+};
+
+generator.ViewPOCO += (object sender, ViewPOCOEventArgs e) =>
+{
+    string poco = e.POCO;
+    Console.WriteLine(poco);
+    Console.WriteLine();
+};
+
+generator.ProcedurePOCO += ...
+generator.FunctionPOCO += ...
+generator.TVPPOCO += ...
+
+generator.Generate();
+```
 
 #### MultipleFilesDemo
 Demo code [MultipleFilesDemo/Program.cs](Demos/Events/MultipleFilesDemo/Program.cs "MultipleFilesDemo/Program.cs").
