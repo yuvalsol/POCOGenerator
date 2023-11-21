@@ -98,16 +98,16 @@ namespace MultipleFilesDemo
 
             #region ComplexTypeTables
 
-            // create ComplexTypeTables folder
+            // create Tables folder for complex type tables
             generator.ComplexTypeTablesGenerating += (object sender, ComplexTypeTablesGeneratingEventArgs e) =>
             {
-                DbGroupGenerating("ComplexTypeTables", ref path, ref indent, ref filesCount);
+                DbGroupGenerating("Tables", ref path, ref indent, ref filesCount);
             };
 
             // get namespace for complex type table
             generator.ComplexTypeTableGenerating += (object sender, ComplexTypeTableGeneratingEventArgs e) =>
             {
-                e.Namespace = GetNamespace(e.Namespace, e.ComplexTypeTable.Database, "ComplexTypeTables", e.ComplexTypeTable.Schema);
+                e.Namespace = GetNamespace(e.Namespace, e.ComplexTypeTable.Database, "Tables", e.ComplexTypeTable.Schema);
             };
 
             // save complex type table poco
