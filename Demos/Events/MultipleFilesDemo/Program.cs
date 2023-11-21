@@ -68,40 +68,12 @@ namespace MultipleFilesDemo
                 Console.WriteLine("{0}{1}", new string(' ', indent), folder);
             };
 
+            #region Tables
+
             // create Tables folder
             generator.TablesGenerating += (object sender, TablesGeneratingEventArgs e) =>
             {
                 DbGroupGenerating("Tables", ref path, ref indent, ref filesCount);
-            };
-
-            // create ComplexTypeTables folder
-            generator.ComplexTypeTablesGenerating += (object sender, ComplexTypeTablesGeneratingEventArgs e) =>
-            {
-                DbGroupGenerating("ComplexTypeTables", ref path, ref indent, ref filesCount);
-            };
-
-            // create Views folder
-            generator.ViewsGenerating += (object sender, ViewsGeneratingEventArgs e) =>
-            {
-                DbGroupGenerating("Views", ref path, ref indent, ref filesCount);
-            };
-
-            // create Procedures folder
-            generator.ProceduresGenerating += (object sender, ProceduresGeneratingEventArgs e) =>
-            {
-                DbGroupGenerating("Procedures", ref path, ref indent, ref filesCount);
-            };
-
-            // create Functions folder
-            generator.FunctionsGenerating += (object sender, FunctionsGeneratingEventArgs e) =>
-            {
-                DbGroupGenerating("Functions", ref path, ref indent, ref filesCount);
-            };
-
-            // create TVPs folder
-            generator.TVPsGenerating += (object sender, TVPsGeneratingEventArgs e) =>
-            {
-                DbGroupGenerating("TVPs", ref path, ref indent, ref filesCount);
             };
 
             // get namespace for table
@@ -110,70 +82,10 @@ namespace MultipleFilesDemo
                 e.Namespace = GetNamespace(e.Namespace, e.Table.Database, "Tables", e.Table.Schema);
             };
 
-            // get namespace for complex type table
-            generator.ComplexTypeTableGenerating += (object sender, ComplexTypeTableGeneratingEventArgs e) =>
-            {
-                e.Namespace = GetNamespace(e.Namespace, e.ComplexTypeTable.Database, "ComplexTypeTables", e.ComplexTypeTable.Schema);
-            };
-
-            // get namespace for view
-            generator.ViewGenerating += (object sender, ViewGeneratingEventArgs e) =>
-            {
-                e.Namespace = GetNamespace(e.Namespace, e.View.Database, "Views", e.View.Schema);
-            };
-
-            // get namespace for procedure
-            generator.ProcedureGenerating += (object sender, ProcedureGeneratingEventArgs e) =>
-            {
-                e.Namespace = GetNamespace(e.Namespace, e.Procedure.Database, "Procedures", e.Procedure.Schema);
-            };
-
-            // get namespace for function
-            generator.FunctionGenerating += (object sender, FunctionGeneratingEventArgs e) =>
-            {
-                e.Namespace = GetNamespace(e.Namespace, e.Function.Database, "Functions", e.Function.Schema);
-            };
-
-            // get namespace for tvp
-            generator.TVPGenerating += (object sender, TVPGeneratingEventArgs e) =>
-            {
-                e.Namespace = GetNamespace(e.Namespace, e.TVP.Database, "TVPs", e.TVP.Schema);
-            };
-
             // save table poco
             generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
             {
                 DbObjectPOCO(e.ClassName, e.POCO, e.Table.Schema, path, ref filesCount);
-            };
-
-            // save table complex type table poco
-            generator.ComplexTypeTablePOCO += (object sender, ComplexTypeTablePOCOEventArgs e) =>
-            {
-                DbObjectPOCO(e.ClassName, e.POCO, e.ComplexTypeTable.Schema, path, ref filesCount);
-            };
-
-            // save view poco
-            generator.ViewPOCO += (object sender, ViewPOCOEventArgs e) =>
-            {
-                DbObjectPOCO(e.ClassName, e.POCO, e.View.Schema, path, ref filesCount);
-            };
-
-            // save procedure poco
-            generator.ProcedurePOCO += (object sender, ProcedurePOCOEventArgs e) =>
-            {
-                DbObjectPOCO(e.ClassName, e.POCO, e.Procedure.Schema, path, ref filesCount);
-            };
-
-            // save function poco
-            generator.FunctionPOCO += (object sender, FunctionPOCOEventArgs e) =>
-            {
-                DbObjectPOCO(e.ClassName, e.POCO, e.Function.Schema, path, ref filesCount);
-            };
-
-            // save tvp poco
-            generator.TVPPOCO += (object sender, TVPPOCOEventArgs e) =>
-            {
-                DbObjectPOCO(e.ClassName, e.POCO, e.TVP.Schema, path, ref filesCount);
             };
 
             // take the path one step up once all the tables are written
@@ -182,10 +94,54 @@ namespace MultipleFilesDemo
                 DbGroupGenerated(ref path, ref indent, ref filesCount);
             };
 
+            #endregion
+
+            #region ComplexTypeTables
+
+            // create ComplexTypeTables folder
+            generator.ComplexTypeTablesGenerating += (object sender, ComplexTypeTablesGeneratingEventArgs e) =>
+            {
+                DbGroupGenerating("ComplexTypeTables", ref path, ref indent, ref filesCount);
+            };
+
+            // get namespace for complex type table
+            generator.ComplexTypeTableGenerating += (object sender, ComplexTypeTableGeneratingEventArgs e) =>
+            {
+                e.Namespace = GetNamespace(e.Namespace, e.ComplexTypeTable.Database, "ComplexTypeTables", e.ComplexTypeTable.Schema);
+            };
+
+            // save complex type table poco
+            generator.ComplexTypeTablePOCO += (object sender, ComplexTypeTablePOCOEventArgs e) =>
+            {
+                DbObjectPOCO(e.ClassName, e.POCO, e.ComplexTypeTable.Schema, path, ref filesCount);
+            };
+
             // take the path one step up once all the complex type tables are written
             generator.ComplexTypeTablesGenerated += (object sender, ComplexTypeTablesGeneratedEventArgs e) =>
             {
                 DbGroupGenerated(ref path, ref indent, ref filesCount);
+            };
+
+            #endregion
+
+            #region Views
+
+            // create Views folder
+            generator.ViewsGenerating += (object sender, ViewsGeneratingEventArgs e) =>
+            {
+                DbGroupGenerating("Views", ref path, ref indent, ref filesCount);
+            };
+
+            // get namespace for view
+            generator.ViewGenerating += (object sender, ViewGeneratingEventArgs e) =>
+            {
+                e.Namespace = GetNamespace(e.Namespace, e.View.Database, "Views", e.View.Schema);
+            };
+
+            // save view poco
+            generator.ViewPOCO += (object sender, ViewPOCOEventArgs e) =>
+            {
+                DbObjectPOCO(e.ClassName, e.POCO, e.View.Schema, path, ref filesCount);
             };
 
             // take the path one step up once all the views are written
@@ -194,10 +150,54 @@ namespace MultipleFilesDemo
                 DbGroupGenerated(ref path, ref indent, ref filesCount);
             };
 
+            #endregion
+
+            #region Procedures
+
+            // create Procedures folder
+            generator.ProceduresGenerating += (object sender, ProceduresGeneratingEventArgs e) =>
+            {
+                DbGroupGenerating("Procedures", ref path, ref indent, ref filesCount);
+            };
+
+            // get namespace for procedure
+            generator.ProcedureGenerating += (object sender, ProcedureGeneratingEventArgs e) =>
+            {
+                e.Namespace = GetNamespace(e.Namespace, e.Procedure.Database, "Procedures", e.Procedure.Schema);
+            };
+
+            // save procedure poco
+            generator.ProcedurePOCO += (object sender, ProcedurePOCOEventArgs e) =>
+            {
+                DbObjectPOCO(e.ClassName, e.POCO, e.Procedure.Schema, path, ref filesCount);
+            };
+
             // take the path one step up once all the procedures are written
             generator.ProceduresGenerated += (object sender, ProceduresGeneratedEventArgs e) =>
             {
                 DbGroupGenerated(ref path, ref indent, ref filesCount);
+            };
+
+            #endregion
+
+            #region Functions
+
+            // create Functions folder
+            generator.FunctionsGenerating += (object sender, FunctionsGeneratingEventArgs e) =>
+            {
+                DbGroupGenerating("Functions", ref path, ref indent, ref filesCount);
+            };
+
+            // get namespace for function
+            generator.FunctionGenerating += (object sender, FunctionGeneratingEventArgs e) =>
+            {
+                e.Namespace = GetNamespace(e.Namespace, e.Function.Database, "Functions", e.Function.Schema);
+            };
+
+            // save function poco
+            generator.FunctionPOCO += (object sender, FunctionPOCOEventArgs e) =>
+            {
+                DbObjectPOCO(e.ClassName, e.POCO, e.Function.Schema, path, ref filesCount);
             };
 
             // take the path one step up once all the functions are written
@@ -206,11 +206,35 @@ namespace MultipleFilesDemo
                 DbGroupGenerated(ref path, ref indent, ref filesCount);
             };
 
+            #endregion
+
+            #region TVPs
+
+            // create TVPs folder
+            generator.TVPsGenerating += (object sender, TVPsGeneratingEventArgs e) =>
+            {
+                DbGroupGenerating("TVPs", ref path, ref indent, ref filesCount);
+            };
+
+            // get namespace for tvp
+            generator.TVPGenerating += (object sender, TVPGeneratingEventArgs e) =>
+            {
+                e.Namespace = GetNamespace(e.Namespace, e.TVP.Database, "TVPs", e.TVP.Schema);
+            };
+
+            // save tvp poco
+            generator.TVPPOCO += (object sender, TVPPOCOEventArgs e) =>
+            {
+                DbObjectPOCO(e.ClassName, e.POCO, e.TVP.Schema, path, ref filesCount);
+            };
+
             // take the path one step up once all the tvps are written
             generator.TVPsGenerated += (object sender, TVPsGeneratedEventArgs e) =>
             {
                 DbGroupGenerated(ref path, ref indent, ref filesCount);
             };
+
+            #endregion
 
             // take the path one step up once the database is written
             generator.DatabaseGenerated += (object sender, DatabaseGeneratedEventArgs e) =>
