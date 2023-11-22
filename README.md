@@ -299,7 +299,7 @@ Server <i>[(LocalDB)_MSSQLLocalDB]</i>
                     *.cs
 </pre>
 
-Each POCO is wrapped in the following namespace structure **Namespace.Database.Data Object.Schema**.
+Each POCO is wrapped in the following namespace structure **Namespace.Database.Group.Schema**.
 
 Example: If the Namespace setting is set to "CustomNamespace", the Person.Person table is wrapped in this namespace
 
@@ -728,7 +728,7 @@ generator.Settings.IncludeAll = true;
 
 Then the generator starts running.
 
-For each table, the generator fires the event `TableGenerating` **before** generating a POCO out of the table. If the event argument's `Skip` property is set to `true`, the generator will skip generating a POCO from that table and continue to the next one.
+For each table, the generator fires the event `TableGenerating` **before** generating a POCO from the table. If the event argument's `Skip` property is set to `true`, the generator will skip generating a POCO from that table and continue to the next database object.
 
 The generator fires the event `TablesGenerated` **after** it has finished processing all the tables. Once the event argument's `Stop` property is set to `true`, the generator will stop generating POCOs out of the rest of the database objects.
 
@@ -764,7 +764,7 @@ Demo code [EventsDemo/Program.cs](Demos/Events/EventsDemo/Program.cs "EventsDemo
 
 The demo shows all the events the generator fires while running, how to register to them and lists the properties their event arguments expose.
 
-The generator doesn't write directly to the Console, but rather create an output-empty generator and register to events (among others) that handle POCO text. The POCO text is then passed from the event argument and written to the Console.
+The generator doesn't write directly to the Console, but rather create an output-empty generator and then register to events that handle POCO text. The POCO text is then passed from the event argument and written to the Console.
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
@@ -797,6 +797,81 @@ generator.Generate();
 
 #### MultipleFilesDemo
 Demo code [MultipleFilesDemo/Program.cs](Demos/Events/MultipleFilesDemo/Program.cs "MultipleFilesDemo/Program.cs").
+
+The demo demonstrates how to leverage the POCO Generator events towards writing multiple POCO files, one file for each POCO, into a tree-like directories. This demo is closely resembles POCO Generator UI's **Multiple Files - Relative Folders** option in [Export To Files Settings](#export-to-files-settings "Export To Files Settings").
+
+This very abridged code snippet focuses on saving table files but the principle is the same for the other database objects (views, procedures...).
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+generator.Settings.Tables.IncludeAll = true;
+
+// custom namespace
+generator.Settings.POCO.Namespace = "MultipleFilesDemo";
+
+string root = @"C:\Path\To\Root";
+
+string path = root;
+
+// TablesGenerating event fire before all the tables are processed
+// create Tables group folder under the root directory
+generator.TablesGenerating += (object sender, TablesGeneratingEventArgs e) =>
+{
+    string dbGroup = "Tables";
+
+    path = Path.Combine(path, dbGroup);
+
+    if (Directory.Exists(path) == false)
+        Directory.CreateDirectory(path);
+};
+
+// TableGenerating event fire for each table before it is processed
+// set the POCO namespace from all to parts: Namespace.Database.Group.Schema
+generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
+{
+    string @namespace = e.Namespace; // custom namespace
+    string database = e.Table.Database.ToString();
+    string dbGroup = "Tables";
+    string schema = e.Table.Schema;
+
+    // set namespace
+    e.Namespace = @namespace + "." + database + "." + dbGroup + "." + schema;
+};
+
+// TablePOCO event fire for each table after the POCO text is generated
+// save table POCO text to file
+generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
+{
+    // create schema folder
+    string schema = e.Table.Schema;
+    schema = string.Join("_",
+        (schema ?? string.Empty).Split(Path.GetInvalidFileNameChars()));
+    path = Path.Combine(path, schema);
+    if (Directory.Exists(path) == false)
+        Directory.CreateDirectory(path);
+
+    // set path to file
+    string className = e.ClassName;
+    string fileName = string.Join("_",
+        className.Split(Path.GetInvalidFileNameChars())) + ".cs";
+    path = Path.Combine(path, fileName);
+
+    // save poco to file
+    string poco = e.POCO;
+    File.WriteAllText(path, poco);
+};
+
+// TablesGenerated event fire after all the tables are processed
+// take the path one step up once all the tables are written
+generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
+{
+    path = Path.GetDirectoryName(path);
+};
+
+generator.Generate();
+```
 
 ### Server Tree
 
