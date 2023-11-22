@@ -29,10 +29,10 @@
         <RemoveDir Directories="@(Directories)" Condition="%(Files)=='0'" />
     </Target>
     <Target Name="CopyToOutput" AfterTargets="ClearReferenceCopyLocalPaths" Condition="$(Configuration.Contains('Release'))">
-        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\Demos\GeneratePOCOs\GeneratePOCOsDemo">
+        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\Demos\6 Generate POCOs\6.1 GeneratePOCOsDemo">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
-        <Copy SourceFiles="$(OutputPath)ConnectionString.txt" DestinationFolder="$(SolutionDir)Output\Demos\GeneratePOCOs\GeneratePOCOsDemo">
+        <Copy SourceFiles="$(OutputPath)ConnectionString.txt" DestinationFolder="$(SolutionDir)Output\Demos\6 Generate POCOs\6.1 GeneratePOCOsDemo">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
         <Message Importance="high" Text="Copy To Output '%(CopiedSuccessfully.Identity)'"></Message>

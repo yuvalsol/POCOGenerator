@@ -29,10 +29,10 @@
         <RemoveDir Directories="@(Directories)" Condition="%(Files)=='0'" />
     </Target>
     <Target Name="CopyToOutput" AfterTargets="ClearReferenceCopyLocalPaths" Condition="$(Configuration.Contains('Release'))">
-        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\Demos\Stream\MemoryStreamDemo">
+        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\Demos\2 Stream\2.1 MemoryStreamDemo">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
-        <Copy SourceFiles="$(OutputPath)ConnectionString.txt" DestinationFolder="$(SolutionDir)Output\Demos\Stream\MemoryStreamDemo">
+        <Copy SourceFiles="$(OutputPath)ConnectionString.txt" DestinationFolder="$(SolutionDir)Output\Demos\2 Stream\2.1 MemoryStreamDemo">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
         <Message Importance="high" Text="Copy To Output '%(CopiedSuccessfully.Identity)'"></Message>
