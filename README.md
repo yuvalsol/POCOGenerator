@@ -146,7 +146,7 @@ If it is set to `enum int`, enum and set type column will be generated as enumer
 
 ```sql
 CREATE TABLE NumbersTable (
-    Number ENUM('One', 'Two', 'Three')
+    Number ENUM('One', 'Two', 'Three'),
     Numbers SET('One', 'Two', 'Three')
 );
 ```
@@ -230,7 +230,7 @@ These settings enable navigation properties and determine how they are construct
 
 **Many-to-Many Join Table** - In a Many-to-Many relationship, the join table is hidden by default. When this setting is enabled, the join table is forcefully rendered.
 
-**List**, **ICollection**, **IEnumerable** - When a navigation property is a collection, this setting determine what the type of collection it is.
+**List**, **ICollection**, **IEnumerable** - When a navigation property is a collection, this setting determine what the type of collection it is. For constructor initialization, **ICollection** is initialized with `HashSet` and **IEnumerable** is initialized with `List`.
 
 ## EF Annotations Settings
 
@@ -459,7 +459,7 @@ todo:
 
 ## Demos
 
-The demos are code examples of how to integrate POCO Generator in various scenarios. You can test the demos by downloading them from Releases. Under each demo folder there is a file **ConnectionString.txt** from which the demo reads the database connection string, so edit that before running the demo.
+The demos are code examples of the various ways of integrating POCO Generator in projects. You can test the demos by downloading them from Releases. Under each demo folder there is a file **ConnectionString.txt** from which the demo reads the database connection string, so edit that before running the demo.
 
 ### Text
 
@@ -757,6 +757,96 @@ generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
 generator.Generate();
 ```
 
+### Generate POCOs
+
+#### GeneratePOCOsDemo
+Demo code [GeneratePOCOsDemo/Program.cs](Demos/GeneratePOCOs/GeneratePOCOsDemo/Program.cs "GeneratePOCOsDemo/Program.cs").
+
+The demo demonstrates how to generate POCOs more than once without calling the database again. POCO Generator runs in two steps, the first step is to query the database and build class objects that represent the database objects, such as tables, views and more. The second step is to traverse them and generate POCOs based on all the settings that govern how the POCOs should be constructed.
+
+All the class objects are kept after the first run and are accessible again for generating POCOs. The method `GeneratePOCOs()` tells the generator to skip calling the database if those class objects exist. Otherwise it falls back to `Generate()`, which always query the database.
+
+The code starts simple by generating a POCO from `Sales.Store` table and writing it to the Console.
+
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+
+// select Store table (under Sales schema)
+generator.Settings.Tables.Include.Add("Sales.Store");
+
+// settings for the first run
+generator.Settings.POCO.CommentsWithoutNull = true;
+generator.Settings.ClassName.IncludeSchema = true;
+generator.Settings.ClassName.SchemaSeparator = "_";
+generator.Settings.ClassName.IgnoreDboSchema = true;
+
+// first run
+generator.Generate();
+Console.ReadKey(true);
+```
+
+Output of the first run:
+
+```cs
+public class Sales_Store
+{
+    public int BusinessEntityID { get; set; } // int
+    public string Name { get; set; } // nvarchar(50)
+    public int? SalesPersonID { get; set; } // int
+    public string Demographics { get; set; } // XML(.)
+    public Guid rowguid { get; set; } // uniqueidentifier
+    public DateTime ModifiedDate { get; set; } // datetime
+}
+```
+
+For the second run, we only want to change how the POCO is constructed, not what database objects to work with, so there is no need to call the database again.
+
+```cs
+// settings reset also clears the list of included database objects ("Sales.Store")
+// but not the list of objects that were previously constructed
+generator.Settings.Reset();
+
+// settings for the second run
+generator.Settings.NavigationProperties.Enable = true;
+generator.Settings.NavigationProperties.VirtualNavigationProperties = true;
+generator.Settings.NavigationProperties.IEnumerableNavigationProperties = true;
+
+// this line has no effect on GeneratePOCOs() (but would for Generate())
+// because GeneratePOCOs() skips calling the database
+generator.Settings.Tables.IncludeAll = true;
+
+// second run
+generator.GeneratePOCOs();
+```
+
+Output of the second run:
+
+```cs
+public class Store
+{
+    public Store()
+    {
+        this.Customers = new List<Customer>();
+    }
+
+    public int BusinessEntityID { get; set; }
+    public string Name { get; set; }
+    public int? SalesPersonID { get; set; }
+    public string Demographics { get; set; }
+    public Guid rowguid { get; set; }
+    public DateTime ModifiedDate { get; set; }
+
+    public virtual BusinessEntity BusinessEntity { get; set; }
+    public virtual SalesPerson SalesPerson { get; set; }
+    public virtual IEnumerable<Customer> Customers { get; set; }
+}
+```
+
+#### ComplexTypesDemo
+Demo code [ComplexTypesDemo/Program.cs](Demos/GeneratePOCOs/ComplexTypesDemo/Program.cs "ComplexTypesDemo/Program.cs") and SQL Server `ComplexTypesDB` database create script [ComplexTypesDemo/ComplexTypesDB.sql](Demos/GeneratePOCOs/ComplexTypesDemo/ComplexTypesDB.sql "ComplexTypesDemo/ComplexTypesDB.sql").
+
 ### Events
 
 #### EventsDemo
@@ -811,7 +901,7 @@ generator.Settings.Tables.IncludeAll = true;
 // custom namespace
 generator.Settings.POCO.Namespace = "MultipleFilesDemo";
 
-string root = @"C:\Path\To\Root";
+string root = @"C:\Path\To\Root\Directory";
 
 string path = root;
 
@@ -883,14 +973,6 @@ Demo code [DetailedServerTreeDemo/Program.cs](Demos/ServerTree/DetailedServerTre
 
 #### NavigationPropertiesDemo
 Demo code [NavigationPropertiesDemo/Program.cs](Demos/ServerTree/NavigationPropertiesDemo/Program.cs "NavigationPropertiesDemo/Program.cs").
-
-### Generate POCOs
-
-#### GeneratePOCOsDemo
-Demo code [GeneratePOCOsDemo/Program.cs](Demos/GeneratePOCOs/GeneratePOCOsDemo/Program.cs "GeneratePOCOsDemo/Program.cs").
-
-#### ComplexTypesDemo
-Demo code [ComplexTypesDemo/Program.cs](Demos/GeneratePOCOs/ComplexTypesDemo/Program.cs "ComplexTypesDemo/Program.cs") and SQL Server database `ComplexTypesDB` script [ComplexTypesDemo/ComplexTypesDB.sql](Demos/GeneratePOCOs/ComplexTypesDemo/ComplexTypesDB.sql "ComplexTypesDemo/ComplexTypesDB.sql").
 
 # Schemas
 
