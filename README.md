@@ -66,54 +66,9 @@ These settings determine the structure of the POCO.
 
 **New Line Between Members** - Add empty lines between POCO data members.
 
-**Complex Types** - Reverse-engineer existing Entity Framework's complex types in the database. Code-first Entity Framework prefixes the column name with the name of the complex type. More in this article [Associations in EF Code First: Part 2 – Complex Types](https://weblogs.asp.net/manavi/associations-in-ef-4-1-code-first-part-2-complex-types "Associations in EF Code First: Part 2 – Complex Types"). A limitation of POCO Generator is it doesn't detect nested complex types (complex type in a complex type).
+**Complex Types** - Reverse-engineer existing Entity Framework's complex types in the database. Code-First Entity Framework prefixes the column name with the name of the complex type. More in this article [Associations in EF Code First: Part 2 – Complex Types](https://weblogs.asp.net/manavi/associations-in-ef-4-1-code-first-part-2-complex-types "Associations in EF Code First: Part 2 – Complex Types"). A limitation of POCO Generator is it doesn't detect nested complex types (complex type in a complex type).
 
-```sql
-CREATE TABLE dbo.Customers (
-    CustomerId int NOT NULL,
-    CustomerName nvarchar(50) NOT NULL,
-    ShippingAddress_Street  nvarchar(50) NOT NULL,
-    ShippingAddress_City    nvarchar(50) NOT NULL,
-    ShippingAddress_ZipCode nvarchar(50) NULL,
-    BillingAddress_Street   nvarchar(50) NOT NULL,
-    BillingAddress_City     nvarchar(50) NOT NULL,
-    BillingAddress_ZipCode  nvarchar(50) NULL
-)
-
-CREATE TABLE dbo.Users (
-    UserId int NOT NULL,
-    UserName nvarchar(50) NOT NULL,
-    Address_Street  nvarchar(50) NOT NULL,
-    Address_City    nvarchar(50) NOT NULL,
-    Address_ZipCode nvarchar(50) NULL
-)
-```
-
-When Complex Types setting is enabled:
-
-```cs
-public class Customers
-{
-    public int CustomerId { get; set; }
-    public string CustomerName { get; set; }
-    public Address ShippingAddress { get; set; }
-    public Address BillingAddress { get; set; }
-}
-
-public class Users
-{
-    public int UserId { get; set; }
-    public string UserName { get; set; }
-    public Address Address { get; set; }
-}
-
-public class Address
-{
-    public string Street { get; set; }
-    public string City { get; set; }
-    public string ZipCode { get; set; }
-}
-```
+A demo with complex types at [ComplexTypesDemo](#complextypesdemo "ComplexTypesDemo").
 
 How POCO Generator detects and builds complex types:
 
@@ -236,7 +191,7 @@ These settings enable navigation properties and determine how they are construct
 
 ![EF Annotations Settings](./Solution%20Items/Images/EFAnnotationsSettings.jpg "EF Annotations Settings")
 
-These settings add Code-first Entity Framework attributes to POCO classes. More about EF annotations on this page [Code First Data Annotations](https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/data-annotations "Code First Data Annotations").
+These settings add Code-First Entity Framework attributes to POCO classes. More about EF annotations on this page [Code First Data Annotations](https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/data-annotations "Code First Data Annotations").
 
 **EF** - Add EF main attributes.
 - **Table** attribute to class declaration. `[Table("Production.Product")]`
@@ -847,6 +802,70 @@ public class Store
 #### ComplexTypesDemo
 Demo code [ComplexTypesDemo/Program.cs](Demos/GeneratePOCOs/ComplexTypesDemo/Program.cs "ComplexTypesDemo/Program.cs") and SQL Server `ComplexTypesDB` database create script [ComplexTypesDemo/ComplexTypesDB.sql](Demos/GeneratePOCOs/ComplexTypesDemo/ComplexTypesDB.sql "ComplexTypesDemo/ComplexTypesDB.sql").
 
+Description how complex types are detected and built at **Complex Types** option under [POCO Settings](#poco-settings "POCO Settings").
+
+`ComplexTypesDB` database has two tables, `Customers` and `Users`. Both tables have columns that were created with `Address` complex type as their data type, by Code-First Entity Framework.
+
+```sql
+CREATE TABLE dbo.Customers (
+    CustomerId int NOT NULL,
+    CustomerName nvarchar(50) NOT NULL,
+    ShippingAddress_Street  nvarchar(50) NOT NULL,
+    ShippingAddress_City    nvarchar(50) NOT NULL,
+    ShippingAddress_ZipCode nvarchar(50) NULL,
+    BillingAddress_Street   nvarchar(50) NOT NULL,
+    BillingAddress_City     nvarchar(50) NOT NULL,
+    BillingAddress_ZipCode  nvarchar(50) NULL
+)
+
+CREATE TABLE dbo.Users (
+    UserId int NOT NULL,
+    UserName nvarchar(50) NOT NULL,
+    Address_Street  nvarchar(50) NOT NULL,
+    Address_City    nvarchar(50) NOT NULL,
+    Address_ZipCode nvarchar(50) NULL
+)
+```
+
+When `ComplexTypes` setting is enabled
+
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ComplexTypesDB";
+generator.Settings.Tables.IncludeAll = true;
+
+generator.Settings.POCO.ComplexTypes = true;
+
+generator.Generate();
+```
+
+The output is
+
+```cs
+public class Customers
+{
+    public int CustomerId { get; set; }
+    public string CustomerName { get; set; }
+    public Address ShippingAddress { get; set; }
+    public Address BillingAddress { get; set; }
+}
+
+public class Users
+{
+    public int UserId { get; set; }
+    public string UserName { get; set; }
+    public Address Address { get; set; }
+}
+
+public class Address
+{
+    public string Street { get; set; }
+    public string City { get; set; }
+    public string ZipCode { get; set; }
+}
+```
+
 ### Events
 
 #### EventsDemo
@@ -888,7 +907,7 @@ generator.Generate();
 #### MultipleFilesDemo
 Demo code [MultipleFilesDemo/Program.cs](Demos/Events/MultipleFilesDemo/Program.cs "MultipleFilesDemo/Program.cs").
 
-The demo demonstrates how to leverage the POCO Generator events towards writing multiple POCO files, one file for each POCO, into a tree-like directories. This demo is closely resembles POCO Generator UI's **Multiple Files - Relative Folders** option in [Export To Files Settings](#export-to-files-settings "Export To Files Settings").
+The demo demonstrates how to leverage the POCO Generator events towards writing multiple POCO files, one file for each POCO, into a tree-like directories. This demo is closely resembles POCO Generator UI's **Multiple Files - Relative Folders** option under [Export To Files Settings](#export-to-files-settings "Export To Files Settings").
 
 This very abridged code snippet focuses on saving table files but the principle is the same for the other database objects (views, procedures...).
 
