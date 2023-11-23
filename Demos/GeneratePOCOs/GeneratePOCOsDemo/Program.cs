@@ -16,11 +16,13 @@ namespace GeneratePOCOsDemo
 
             generator.Settings.Tables.Include.Add("Sales.Store");
 
+            // settings for the first run
             generator.Settings.POCO.CommentsWithoutNull = true;
             generator.Settings.ClassName.IncludeSchema = true;
             generator.Settings.ClassName.SchemaSeparator = "_";
             generator.Settings.ClassName.IgnoreDboSchema = true;
 
+            // first run
             GeneratorResults results = generator.Generate();
             PrintError(results, generator.Error);
 
@@ -29,15 +31,20 @@ namespace GeneratePOCOsDemo
             Console.WriteLine("GeneratePOCOs() doesn't query the database a second time");
             Console.ReadKey(true);
 
+            // settings reset also clears the list of included database objects ("Sales.Store")
+            // but not the list of objects that were previously constructed
             generator.Settings.Reset();
 
+            // settings for the second run
             generator.Settings.NavigationProperties.Enable = true;
             generator.Settings.NavigationProperties.VirtualNavigationProperties = true;
             generator.Settings.NavigationProperties.IEnumerableNavigationProperties = true;
 
-            // this line has no effect on GeneratePOCOs()
+            // this line has no effect on GeneratePOCOs() (but would for Generate())
+            // because GeneratePOCOs() skips calling the database
             generator.Settings.Tables.IncludeAll = true;
 
+            // second run
             results = generator.GeneratePOCOs();
             PrintError(results, generator.Error);
 
