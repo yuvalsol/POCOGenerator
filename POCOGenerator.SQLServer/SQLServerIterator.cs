@@ -44,14 +44,14 @@ namespace POCOGenerator.SQLServer
         {
             return
                 IsSQLTypeMappedToBool(dataTypeName, isUnsigned, numericPrecision) &&
-                (cleanColumnDefault.IndexOf("1", StringComparison.InvariantCultureIgnoreCase) != -1);
+                (cleanColumnDefault.IndexOf("1", StringComparison.OrdinalIgnoreCase) != -1);
         }
 
         protected override bool IsSQLTypeMappedToBoolFalse(string dataTypeName, bool isUnsigned, int? numericPrecision, string cleanColumnDefault)
         {
             return
                 IsSQLTypeMappedToBool(dataTypeName, isUnsigned, numericPrecision) &&
-                (cleanColumnDefault.IndexOf("0", StringComparison.InvariantCultureIgnoreCase) != -1);
+                (cleanColumnDefault.IndexOf("0", StringComparison.OrdinalIgnoreCase) != -1);
         }
 
         protected override bool IsSQLTypeMappedToByte(string dataTypeName, bool isUnsigned, int? numericPrecision)
@@ -107,23 +107,23 @@ namespace POCOGenerator.SQLServer
         protected override bool IsColumnDefaultNow(string cleanColumnDefault)
         {
             return (
-                cleanColumnDefault.IndexOf("getdate", StringComparison.InvariantCultureIgnoreCase) != -1 ||
-                cleanColumnDefault.IndexOf("sysdatetime", StringComparison.InvariantCultureIgnoreCase) != -1 ||
-                cleanColumnDefault.IndexOf("current_timestamp", StringComparison.InvariantCultureIgnoreCase) != -1
+                cleanColumnDefault.IndexOf("getdate", StringComparison.OrdinalIgnoreCase) != -1 ||
+                cleanColumnDefault.IndexOf("sysdatetime", StringComparison.OrdinalIgnoreCase) != -1 ||
+                cleanColumnDefault.IndexOf("current_timestamp", StringComparison.OrdinalIgnoreCase) != -1
             );
         }
 
         protected override bool IsColumnDefaultUtcNow(string cleanColumnDefault)
         {
             return (
-                cleanColumnDefault.IndexOf("getutcdate", StringComparison.InvariantCultureIgnoreCase) != -1 ||
-                cleanColumnDefault.IndexOf("sysutcdatetime", StringComparison.InvariantCultureIgnoreCase) != -1
+                cleanColumnDefault.IndexOf("getutcdate", StringComparison.OrdinalIgnoreCase) != -1 ||
+                cleanColumnDefault.IndexOf("sysutcdatetime", StringComparison.OrdinalIgnoreCase) != -1
             );
         }
 
         protected override bool IsColumnDefaultOffsetNow(string cleanColumnDefault)
         {
-            return (cleanColumnDefault.IndexOf("sysdatetimeoffset", StringComparison.InvariantCultureIgnoreCase) != -1);
+            return (cleanColumnDefault.IndexOf("sysdatetimeoffset", StringComparison.OrdinalIgnoreCase) != -1);
         }
 
         protected override bool IsSQLTypeMappedToString(string dataTypeName, int? stringPrecision)
@@ -145,7 +145,7 @@ namespace POCOGenerator.SQLServer
         {
             return
                 IsSQLTypeMappedToGuid(dataTypeName) &&
-                (cleanColumnDefault.IndexOf("newid", StringComparison.InvariantCultureIgnoreCase) != -1);
+                (cleanColumnDefault.IndexOf("newid", StringComparison.OrdinalIgnoreCase) != -1);
         }
 
         protected override bool IsSQLTypeRDBMSSpecificType(string dataTypeName)

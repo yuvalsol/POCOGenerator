@@ -268,39 +268,39 @@ namespace POCOGenerator.Utils
 
         public static bool IsNameVerb(string name)
         {
-            bool hasTime = (name.IndexOf("time", StringComparison.InvariantCultureIgnoreCase) != -1);
+            bool hasTime = (name.IndexOf("time", StringComparison.OrdinalIgnoreCase) != -1);
             if (hasTime)
                 return false;
 
-            bool hasDate = (name.IndexOf("date", StringComparison.InvariantCultureIgnoreCase) != -1);
-            bool hasShip = (name.IndexOf("ship", StringComparison.InvariantCultureIgnoreCase) != -1);
+            bool hasDate = (name.IndexOf("date", StringComparison.OrdinalIgnoreCase) != -1);
+            bool hasShip = (name.IndexOf("ship", StringComparison.OrdinalIgnoreCase) != -1);
             if (hasDate == false && hasShip == false)
-                return Variations.Any(variation => name.IndexOf(variation, StringComparison.InvariantCultureIgnoreCase) != -1);
+                return Variations.Any(variation => name.IndexOf(variation, StringComparison.OrdinalIgnoreCase) != -1);
 
             if (hasDate)
             {
-                bool hasUpdate = (name.IndexOf("update", StringComparison.InvariantCultureIgnoreCase) != -1);
+                bool hasUpdate = (name.IndexOf("update", StringComparison.OrdinalIgnoreCase) != -1);
                 if (hasUpdate == false)
                     return false;
 
-                int index = name.IndexOf("date", StringComparison.InvariantCultureIgnoreCase);
+                int index = name.IndexOf("date", StringComparison.OrdinalIgnoreCase);
                 do
                 {
                     hasUpdate =
                         (index - 2) >= 0 &&
-                        name.IndexOf("update", index - 2, StringComparison.InvariantCultureIgnoreCase) == (index - 2);
+                        name.IndexOf("update", index - 2, StringComparison.OrdinalIgnoreCase) == (index - 2);
 
                     if (hasUpdate == false)
                         return false;
 
-                    index = name.IndexOf("date", index + 4, StringComparison.InvariantCultureIgnoreCase);
+                    index = name.IndexOf("date", index + 4, StringComparison.OrdinalIgnoreCase);
                 }
                 while (index != -1);
             }
 
             if (hasShip)
             {
-                bool hasShipment = (name.IndexOf("shipment", StringComparison.InvariantCultureIgnoreCase) != -1);
+                bool hasShipment = (name.IndexOf("shipment", StringComparison.OrdinalIgnoreCase) != -1);
                 if (hasShipment)
                     return false;
             }
@@ -310,17 +310,17 @@ namespace POCOGenerator.Utils
 
         public static string ConjugateNameVerbToPastParticiple(string name)
         {
-            ConjugatedVerb conjugations = ConjugatedVerbs.FirstOrDefault(cv => cv.VerbVariations.Any(variation => name.IndexOf(variation, StringComparison.InvariantCultureIgnoreCase) != -1));
+            ConjugatedVerb conjugations = ConjugatedVerbs.FirstOrDefault(cv => cv.VerbVariations.Any(variation => name.IndexOf(variation, StringComparison.OrdinalIgnoreCase) != -1));
 
             if (conjugations == null)
                 return name;
 
             // verb past participle
-            if (name.IndexOf(conjugations.PastParticipleVerb, StringComparison.InvariantCultureIgnoreCase) != -1)
+            if (name.IndexOf(conjugations.PastParticipleVerb, StringComparison.OrdinalIgnoreCase) != -1)
                 return name;
 
             // verb
-            int index = name.IndexOf(conjugations.Verb, StringComparison.InvariantCultureIgnoreCase);
+            int index = name.IndexOf(conjugations.Verb, StringComparison.OrdinalIgnoreCase);
             if (index != -1)
                 return conjugations.PastParticipleVerb.Substring(0, 1).ToUpper() + conjugations.PastParticipleVerb.Substring(1).ToLower() + "By";
 

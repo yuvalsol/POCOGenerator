@@ -2044,12 +2044,12 @@ namespace POCOGeneratorUI
                 }
                 else if (filterSettings.FilterName.FilterType == FilterType.Contains)
                 {
-                    if ((dbObject.Name.IndexOf(filterSettings.FilterName.Filter, StringComparison.InvariantCultureIgnoreCase) != -1) == false)
+                    if ((dbObject.Name.IndexOf(filterSettings.FilterName.Filter, StringComparison.OrdinalIgnoreCase) != -1) == false)
                         return false;
                 }
                 else if (filterSettings.FilterName.FilterType == FilterType.Does_Not_Contain)
                 {
-                    if ((dbObject.Name.IndexOf(filterSettings.FilterName.Filter, StringComparison.InvariantCultureIgnoreCase) == -1) == false)
+                    if ((dbObject.Name.IndexOf(filterSettings.FilterName.Filter, StringComparison.OrdinalIgnoreCase) == -1) == false)
                         return false;
                 }
             }
@@ -2065,12 +2065,12 @@ namespace POCOGeneratorUI
                     }
                     else if (filterSettings.FilterSchema.FilterType == FilterType.Contains)
                     {
-                        if ((dbObject.Schema.IndexOf(filterSettings.FilterSchema.Filter, StringComparison.InvariantCultureIgnoreCase) != -1) == false)
+                        if ((dbObject.Schema.IndexOf(filterSettings.FilterSchema.Filter, StringComparison.OrdinalIgnoreCase) != -1) == false)
                             return false;
                     }
                     else if (filterSettings.FilterSchema.FilterType == FilterType.Does_Not_Contain)
                     {
-                        if ((dbObject.Schema.IndexOf(filterSettings.FilterSchema.Filter, StringComparison.InvariantCultureIgnoreCase) == -1) == false)
+                        if ((dbObject.Schema.IndexOf(filterSettings.FilterSchema.Filter, StringComparison.OrdinalIgnoreCase) == -1) == false)
                             return false;
                     }
                 }

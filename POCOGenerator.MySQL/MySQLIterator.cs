@@ -47,14 +47,14 @@ namespace POCOGenerator.MySQL
         {
             return
                 IsSQLTypeMappedToBool(dataTypeName, isUnsigned, numericPrecision) &&
-                (cleanColumnDefault.IndexOf("1", StringComparison.InvariantCultureIgnoreCase) != -1); // b'1'
+                (cleanColumnDefault.IndexOf("1", StringComparison.OrdinalIgnoreCase) != -1); // b'1'
         }
 
         protected override bool IsSQLTypeMappedToBoolFalse(string dataTypeName, bool isUnsigned, int? numericPrecision, string cleanColumnDefault)
         {
             return
                 IsSQLTypeMappedToBool(dataTypeName, isUnsigned, numericPrecision) &&
-                (cleanColumnDefault.IndexOf("0", StringComparison.InvariantCultureIgnoreCase) != -1); // b'0'
+                (cleanColumnDefault.IndexOf("0", StringComparison.OrdinalIgnoreCase) != -1); // b'0'
         }
 
         protected override bool IsSQLTypeMappedToByte(string dataTypeName, bool isUnsigned, int? numericPrecision)
@@ -141,10 +141,10 @@ namespace POCOGenerator.MySQL
         protected override bool IsColumnDefaultNow(string cleanColumnDefault)
         {
             return (
-                cleanColumnDefault.IndexOf("CURRENT_TIMESTAMP", StringComparison.InvariantCultureIgnoreCase) != -1 ||
-                cleanColumnDefault.IndexOf("NOW", StringComparison.InvariantCultureIgnoreCase) != -1 ||
-                cleanColumnDefault.IndexOf("LOCALTIME", StringComparison.InvariantCultureIgnoreCase) != -1 ||
-                cleanColumnDefault.IndexOf("LOCALTIMESTAMP", StringComparison.InvariantCultureIgnoreCase) != -1
+                cleanColumnDefault.IndexOf("CURRENT_TIMESTAMP", StringComparison.OrdinalIgnoreCase) != -1 ||
+                cleanColumnDefault.IndexOf("NOW", StringComparison.OrdinalIgnoreCase) != -1 ||
+                cleanColumnDefault.IndexOf("LOCALTIME", StringComparison.OrdinalIgnoreCase) != -1 ||
+                cleanColumnDefault.IndexOf("LOCALTIMESTAMP", StringComparison.OrdinalIgnoreCase) != -1
             );
         }
 
@@ -392,7 +392,7 @@ namespace POCOGenerator.MySQL
             // has column default
             if (string.IsNullOrEmpty(tableColumn.ColumnDefault) == false)
             {
-                if (enumColumn.EnumLiterals.Contains(tableColumn.ColumnDefault, StringComparer.InvariantCulture))
+                if (enumColumn.EnumLiterals.Contains(tableColumn.ColumnDefault, StringComparer.Ordinal))
                     return tableColumn.ColumnDefault;
             }
             // If an ENUM column is declared NOT NULL, its default value is the first element of the list of permitted values.
@@ -415,7 +415,7 @@ namespace POCOGenerator.MySQL
                 return null;
 
             if (string.IsNullOrEmpty(tableColumn.ColumnDefault) == false)
-                return tableColumn.ColumnDefault.Split(',').Where(literal => enumColumn.EnumLiterals.Contains(literal, StringComparer.InvariantCulture)).ToList();
+                return tableColumn.ColumnDefault.Split(',').Where(literal => enumColumn.EnumLiterals.Contains(literal, StringComparer.Ordinal)).ToList();
 
             return null;
         }

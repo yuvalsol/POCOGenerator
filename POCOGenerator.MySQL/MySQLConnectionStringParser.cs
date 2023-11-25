@@ -51,14 +51,14 @@ namespace POCOGenerator.MySQL
 
         public override string Fix(string connectionString)
         {
-            if (connectionString.IndexOf("Allow User Variables", StringComparison.InvariantCultureIgnoreCase) == -1)
+            if (connectionString.IndexOf("Allow User Variables", StringComparison.OrdinalIgnoreCase) == -1)
             {
                 connectionString = connectionString.TrimEnd(';', ' ') + ";Allow User Variables=true";
             }
             else
             {
                 string allowUserVariables = "Allow User Variables=false";
-                int index = connectionString.IndexOf(allowUserVariables, StringComparison.InvariantCultureIgnoreCase);
+                int index = connectionString.IndexOf(allowUserVariables, StringComparison.OrdinalIgnoreCase);
                 if (index != -1)
                     connectionString = connectionString.Remove(index, allowUserVariables.Length).Insert(index, "Allow User Variables=true");
             }
