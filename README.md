@@ -987,11 +987,184 @@ generator.Generate();
 #### ServerTreeDemo
 Demo code [ServerTreeDemo/Program.cs](Demos/ServerTree/ServerTreeDemo/Program.cs "ServerTreeDemo/Program.cs").
 
+The demo demonstrates how to work with the class objects that POCO Generator builds from database objects. These class objects represent the server, database, tables and more and are referencing each other by their internal properties.
+
+The generator fires the event `ServerBuilt` after these class objects are build and before it starts processing them and generating POCOs. In the code, the generator is stopped at that point by setting the `Stop` property to `true` in the `ServerBuilt` event argument and proceed to traverse these class objects, starting from `Server`. The `Server` object is accessible from the `ServerBuilt` event argument too. While traversing the class objects, the code prints their names in a tree-like format.
+
+The demo also includes a possible code path that saves the output to a file instead of printing to the Console.
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator();
+generator.Settings.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+
+generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>
+{
+    Server server = e.Server;
+    PrintServer(server);
+
+    // do not generate classes
+    e.Stop = true;
+};
+
+generator.Generate();
+```
+
+The server tree
+
+```
+(LocalDB)\MSSQLLocalDB
+    Databases
+        AdventureWorks2014
+            Tables
+                dbo.AWBuildVersion
+                dbo.DatabaseLog
+                ...
+                HumanResources.Department
+                HumanResources.Employee
+                ...
+                Person.Address
+                Person.AddressType
+                ...
+            Views
+                HumanResources.vEmployee
+                HumanResources.vEmployeeDepartment
+                ...
+                Person.vAdditionalContactInfo
+                Person.vStateProvinceCountryRegion
+                ...
+            Stored Procedures
+                dbo.uspGetBillOfMaterials
+                dbo.uspGetEmployeeManagers
+                ...
+                HumanResources.uspUpdateEmployeeHireInfo
+                HumanResources.uspUpdateEmployeeLogin
+                ...
+            Table-valued Functions
+                dbo.ufnGetContactInformation
+```
+
 #### DetailedServerTreeDemo
 Demo code [DetailedServerTreeDemo/Program.cs](Demos/ServerTree/DetailedServerTreeDemo/Program.cs "DetailedServerTreeDemo/Program.cs").
 
+The demo works the same as [ServerTreeDemo](#servertreedemo "ServerTreeDemo") but prints more information about the class objects. For tables, it prints their columns, primary keys, unique keys, foreign keys and indexes. For views, it prints their columns and indexes. For procedures and table-valued functions, it prints their parameters and columns. For TVPs, it prints their columns.
+
+```
+(LocalDB)\MSSQLLocalDB
+    Databases
+        AdventureWorks2014
+            Tables
+                ...
+                Person.Person
+                    Columns
+                        BusinessEntityID (PK, FK, int, not null)
+                        PersonType (nchar(2), not null)
+                        NameStyle (bit, not null)
+                        Title (nvarchar(8), null)
+                        FirstName (nvarchar(50), not null)
+                        MiddleName (nvarchar(50), null)
+                        LastName (nvarchar(50), not null)
+                        Suffix (nvarchar(10), null)
+                        EmailPromotion (int, not null)
+                        AdditionalContactInfo (XML(.), null)
+                        Demographics (XML(.), null)
+                        rowguid (uniqueidentifier, not null)
+                        ModifiedDate (datetime, not null)
+                    Primary Key
+                        PK_Person_BusinessEntityID
+                            BusinessEntityID
+                    Foreign Keys
+                        FK_Person_BusinessEntity_BusinessEntityID
+                            Person.Person.BusinessEntityID -> Person.BusinessEntity.BusinessEntityID
+                    Indexes
+                        AK_Person_rowguid (unique, not clustered)
+                            rowguid (Asc)
+                        IX_Person_LastName_FirstName_MiddleName (not unique, not clustered)
+                            LastName (Asc)
+                            FirstName (Asc)
+                            MiddleName (Asc)
+                ...
+            Views
+                ...
+            Stored Procedures
+                dbo.uspGetBillOfMaterials
+                    Parameters
+                        @StartProductID (int, Input)
+                        @CheckDate (datetime, Input)
+                    Columns
+                        ProductAssemblyID (int, null)
+                        ComponentID (int, null)
+                        ComponentDesc (nvarchar(50), null)
+                        TotalQuantity (decimal(38,2), null)
+                        StandardCost (money, null)
+                        ListPrice (money, null)
+                        BOMLevel (smallint, null)
+                        RecursionLevel (int, null)
+                ...
+            Table-valued Functions
+                dbo.ufnGetContactInformation
+                    Parameters
+                        @PersonID (int, Input)
+                    Columns
+                        PersonID (int, not null)
+                        FirstName (nvarchar(50), null)
+                        LastName (nvarchar(50), null)
+                        JobTitle (nvarchar(50), null)
+                        BusinessEntityType (nvarchar(50), null)
+```
+
 #### NavigationPropertiesDemo
 Demo code [NavigationPropertiesDemo/Program.cs](Demos/ServerTree/NavigationPropertiesDemo/Program.cs "NavigationPropertiesDemo/Program.cs").
+
+The demo works the same as [DetailedServerTreeDemo](#detailedservertreedemo "DetailedServerTreeDemo") but is limited to tables and prints information about tables navigation properties.
+
+```
+Person.Person
+    Columns
+        BusinessEntityID (PK, FK, int, not null)
+        PersonType (nchar(2), not null)
+        NameStyle (bit, not null)
+        Title (nvarchar(8), null)
+        FirstName (nvarchar(50), not null)
+        MiddleName (nvarchar(50), null)
+        LastName (nvarchar(50), not null)
+        Suffix (nvarchar(10), null)
+        EmailPromotion (int, not null)
+        AdditionalContactInfo (XML(.), null)
+        Demographics (XML(.), null)
+        rowguid (uniqueidentifier, not null)
+        ModifiedDate (datetime, not null)
+    Primary Key
+        PK_Person_BusinessEntityID
+            BusinessEntityID
+    Foreign Keys
+        FK_Person_BusinessEntity_BusinessEntityID
+            Person.Person.BusinessEntityID -> Person.BusinessEntity.BusinessEntityID
+    Navigation Properties
+    Navigation Property Structure: ToTable/CollectionOf(ToTable) Name [ForeignKey]
+        01. Person.BusinessEntity BusinessEntity [FK_Person_BusinessEntity_BusinessEntityID]
+        02. CollectionOf(Person.BusinessEntityContact) BusinessEntityContact [FK_BusinessEntityContact_Person_PersonID]
+            Inverse Property
+                Person.Person Person [FK_BusinessEntityContact_Person_PersonID]
+        03. CollectionOf(Sales.Customer) Customers [FK_Customer_Person_PersonID]
+            Inverse Property
+                Person.Person Person [FK_Customer_Person_PersonID]
+        04. CollectionOf(Person.EmailAddress) EmailAddresses [FK_EmailAddress_Person_BusinessEntityID]
+            Inverse Property
+                Person.Person Person [FK_EmailAddress_Person_BusinessEntityID]
+        05. HumanResources.Employee Employee [FK_Employee_Person_BusinessEntityID]
+            Inverse Property
+                Person.Person Person [FK_Employee_Person_BusinessEntityID]
+        06. Person.Password Password [FK_Password_Person_BusinessEntityID]
+            Inverse Property
+                Person.Person Person [FK_Password_Person_BusinessEntityID]
+        07. CollectionOf(Sales.PersonCreditCard) PersonCreditCards [FK_PersonCreditCard_Person_BusinessEntityID]
+            Inverse Property
+                Person.Person Person [FK_PersonCreditCard_Person_BusinessEntityID]
+        08. CollectionOf(Person.PersonPhone) PersonPhones [FK_PersonPhone_Person_BusinessEntityID]
+            Inverse Property
+                Person.Person Person [FK_PersonPhone_Person_BusinessEntityID]
+```
 
 # Schemas
 
