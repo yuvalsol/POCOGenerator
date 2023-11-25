@@ -62,6 +62,11 @@ namespace System.Windows.Forms
 
         private static Dictionary<TreeNode, TreeNode> hiddenNodes = new Dictionary<TreeNode, TreeNode>();
 
+        public static bool IsHidden(this TreeNode node)
+        {
+            return hiddenNodes.ContainsKey(node);
+        }
+
         public static IEnumerable<TreeNode> HiddenNodes(this TreeNode parent)
         {
             return hiddenNodes.Where(x => x.Value == parent).Select(x => x.Key);

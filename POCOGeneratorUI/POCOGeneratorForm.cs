@@ -564,9 +564,9 @@ namespace POCOGeneratorUI
                 itemNode.ShowPlus();
                 if (isChecked)
                 {
-                    trvServer.AfterCheck -= trvServer_AfterCheck;
+                    DisableServerTreeAfterCheck();
                     itemNode.Checked = true;
-                    trvServer.AfterCheck += trvServer_AfterCheck;
+                    EnableServerTreeAfterCheck();
                 }
             }
 
@@ -1067,7 +1067,7 @@ namespace POCOGeneratorUI
             trvServer.BeforeCollapse -= trvServer_DisableEvent;
             trvServer.BeforeExpand -= trvServer_DisableEvent;
             trvServer.BeforeExpand += trvServer_BeforeExpand;
-            trvServer.AfterCheck += trvServer_AfterCheck;
+            EnableServerTreeAfterCheck();
             trvServer.MouseUp += trvServer_MouseUp;
             trvServer.AfterSelect += trvServer_AfterSelect;
         }
@@ -1077,7 +1077,7 @@ namespace POCOGeneratorUI
             trvServer.BeforeCollapse += trvServer_DisableEvent;
             trvServer.BeforeExpand -= trvServer_BeforeExpand;
             trvServer.BeforeExpand += trvServer_DisableEvent;
-            trvServer.AfterCheck -= trvServer_AfterCheck;
+            DisableServerTreeAfterCheck();
             trvServer.MouseUp -= trvServer_MouseUp;
             trvServer.AfterSelect -= trvServer_AfterSelect;
         }
@@ -1087,9 +1087,29 @@ namespace POCOGeneratorUI
             e.Cancel = true;
         }
 
+        private bool isServerTreeAfterCheckEnabled = true;
+
+        private void EnableServerTreeAfterCheck()
+        {
+            if (isServerTreeAfterCheckEnabled == false)
+            {
+                trvServer.AfterCheck += trvServer_AfterCheck;
+                isServerTreeAfterCheckEnabled = true;
+            }
+        }
+
+        private void DisableServerTreeAfterCheck()
+        {
+            if (isServerTreeAfterCheckEnabled)
+            {
+                trvServer.AfterCheck -= trvServer_AfterCheck;
+                isServerTreeAfterCheckEnabled = false;
+            }
+        }
+
         #endregion
 
-        #region Server Tree CheckBoxes
+        #region Server Tree Check Boxes
 
         private void trvServer_DrawNode(object sender, DrawTreeNodeEventArgs e)
         {
@@ -1164,14 +1184,14 @@ namespace POCOGeneratorUI
         {
             if (databaseNode.Nodes.Count > 0)
             {
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 foreach (TreeNode dbObjectsNode in databaseNode.Nodes)
                 {
                     dbObjectsNode.Checked = isChecked;
                     foreach (TreeNode node in dbObjectsNode.Nodes)
                         node.Checked = isChecked;
                 }
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
             }
         }
 
@@ -1182,9 +1202,9 @@ namespace POCOGeneratorUI
                 if (this.isCheckedTables == false || this.isCheckedViews == false || this.isCheckedProcedures == false || this.isCheckedFunctions == false || this.isCheckedTVPs == false)
                 {
                     this.isCheckedDatabase = false;
-                    trvServer.AfterCheck -= trvServer_AfterCheck;
+                    DisableServerTreeAfterCheck();
                     databaseNode.Checked = false;
-                    trvServer.AfterCheck += trvServer_AfterCheck;
+                    EnableServerTreeAfterCheck();
                 }
             }
             else
@@ -1192,9 +1212,9 @@ namespace POCOGeneratorUI
                 if (this.isCheckedTables && this.isCheckedViews && this.isCheckedProcedures && this.isCheckedFunctions && this.isCheckedTVPs)
                 {
                     this.isCheckedDatabase = true;
-                    trvServer.AfterCheck -= trvServer_AfterCheck;
+                    DisableServerTreeAfterCheck();
                     databaseNode.Checked = true;
-                    trvServer.AfterCheck += trvServer_AfterCheck;
+                    EnableServerTreeAfterCheck();
                 }
             }
         }
@@ -1238,10 +1258,10 @@ namespace POCOGeneratorUI
         {
             if (dbObjectsNode.Nodes.Count > 0)
             {
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 foreach (TreeNode node in dbObjectsNode.Nodes)
                     node.Checked = isChecked;
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
             }
         }
 
@@ -1257,9 +1277,9 @@ namespace POCOGeneratorUI
 
                 isDbObjectsChecked = true;
 
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 node.Parent.Checked = true;
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
 
                 ChangeCheckDatabaseNode(node.Parent.Parent);
             }
@@ -1269,9 +1289,9 @@ namespace POCOGeneratorUI
                 {
                     isDbObjectsChecked = false;
 
-                    trvServer.AfterCheck -= trvServer_AfterCheck;
+                    DisableServerTreeAfterCheck();
                     node.Parent.Checked = false;
-                    trvServer.AfterCheck += trvServer_AfterCheck;
+                    EnableServerTreeAfterCheck();
 
                     ChangeCheckDatabaseNode(node.Parent.Parent);
                 }
@@ -1319,17 +1339,10 @@ namespace POCOGeneratorUI
 
         private void GetCheckedDbObjects<T>(TreeNode dbObjectsNode, List<T> lst) where T : IDbObject
         {
-            if (dbObjectsNode.Checked)
+            foreach (TreeNode dbObjectNode in dbObjectsNode.Nodes)
             {
-                lst.AddRange((IEnumerable<T>)dbObjectsNode.Tag);
-            }
-            else
-            {
-                foreach (TreeNode dbObjectNode in dbObjectsNode.Nodes)
-                {
-                    if (dbObjectNode.Checked)
-                        lst.Add((T)dbObjectNode.Tag);
-                }
+                if (dbObjectNode.Checked)
+                    lst.Add((T)dbObjectNode.Tag);
             }
         }
 
@@ -1883,6 +1896,14 @@ namespace POCOGeneratorUI
                             removeFilterToolStripMenuItem.Enabled = filters.ContainsKey(node) && filters[node].IsEnabled;
                             contextMenu.Show(trvServer, point);
                         }
+                        else if (node.IsExpanded)
+                        {
+                            removeFilterToolStripMenuItem.Visible = true;
+                            filterSettingsToolStripMenuItem.Visible = true;
+                            clearCheckBoxesToolStripMenuItem.Visible = false;
+                            removeFilterToolStripMenuItem.Enabled = filters.ContainsKey(node) && filters[node].IsEnabled;
+                            contextMenu.Show(trvServer, point);
+                        }
                         else
                         {
                             contextMenu.Hide();
@@ -1917,32 +1938,33 @@ namespace POCOGeneratorUI
 
         private void removeFilterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = trvServer.SelectedNode;
-            if (node == null)
+            TreeNode parent = trvServer.SelectedNode;
+            if (parent == null)
                 return;
 
-            if (filters.ContainsKey(node) == false)
+            if (filters.ContainsKey(parent) == false)
                 return;
 
-            FilterSettings filterSettings = filters[node];
+            FilterSettings filterSettings = filters[parent];
 
             if (filterSettings.IsEnabled)
             {
-                filters.Remove(node);
-                node.ShowAll();
-                node.Text = node.Text.Replace(" (filtered)", string.Empty);
+                filters.Remove(parent);
+                parent.ShowAll();
+                parent.Text = parent.Text.Replace(" (filtered)", string.Empty);
+                CheckDbObjectsNodeAfterFilter(parent);
             }
         }
 
         private void filterSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode node = trvServer.SelectedNode;
-            if (node == null)
+            TreeNode parent = trvServer.SelectedNode;
+            if (parent == null)
                 return;
 
             FilterSettings filterSettings = null;
-            if (filters.ContainsKey(node))
-                filterSettings = filters[node];
+            if (filters.ContainsKey(parent))
+                filterSettings = filters[parent];
             else
                 filterSettings = new FilterSettings();
 
@@ -1957,18 +1979,19 @@ namespace POCOGeneratorUI
 
                 if (filterSettings.IsEnabled)
                 {
-                    if (filters.ContainsKey(node) == false)
-                        filters.Add(node, filterSettings);
+                    if (filters.ContainsKey(parent) == false)
+                        filters.Add(parent, filterSettings);
 
-                    SetFilteredNodesVisibility(node, filterSettings);
+                    SetFilteredNodesVisibility(parent, filterSettings);
                 }
                 else
                 {
-                    if (filters.ContainsKey(node))
-                        filters.Remove(node);
+                    if (filters.ContainsKey(parent))
+                        filters.Remove(parent);
 
-                    node.ShowAll();
-                    node.Text = node.Text.Replace(" (filtered)", string.Empty);
+                    parent.ShowAll();
+                    parent.Text = parent.Text.Replace(" (filtered)", string.Empty);
+                    CheckDbObjectsNodeAfterFilter(parent);
                 }
             }
         }
@@ -1978,22 +2001,39 @@ namespace POCOGeneratorUI
             List<TreeNode> toShow = new List<TreeNode>();
             List<TreeNode> toHide = new List<TreeNode>();
 
-            bool isSupportSchema = this.generator.Support.SupportSchema;
-
             foreach (TreeNode node in parent.Nodes)
-                (IsMatchFilter(node.Tag as IDbObject, filterSettings, isSupportSchema) ? toShow : toHide).Add(node);
+                (IsMatchFilter(node.Tag as IDbObject, filterSettings) ? toShow : toHide).Add(node);
 
-            foreach (TreeNode node in toHide)
-                node.Hide();
+            bool isUncheckedHiddenNode = false;
 
-            foreach (TreeNode node in toShow)
-                node.Show();
+            if (toHide.HasAny())
+            {
+                DisableServerTreeAfterCheck();
+                foreach (TreeNode node in toHide)
+                {
+                    isUncheckedHiddenNode |= node.Checked;
+                    node.Checked = false;
+                    node.Hide();
+                }
+                EnableServerTreeAfterCheck();
+            }
+
+            if (toShow.HasAny())
+            {
+                foreach (TreeNode node in toShow)
+                    node.Show();
+            }
 
             if (parent.Text.Contains(" (filtered)") == false)
                 parent.Text += " (filtered)";
+
+            CheckDbObjectsNodeAfterFilter(parent);
+
+            if (isUncheckedHiddenNode)
+                TreeNodeChecked();
         }
 
-        private bool IsMatchFilter(IDbObject dbObject, FilterSettings filterSettings, bool isSupportSchema)
+        private bool IsMatchFilter(IDbObject dbObject, FilterSettings filterSettings)
         {
             if (filterSettings.FilterName.IsEnabled)
             {
@@ -2014,7 +2054,7 @@ namespace POCOGeneratorUI
                 }
             }
 
-            if (isSupportSchema)
+            if (this.generator.Support.SupportSchema)
             {
                 if (filterSettings.FilterSchema.IsEnabled)
                 {
@@ -2039,6 +2079,41 @@ namespace POCOGeneratorUI
             return true;
         }
 
+        private void CheckDbObjectsNodeAfterFilter(TreeNode parent)
+        {
+            bool toCheckParent = 
+                parent.Checked == false && (
+                    parent.Nodes.Count > 0 &&
+                    parent.Nodes.Cast<TreeNode>().All(n => n.Checked)
+                );
+            
+            bool toUncheckParent = 
+                parent.Checked && (
+                    parent.Nodes.Count == 0 ||
+                    parent.Nodes.Cast<TreeNode>().Any(n => n.Checked == false)
+                );
+
+            if (toCheckParent || toUncheckParent)
+            {
+                bool isChecked = toCheckParent;
+
+                if (parent.Tag != null && parent.Tag is IEnumerable<Table>)
+                    this.isCheckedTables = isChecked;
+                else if (parent.Tag != null && parent.Tag is IEnumerable<POCOGenerator.Objects.View>)
+                    this.isCheckedViews = isChecked;
+                else if (parent.Tag != null && parent.Tag is IEnumerable<Procedure>)
+                    this.isCheckedProcedures = isChecked;
+                else if (parent.Tag != null && parent.Tag is IEnumerable<Function>)
+                    this.isCheckedFunctions = isChecked;
+                else if (parent.Tag != null && parent.Tag is IEnumerable<TVP>)
+                    this.isCheckedTVPs = isChecked;
+
+                DisableServerTreeAfterCheck();
+                parent.Checked = isChecked;
+                EnableServerTreeAfterCheck();
+            }
+        }
+
         #endregion
 
         #region Check Boxes
@@ -2051,50 +2126,50 @@ namespace POCOGeneratorUI
 
             if (node.Tag is Database)
             {
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 node.Checked = false;
                 DatabaseAfterCheck(node, false);
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
                 TreeNodeChecked();
             }
             else if (node.Tag is IEnumerable<Table>)
             {
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 node.Checked = false;
                 TablesAfterCheck(node, false);
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
                 TreeNodeChecked();
             }
             else if (node.Tag is IEnumerable<POCOGenerator.Objects.View>)
             {
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 node.Checked = false;
                 ViewsAfterCheck(node, false);
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
                 TreeNodeChecked();
             }
             else if (node.Tag is IEnumerable<Procedure>)
             {
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 node.Checked = false;
                 ProceduresAfterCheck(node, false);
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
                 TreeNodeChecked();
             }
             else if (node.Tag is IEnumerable<Function>)
             {
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 node.Checked = false;
                 FunctionsAfterCheck(node, false);
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
                 TreeNodeChecked();
             }
             else if (node.Tag is IEnumerable<TVP>)
             {
-                trvServer.AfterCheck -= trvServer_AfterCheck;
+                DisableServerTreeAfterCheck();
                 node.Checked = false;
                 TVPsAfterCheck(node, false);
-                trvServer.AfterCheck += trvServer_AfterCheck;
+                EnableServerTreeAfterCheck();
                 TreeNodeChecked();
             }
         }
@@ -2113,7 +2188,7 @@ namespace POCOGeneratorUI
             if (table == null)
                 return;
 
-            trvServer.AfterCheck -= trvServer_AfterCheck;
+            DisableServerTreeAfterCheck();
 
             List<Table> primaryTables = table.ForeignKeys.Select(fk => fk.PrimaryTable).Where(pt => pt != null).ToList();
 
@@ -2138,7 +2213,7 @@ namespace POCOGeneratorUI
                 TreeNodeChecked();
             }
 
-            trvServer.AfterCheck += trvServer_AfterCheck;
+            EnableServerTreeAfterCheck();
         }
 
         private void checkReferencingTablesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2151,7 +2226,7 @@ namespace POCOGeneratorUI
             if (table == null)
                 return;
 
-            trvServer.AfterCheck -= trvServer_AfterCheck;
+            DisableServerTreeAfterCheck();
 
             List<TreeNode> toCheck = new List<TreeNode>();
             foreach (TreeNode n in node.Parent.Nodes)
@@ -2171,7 +2246,7 @@ namespace POCOGeneratorUI
                 TreeNodeChecked();
             }
 
-            trvServer.AfterCheck += trvServer_AfterCheck;
+            EnableServerTreeAfterCheck();
         }
 
         private void checkAccessibleTablesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2184,7 +2259,7 @@ namespace POCOGeneratorUI
             if (table == null)
                 return;
 
-            trvServer.AfterCheck -= trvServer_AfterCheck;
+            DisableServerTreeAfterCheck();
 
             List<Table> accessibleTables = new List<Table>() { table };
 
@@ -2242,7 +2317,7 @@ namespace POCOGeneratorUI
                 TreeNodeChecked();
             }
 
-            trvServer.AfterCheck += trvServer_AfterCheck;
+            EnableServerTreeAfterCheck();
         }
 
         #endregion
