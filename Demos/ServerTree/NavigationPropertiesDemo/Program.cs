@@ -131,7 +131,9 @@ namespace NavigationPropertiesDemo
             indent += INDENT_SIZE;
             PrintTableColumns(table, indent);
             PrintTablePrimaryKey(table, indent);
+            PrintTableUniqueKeys(table, indent);
             PrintTableForeignKeys(table, indent);
+            PrintTableIndexes(table, indent);
             PrintTableNavigationProperties(table, manyToManyJoinTable, indent);
         }
 
@@ -162,6 +164,27 @@ namespace NavigationPropertiesDemo
             }
         }
 
+        private static void PrintTableUniqueKeys(Table table, int indent)
+        {
+            if (table.UniqueKeys.Any())
+            {
+                Console.WriteLine("{0}{1}", new string(' ', indent), "Unique Keys");
+
+                indent += INDENT_SIZE;
+                foreach (UniqueKey uniqueKey in table.UniqueKeys)
+                    PrintTableUniqueKey(uniqueKey, indent);
+            }
+        }
+
+        private static void PrintTableUniqueKey(UniqueKey uniqueKey, int indent)
+        {
+            Console.WriteLine("{0}{1}", new string(' ', indent), uniqueKey);
+
+            indent += INDENT_SIZE;
+            foreach (UniqueKeyColumn column in uniqueKey.UniqueKeyColumns)
+                Console.WriteLine("{0}{1}", new string(' ', indent), column.TableColumn.ColumnName);
+        }
+
         private static void PrintTableForeignKeys(Table table, int indent)
         {
             if (table.ForeignKeys.Any())
@@ -181,6 +204,27 @@ namespace NavigationPropertiesDemo
             indent += INDENT_SIZE;
             foreach (ForeignKeyColumn column in foreignKey.ForeignKeyColumns)
                 Console.WriteLine("{0}{1}.{2} -> {3}.{4}", new string(' ', indent), foreignKey.ForeignTable, column.ForeignTableColumn.ColumnName, foreignKey.PrimaryTable, column.PrimaryTableColumn.ColumnName);
+        }
+
+        private static void PrintTableIndexes(Table table, int indent)
+        {
+            if (table.Indexes.Any())
+            {
+                Console.WriteLine("{0}{1}", new string(' ', indent), "Indexes");
+
+                indent += INDENT_SIZE;
+                foreach (TableIndex index in table.Indexes)
+                    PrintTableIndex(index, indent);
+            }
+        }
+
+        private static void PrintTableIndex(TableIndex index, int indent)
+        {
+            Console.WriteLine("{0}{1}", new string(' ', indent), index.ToFullString());
+
+            indent += INDENT_SIZE;
+            foreach (TableIndexColumn column in index.IndexColumns)
+                Console.WriteLine("{0}{1}{2}", new string(' ', indent), column.TableColumn.ColumnName, (column.Is_Descending ? " (Desc)" : " (Asc)"));
         }
 
         private static void PrintTableNavigationProperties(Table table, bool manyToManyJoinTable, int indent)
