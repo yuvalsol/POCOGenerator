@@ -276,7 +276,7 @@ namespace MultipleFilesDemo
             }
         }
 
-        private const int INDENT_SIZE = 3;
+        private const int INDENT_SIZE = 4;
 
         private static void DbGroupGenerating(string dbGroup, ref string path, ref int indent, ref int filesCount)
         {

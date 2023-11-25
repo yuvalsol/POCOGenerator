@@ -74,7 +74,7 @@ namespace ServerTreeDemo
             }
         }
 
-        private const int INDENT_SIZE = 3;
+        private const int INDENT_SIZE = 4;
 
         private static void PrintServer(Server server)
         {
