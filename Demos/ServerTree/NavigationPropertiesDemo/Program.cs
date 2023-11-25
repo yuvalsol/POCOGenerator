@@ -232,27 +232,30 @@ namespace NavigationPropertiesDemo
             if (table.NavigationProperties.Any())
             {
                 Console.WriteLine("{0}{1}", new string(' ', indent), "Navigation Properties");
+                Console.WriteLine("{0}{1}", new string(' ', indent), "Navigation Property Structure: ToTable/CollectionOf(ToTable) Name [ForeignKey]");
 
+                int counter = 1;
                 indent += INDENT_SIZE;
                 foreach (NavigationProperty navigationProperty in table.NavigationProperties)
-                    PrintTableNavigationProperty(navigationProperty, manyToManyJoinTable, indent);
+                    PrintTableNavigationProperty(navigationProperty, manyToManyJoinTable, indent, counter++);
             }
         }
 
-        private static void PrintTableNavigationProperty(NavigationProperty navigationProperty, bool manyToManyJoinTable, int indent)
+        private static void PrintTableNavigationProperty(NavigationProperty navigationProperty, bool manyToManyJoinTable, int indent, int counter)
         {
             if ((manyToManyJoinTable && navigationProperty.IsVisibleWhenManyToManyJoinTableIsOn) ||
                 (manyToManyJoinTable == false && navigationProperty.IsVisibleWhenManyToManyJoinTableIsOff))
             {
-                PrintNavigationProperty(navigationProperty, indent);
+                PrintNavigationProperty(navigationProperty, indent, counter);
                 PrintInverseProperty(navigationProperty, indent);
             }
         }
 
-        private static void PrintNavigationProperty(NavigationProperty navigationProperty, int indent)
+        private static void PrintNavigationProperty(NavigationProperty navigationProperty, int indent, int? counter = null)
         {
             Console.WriteLine(
                 new string(' ', indent) +
+                (counter != null ? counter.Value.ToString("D2") + ". " : "    ") +
                 (navigationProperty.IsCollection ? "CollectionOf(" : string.Empty) +
                 navigationProperty.ToTable +
                 (navigationProperty.IsCollection ? ")" : string.Empty) +
@@ -268,7 +271,7 @@ namespace NavigationPropertiesDemo
 
             if (inverseProperty != null)
             {
-                Console.WriteLine("{0}{1}", new string(' ', indent), "Inverse Property");
+                Console.WriteLine("{0}    {1}", new string(' ', indent), "Inverse Property");
                 indent += INDENT_SIZE;
 
                 PrintNavigationProperty(inverseProperty, indent);
