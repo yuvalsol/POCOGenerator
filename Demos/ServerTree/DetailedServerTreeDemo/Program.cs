@@ -10,7 +10,7 @@ namespace DetailedServerTreeDemo
     {
         static void Main(string[] args)
         {
-            bool redirectToFile = false;
+            bool redirectToFile = true;
 
             if (redirectToFile)
                 ToFile();
@@ -26,13 +26,13 @@ namespace DetailedServerTreeDemo
                 {
                     TextWriter writer = Console.Out;
                     Console.SetOut(sw);
-                    ToConsole();
+                    ToConsole(true);
                     Console.SetOut(writer);
                 }
             }
         }
 
-        private static void ToConsole()
+        private static void ToConsole(bool redirectToFile = false)
         {
             IGenerator generator = GeneratorFactory.GetGenerator();
             try { generator.Settings.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
@@ -54,9 +54,12 @@ namespace DetailedServerTreeDemo
 
             PrintError(results, generator.Error);
 
-            Console.WriteLine();
-            Console.WriteLine("Press any key to continue . . .");
-            Console.ReadKey(true);
+            if (redirectToFile == false)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Press any key to continue . . .");
+                Console.ReadKey(true);
+            }
         }
 
         private static void PrintError(GeneratorResults results, Exception Error)

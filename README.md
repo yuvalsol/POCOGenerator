@@ -988,11 +988,9 @@ generator.Generate();
 #### ServerTreeDemo
 Demo code [ServerTreeDemo/Program.cs](Demos/ServerTree/ServerTreeDemo/Program.cs "ServerTreeDemo/Program.cs").
 
-The demo demonstrates how to work with the class objects that POCO Generator builds from database objects. These class objects represent the server, database, tables and more and are referencing each other by their internal properties.
+The demo demonstrates how to work with the class objects that POCO Generator builds from database objects. These class objects represent the server, databases, tables, views, procedures, functions, TVPs and more.
 
 The generator fires the event `ServerBuilt` after these class objects are build and before it starts processing them and generating POCOs. In the code, the generator is stopped at that point by setting the `Stop` property to `true` in the `ServerBuilt` event argument and proceed to traverse these class objects, starting from `Server`. The `Server` object is accessible from the `ServerBuilt` event argument too. While traversing the class objects, the code prints their names in a tree-like format.
-
-The demo also includes a possible code path that saves the output to a file instead of printing to the Console.
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
