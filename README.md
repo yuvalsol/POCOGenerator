@@ -234,12 +234,12 @@ Save POCOs to files. These settings determine how the POCOs will be grouped to f
 **Multiple Files - Relative Folders** - Each POCO is saved to its own file. The files are saved to this directory structure
 
 <pre>
-Server <i>[(LocalDB)_MSSQLLocalDB]</i>
-    Namespace <i>[Namespace setting if set]</i>
-        Database <i>[AdventureWorks2014]</i>
+Server <i>[\(LocalDB)_MSSQLLocalDB]</i>
+    Namespace <i>[Custom namespace if set]</i>
+        Database <i>[\AdventureWorks2014]</i>
             Tables
-                Schema <i>[Person, Sales]</i>
-                    *.cs <i>[Person.cs, Customer.cs]</i>
+                Schema <i>[\Person, \Sales]</i>
+                    *.cs <i>[- Person.cs, - Customer.cs]</i>
             Views
                 Schema
                     *.cs
@@ -406,7 +406,8 @@ Right now, there is no plan to wrap the class library in a NuGet package, and it
 
 todo:
 - instancing
-- settings
+- selecting objects
+- pococ settings
 - events
 - run
 - run again
@@ -414,7 +415,7 @@ todo:
 
 ## Demos
 
-The demos are code examples of the various ways of integrating POCO Generator in projects. You can test the demos by downloading them from Releases. Under each demo folder there is a file **ConnectionString.txt** from which the demo reads the database connection string, so edit that before running the demo.
+The demos are code examples of the various ways to integrate POCO Generator in projects. You can test the demos by downloading them from Releases. Under each demo folder there is a file **ConnectionString.txt** from which the demo reads the database connection string, so edit that before running the demo.
 
 ### Text
 
