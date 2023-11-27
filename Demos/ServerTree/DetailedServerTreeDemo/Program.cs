@@ -39,7 +39,7 @@ namespace DetailedServerTreeDemo
             if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
                 generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
-            generator.Settings.IncludeAll = true;
+            generator.Settings.DatabaseObjects.IncludeAll = true;
 
             generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>
             {

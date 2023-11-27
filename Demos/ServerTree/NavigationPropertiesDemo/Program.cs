@@ -39,7 +39,7 @@ namespace NavigationPropertiesDemo
             if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
                 generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
-            generator.Settings.Tables.IncludeAll = true;
+            generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
             generator.Settings.NavigationProperties.ManyToManyJoinTable = false;
 
             generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>

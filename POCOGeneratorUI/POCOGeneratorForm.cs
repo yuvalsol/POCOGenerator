@@ -145,12 +145,12 @@ namespace POCOGeneratorUI
                     generator.Settings.ConnectionString = connectionString;
                     generator.Settings.RDBMS = rdbms;
 
-                    generator.Settings.IncludeAll = false;
-                    generator.Settings.Tables.IncludeAll = dbObjectsForm.IsEnableTables;
-                    generator.Settings.Views.IncludeAll = dbObjectsForm.IsEnableViews;
-                    generator.Settings.StoredProcedures.IncludeAll = dbObjectsForm.IsEnableProcedures;
-                    generator.Settings.Functions.IncludeAll = dbObjectsForm.IsEnableFunctions;
-                    generator.Settings.TVPs.IncludeAll = dbObjectsForm.IsEnableTVPs;
+                    generator.Settings.DatabaseObjects.IncludeAll = false;
+                    generator.Settings.DatabaseObjects.Tables.IncludeAll = dbObjectsForm.IsEnableTables;
+                    generator.Settings.DatabaseObjects.Views.IncludeAll = dbObjectsForm.IsEnableViews;
+                    generator.Settings.DatabaseObjects.StoredProcedures.IncludeAll = dbObjectsForm.IsEnableProcedures;
+                    generator.Settings.DatabaseObjects.Functions.IncludeAll = dbObjectsForm.IsEnableFunctions;
+                    generator.Settings.DatabaseObjects.TVPs.IncludeAll = dbObjectsForm.IsEnableTVPs;
 
                     this.dbObjectsForm_IsEnableTables = dbObjectsForm.IsEnableTables;
                     this.dbObjectsForm_IsEnableViews = dbObjectsForm.IsEnableViews;

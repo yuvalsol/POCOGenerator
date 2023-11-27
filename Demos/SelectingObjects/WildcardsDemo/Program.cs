@@ -16,11 +16,11 @@ namespace WildcardsDemo
             generator.Settings.RDBMS = RDBMS.SQLServer;
 
             // all the tables under Sales schema
-            generator.Settings.Tables.Include.Add("Sales.*");
+            generator.Settings.DatabaseObjects.Tables.Include.Add("Sales.*");
 
             // HumanResources.Employee but not HumanResources.EmployeeDepartmentHistory
             // or HumanResources.EmployeePayHistory
-            generator.Settings.Tables.Include.Add("Employe?");
+            generator.Settings.DatabaseObjects.Tables.Include.Add("Employe?");
 
             generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>
             {

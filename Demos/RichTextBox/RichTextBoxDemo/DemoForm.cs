@@ -27,7 +27,7 @@ namespace RichTextBoxDemo
 
             IGenerator generator = GeneratorWinFormsFactory.GetGenerator(txtPocoEditor);
             generator.Settings.ConnectionString = txtConnectionString.Text;
-            generator.Settings.Tables.IncludeAll = true;
+            generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
             generator.Settings.POCO.CommentsWithoutNull = true;
             generator.Settings.ClassName.IncludeSchema = true;
             generator.Settings.ClassName.SchemaSeparator = "_";

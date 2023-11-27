@@ -21,16 +21,16 @@ namespace SelectingObjectsDemo
 
             // select all the tables under HumanResources & Purchasing schemas
             // and select table Production.Product
-            generator.Settings.Tables.Include.Add("HumanResources.*");
-            generator.Settings.Tables.Include.Add("Purchasing.*");
-            generator.Settings.Tables.Include.Add("Production.Product");
+            generator.Settings.DatabaseObjects.Tables.Include.Add("HumanResources.*");
+            generator.Settings.DatabaseObjects.Tables.Include.Add("Purchasing.*");
+            generator.Settings.DatabaseObjects.Tables.Include.Add("Production.Product");
 
             // select all views except views under Production & Sales schemas
             // and except view Person.vAdditionalContactInfo
-            generator.Settings.Views.IncludeAll = true;
-            generator.Settings.Views.Exclude.Add("Production.*");
-            generator.Settings.Views.Exclude.Add("Sales.*");
-            generator.Settings.Views.Exclude.Add("Person.vAdditionalContactInfo");
+            generator.Settings.DatabaseObjects.Views.IncludeAll = true;
+            generator.Settings.DatabaseObjects.Views.Exclude.Add("Production.*");
+            generator.Settings.DatabaseObjects.Views.Exclude.Add("Sales.*");
+            generator.Settings.DatabaseObjects.Views.Exclude.Add("Person.vAdditionalContactInfo");
 
             generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>
             {

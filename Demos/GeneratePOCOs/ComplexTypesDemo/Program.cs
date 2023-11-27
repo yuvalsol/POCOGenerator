@@ -15,7 +15,7 @@ namespace ComplexTypesDemo
             if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
                 generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ComplexTypesDB;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
-            generator.Settings.Tables.IncludeAll = true;
+            generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
             GeneratorResults results = generator.Generate();
             PrintError(results, generator.Error);

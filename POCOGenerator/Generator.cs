@@ -85,11 +85,11 @@ namespace POCOGenerator
                 server.UserId = userId;
 
                 // determine which object types to generate and which ones to skip, based on the user's settings
-                bool isEnableTables = IsEnableDbObjects(this.settingsInternal.IncludeAll, this.settingsInternal.Tables.IncludeAll, this.settingsInternal.Tables.ExcludeAll, this.settingsInternal.Tables.Include);
-                bool isEnableViews = IsEnableDbObjects(this.settingsInternal.IncludeAll, this.settingsInternal.Views.IncludeAll, this.settingsInternal.Views.ExcludeAll, this.settingsInternal.Views.Include);
-                bool isEnableStoredProcedures = IsEnableDbObjects(this.settingsInternal.IncludeAll, this.settingsInternal.StoredProcedures.IncludeAll, this.settingsInternal.StoredProcedures.ExcludeAll, this.settingsInternal.StoredProcedures.Include);
-                bool isEnableFunctions = IsEnableDbObjects(this.settingsInternal.IncludeAll, this.settingsInternal.Functions.IncludeAll, this.settingsInternal.Functions.ExcludeAll, this.settingsInternal.Functions.Include);
-                bool isEnableTVPs = IsEnableDbObjects(this.settingsInternal.IncludeAll, this.settingsInternal.TVPs.IncludeAll, this.settingsInternal.TVPs.ExcludeAll, this.settingsInternal.TVPs.Include);
+                bool isEnableTables = IsEnableDbObjects(this.settingsInternal.DatabaseObjects.IncludeAll, this.settingsInternal.DatabaseObjects.Tables.IncludeAll, this.settingsInternal.DatabaseObjects.Tables.ExcludeAll, this.settingsInternal.DatabaseObjects.Tables.Include);
+                bool isEnableViews = IsEnableDbObjects(this.settingsInternal.DatabaseObjects.IncludeAll, this.settingsInternal.DatabaseObjects.Views.IncludeAll, this.settingsInternal.DatabaseObjects.Views.ExcludeAll, this.settingsInternal.DatabaseObjects.Views.Include);
+                bool isEnableStoredProcedures = IsEnableDbObjects(this.settingsInternal.DatabaseObjects.IncludeAll, this.settingsInternal.DatabaseObjects.StoredProcedures.IncludeAll, this.settingsInternal.DatabaseObjects.StoredProcedures.ExcludeAll, this.settingsInternal.DatabaseObjects.StoredProcedures.Include);
+                bool isEnableFunctions = IsEnableDbObjects(this.settingsInternal.DatabaseObjects.IncludeAll, this.settingsInternal.DatabaseObjects.Functions.IncludeAll, this.settingsInternal.DatabaseObjects.Functions.ExcludeAll, this.settingsInternal.DatabaseObjects.Functions.Include);
+                bool isEnableTVPs = IsEnableDbObjects(this.settingsInternal.DatabaseObjects.IncludeAll, this.settingsInternal.DatabaseObjects.TVPs.IncludeAll, this.settingsInternal.DatabaseObjects.TVPs.ExcludeAll, this.settingsInternal.DatabaseObjects.TVPs.Include);
 
                 // get db helper
                 this.dbHelper = this.dbHandler.GetDbHelper(this.settingsInternal.ConnectionString);
@@ -481,43 +481,43 @@ namespace POCOGenerator
                 Database = database,
                 Tables = GetDatabaseObjects(
                     database.Tables,
-                    this.settingsInternal.IncludeAll,
-                    this.settingsInternal.Tables.IncludeAll,
-                    this.settingsInternal.Tables.Include,
-                    this.settingsInternal.Tables.ExcludeAll,
-                    this.settingsInternal.Tables.Exclude
+                    this.settingsInternal.DatabaseObjects.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.Tables.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.Tables.Include,
+                    this.settingsInternal.DatabaseObjects.Tables.ExcludeAll,
+                    this.settingsInternal.DatabaseObjects.Tables.Exclude
                 ),
                 Views = GetDatabaseObjects(
                     database.Views,
-                    this.settingsInternal.IncludeAll,
-                    this.settingsInternal.Views.IncludeAll,
-                    this.settingsInternal.Views.Include,
-                    this.settingsInternal.Views.ExcludeAll,
-                    this.settingsInternal.Views.Exclude
+                    this.settingsInternal.DatabaseObjects.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.Views.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.Views.Include,
+                    this.settingsInternal.DatabaseObjects.Views.ExcludeAll,
+                    this.settingsInternal.DatabaseObjects.Views.Exclude
                 ),
                 Procedures = GetDatabaseObjects(
                     database.Procedures,
-                    this.settingsInternal.IncludeAll,
-                    this.settingsInternal.StoredProcedures.IncludeAll,
-                    this.settingsInternal.StoredProcedures.Include,
-                    this.settingsInternal.StoredProcedures.ExcludeAll,
-                    this.settingsInternal.StoredProcedures.Exclude
+                    this.settingsInternal.DatabaseObjects.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.StoredProcedures.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.StoredProcedures.Include,
+                    this.settingsInternal.DatabaseObjects.StoredProcedures.ExcludeAll,
+                    this.settingsInternal.DatabaseObjects.StoredProcedures.Exclude
                 ),
                 Functions = GetDatabaseObjects(
                     database.Functions,
-                    this.settingsInternal.IncludeAll,
-                    this.settingsInternal.Functions.IncludeAll,
-                    this.settingsInternal.Functions.Include,
-                    this.settingsInternal.Functions.ExcludeAll,
-                    this.settingsInternal.Functions.Exclude
+                    this.settingsInternal.DatabaseObjects.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.Functions.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.Functions.Include,
+                    this.settingsInternal.DatabaseObjects.Functions.ExcludeAll,
+                    this.settingsInternal.DatabaseObjects.Functions.Exclude
                 ),
                 TVPs = GetDatabaseObjects(
                     database.TVPs,
-                    this.settingsInternal.IncludeAll,
-                    this.settingsInternal.TVPs.IncludeAll,
-                    this.settingsInternal.TVPs.Include,
-                    this.settingsInternal.TVPs.ExcludeAll,
-                    this.settingsInternal.TVPs.Exclude
+                    this.settingsInternal.DatabaseObjects.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.TVPs.IncludeAll,
+                    this.settingsInternal.DatabaseObjects.TVPs.Include,
+                    this.settingsInternal.DatabaseObjects.TVPs.ExcludeAll,
+                    this.settingsInternal.DatabaseObjects.TVPs.Exclude
                 ),
             })
             .Where(d =>

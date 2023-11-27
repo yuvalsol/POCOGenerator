@@ -18,7 +18,7 @@ namespace MemoryStreamDemo
                 if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
                     generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
                 generator.Settings.RDBMS = RDBMS.SQLServer;
-                generator.Settings.Tables.IncludeAll = true;
+                generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
                 generator.Settings.POCO.CommentsWithoutNull = true;
                 generator.Settings.ClassName.IncludeSchema = true;
                 generator.Settings.ClassName.SchemaSeparator = "_";

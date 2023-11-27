@@ -20,11 +20,7 @@ namespace POCOGenerator
             this.NavigationProperties = new NavigationPropertiesSettings(lockObject);
             this.ClassName = new ClassNameSettings(lockObject);
             this.EFAnnotations = new EFAnnotationsSettings(lockObject);
-            this.Tables = new TablesSettings(lockObject);
-            this.Views = new ViewsSettings(lockObject);
-            this.StoredProcedures = new StoredProceduresSettings(lockObject);
-            this.Functions = new FunctionsSettings(lockObject);
-            this.TVPs = new TVPsSettings(lockObject);
+            this.DatabaseObjects = new DatabaseObjectsSettings(lockObject);
             this.SyntaxHighlight = new SyntaxHighlightSettings(lockObject);
         }
 
@@ -35,7 +31,6 @@ namespace POCOGenerator
 
             this.ConnectionString = settings.ConnectionString;
             this.RDBMS = settings.RDBMS;
-            this.IncludeAll = settings.IncludeAll;
 
             #endregion
 
@@ -115,68 +110,74 @@ namespace POCOGenerator
 
             #endregion
 
+            #region Database Objects
+
+            this.DatabaseObjects.IncludeAll = settings.DatabaseObjects.IncludeAll;
+
+            #endregion
+
             #region Tables
 
-            this.Tables.IncludeAll = settings.Tables.IncludeAll;
-            this.Tables.ExcludeAll = settings.Tables.ExcludeAll;
+            this.DatabaseObjects.Tables.IncludeAll = settings.DatabaseObjects.Tables.IncludeAll;
+            this.DatabaseObjects.Tables.ExcludeAll = settings.DatabaseObjects.Tables.ExcludeAll;
 
-            foreach (string item in settings.Tables.Include)
-                this.Tables.Include.Add(item);
+            foreach (string item in settings.DatabaseObjects.Tables.Include)
+                this.DatabaseObjects.Tables.Include.Add(item);
 
-            foreach (string item in settings.Tables.Exclude)
-                this.Tables.Exclude.Add(item);
+            foreach (string item in settings.DatabaseObjects.Tables.Exclude)
+                this.DatabaseObjects.Tables.Exclude.Add(item);
 
             #endregion
 
             #region Views
 
-            this.Views.IncludeAll = settings.Views.IncludeAll;
-            this.Views.ExcludeAll = settings.Views.ExcludeAll;
+            this.DatabaseObjects.Views.IncludeAll = settings.DatabaseObjects.Views.IncludeAll;
+            this.DatabaseObjects.Views.ExcludeAll = settings.DatabaseObjects.Views.ExcludeAll;
 
-            foreach (string item in settings.Views.Include)
-                this.Views.Include.Add(item);
+            foreach (string item in settings.DatabaseObjects.Views.Include)
+                this.DatabaseObjects.Views.Include.Add(item);
 
-            foreach (string item in settings.Views.Exclude)
-                this.Views.Exclude.Add(item);
+            foreach (string item in settings.DatabaseObjects.Views.Exclude)
+                this.DatabaseObjects.Views.Exclude.Add(item);
 
             #endregion
 
             #region Stored Procedures
 
-            this.StoredProcedures.IncludeAll = settings.StoredProcedures.IncludeAll;
-            this.StoredProcedures.ExcludeAll = settings.StoredProcedures.ExcludeAll;
+            this.DatabaseObjects.StoredProcedures.IncludeAll = settings.DatabaseObjects.StoredProcedures.IncludeAll;
+            this.DatabaseObjects.StoredProcedures.ExcludeAll = settings.DatabaseObjects.StoredProcedures.ExcludeAll;
 
-            foreach (string item in settings.StoredProcedures.Include)
-                this.StoredProcedures.Include.Add(item);
+            foreach (string item in settings.DatabaseObjects.StoredProcedures.Include)
+                this.DatabaseObjects.StoredProcedures.Include.Add(item);
 
-            foreach (string item in settings.StoredProcedures.Exclude)
-                this.StoredProcedures.Exclude.Add(item);
+            foreach (string item in settings.DatabaseObjects.StoredProcedures.Exclude)
+                this.DatabaseObjects.StoredProcedures.Exclude.Add(item);
 
             #endregion
 
             #region Functions
 
-            this.Functions.IncludeAll = settings.Functions.IncludeAll;
-            this.Functions.ExcludeAll = settings.Functions.ExcludeAll;
+            this.DatabaseObjects.Functions.IncludeAll = settings.DatabaseObjects.Functions.IncludeAll;
+            this.DatabaseObjects.Functions.ExcludeAll = settings.DatabaseObjects.Functions.ExcludeAll;
 
-            foreach (string item in settings.Functions.Include)
-                this.Functions.Include.Add(item);
+            foreach (string item in settings.DatabaseObjects.Functions.Include)
+                this.DatabaseObjects.Functions.Include.Add(item);
 
-            foreach (string item in settings.Functions.Exclude)
-                this.Functions.Exclude.Add(item);
+            foreach (string item in settings.DatabaseObjects.Functions.Exclude)
+                this.DatabaseObjects.Functions.Exclude.Add(item);
 
             #endregion
 
             #region TVPs
 
-            this.TVPs.IncludeAll = settings.TVPs.IncludeAll;
-            this.TVPs.ExcludeAll = settings.TVPs.ExcludeAll;
+            this.DatabaseObjects.TVPs.IncludeAll = settings.DatabaseObjects.TVPs.IncludeAll;
+            this.DatabaseObjects.TVPs.ExcludeAll = settings.DatabaseObjects.TVPs.ExcludeAll;
 
-            foreach (string item in settings.TVPs.Include)
-                this.TVPs.Include.Add(item);
+            foreach (string item in settings.DatabaseObjects.TVPs.Include)
+                this.DatabaseObjects.TVPs.Include.Add(item);
 
-            foreach (string item in settings.TVPs.Exclude)
-                this.TVPs.Exclude.Add(item);
+            foreach (string item in settings.DatabaseObjects.TVPs.Exclude)
+                this.DatabaseObjects.TVPs.Exclude.Add(item);
 
             #endregion
 
@@ -212,16 +213,11 @@ namespace POCOGenerator
             {
                 this.ConnectionString = null;
                 this.RDBMS = RDBMS.None;
-                this.IncludeAll = false;
                 this.POCO.Reset();
                 this.NavigationProperties.Reset();
                 this.ClassName.Reset();
                 this.EFAnnotations.Reset();
-                this.Tables.Reset();
-                this.Views.Reset();
-                this.StoredProcedures.Reset();
-                this.Functions.Reset();
-                this.TVPs.Reset();
+                this.DatabaseObjects.Reset();
                 this.SyntaxHighlight.Reset();
             }
         }
@@ -274,33 +270,7 @@ namespace POCOGenerator
         public NavigationProperties NavigationProperties { get; private set; }
         public ClassName ClassName { get; private set; }
         public EFAnnotations EFAnnotations { get; private set; }
-
-        private bool includeAll;
-        public bool IncludeAll
-        {
-            get
-            {
-                lock (lockObject)
-                {
-                    return includeAll;
-                }
-            }
-
-            set
-            {
-                lock (lockObject)
-                {
-                    includeAll = value;
-                }
-            }
-        }
-
-        public Tables Tables { get; private set; }
-        public Views Views { get; private set; }
-        public StoredProcedures StoredProcedures { get; private set; }
-        public Functions Functions { get; private set; }
-        public TVPs TVPs { get; private set; }
-
+        public DatabaseObjects DatabaseObjects { get; private set; }
         public SyntaxHighlight SyntaxHighlight { get; private set; }
 
         #endregion
@@ -1750,6 +1720,65 @@ namespace POCOGenerator
 
         #endregion
 
+        #region Database Objects Settings
+
+        private sealed class DatabaseObjectsSettings : DatabaseObjects
+        {
+            private readonly object lockObject;
+
+            internal DatabaseObjectsSettings(object lockObject)
+            {
+                this.lockObject = lockObject;
+
+                this.Tables = new TablesSettings(lockObject);
+                this.Views = new ViewsSettings(lockObject);
+                this.StoredProcedures = new StoredProceduresSettings(lockObject);
+                this.Functions = new FunctionsSettings(lockObject);
+                this.TVPs = new TVPsSettings(lockObject);
+            }
+
+            public void Reset()
+            {
+                lock (lockObject)
+                {
+                    this.IncludeAll = false;
+                    Tables.Reset();
+                    Views.Reset();
+                    StoredProcedures.Reset();
+                    Functions.Reset();
+                    TVPs.Reset();
+                }
+            }
+
+            private bool includeAll;
+            public bool IncludeAll
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return includeAll;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        includeAll = value;
+                    }
+                }
+            }
+
+            public Tables Tables { get; private set; }
+            public Views Views { get; private set; }
+            public StoredProcedures StoredProcedures { get; private set; }
+            public Functions Functions { get; private set; }
+            public TVPs TVPs { get; private set; }
+        }
+
+        #endregion
+
         #region Db Objects Settings
 
         private abstract class DbObjectsSettingsBase
@@ -1969,6 +1998,10 @@ namespace POCOGenerator
             }
         }
 
+        #endregion
+
+        #region Tables Settings
+
         private sealed class TablesSettings : DbObjectsSettingsBase, Tables
         {
             internal TablesSettings(object lockObject)
@@ -1976,6 +2009,10 @@ namespace POCOGenerator
             {
             }
         }
+
+        #endregion
+
+        #region Views Settings
 
         private sealed class ViewsSettings : DbObjectsSettingsBase, Views
         {
@@ -1985,6 +2022,10 @@ namespace POCOGenerator
             }
         }
 
+        #endregion
+
+        #region Stored Procedures Settings
+
         private sealed class StoredProceduresSettings : DbObjectsSettingsBase, StoredProcedures
         {
             internal StoredProceduresSettings(object lockObject)
@@ -1993,6 +2034,10 @@ namespace POCOGenerator
             }
         }
 
+        #endregion
+
+        #region Functions Settings
+
         private sealed class FunctionsSettings : DbObjectsSettingsBase, Functions
         {
             internal FunctionsSettings(object lockObject)
@@ -2000,6 +2045,10 @@ namespace POCOGenerator
             {
             }
         }
+
+        #endregion
+
+        #region TVPs Settings
 
         private sealed class TVPsSettings : DbObjectsSettingsBase, TVPs
         {
@@ -2261,34 +2310,9 @@ namespace POCOGenerator
         EFAnnotations EFAnnotations { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to generate classes out of all database objects.
+        /// Gets the settings that determine which database objects to generate classes out of and which database objects to exclude from generating classes.
         /// </summary>
-        bool IncludeAll { get; set; }
-
-        /// <summary>
-        /// Gets the settings that determine which tables to generate classes out of and which tables to exclude from generating classes.
-        /// </summary>
-        Tables Tables { get; }
-
-        /// <summary>
-        /// Gets the settings that determine which views to generate classes out of and which views to exclude from generating classes.
-        /// </summary>
-        Views Views { get; }
-
-        /// <summary>
-        /// Gets the settings that determine which stored procedures to generate classes out of and which stored procedures to exclude from generating classes.
-        /// </summary>
-        StoredProcedures StoredProcedures { get; }
-
-        /// <summary>
-        /// Gets the settings that determine which functions to generate classes out of and which functions to exclude from generating classes.
-        /// </summary>
-        Functions Functions { get; }
-
-        /// <summary>
-        /// Gets the settings that determine which TVPs to generate classes out of and which TVPs to exclude from generating classes.
-        /// </summary>
-        TVPs TVPs { get; }
+        DatabaseObjects DatabaseObjects { get; }
 
         /// <summary>
         /// Gets the settings that determine the colors for syntax elements.
@@ -2672,6 +2696,51 @@ namespace POCOGenerator
         /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
         /// </summary>
         bool ForeignKeyAndInverseProperty { get; set; }
+    }
+
+    #endregion
+
+    #region Database Objects
+
+    /// <summary>
+    /// The settings determine which database objects to generate classes out of and which database objects to exclude from generating classes.
+    /// </summary>
+    public interface DatabaseObjects
+    {
+        /// <summary>
+        /// Resets the database objects settings to their default values.
+        /// </summary>
+        void Reset();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate classes out of all database objects.
+        /// </summary>
+        bool IncludeAll { get; set; }
+
+        /// <summary>
+        /// Gets the settings that determine which tables to generate classes out of and which tables to exclude from generating classes.
+        /// </summary>
+        Tables Tables { get; }
+
+        /// <summary>
+        /// Gets the settings that determine which views to generate classes out of and which views to exclude from generating classes.
+        /// </summary>
+        Views Views { get; }
+
+        /// <summary>
+        /// Gets the settings that determine which stored procedures to generate classes out of and which stored procedures to exclude from generating classes.
+        /// </summary>
+        StoredProcedures StoredProcedures { get; }
+
+        /// <summary>
+        /// Gets the settings that determine which functions to generate classes out of and which functions to exclude from generating classes.
+        /// </summary>
+        Functions Functions { get; }
+
+        /// <summary>
+        /// Gets the settings that determine which TVPs to generate classes out of and which TVPs to exclude from generating classes.
+        /// </summary>
+        TVPs TVPs { get; }
     }
 
     #endregion

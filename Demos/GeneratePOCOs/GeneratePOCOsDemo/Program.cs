@@ -14,7 +14,7 @@ namespace GeneratePOCOsDemo
                 generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
             generator.Settings.RDBMS = RDBMS.SQLServer;
 
-            generator.Settings.Tables.Include.Add("Sales.Store");
+            generator.Settings.DatabaseObjects.Tables.Include.Add("Sales.Store");
 
             // settings for the first run
             generator.Settings.POCO.CommentsWithoutNull = true;
@@ -42,7 +42,7 @@ namespace GeneratePOCOsDemo
 
             // this line has no effect on GeneratePOCOs() (but would for Generate())
             // because GeneratePOCOs() skips calling the database
-            generator.Settings.Tables.IncludeAll = true;
+            generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
             // second run
             results = generator.GeneratePOCOs();

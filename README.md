@@ -429,7 +429,7 @@ StringBuilder stringBuilder = new StringBuilder();
 IGenerator generator = GeneratorFactory.GetGenerator(stringBuilder);
 generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-generator.Settings.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
 
 string output = stringBuilder.ToString();
@@ -449,7 +449,7 @@ using (MemoryStream stream = new MemoryStream())
         IGenerator generator = GeneratorFactory.GetGenerator(textWriter);
         generator.Settings.ConnectionString =
             @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-        generator.Settings.Tables.IncludeAll = true;
+        generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
         generator.Generate();
     }
 
@@ -472,7 +472,7 @@ using (MemoryStream stream = new MemoryStream())
     IGenerator generator = GeneratorFactory.GetGenerator(stream);
     generator.Settings.ConnectionString =
         @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-    generator.Settings.Tables.IncludeAll = true;
+    generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
     generator.Generate();
 
     byte[] bytes = stream.ToArray();
@@ -493,7 +493,7 @@ using (FileStream stream = File.Open(filePath, FileMode.Create))
     IGenerator generator = GeneratorFactory.GetGenerator(stream);
     generator.Settings.ConnectionString =
         @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-    generator.Settings.Tables.IncludeAll = true;
+    generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
     generator.Generate();
 }
 ```
@@ -509,7 +509,7 @@ The demo demonstrates how to write POCOs to the Console.
 IGenerator generator = GeneratorFactory.GetConsoleGenerator();
 generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-generator.Settings.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
 ```
 
@@ -532,7 +532,7 @@ The demo demonstrates how to write POCOs to the Console with syntax highlight us
 IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
 generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-generator.Settings.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
 ```
 
@@ -545,7 +545,7 @@ The demo demonstrates how to write POCOs to the Console with custom syntax highl
 IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
 generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-generator.Settings.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
 generator.Settings.SyntaxHighlight.Text = Color.FromArgb(255, 255, 255);
 generator.Settings.SyntaxHighlight.Keyword = Color.FromArgb(86, 156, 214);
@@ -572,7 +572,7 @@ RichTextBox txtPocoEditor = new System.Windows.Forms.RichTextBox();
 IGenerator generator = GeneratorWinFormsFactory.GetGenerator(txtPocoEditor);
 generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-generator.Settings.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
 ```
 
@@ -584,13 +584,13 @@ Demo code [SelectingObjectsDemo/Program.cs](Demos/SelectingObjects/SelectingObje
 The demo demonstrates how to select specific database objects for POCO generating.
 
 A database object is selected when these two conditions are met:
-1. Explicitly included. Selecting a database object is done by `Settings` properties and methods that have `Include` in their name, such as
-    - Settings.IncludeAll
-    - Settings.Tables.IncludeAll
-    - Settings.Tables.Include.Add(names)
+1. Explicitly included. Selecting a database object is done by `Settings.DatabaseObjects` properties and methods that have `Include` in their name, such as
+    - Settings.DatabaseObjects.IncludeAll
+    - Settings.DatabaseObjects.Tables.IncludeAll
+    - Settings.DatabaseObjects.Tables.Include.Add()
 2. Not explicitly excluded. The database object doesn't appear in any excluding setting, which have `Exclude` in their name, such as
-    - Settings.Tables.ExcludeAll
-    - Settings.Tables.Exclude.Add(names)
+    - Settings.DatabaseObjects.Tables.ExcludeAll
+    - Settings.DatabaseObjects.Tables.Exclude.Add()
 
 The tables code snippet shows picking just specific tables.
 The views code snippet shows selecting all the views and then excluding the views that are not needed.
@@ -602,16 +602,16 @@ generator.Settings.ConnectionString =
 
 // select all the tables under HumanResources & Purchasing schemas
 // and select table Production.Product
-generator.Settings.Tables.Include.Add("HumanResources.*");
-generator.Settings.Tables.Include.Add("Purchasing.*");
-generator.Settings.Tables.Include.Add("Production.Product");
+generator.Settings.DatabaseObjects.Tables.Include.Add("HumanResources.*");
+generator.Settings.DatabaseObjects.Tables.Include.Add("Purchasing.*");
+generator.Settings.DatabaseObjects.Tables.Include.Add("Production.Product");
 
 // select all views except views under Production & Sales schemas
 // and except view Person.vAdditionalContactInfo
-generator.Settings.Views.IncludeAll = true;
-generator.Settings.Views.Exclude.Add("Production.*");
-generator.Settings.Views.Exclude.Add("Sales.*");
-generator.Settings.Views.Exclude.Add("Person.vAdditionalContactInfo");
+generator.Settings.DatabaseObjects.Views.IncludeAll = true;
+generator.Settings.DatabaseObjects.Views.Exclude.Add("Production.*");
+generator.Settings.DatabaseObjects.Views.Exclude.Add("Sales.*");
+generator.Settings.DatabaseObjects.Views.Exclude.Add("Person.vAdditionalContactInfo");
 
 generator.Generate();
 ```
@@ -661,11 +661,11 @@ generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // all the tables under Sales schema
-generator.Settings.Tables.Include.Add("Sales.*");
+generator.Settings.DatabaseObjects.Tables.Include.Add("Sales.*");
 
 // HumanResources.Employee but not HumanResources.EmployeeDepartmentHistory
 // or HumanResources.EmployeePayHistory
-generator.Settings.Tables.Include.Add("Employe?");
+generator.Settings.DatabaseObjects.Tables.Include.Add("Employe?");
 
 generator.Generate();
 ```
@@ -679,7 +679,7 @@ This is a dynamic way of picking which database objects to process by utilizing 
 At first, all the database objects - tables, views, procedures, functions, TVPs - are selected.
 
 ```cs
-generator.Settings.IncludeAll = true;
+generator.Settings.DatabaseObjects.IncludeAll = true;
 ```
 
 Then the generator starts running.
@@ -694,7 +694,7 @@ generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // select everything
-generator.Settings.IncludeAll = true;
+generator.Settings.DatabaseObjects.IncludeAll = true;
 
 generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
 {
@@ -730,7 +730,7 @@ generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // select Store table (under Sales schema)
-generator.Settings.Tables.Include.Add("Sales.Store");
+generator.Settings.DatabaseObjects.Tables.Include.Add("Sales.Store");
 
 // settings for the first run
 generator.Settings.POCO.CommentsWithoutNull = true;
@@ -771,7 +771,7 @@ generator.Settings.NavigationProperties.IEnumerableNavigationProperties = true;
 
 // this line has no effect on GeneratePOCOs() (but would for Generate())
 // because GeneratePOCOs() skips calling the database
-generator.Settings.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
 // second run
 generator.GeneratePOCOs();
@@ -834,7 +834,7 @@ When `ComplexTypes` setting is enabled
 IGenerator generator = GeneratorFactory.GetConsoleGenerator();
 generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ComplexTypesDB";
-generator.Settings.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
 generator.Settings.POCO.ComplexTypes = true;
 
@@ -882,7 +882,7 @@ generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // select everything
-generator.Settings.IncludeAll = true;
+generator.Settings.DatabaseObjects.IncludeAll = true;
 
 generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
 {
@@ -916,7 +916,7 @@ This very abridged code snippet focuses on saving table files but the principle 
 IGenerator generator = GeneratorFactory.GetGenerator();
 generator.Settings.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-generator.Settings.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
 // custom namespace
 generator.Settings.POCO.Namespace = "MultipleFilesDemo";

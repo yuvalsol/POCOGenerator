@@ -19,7 +19,7 @@ namespace SkipAndStopDemo
             generator.Settings.ClassName.SchemaSeparator = "_";
 
             // select everything
-            generator.Settings.IncludeAll = true;
+            generator.Settings.DatabaseObjects.IncludeAll = true;
 
             generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
             {
