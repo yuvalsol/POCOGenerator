@@ -23,7 +23,7 @@ namespace POCOGeneratorUI
         {
             InitializeComponent();
             GetControlsOriginalLocation();
-            /*this.Text += " " + Assembly.GetExecutingAssembly().GetName().Version.ToString(3);*/
+            this.Text += " " + Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         }
 
         private bool hasUISettings;
@@ -1144,27 +1144,92 @@ namespace POCOGeneratorUI
         private void trvServer_AfterCheck(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Tag != null && e.Node.Tag is Database)
+            {
+                if (e.Node.IsExpanded == false)
+                {
+                    e.Node.Expand();
+
+                    foreach (TreeNode node in e.Node.Nodes)
+                    {
+                        if (node.IsExpanded == false)
+                            node.Expand();
+                    }
+
+                    Application.DoEvents();
+                }
+
                 DatabaseAfterCheck(e.Node, e.Node.Checked);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is IEnumerable<Table>)
+            {
+                if (e.Node.IsExpanded == false)
+                {
+                    e.Node.Expand();
+                    Application.DoEvents();
+                }
+
                 TablesAfterCheck(e.Node, e.Node.Checked);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is IEnumerable<POCOGenerator.Objects.View>)
+            {
+                if (e.Node.IsExpanded == false)
+                {
+                    e.Node.Expand();
+                    Application.DoEvents();
+                }
+
                 ViewsAfterCheck(e.Node, e.Node.Checked);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is IEnumerable<Procedure>)
+            {
+                if (e.Node.IsExpanded == false)
+                {
+                    e.Node.Expand();
+                    Application.DoEvents();
+                }
+
                 ProceduresAfterCheck(e.Node, e.Node.Checked);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is IEnumerable<Function>)
+            {
+                if (e.Node.IsExpanded == false)
+                {
+                    e.Node.Expand();
+                    Application.DoEvents();
+                }
+
                 FunctionsAfterCheck(e.Node, e.Node.Checked);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is IEnumerable<TVP>)
+            {
+                if (e.Node.IsExpanded == false)
+                {
+                    e.Node.Expand();
+                    Application.DoEvents();
+                }
+
                 TVPsAfterCheck(e.Node, e.Node.Checked);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is Table)
+            {
                 CheckDbObjectNode(e.Node, e.Node.Checked, ref this.isCheckedTables);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is POCOGenerator.Objects.View)
+            {
                 CheckDbObjectNode(e.Node, e.Node.Checked, ref this.isCheckedViews);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is Procedure)
+            {
                 CheckDbObjectNode(e.Node, e.Node.Checked, ref this.isCheckedProcedures);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is Function)
+            {
                 CheckDbObjectNode(e.Node, e.Node.Checked, ref this.isCheckedFunctions);
+            }
             else if (e.Node.Tag != null && e.Node.Tag is TVP)
+            {
                 CheckDbObjectNode(e.Node, e.Node.Checked, ref this.isCheckedTVPs);
+            }
 
             TreeNodeChecked();
         }
@@ -2082,13 +2147,13 @@ namespace POCOGeneratorUI
 
         private void CheckDbObjectsNodeAfterFilter(TreeNode parent)
         {
-            bool toCheckParent = 
+            bool toCheckParent =
                 parent.Checked == false && (
                     parent.Nodes.Count > 0 &&
                     parent.Nodes.Cast<TreeNode>().All(n => n.Checked)
                 );
-            
-            bool toUncheckParent = 
+
+            bool toUncheckParent =
                 parent.Checked && (
                     parent.Nodes.Count == 0 ||
                     parent.Nodes.Cast<TreeNode>().Any(n => n.Checked == false)
