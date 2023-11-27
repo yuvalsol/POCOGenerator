@@ -72,6 +72,7 @@ namespace POCOGenerator
             this.NavigationProperties.ManyToManyJoinTable = settings.NavigationProperties.ManyToManyJoinTable;
             this.NavigationProperties.Comments = settings.NavigationProperties.Comments;
             this.NavigationProperties.ListNavigationProperties = settings.NavigationProperties.ListNavigationProperties;
+            this.NavigationProperties.IListNavigationProperties = settings.NavigationProperties.IListNavigationProperties;
             this.NavigationProperties.ICollectionNavigationProperties = settings.NavigationProperties.ICollectionNavigationProperties;
             this.NavigationProperties.IEnumerableNavigationProperties = settings.NavigationProperties.IEnumerableNavigationProperties;
 
@@ -860,6 +861,7 @@ namespace POCOGenerator
                     this.ManyToManyJoinTable = false;
                     this.Comments = false;
                     this.ListNavigationProperties = true;
+                    this.IListNavigationProperties = false;
                     this.ICollectionNavigationProperties = false;
                     this.IEnumerableNavigationProperties = false;
                 }
@@ -979,6 +981,7 @@ namespace POCOGenerator
             }
 
             private bool listNavigationProperties = true;
+            private bool ilistNavigationProperties;
             private bool icollectionNavigationProperties;
             private bool ienumerableNavigationProperties;
 
@@ -1001,13 +1004,50 @@ namespace POCOGenerator
                             if (value)
                             {
                                 listNavigationProperties = true;
+                                ilistNavigationProperties = false;
                                 icollectionNavigationProperties = false;
                                 ienumerableNavigationProperties = false;
                             }
                             else
                             {
                                 listNavigationProperties = false;
-                                icollectionNavigationProperties = true;
+                                ilistNavigationProperties = true;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            public bool IListNavigationProperties
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return ilistNavigationProperties;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        if (ilistNavigationProperties != value)
+                        {
+                            if (value)
+                            {
+                                listNavigationProperties = false;
+                                ilistNavigationProperties = true;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = false;
+                            }
+                            else
+                            {
+                                listNavigationProperties = true;
+                                ilistNavigationProperties = false;
+                                icollectionNavigationProperties = false;
                                 ienumerableNavigationProperties = false;
                             }
                         }
@@ -1034,12 +1074,14 @@ namespace POCOGenerator
                             if (value)
                             {
                                 listNavigationProperties = false;
+                                ilistNavigationProperties = false;
                                 icollectionNavigationProperties = true;
                                 ienumerableNavigationProperties = false;
                             }
                             else
                             {
                                 listNavigationProperties = true;
+                                ilistNavigationProperties = false;
                                 icollectionNavigationProperties = false;
                                 ienumerableNavigationProperties = false;
                             }
@@ -1067,12 +1109,14 @@ namespace POCOGenerator
                             if (value)
                             {
                                 listNavigationProperties = false;
+                                ilistNavigationProperties = false;
                                 icollectionNavigationProperties = false;
                                 ienumerableNavigationProperties = true;
                             }
                             else
                             {
                                 listNavigationProperties = true;
+                                ilistNavigationProperties = false;
                                 icollectionNavigationProperties = false;
                                 ienumerableNavigationProperties = false;
                             }
@@ -2423,6 +2467,12 @@ namespace POCOGenerator
         /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>true</c>.</para>
         /// </summary>
         bool ListNavigationProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.IList&lt;T&gt;"/>.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>true</c>.</para>
+        /// </summary>
+        bool IListNavigationProperties { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.ICollection&lt;T&gt;"/>.

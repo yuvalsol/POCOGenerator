@@ -3249,6 +3249,8 @@ namespace POCOGenerator.POCOIterators
             WriteNavigationPropertyStart(namespaceOffset);
             if (settings.NavigationPropertiesIteratorSettings.ListNavigationProperties)
                 writer.WriteUserType("List");
+            else if (settings.NavigationPropertiesIteratorSettings.IListNavigationProperties)
+                writer.WriteUserType("IList");
             else if (settings.NavigationPropertiesIteratorSettings.ICollectionNavigationProperties)
                 writer.WriteUserType("ICollection");
             else if (settings.NavigationPropertiesIteratorSettings.IEnumerableNavigationProperties)

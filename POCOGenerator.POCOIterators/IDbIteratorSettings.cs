@@ -52,6 +52,7 @@ namespace POCOGenerator.POCOIterators
         bool ManyToManyJoinTable { get; set; }
         bool Comments { get; set; }
         bool ListNavigationProperties { get; set; }
+        bool IListNavigationProperties { get; set; }
         bool ICollectionNavigationProperties { get; set; }
         bool IEnumerableNavigationProperties { get; set; }
     }

@@ -75,7 +75,8 @@
             this.chkNavigationProperties = new System.Windows.Forms.CheckBox();
             this.chkVirtualNavigationProperties = new System.Windows.Forms.CheckBox();
             this.btnResetNavigationPropertiesSettings = new System.Windows.Forms.Button();
-            this.panelNavigationProperties1 = new System.Windows.Forms.Panel();
+            this.panelNavigationProperties = new System.Windows.Forms.Panel();
+            this.rdbIListNavigationProperties = new System.Windows.Forms.RadioButton();
             this.rdbIEnumerableNavigationProperties = new System.Windows.Forms.RadioButton();
             this.rdbICollectionNavigationProperties = new System.Windows.Forms.RadioButton();
             this.rdbListNavigationProperties = new System.Windows.Forms.RadioButton();
@@ -162,7 +163,7 @@
             this.panelEnum.SuspendLayout();
             this.panelProperties.SuspendLayout();
             this.grbNavigationProperties.SuspendLayout();
-            this.panelNavigationProperties1.SuspendLayout();
+            this.panelNavigationProperties.SuspendLayout();
             this.grbExportToFiles.SuspendLayout();
             this.grbFileName.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -238,26 +239,26 @@
             this.filterSettingsToolStripMenuItem,
             this.clearCheckBoxesToolStripMenuItem});
             this.contextMenu.Name = "contextMenuServerTree";
-            this.contextMenu.Size = new System.Drawing.Size(169, 70);
+            this.contextMenu.Size = new System.Drawing.Size(195, 76);
             // 
             // removeFilterToolStripMenuItem
             // 
             this.removeFilterToolStripMenuItem.Name = "removeFilterToolStripMenuItem";
-            this.removeFilterToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.removeFilterToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
             this.removeFilterToolStripMenuItem.Text = "Remove Filter";
             this.removeFilterToolStripMenuItem.Click += new System.EventHandler(this.removeFilterToolStripMenuItem_Click);
             // 
             // filterSettingsToolStripMenuItem
             // 
             this.filterSettingsToolStripMenuItem.Name = "filterSettingsToolStripMenuItem";
-            this.filterSettingsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.filterSettingsToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
             this.filterSettingsToolStripMenuItem.Text = "Filter Settings";
             this.filterSettingsToolStripMenuItem.Click += new System.EventHandler(this.filterSettingsToolStripMenuItem_Click);
             // 
             // clearCheckBoxesToolStripMenuItem
             // 
             this.clearCheckBoxesToolStripMenuItem.Name = "clearCheckBoxesToolStripMenuItem";
-            this.clearCheckBoxesToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.clearCheckBoxesToolStripMenuItem.Size = new System.Drawing.Size(194, 24);
             this.clearCheckBoxesToolStripMenuItem.Text = "Clear Checkboxes";
             this.clearCheckBoxesToolStripMenuItem.Click += new System.EventHandler(this.clearCheckBoxesToolStripMenuItem_Click);
             // 
@@ -301,20 +302,20 @@
             this.copyToolStripMenuItem,
             this.selectAllToolStripMenuItem});
             this.contextMenuPocoEditor.Name = "contextMenuPocoEditor";
-            this.contextMenuPocoEditor.Size = new System.Drawing.Size(123, 48);
+            this.contextMenuPocoEditor.Size = new System.Drawing.Size(141, 52);
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripMenuItem.Image")));
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(140, 24);
             this.copyToolStripMenuItem.Text = "Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // selectAllToolStripMenuItem
             // 
             this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(140, 24);
             this.selectAllToolStripMenuItem.Text = "Select All";
             this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
             // 
@@ -700,7 +701,7 @@
             this.grbNavigationProperties.Controls.Add(this.chkNavigationProperties);
             this.grbNavigationProperties.Controls.Add(this.chkVirtualNavigationProperties);
             this.grbNavigationProperties.Controls.Add(this.btnResetNavigationPropertiesSettings);
-            this.grbNavigationProperties.Controls.Add(this.panelNavigationProperties1);
+            this.grbNavigationProperties.Controls.Add(this.panelNavigationProperties);
             this.grbNavigationProperties.Controls.Add(this.chkNavigationPropertiesComments);
             this.grbNavigationProperties.Controls.Add(this.chkManyToManyJoinTable);
             this.grbNavigationProperties.Controls.Add(this.chkOverrideNavigationProperties);
@@ -754,28 +755,42 @@
             this.btnResetNavigationPropertiesSettings.UseVisualStyleBackColor = true;
             this.btnResetNavigationPropertiesSettings.Click += new System.EventHandler(this.btnResetNavigationPropertiesSettings_Click);
             // 
-            // panelNavigationProperties1
+            // panelNavigationProperties
             // 
-            this.panelNavigationProperties1.AutoSize = true;
-            this.panelNavigationProperties1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panelNavigationProperties1.Controls.Add(this.rdbIEnumerableNavigationProperties);
-            this.panelNavigationProperties1.Controls.Add(this.rdbICollectionNavigationProperties);
-            this.panelNavigationProperties1.Controls.Add(this.rdbListNavigationProperties);
-            this.panelNavigationProperties1.Location = new System.Drawing.Point(6, 69);
-            this.panelNavigationProperties1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.panelNavigationProperties1.Name = "panelNavigationProperties1";
-            this.panelNavigationProperties1.Size = new System.Drawing.Size(218, 20);
-            this.panelNavigationProperties1.TabIndex = 6;
-            this.panelNavigationProperties1.TabStop = true;
+            this.panelNavigationProperties.AutoSize = true;
+            this.panelNavigationProperties.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelNavigationProperties.Controls.Add(this.rdbIListNavigationProperties);
+            this.panelNavigationProperties.Controls.Add(this.rdbIEnumerableNavigationProperties);
+            this.panelNavigationProperties.Controls.Add(this.rdbICollectionNavigationProperties);
+            this.panelNavigationProperties.Controls.Add(this.rdbListNavigationProperties);
+            this.panelNavigationProperties.Location = new System.Drawing.Point(6, 69);
+            this.panelNavigationProperties.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.panelNavigationProperties.Name = "panelNavigationProperties";
+            this.panelNavigationProperties.Size = new System.Drawing.Size(270, 20);
+            this.panelNavigationProperties.TabIndex = 6;
+            this.panelNavigationProperties.TabStop = true;
+            // 
+            // rdbIListNavigationProperties
+            // 
+            this.rdbIListNavigationProperties.AutoSize = true;
+            this.rdbIListNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.rdbIListNavigationProperties.Location = new System.Drawing.Point(49, 0);
+            this.rdbIListNavigationProperties.Name = "rdbIListNavigationProperties";
+            this.rdbIListNavigationProperties.Size = new System.Drawing.Size(44, 17);
+            this.rdbIListNavigationProperties.TabIndex = 2;
+            this.rdbIListNavigationProperties.TabStop = true;
+            this.rdbIListNavigationProperties.Text = "IList";
+            this.rdbIListNavigationProperties.UseVisualStyleBackColor = true;
+            this.rdbIListNavigationProperties.CheckedChanged += new System.EventHandler(this.rdbIListNavigationProperties_CheckedChanged);
             // 
             // rdbIEnumerableNavigationProperties
             // 
             this.rdbIEnumerableNavigationProperties.AutoSize = true;
             this.rdbIEnumerableNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rdbIEnumerableNavigationProperties.Location = new System.Drawing.Point(131, 0);
+            this.rdbIEnumerableNavigationProperties.Location = new System.Drawing.Point(183, 0);
             this.rdbIEnumerableNavigationProperties.Name = "rdbIEnumerableNavigationProperties";
             this.rdbIEnumerableNavigationProperties.Size = new System.Drawing.Size(84, 17);
-            this.rdbIEnumerableNavigationProperties.TabIndex = 3;
+            this.rdbIEnumerableNavigationProperties.TabIndex = 4;
             this.rdbIEnumerableNavigationProperties.TabStop = true;
             this.rdbIEnumerableNavigationProperties.Text = "IEnumerable";
             this.rdbIEnumerableNavigationProperties.UseVisualStyleBackColor = true;
@@ -785,10 +800,10 @@
             // 
             this.rdbICollectionNavigationProperties.AutoSize = true;
             this.rdbICollectionNavigationProperties.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.rdbICollectionNavigationProperties.Location = new System.Drawing.Point(49, 0);
+            this.rdbICollectionNavigationProperties.Location = new System.Drawing.Point(101, 0);
             this.rdbICollectionNavigationProperties.Name = "rdbICollectionNavigationProperties";
             this.rdbICollectionNavigationProperties.Size = new System.Drawing.Size(74, 17);
-            this.rdbICollectionNavigationProperties.TabIndex = 2;
+            this.rdbICollectionNavigationProperties.TabIndex = 3;
             this.rdbICollectionNavigationProperties.TabStop = true;
             this.rdbICollectionNavigationProperties.Text = "ICollection";
             this.rdbICollectionNavigationProperties.UseVisualStyleBackColor = true;
@@ -1568,26 +1583,26 @@
             this.checkReferencingTablesToolStripMenuItem,
             this.checkAccessibleTablesToolStripMenuItem});
             this.contextMenuTable.Name = "contextMenuTable";
-            this.contextMenuTable.Size = new System.Drawing.Size(376, 70);
+            this.contextMenuTable.Size = new System.Drawing.Size(456, 76);
             // 
             // checkReferencedTablesToolStripMenuItem
             // 
             this.checkReferencedTablesToolStripMenuItem.Name = "checkReferencedTablesToolStripMenuItem";
-            this.checkReferencedTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
+            this.checkReferencedTablesToolStripMenuItem.Size = new System.Drawing.Size(455, 24);
             this.checkReferencedTablesToolStripMenuItem.Text = "Check Tables Referenced From This Table";
             this.checkReferencedTablesToolStripMenuItem.Click += new System.EventHandler(this.checkReferencedTablesToolStripMenuItem_Click);
             // 
             // checkReferencingTablesToolStripMenuItem
             // 
             this.checkReferencingTablesToolStripMenuItem.Name = "checkReferencingTablesToolStripMenuItem";
-            this.checkReferencingTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
+            this.checkReferencingTablesToolStripMenuItem.Size = new System.Drawing.Size(455, 24);
             this.checkReferencingTablesToolStripMenuItem.Text = "Check Tables Referencing To This Table";
             this.checkReferencingTablesToolStripMenuItem.Click += new System.EventHandler(this.checkReferencingTablesToolStripMenuItem_Click);
             // 
             // checkAccessibleTablesToolStripMenuItem
             // 
             this.checkAccessibleTablesToolStripMenuItem.Name = "checkAccessibleTablesToolStripMenuItem";
-            this.checkAccessibleTablesToolStripMenuItem.Size = new System.Drawing.Size(375, 22);
+            this.checkAccessibleTablesToolStripMenuItem.Size = new System.Drawing.Size(455, 24);
             this.checkAccessibleTablesToolStripMenuItem.Text = "Check Recursively Tables Accessible From && To This Table";
             this.checkAccessibleTablesToolStripMenuItem.Click += new System.EventHandler(this.checkAccessibleTablesToolStripMenuItem_Click);
             // 
@@ -1625,8 +1640,8 @@
             this.panelProperties.PerformLayout();
             this.grbNavigationProperties.ResumeLayout(false);
             this.grbNavigationProperties.PerformLayout();
-            this.panelNavigationProperties1.ResumeLayout(false);
-            this.panelNavigationProperties1.PerformLayout();
+            this.panelNavigationProperties.ResumeLayout(false);
+            this.panelNavigationProperties.PerformLayout();
             this.grbExportToFiles.ResumeLayout(false);
             this.grbExportToFiles.PerformLayout();
             this.grbFileName.ResumeLayout(false);
@@ -1719,7 +1734,7 @@
         private System.Windows.Forms.Panel panelProperties;
         private System.Windows.Forms.CheckBox chkNavigationProperties;
         private System.Windows.Forms.CheckBox chkVirtualNavigationProperties;
-        private System.Windows.Forms.Panel panelNavigationProperties1;
+        private System.Windows.Forms.Panel panelNavigationProperties;
         private System.Windows.Forms.RadioButton rdbIEnumerableNavigationProperties;
         private System.Windows.Forms.RadioButton rdbICollectionNavigationProperties;
         private System.Windows.Forms.RadioButton rdbListNavigationProperties;
@@ -1763,5 +1778,6 @@
         private System.Windows.Forms.Button btnResetClassNameSettings;
         private System.Windows.Forms.Button btnResetEFAnnotationsSettings;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.RadioButton rdbIListNavigationProperties;
     }
 }

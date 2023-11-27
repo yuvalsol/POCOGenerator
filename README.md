@@ -185,7 +185,7 @@ These settings enable navigation properties and determine how they are construct
 
 **Many-to-Many Join Table** - In a Many-to-Many relationship, the join table is hidden by default. When this setting is enabled, the join table is forcefully rendered.
 
-**List**, **ICollection**, **IEnumerable** - When a navigation property is a collection, this setting determine what the type of collection it is. For constructor initialization, **ICollection** is initialized with `HashSet` and **IEnumerable** is initialized with `List`.
+**List**, **IList**, **ICollection**, **IEnumerable** - When a navigation property is a collection, this setting determine what the type of collection it is. For constructor initialization, **ICollection** is initialized with `HashSet` and the other options are initialized with `List`.
 
 ## EF Annotations Settings
 
