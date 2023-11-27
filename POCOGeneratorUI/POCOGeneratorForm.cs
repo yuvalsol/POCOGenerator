@@ -1148,14 +1148,16 @@ namespace POCOGeneratorUI
                 if (e.Node.IsExpanded == false)
                 {
                     e.Node.Expand();
-
-                    foreach (TreeNode node in e.Node.Nodes)
-                    {
-                        if (node.IsExpanded == false)
-                            node.Expand();
-                    }
-
                     Application.DoEvents();
+                }
+
+                foreach (TreeNode node in e.Node.Nodes)
+                {
+                    if (node.IsExpanded == false)
+                    {
+                        node.Expand();
+                        Application.DoEvents();
+                    }
                 }
 
                 DatabaseAfterCheck(e.Node, e.Node.Checked);
