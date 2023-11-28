@@ -102,6 +102,7 @@
     <Compile Include="Disclaimer\DisclaimerForm.Designer.cs">
       <DependentUpon>DisclaimerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\GroupBoxExtensions.cs" />
     <Compile Include="Extensions\TreeNodeExtensions.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Filtering\FilterSettingsForm.Designer.cs">
       <DependentUpon>FilterSettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\MethodInfoExtensions.cs" />
     <Compile Include="POCOGeneratorForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -354,13 +354,20 @@ namespace POCOGeneratorUI
                 errorMessage = "Error";
             else if ((results & GeneratorResults.Warning) == GeneratorResults.Warning)
                 errorMessage = "Warning";
+            errorMessage += ".";
 
-            if (this.generator.Error != null)
-                errorMessage += ". " + Environment.NewLine + this.generator.Error.Message;
+            string statusErrorMessage = errorMessage;
 
-            errorMessage += ". " + Environment.NewLine + this.generator.Settings.ConnectionString;
+            if (this.generator != null && string.IsNullOrEmpty(this.generator.Settings.ConnectionString) == false)
+                errorMessage += Environment.NewLine + Environment.NewLine + "CONNECTION STRING: " + this.generator.Settings.ConnectionString;
 
-            SetStatusErrorMessage(errorMessage.Replace(Environment.NewLine, " "));
+            if (this.generator != null && this.generator.Error != null)
+            {
+                errorMessage += Environment.NewLine + Environment.NewLine + this.generator.Error.GetUnhandledExceptionErrorMessage();
+                statusErrorMessage += " ERROR: " + this.generator.Error.Message;
+            }
+
+            SetStatusErrorMessage(statusErrorMessage);
 
             bool isWarning = ((results & GeneratorResults.Warning) == GeneratorResults.Warning);
             MessageBox.Show(this, errorMessage, (isWarning ? "Warning" : "Error"), MessageBoxButtons.OK, (isWarning ? MessageBoxIcon.Warning : MessageBoxIcon.Error));
