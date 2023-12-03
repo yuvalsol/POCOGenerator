@@ -97,6 +97,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{177A5F
 		Solution Items\Images\PersonTableAndPOCO.jpg = Solution Items\Images\PersonTableAndPOCO.jpg
 		Solution Items\Images\POCOGeneratorUI.jpg = Solution Items\Images\POCOGeneratorUI.jpg
 		Solution Items\Images\POCOSettings.jpg = Solution Items\Images\POCOSettings.jpg
+		Solution Items\Images\RichTextBoxDemo.jpg = Solution Items\Images\RichTextBoxDemo.jpg
+		Solution Items\Images\RichTextBoxDemoDarkTheme.jpg = Solution Items\Images\RichTextBoxDemoDarkTheme.jpg
 		Solution Items\Images\TableContextMenu.jpg = Solution Items\Images\TableContextMenu.jpg
 	EndProjectSection
 EndProject

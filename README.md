@@ -404,14 +404,103 @@ The class library, **POCOGenerator.dll**, provides the whole functionality of PO
 
 Right now, there is no plan to wrap the class library in a NuGet package, and it will be this way until the issue of [Potential Data Loss](https://www.codeproject.com/Articles/892233/POCO-Generator?msg=5619954 "Potential Data Loss") is resolved, so you have to download it directly from Releases. Downloading the class library means you have read the [Disclaimer](#disclaimer "Disclaimer") and understand the risk.
 
-todo:
-- instancing
-- selecting objects
-- pococ settings
-- events
-- run
-- run again
-- return value - check for errors
+### Instantiation
+
+Output-empty generator. The generator doesn't write to any underline output source. This one is useful in conjunction with events. Example at [EventsDemo](#eventsdemo "EventsDemo").
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator();
+```
+
+Instantiate a generator that writes to `StringBuilder`. Example at [StringBuilderDemo](#stringbuilderdemo "StringBuilderDemo").
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator(StringBuilder stringBuilder);
+```
+
+Instantiate a generator that writes to `TextWriter`. Example at [TextWriterDemo](#textwriterdemo "TextWriterDemo").
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator(TextWriter textWriter);
+```
+
+Instantiate a generator that writes to `Stream`. Example at [MemoryStreamDemo](#memorystreamdemo "MemoryStreamDemo") and [FileStreamDemo](#filestreamdemo "FileStreamDemo").
+
+```cs
+IGenerator generator = GeneratorFactory.GetGenerator(Stream stream);
+```
+
+Instantiate a generator that writes to Console. Example at [ConsoleDemo](#consoledemo "ConsoleDemo").
+
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleGenerator();
+```
+
+Instantiate a generator that writes to Console with syntax highlight colors. Example at [ConsoleColorDemo](#consolecolordemo "ConsoleColorDemo") and [ConsoleColorDarkThemeDemo](#consolecolordarkthemedemo "ConsoleColorDarkThemeDemo").
+
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
+```
+
+Instantiate a generator that writes to `RichTextBox`. Example at [RichTextBoxDemo](#richtextboxdemo "RichTextBoxDemo").
+
+```cs
+IGenerator generator = GeneratorWinFormsFactory.GetGenerator(RichTextBox richTextBox);
+```
+
+### Selecting Objects
+
+A database object is selected when these two conditions are met:
+1. **Explicitly included**. Selecting a database object is done by `Settings.DatabaseObjects` properties and methods that have `Include` in their name, such as
+    - Settings.DatabaseObjects.IncludeAll
+    - Settings.DatabaseObjects.Tables.IncludeAll
+    - Settings.DatabaseObjects.Tables.Include.Add()
+2. **Not explicitly excluded**. The database object doesn't appear in any excluding setting, which have `Exclude` in their name, such as
+    - Settings.DatabaseObjects.Tables.ExcludeAll
+    - Settings.DatabaseObjects.Tables.Exclude.Add()
+
+The setting group `Settings.DatabaseObjects` handles marking which database objects to generate POCOs out of. To select everything, all available types of database objects, set `Settings.DatabaseObjects.IncludeAll` to `true`.
+
+```cs
+generator.Settings.DatabaseObjects.IncludeAll = true;
+```
+
+For a more fine-grained selection, there are five database groups - `Tables`, `Views`, `StoredProcedures`, `Functions`, `TVPs` - to select database objects from within them.
+
+```cs
+generator.Settings.DatabaseObjects.Tables
+generator.Settings.DatabaseObjects.Views
+generator.Settings.DatabaseObjects.StoredProcedures
+generator.Settings.DatabaseObjects.Functions
+generator.Settings.DatabaseObjects.TVPs
+```
+
+Within each database group, you can include or exclude all the database objects by settings the `IncludeAll` and `ExcludeAll` properties. To include or exclude a specific database object, add the object name to lists `Include` and `Exclude`. These lists are case-sensitive. Example at [SelectingObjectsDemo](#selectingobjectsdemo "SelectingObjectsDemo").
+
+```cs
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
+generator.Settings.DatabaseObjects.Tables.ExcludeAll = false;
+generator.Settings.DatabaseObjects.Tables.Include.Add("name");
+generator.Settings.DatabaseObjects.Tables.Exclude.Add("name");
+```
+
+The lists `Include` and `Exclude` support wildcards. The asterisk (\*) matches any sequence of characters. The question mark (?) matches any single character. For example, you can use the asterisk (\*) to select all the objects in a given schema. Example at [WildcardsDemo](#wildcardsdemo "WildcardsDemo").
+
+```cs
+generator.Settings.DatabaseObjects.Tables.Include.Add("Sales.*");
+```
+
+### Settings
+
+### Events
+
+### Generate
+
+### Generate Again
+
+### Return Value and Error Handling
+
+
 
 ## Demos
 
@@ -522,7 +611,7 @@ The demo demonstrates how to write POCOs to the Console with syntax highlight us
 |------------|---------------|---------|
 | Text       | 0, 0, 0       | #000000 |
 | Keyword    | 0, 0, 255     | #0000ff |
-| UserType   | 43, 145, 175  | #2b91af |
+| User Type  | 43, 145, 175  | #2b91af |
 | String     | 163, 21, 21   | #a31515 |
 | Comment    | 0, 128, 0     | #008000 |
 | Error      | 255, 0, 0     | #ff0000 |
@@ -540,6 +629,16 @@ generator.Generate();
 Demo code [ConsoleColorDarkThemeDemo/Program.cs](Demos/Console/ConsoleColorDarkThemeDemo/Program.cs "ConsoleColorDarkThemeDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to the Console with custom syntax highlight.
+
+|            | RGB           | Hex     |
+|------------|---------------|---------|
+| Text       | 255, 255, 255 | #ffffff |
+| Keyword    | 86, 156, 214  | #569cd6 |
+| User Type  | 78, 201, 176  | #4ec9b0 |
+| String     | 214, 157, 133 | #d69d85 |
+| Comment    | 96, 139, 78   | #608b4e |
+| Error      | 255, 0, 0     | #ff0000 |
+| Background | 0, 0, 0       | #000000 |
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
@@ -576,6 +675,10 @@ generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
 ```
 
+Dark theme syntax highlight colors are listed at [ConsoleColorDarkThemeDemo](#consolecolordarkthemedemo "ConsoleColorDarkThemeDemo").
+
+![RichTextBox Demo Dark Theme](./Solution%20Items/Images/RichTextBoxDemoDarkTheme.jpg "RichTextBox Demo Dark Theme")
+
 ### Selecting Objects
 
 #### SelectingObjectsDemo
@@ -584,15 +687,10 @@ Demo code [SelectingObjectsDemo/Program.cs](Demos/SelectingObjects/SelectingObje
 The demo demonstrates how to select specific database objects for POCO generating.
 
 A database object is selected when these two conditions are met:
-1. Explicitly included. Selecting a database object is done by `Settings.DatabaseObjects` properties and methods that have `Include` in their name, such as
-    - Settings.DatabaseObjects.IncludeAll
-    - Settings.DatabaseObjects.Tables.IncludeAll
-    - Settings.DatabaseObjects.Tables.Include.Add()
-2. Not explicitly excluded. The database object doesn't appear in any excluding setting, which have `Exclude` in their name, such as
-    - Settings.DatabaseObjects.Tables.ExcludeAll
-    - Settings.DatabaseObjects.Tables.Exclude.Add()
+1. **Explicitly included**. Selecting a database object is done by `Settings.DatabaseObjects` properties and methods that have `Include` in their name.
+2. **Not explicitly excluded**. The database object doesn't appear in any excluding setting, which have `Exclude` in their name.
 
-The tables code snippet shows picking just specific tables.
+This code snippet shows picking just specific tables.
 The views code snippet shows selecting all the views and then excluding the views that are not needed.
 
 ```cs
@@ -652,8 +750,7 @@ Demo code [WildcardsDemo/Program.cs](Demos/SelectingObjects/WildcardsDemo/Progra
 
 The demo demonstrates the usage of wildcards when selecting specific database objects for POCO generating.
 
-The asterisk (*) matches any sequence of characters.
-The question mark (?) matches any single character.
+The asterisk (\*) matches any sequence of characters. The question mark (?) matches any single character.
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
@@ -1121,18 +1218,7 @@ The demo works the same as [DetailedServerTreeDemo](#detailedservertreedemo "Det
 Person.Person
     Columns
         BusinessEntityID (PK, FK, int, not null)
-        PersonType (nchar(2), not null)
-        NameStyle (bit, not null)
-        Title (nvarchar(8), null)
-        FirstName (nvarchar(50), not null)
-        MiddleName (nvarchar(50), null)
-        LastName (nvarchar(50), not null)
-        Suffix (nvarchar(10), null)
-        EmailPromotion (int, not null)
-        AdditionalContactInfo (XML(.), null)
-        Demographics (XML(.), null)
-        rowguid (uniqueidentifier, not null)
-        ModifiedDate (datetime, not null)
+        ...
     Primary Key
         PK_Person_BusinessEntityID
             BusinessEntityID
