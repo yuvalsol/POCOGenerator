@@ -424,7 +424,7 @@ Instantiate a generator that writes to `TextWriter`. Example at [TextWriterDemo]
 IGenerator generator = GeneratorFactory.GetGenerator(TextWriter textWriter);
 ```
 
-Instantiate a generator that writes to `Stream`. Example at [MemoryStreamDemo](#memorystreamdemo "MemoryStreamDemo") and [FileStreamDemo](#filestreamdemo "FileStreamDemo").
+Instantiate a generator that writes to `Stream`. Examples at [MemoryStreamDemo](#memorystreamdemo "MemoryStreamDemo") and [FileStreamDemo](#filestreamdemo "FileStreamDemo").
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator(Stream stream);
@@ -436,7 +436,7 @@ Instantiate a generator that writes to Console. Example at [ConsoleDemo](#consol
 IGenerator generator = GeneratorFactory.GetConsoleGenerator();
 ```
 
-Instantiate a generator that writes to Console with syntax highlight colors. Example at [ConsoleColorDemo](#consolecolordemo "ConsoleColorDemo") and [ConsoleColorDarkThemeDemo](#consolecolordarkthemedemo "ConsoleColorDarkThemeDemo").
+Instantiate a generator that writes to Console with syntax highlight colors. Examples at [ConsoleColorDemo](#consolecolordemo "ConsoleColorDemo") and [ConsoleColorDarkThemeDemo](#consolecolordarkthemedemo "ConsoleColorDarkThemeDemo").
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
@@ -446,6 +446,19 @@ Instantiate a generator that writes to `RichTextBox`. Example at [RichTextBoxDem
 
 ```cs
 IGenerator generator = GeneratorWinFormsFactory.GetGenerator(RichTextBox richTextBox);
+```
+### Redirect To Output
+
+Once a generator is created, you can redirect its current underline output to any other output source.
+
+```cs
+generator.ClearOut(); // Output-empty generator
+generator.RedirectTo(StringBuilder stringBuilder);
+generator.RedirectTo(TextWriter textWriter);
+generator.RedirectTo(Stream stream);
+generator.RedirectToConsole();
+generator.RedirectToConsoleColor();
+generator.RedirectTo(RichTextBox richTextBox);
 ```
 
 ### Selecting Objects
@@ -459,7 +472,7 @@ A database object is selected when these two conditions are met:
     - Settings.DatabaseObjects.Tables.ExcludeAll
     - Settings.DatabaseObjects.Tables.Exclude.Add()
 
-The setting group `Settings.DatabaseObjects` handles marking which database objects to generate POCOs out of. To select everything, all available types of database objects, set `Settings.DatabaseObjects.IncludeAll` to `true`.
+The settings group `Settings.DatabaseObjects` handles marking which database objects to generate POCOs out of. To select everything, all available types of database objects, set `Settings.DatabaseObjects.IncludeAll` to `true`.
 
 ```cs
 generator.Settings.DatabaseObjects.IncludeAll = true;
@@ -492,6 +505,126 @@ generator.Settings.DatabaseObjects.Tables.Include.Add("Sales.*");
 
 ### Settings
 
+Settings group `Connection`. These settings determine the connection to the server. The setting `RDBMS` is a hint, for the generator, what is the server type and what is the appropriate structure of the connection string. It is unnecessary to set it prior to establishing a connection. When `RDBMS` is set to `None`, the generator will try to set the `RDBMS` setting based on the connection string. If it doesn't succeed, the return value will be an error. Setting `RDBMS` beforehand can be useful if the connection string is valid for more than one RDBMS.
+
+```cs
+generator.Settings.Connection.ConnectionString = null;
+generator.Settings.Connection.RDBMS = RDBMS.None;
+
+public enum RDBMS
+{
+    None = 0,
+    SQLServer = 1,
+    MySQL = 2
+}
+```
+
+Setting a connection to `AdventureWorks2014` database on SQL Server.
+
+```cs
+generator.Settings.Connection.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+generator.Settings.Connection.RDBMS = RDBMS.SQLServer;
+```
+
+Settings group `POCO`. These settings determine the structure of the POCO. Most settings are explained at [POCO Settings](#poco-settings "POCO Settings").
+
+```cs
+generator.Settings.POCO.Properties = true;
+generator.Settings.POCO.Fields = false;
+generator.Settings.POCO.PartialClass = false;
+generator.Settings.POCO.VirtualProperties = false;
+generator.Settings.POCO.OverrideProperties = false;
+generator.Settings.POCO.StructTypesNullable = false;
+generator.Settings.POCO.ColumnDefaults = false;
+generator.Settings.POCO.Comments = false;
+generator.Settings.POCO.CommentsWithoutNull = false;
+generator.Settings.POCO.Using = false;
+generator.Settings.POCO.UsingInsideNamespace = false;
+generator.Settings.POCO.Namespace = null;
+generator.Settings.POCO.Inherit = null;
+generator.Settings.POCO.NewLineBetweenMembers = false;
+generator.Settings.POCO.ComplexTypes = false;
+generator.Settings.POCO.EnumSQLTypeToString = true;
+generator.Settings.POCO.EnumSQLTypeToEnumUShort = false;
+generator.Settings.POCO.EnumSQLTypeToEnumInt = false;
+generator.Settings.POCO.WrapAroundEachClass = false;
+generator.Settings.POCO.Tab = "    "; // 4 spaces
+```
+
+There are two settings that don't appear in [POCO Generator UI](#poco-generator-ui "POCO Generator UI") - `WrapAroundEachClass` and `Tab`.
+
+The `WrapAroundEachClass` setting determines whether to wrap a namespace and a using directive clause around each class individually. This is useful when generating to multiple outputs, such as multiple files. Example at [MultipleFilesDemo](#multiplefilesdemo "MultipleFilesDemo").
+
+The `Tab` setting determines the indention of the code. The default is 4 spaces. Changing the indentation from spaces to a tab character:
+
+```cs
+generator.Settings.POCO.Tab = "\t";
+```
+
+Settings group `ClassName`. These settings modify the initial class name. All settings are explained at [Class Name Settings](#class-name-settings "Class Name Settings").
+
+```cs
+generator.Settings.ClassName.Singular = false;
+generator.Settings.ClassName.IncludeDB = false;
+generator.Settings.ClassName.DBSeparator = null;
+generator.Settings.ClassName.IncludeSchema = false;
+generator.Settings.ClassName.IgnoreDboSchema = false;
+generator.Settings.ClassName.SchemaSeparator = null;
+generator.Settings.ClassName.WordsSeparator = null;
+generator.Settings.ClassName.CamelCase = false;
+generator.Settings.ClassName.UpperCase = false;
+generator.Settings.ClassName.LowerCase = false;
+generator.Settings.ClassName.Search = null;
+generator.Settings.ClassName.Replace = null;
+generator.Settings.ClassName.SearchIgnoreCase = false;
+generator.Settings.ClassName.FixedClassName = null;
+generator.Settings.ClassName.Prefix = null;
+generator.Settings.ClassName.Suffix = null;
+```
+
+Settings group `NavigationProperties`. These settings enable navigation properties and determine how they are constructed. All settings are explained at [Navigation Properties Settings](#navigation-properties-settings "Navigation Properties Settings").
+
+```cs
+generator.Settings.NavigationProperties.Enable = false;
+generator.Settings.NavigationProperties.Comments = false;
+generator.Settings.NavigationProperties.VirtualNavigationProperties = false;
+generator.Settings.NavigationProperties.OverrideNavigationProperties = false;
+generator.Settings.NavigationProperties.ManyToManyJoinTable = false;
+generator.Settings.NavigationProperties.ListNavigationProperties = true;
+generator.Settings.NavigationProperties.IListNavigationProperties = false;
+generator.Settings.NavigationProperties.ICollectionNavigationProperties = false;
+generator.Settings.NavigationProperties.IEnumerableNavigationProperties = false;
+```
+
+Settings group `EFAnnotations`. These settings add Code-First Entity Framework attributes to POCO classes. All settings are explained at [EF Annotations Settings](#ef-annotations-settings "EF Annotations Settings").
+
+```cs
+generator.Settings.EFAnnotations.Enable = false;
+generator.Settings.EFAnnotations.Column = false;
+generator.Settings.EFAnnotations.Required = false;
+generator.Settings.EFAnnotations.RequiredWithErrorMessage = false;
+generator.Settings.EFAnnotations.ConcurrencyCheck = false;
+generator.Settings.EFAnnotations.StringLength = false;
+generator.Settings.EFAnnotations.Display = false;
+generator.Settings.EFAnnotations.Description = false;
+generator.Settings.EFAnnotations.ComplexType = false;
+generator.Settings.EFAnnotations.Index = false;
+generator.Settings.EFAnnotations.ForeignKeyAndInverseProperty = false;
+```
+
+Settings group `SyntaxHighlight`. These settings determine the syntax highlight colors, when coloring is applicable. Examples at [ConsoleColorDarkThemeDemo](#consolecolordarkthemedemo "ConsoleColorDarkThemeDemo") and [RichTextBoxDemo](#richtextboxdemo "RichTextBoxDemo"). The following are the syntax highlight default colors.
+
+```cs
+generator.Settings.SyntaxHighlight.Text = Color.FromArgb(0, 0, 0); // #000000
+generator.Settings.SyntaxHighlight.Keyword = Color.FromArgb(0, 0, 255); // #0000ff
+generator.Settings.SyntaxHighlight.UserType = Color.FromArgb(43, 145, 175); // #2b91af
+generator.Settings.SyntaxHighlight.String = Color.FromArgb(163, 21, 21); // #a31515
+generator.Settings.SyntaxHighlight.Comment = Color.FromArgb(0, 128, 0); // #008000
+generator.Settings.SyntaxHighlight.Error = Color.FromArgb(255, 0, 0); // #ff0000
+generator.Settings.SyntaxHighlight.Background = Color.FromArgb(255, 255, 255); // #ffffff
+```
+
 ### Events
 
 ### Generate
@@ -516,7 +649,7 @@ The demo demonstrates how to write POCOs to a `StringBuilder`.
 ```cs
 StringBuilder stringBuilder = new StringBuilder();
 IGenerator generator = GeneratorFactory.GetGenerator(stringBuilder);
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
@@ -536,7 +669,7 @@ using (MemoryStream stream = new MemoryStream())
     using (TextWriter textWriter = new StreamWriter(stream))
     {
         IGenerator generator = GeneratorFactory.GetGenerator(textWriter);
-        generator.Settings.ConnectionString =
+        generator.Settings.Connection.ConnectionString =
             @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
         generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
         generator.Generate();
@@ -559,7 +692,7 @@ The demo demonstrates how to write POCOs to a `MemoryStream`.
 using (MemoryStream stream = new MemoryStream())
 {
     IGenerator generator = GeneratorFactory.GetGenerator(stream);
-    generator.Settings.ConnectionString =
+    generator.Settings.Connection.ConnectionString =
         @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
     generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
     generator.Generate();
@@ -580,7 +713,7 @@ string filePath = @"C:\Path\To\AdventureWorks2014.cs";
 using (FileStream stream = File.Open(filePath, FileMode.Create))
 {
     IGenerator generator = GeneratorFactory.GetGenerator(stream);
-    generator.Settings.ConnectionString =
+    generator.Settings.Connection.ConnectionString =
         @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
     generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
     generator.Generate();
@@ -596,7 +729,7 @@ The demo demonstrates how to write POCOs to the Console.
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
@@ -619,7 +752,7 @@ The demo demonstrates how to write POCOs to the Console with syntax highlight us
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
@@ -642,7 +775,7 @@ The demo demonstrates how to write POCOs to the Console with custom syntax highl
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
@@ -669,7 +802,7 @@ The demo demonstrates how to write POCOs to WinForms `RichTextBox` control.
 ```cs
 RichTextBox txtPocoEditor = new System.Windows.Forms.RichTextBox();
 IGenerator generator = GeneratorWinFormsFactory.GetGenerator(txtPocoEditor);
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 generator.Generate();
@@ -695,7 +828,7 @@ The views code snippet shows selecting all the views and then excluding the view
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // select all the tables under HumanResources & Purchasing schemas
@@ -754,7 +887,7 @@ The asterisk (\*) matches any sequence of characters. The question mark (?) matc
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // all the tables under Sales schema
@@ -787,7 +920,7 @@ The generator fires the event `TablesGenerated` **after** it has finished proces
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // select everything
@@ -823,7 +956,7 @@ The code starts simple by generating a POCO from `Sales.Store` table and writing
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // select Store table (under Sales schema)
@@ -929,7 +1062,7 @@ When `ComplexTypes` setting is enabled
 
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ComplexTypesDB";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
@@ -975,7 +1108,7 @@ The generator doesn't write directly to the Console, but rather create an output
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 // select everything
@@ -1011,12 +1144,18 @@ This very abridged code snippet focuses on saving table files but the principle 
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
+// add using statements
+generator.Settings.POCO.Using = true;
+
 // custom namespace
 generator.Settings.POCO.Namespace = "MultipleFilesDemo";
+
+// wrap using & namespace around each class
+generator.Settings.POCO.WrapAroundEachClass = true;
 
 string root = @"C:\Path\To\Root\Directory";
 
@@ -1051,23 +1190,23 @@ generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
 // save table POCO text to file
 generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
 {
-    // create schema folder
+    // schema folder
     string schema = e.Table.Schema;
     schema = string.Join("_",
         (schema ?? string.Empty).Split(Path.GetInvalidFileNameChars()));
-    path = Path.Combine(path, schema);
-    if (Directory.Exists(path) == false)
-        Directory.CreateDirectory(path);
+    string schemaPath = Path.Combine(path, schema);
+    if (Directory.Exists(schemaPath) == false)
+        Directory.CreateDirectory(schemaPath);
 
-    // set path to file
+    // poco file path
     string className = e.ClassName;
     string fileName = string.Join("_",
         className.Split(Path.GetInvalidFileNameChars())) + ".cs";
-    path = Path.Combine(path, fileName);
+    string filePath = Path.Combine(schemaPath, fileName);
 
     // save poco to file
     string poco = e.POCO;
-    File.WriteAllText(path, poco);
+    File.WriteAllText(filePath, poco);
 };
 
 // TablesGenerated event fire after all the tables are processed
@@ -1091,7 +1230,7 @@ The generator fires the event `ServerBuilt` after these class objects are build 
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
-generator.Settings.ConnectionString =
+generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 
 generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>
