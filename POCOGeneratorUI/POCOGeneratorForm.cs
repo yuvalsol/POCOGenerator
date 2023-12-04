@@ -142,8 +142,8 @@ namespace POCOGeneratorUI
                 if (dbObjectsForm.IsEnableTables || dbObjectsForm.IsEnableViews || dbObjectsForm.IsEnableProcedures || dbObjectsForm.IsEnableFunctions || dbObjectsForm.IsEnableTVPs)
                 {
                     IGenerator generator = GeneratorWinFormsFactory.GetGenerator(txtPocoEditor);
-                    generator.Settings.ConnectionString = connectionString;
-                    generator.Settings.RDBMS = rdbms;
+                    generator.Settings.Connection.ConnectionString = connectionString;
+                    generator.Settings.Connection.RDBMS = rdbms;
 
                     generator.Settings.DatabaseObjects.IncludeAll = false;
                     generator.Settings.DatabaseObjects.Tables.IncludeAll = dbObjectsForm.IsEnableTables;
@@ -195,17 +195,6 @@ namespace POCOGeneratorUI
             this.generator.Settings.POCO.EnumSQLTypeToEnumInt = rdbEnumSQLTypeToEnumInt.Checked;
             this.generator.Settings.POCO.Tab = "    ";
 
-            // Navigation Properties
-            this.generator.Settings.NavigationProperties.Enable = chkNavigationProperties.Checked;
-            this.generator.Settings.NavigationProperties.VirtualNavigationProperties = chkVirtualNavigationProperties.Checked;
-            this.generator.Settings.NavigationProperties.OverrideNavigationProperties = chkOverrideNavigationProperties.Checked;
-            this.generator.Settings.NavigationProperties.ManyToManyJoinTable = chkManyToManyJoinTable.Checked;
-            this.generator.Settings.NavigationProperties.Comments = chkNavigationPropertiesComments.Checked;
-            this.generator.Settings.NavigationProperties.ListNavigationProperties = rdbListNavigationProperties.Checked;
-            this.generator.Settings.NavigationProperties.IListNavigationProperties = rdbIListNavigationProperties.Checked;
-            this.generator.Settings.NavigationProperties.ICollectionNavigationProperties = rdbICollectionNavigationProperties.Checked;
-            this.generator.Settings.NavigationProperties.IEnumerableNavigationProperties = rdbIEnumerableNavigationProperties.Checked;
-
             // Class Name
             this.generator.Settings.ClassName.Singular = chkSingular.Checked;
             this.generator.Settings.ClassName.IncludeDB = chkIncludeDB.Checked;
@@ -223,6 +212,17 @@ namespace POCOGeneratorUI
             this.generator.Settings.ClassName.FixedClassName = txtFixedClassName.Text;
             this.generator.Settings.ClassName.Prefix = txtPrefix.Text;
             this.generator.Settings.ClassName.Suffix = txtSuffix.Text;
+
+            // Navigation Properties
+            this.generator.Settings.NavigationProperties.Enable = chkNavigationProperties.Checked;
+            this.generator.Settings.NavigationProperties.VirtualNavigationProperties = chkVirtualNavigationProperties.Checked;
+            this.generator.Settings.NavigationProperties.OverrideNavigationProperties = chkOverrideNavigationProperties.Checked;
+            this.generator.Settings.NavigationProperties.ManyToManyJoinTable = chkManyToManyJoinTable.Checked;
+            this.generator.Settings.NavigationProperties.Comments = chkNavigationPropertiesComments.Checked;
+            this.generator.Settings.NavigationProperties.ListNavigationProperties = rdbListNavigationProperties.Checked;
+            this.generator.Settings.NavigationProperties.IListNavigationProperties = rdbIListNavigationProperties.Checked;
+            this.generator.Settings.NavigationProperties.ICollectionNavigationProperties = rdbICollectionNavigationProperties.Checked;
+            this.generator.Settings.NavigationProperties.IEnumerableNavigationProperties = rdbIEnumerableNavigationProperties.Checked;
 
             // EF Annotations
             this.generator.Settings.EFAnnotations.Enable = chkEF.Checked;
@@ -358,8 +358,8 @@ namespace POCOGeneratorUI
 
             string statusErrorMessage = errorMessage;
 
-            if (this.generator != null && string.IsNullOrEmpty(this.generator.Settings.ConnectionString) == false)
-                errorMessage += Environment.NewLine + Environment.NewLine + "CONNECTION STRING: " + this.generator.Settings.ConnectionString;
+            if (this.generator != null && string.IsNullOrEmpty(this.generator.Settings.Connection.ConnectionString) == false)
+                errorMessage += Environment.NewLine + Environment.NewLine + "CONNECTION STRING: " + this.generator.Settings.Connection.ConnectionString;
 
             if (this.generator != null && this.generator.Error != null)
             {
@@ -2552,86 +2552,6 @@ namespace POCOGeneratorUI
 
         #endregion
 
-        #region Navigation Properties
-
-        private void chkNavigationProperties_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkNavigationProperties.Checked == false)
-            {
-                SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, false);
-                SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, false);
-                SetCheckBox(chkManyToManyJoinTable, chkManyToManyJoinTable_CheckedChanged, false);
-                SetCheckBox(chkNavigationPropertiesComments, chkNavigationPropertiesComments_CheckedChanged, false);
-                SetCheckBox(chkEFForeignKeyAndInverseProperty, chkEFForeignKeyAndInverseProperty_CheckedChanged, false);
-            }
-
-            POCOOptionChanged();
-        }
-
-        private void chkVirtualNavigationProperties_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkVirtualNavigationProperties.Checked && chkNavigationProperties.Checked == false)
-                SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
-
-            if (chkVirtualNavigationProperties.Checked && chkOverrideNavigationProperties.Checked)
-                SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, false);
-
-            POCOOptionChanged();
-        }
-
-        private void chkOverrideNavigationProperties_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkOverrideNavigationProperties.Checked && chkNavigationProperties.Checked == false)
-                SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
-
-            if (chkVirtualNavigationProperties.Checked && chkOverrideNavigationProperties.Checked)
-                SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, false);
-
-            POCOOptionChanged();
-        }
-
-        private void chkManyToManyJoinTable_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkManyToManyJoinTable.Checked && chkNavigationProperties.Checked == false)
-                SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
-
-            POCOOptionChanged();
-        }
-
-        private void chkNavigationPropertiesComments_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkNavigationPropertiesComments.Checked && chkNavigationProperties.Checked == false)
-                SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
-
-            POCOOptionChanged();
-        }
-
-        private void rdbListNavigationProperties_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkNavigationProperties.Checked && rdbListNavigationProperties.Checked)
-                POCOOptionChanged();
-        }
-
-        private void rdbIListNavigationProperties_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkNavigationProperties.Checked && rdbIListNavigationProperties.Checked)
-                POCOOptionChanged();
-        }
-
-        private void rdbICollectionNavigationProperties_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkNavigationProperties.Checked && rdbICollectionNavigationProperties.Checked)
-                POCOOptionChanged();
-        }
-
-        private void rdbIEnumerableNavigationProperties_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkNavigationProperties.Checked && rdbIEnumerableNavigationProperties.Checked)
-                POCOOptionChanged();
-        }
-
-        #endregion
-
         #region Class Name
 
         private void chkSingular_CheckedChanged(object sender, EventArgs e)
@@ -2730,6 +2650,86 @@ namespace POCOGeneratorUI
         private void txtSuffix_TextChanged(object sender, EventArgs e)
         {
             POCOOptionChanged();
+        }
+
+        #endregion
+
+        #region Navigation Properties
+
+        private void chkNavigationProperties_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkNavigationProperties.Checked == false)
+            {
+                SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, false);
+                SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, false);
+                SetCheckBox(chkManyToManyJoinTable, chkManyToManyJoinTable_CheckedChanged, false);
+                SetCheckBox(chkNavigationPropertiesComments, chkNavigationPropertiesComments_CheckedChanged, false);
+                SetCheckBox(chkEFForeignKeyAndInverseProperty, chkEFForeignKeyAndInverseProperty_CheckedChanged, false);
+            }
+
+            POCOOptionChanged();
+        }
+
+        private void chkVirtualNavigationProperties_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkVirtualNavigationProperties.Checked && chkNavigationProperties.Checked == false)
+                SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
+
+            if (chkVirtualNavigationProperties.Checked && chkOverrideNavigationProperties.Checked)
+                SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, false);
+
+            POCOOptionChanged();
+        }
+
+        private void chkOverrideNavigationProperties_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkOverrideNavigationProperties.Checked && chkNavigationProperties.Checked == false)
+                SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
+
+            if (chkVirtualNavigationProperties.Checked && chkOverrideNavigationProperties.Checked)
+                SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, false);
+
+            POCOOptionChanged();
+        }
+
+        private void chkManyToManyJoinTable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkManyToManyJoinTable.Checked && chkNavigationProperties.Checked == false)
+                SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
+
+            POCOOptionChanged();
+        }
+
+        private void chkNavigationPropertiesComments_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkNavigationPropertiesComments.Checked && chkNavigationProperties.Checked == false)
+                SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, true);
+
+            POCOOptionChanged();
+        }
+
+        private void rdbListNavigationProperties_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkNavigationProperties.Checked && rdbListNavigationProperties.Checked)
+                POCOOptionChanged();
+        }
+
+        private void rdbIListNavigationProperties_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkNavigationProperties.Checked && rdbIListNavigationProperties.Checked)
+                POCOOptionChanged();
+        }
+
+        private void rdbICollectionNavigationProperties_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkNavigationProperties.Checked && rdbICollectionNavigationProperties.Checked)
+                POCOOptionChanged();
+        }
+
+        private void rdbIEnumerableNavigationProperties_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkNavigationProperties.Checked && rdbIEnumerableNavigationProperties.Checked)
+                POCOOptionChanged();
         }
 
         #endregion
@@ -2872,28 +2872,6 @@ namespace POCOGeneratorUI
             return isAnySettingChanged;
         }
 
-        private void btnResetNavigationPropertiesSettings_Click(object sender, EventArgs e)
-        {
-            bool isAnySettingChanged = ResetNavigationPropertiesSettings();
-            if (isAnySettingChanged)
-                POCOOptionChanged();
-        }
-
-        private bool ResetNavigationPropertiesSettings()
-        {
-            bool isAnySettingChanged = false;
-            isAnySettingChanged |= SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, false);
-            isAnySettingChanged |= SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, false);
-            isAnySettingChanged |= SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, false);
-            isAnySettingChanged |= SetCheckBox(chkManyToManyJoinTable, chkManyToManyJoinTable_CheckedChanged, false);
-            isAnySettingChanged |= SetCheckBox(chkNavigationPropertiesComments, chkNavigationPropertiesComments_CheckedChanged, false);
-            isAnySettingChanged |= SetRadioButton(rdbListNavigationProperties, rdbListNavigationProperties_CheckedChanged, true);
-            isAnySettingChanged |= SetRadioButton(rdbIListNavigationProperties, rdbIListNavigationProperties_CheckedChanged, false);
-            isAnySettingChanged |= SetRadioButton(rdbICollectionNavigationProperties, rdbICollectionNavigationProperties_CheckedChanged, false);
-            isAnySettingChanged |= SetRadioButton(rdbIEnumerableNavigationProperties, rdbIEnumerableNavigationProperties_CheckedChanged, false);
-            return isAnySettingChanged;
-        }
-
         private void btnResetClassNameSettings_Click(object sender, EventArgs e)
         {
             bool isAnySettingChanged = ResetClassNameSettings();
@@ -2920,6 +2898,28 @@ namespace POCOGeneratorUI
             isAnySettingChanged |= SetTextBox(txtFixedClassName, txtFixedClassName_TextChanged, string.Empty);
             isAnySettingChanged |= SetTextBox(txtPrefix, txtPrefix_TextChanged, string.Empty);
             isAnySettingChanged |= SetTextBox(txtSuffix, txtSuffix_TextChanged, string.Empty);
+            return isAnySettingChanged;
+        }
+
+        private void btnResetNavigationPropertiesSettings_Click(object sender, EventArgs e)
+        {
+            bool isAnySettingChanged = ResetNavigationPropertiesSettings();
+            if (isAnySettingChanged)
+                POCOOptionChanged();
+        }
+
+        private bool ResetNavigationPropertiesSettings()
+        {
+            bool isAnySettingChanged = false;
+            isAnySettingChanged |= SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkManyToManyJoinTable, chkManyToManyJoinTable_CheckedChanged, false);
+            isAnySettingChanged |= SetCheckBox(chkNavigationPropertiesComments, chkNavigationPropertiesComments_CheckedChanged, false);
+            isAnySettingChanged |= SetRadioButton(rdbListNavigationProperties, rdbListNavigationProperties_CheckedChanged, true);
+            isAnySettingChanged |= SetRadioButton(rdbIListNavigationProperties, rdbIListNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetRadioButton(rdbICollectionNavigationProperties, rdbICollectionNavigationProperties_CheckedChanged, false);
+            isAnySettingChanged |= SetRadioButton(rdbIEnumerableNavigationProperties, rdbIEnumerableNavigationProperties_CheckedChanged, false);
             return isAnySettingChanged;
         }
 
@@ -4000,17 +4000,6 @@ namespace POCOGeneratorUI
                 rdbEnumSQLTypeToEnumUShort_Checked = rdbEnumSQLTypeToEnumUShort.Checked,
                 rdbEnumSQLTypeToEnumInt_Checked = rdbEnumSQLTypeToEnumInt.Checked,
 
-                // Navigation Properties
-                chkNavigationProperties_Checked = chkNavigationProperties.Checked,
-                chkVirtualNavigationProperties_Checked = chkVirtualNavigationProperties.Checked,
-                chkOverrideNavigationProperties_Checked = chkOverrideNavigationProperties.Checked,
-                chkManyToManyJoinTable_Checked = chkManyToManyJoinTable.Checked,
-                chkNavigationPropertiesComments_Checked = chkNavigationPropertiesComments.Checked,
-                rdbListNavigationProperties_Checked = rdbListNavigationProperties.Checked,
-                rdbIListNavigationProperties_Checked = rdbIListNavigationProperties.Checked,
-                rdbICollectionNavigationProperties_Checked = rdbICollectionNavigationProperties.Checked,
-                rdbIEnumerableNavigationProperties_Checked = rdbIEnumerableNavigationProperties.Checked,
-
                 // Class Name
                 chkSingular_Checked = chkSingular.Checked,
                 chkIncludeDB_Checked = chkIncludeDB.Checked,
@@ -4028,6 +4017,17 @@ namespace POCOGeneratorUI
                 txtFixedClassName_Text = txtFixedClassName.Text,
                 txtPrefix_Text = txtPrefix.Text,
                 txtSuffix_Text = txtSuffix.Text,
+
+                // Navigation Properties
+                chkNavigationProperties_Checked = chkNavigationProperties.Checked,
+                chkVirtualNavigationProperties_Checked = chkVirtualNavigationProperties.Checked,
+                chkOverrideNavigationProperties_Checked = chkOverrideNavigationProperties.Checked,
+                chkManyToManyJoinTable_Checked = chkManyToManyJoinTable.Checked,
+                chkNavigationPropertiesComments_Checked = chkNavigationPropertiesComments.Checked,
+                rdbListNavigationProperties_Checked = rdbListNavigationProperties.Checked,
+                rdbIListNavigationProperties_Checked = rdbIListNavigationProperties.Checked,
+                rdbICollectionNavigationProperties_Checked = rdbICollectionNavigationProperties.Checked,
+                rdbIEnumerableNavigationProperties_Checked = rdbIEnumerableNavigationProperties.Checked,
 
                 // EF Annotations
                 chkEF_Checked = chkEF.Checked,
@@ -4093,17 +4093,6 @@ namespace POCOGeneratorUI
             SetRadioButton(rdbEnumSQLTypeToEnumUShort, rdbEnumSQLTypeToEnumUShort_CheckedChanged, settings.rdbEnumSQLTypeToEnumUShort_Checked);
             SetRadioButton(rdbEnumSQLTypeToEnumInt, rdbEnumSQLTypeToEnumInt_CheckedChanged, settings.rdbEnumSQLTypeToEnumInt_Checked);
 
-            // Navigation Properties
-            SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, settings.chkNavigationProperties_Checked);
-            SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, settings.chkVirtualNavigationProperties_Checked);
-            SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, settings.chkOverrideNavigationProperties_Checked);
-            SetCheckBox(chkManyToManyJoinTable, chkManyToManyJoinTable_CheckedChanged, settings.chkManyToManyJoinTable_Checked);
-            SetCheckBox(chkNavigationPropertiesComments, chkNavigationPropertiesComments_CheckedChanged, settings.chkNavigationPropertiesComments_Checked);
-            SetRadioButton(rdbListNavigationProperties, rdbListNavigationProperties_CheckedChanged, settings.rdbListNavigationProperties_Checked);
-            SetRadioButton(rdbIListNavigationProperties, rdbIListNavigationProperties_CheckedChanged, settings.rdbIListNavigationProperties_Checked);
-            SetRadioButton(rdbICollectionNavigationProperties, rdbICollectionNavigationProperties_CheckedChanged, settings.rdbICollectionNavigationProperties_Checked);
-            SetRadioButton(rdbIEnumerableNavigationProperties, rdbIEnumerableNavigationProperties_CheckedChanged, settings.rdbIEnumerableNavigationProperties_Checked);
-
             // Class Name
             SetCheckBox(chkSingular, chkSingular_CheckedChanged, settings.chkSingular_Checked);
             SetCheckBox(chkIncludeDB, chkIncludeDB_CheckedChanged, settings.chkIncludeDB_Checked);
@@ -4121,6 +4110,17 @@ namespace POCOGeneratorUI
             SetTextBox(txtFixedClassName, txtFixedClassName_TextChanged, settings.txtFixedClassName_Text);
             SetTextBox(txtPrefix, txtPrefix_TextChanged, settings.txtPrefix_Text);
             SetTextBox(txtSuffix, txtSuffix_TextChanged, settings.txtSuffix_Text);
+
+            // Navigation Properties
+            SetCheckBox(chkNavigationProperties, chkNavigationProperties_CheckedChanged, settings.chkNavigationProperties_Checked);
+            SetCheckBox(chkVirtualNavigationProperties, chkVirtualNavigationProperties_CheckedChanged, settings.chkVirtualNavigationProperties_Checked);
+            SetCheckBox(chkOverrideNavigationProperties, chkOverrideNavigationProperties_CheckedChanged, settings.chkOverrideNavigationProperties_Checked);
+            SetCheckBox(chkManyToManyJoinTable, chkManyToManyJoinTable_CheckedChanged, settings.chkManyToManyJoinTable_Checked);
+            SetCheckBox(chkNavigationPropertiesComments, chkNavigationPropertiesComments_CheckedChanged, settings.chkNavigationPropertiesComments_Checked);
+            SetRadioButton(rdbListNavigationProperties, rdbListNavigationProperties_CheckedChanged, settings.rdbListNavigationProperties_Checked);
+            SetRadioButton(rdbIListNavigationProperties, rdbIListNavigationProperties_CheckedChanged, settings.rdbIListNavigationProperties_Checked);
+            SetRadioButton(rdbICollectionNavigationProperties, rdbICollectionNavigationProperties_CheckedChanged, settings.rdbICollectionNavigationProperties_Checked);
+            SetRadioButton(rdbIEnumerableNavigationProperties, rdbIEnumerableNavigationProperties_CheckedChanged, settings.rdbIEnumerableNavigationProperties_Checked);
 
             // EF Annotations
             SetCheckBox(chkEF, chkEF_CheckedChanged, settings.chkEF_Checked);

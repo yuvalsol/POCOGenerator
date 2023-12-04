@@ -16,9 +16,10 @@ namespace POCOGenerator
         {
             this.lockObject = lockObject;
 
+            this.Connection = new ConnectionSettings(lockObject);
             this.POCO = new POCOSettings(lockObject);
-            this.NavigationProperties = new NavigationPropertiesSettings(lockObject);
             this.ClassName = new ClassNameSettings(lockObject);
+            this.NavigationProperties = new NavigationPropertiesSettings(lockObject);
             this.EFAnnotations = new EFAnnotationsSettings(lockObject);
             this.DatabaseObjects = new DatabaseObjectsSettings(lockObject);
             this.SyntaxHighlight = new SyntaxHighlightSettings(lockObject);
@@ -27,10 +28,10 @@ namespace POCOGenerator
         public GeneratorSettings(Settings settings)
             : this(new object())
         {
-            #region Settings
+            #region Connection
 
-            this.ConnectionString = settings.ConnectionString;
-            this.RDBMS = settings.RDBMS;
+            this.Connection.ConnectionString = settings.Connection.ConnectionString;
+            this.Connection.RDBMS = settings.Connection.RDBMS;
 
             #endregion
 
@@ -59,20 +60,6 @@ namespace POCOGenerator
 
             #endregion
 
-            #region Navigation Properties
-
-            this.NavigationProperties.Enable = settings.NavigationProperties.Enable;
-            this.NavigationProperties.VirtualNavigationProperties = settings.NavigationProperties.VirtualNavigationProperties;
-            this.NavigationProperties.OverrideNavigationProperties = settings.NavigationProperties.OverrideNavigationProperties;
-            this.NavigationProperties.ManyToManyJoinTable = settings.NavigationProperties.ManyToManyJoinTable;
-            this.NavigationProperties.Comments = settings.NavigationProperties.Comments;
-            this.NavigationProperties.ListNavigationProperties = settings.NavigationProperties.ListNavigationProperties;
-            this.NavigationProperties.IListNavigationProperties = settings.NavigationProperties.IListNavigationProperties;
-            this.NavigationProperties.ICollectionNavigationProperties = settings.NavigationProperties.ICollectionNavigationProperties;
-            this.NavigationProperties.IEnumerableNavigationProperties = settings.NavigationProperties.IEnumerableNavigationProperties;
-
-            #endregion
-
             #region Class Name
 
             this.ClassName.Singular = settings.ClassName.Singular;
@@ -91,6 +78,20 @@ namespace POCOGenerator
             this.ClassName.FixedClassName = settings.ClassName.FixedClassName;
             this.ClassName.Prefix = settings.ClassName.Prefix;
             this.ClassName.Suffix = settings.ClassName.Suffix;
+
+            #endregion
+
+            #region Navigation Properties
+
+            this.NavigationProperties.Enable = settings.NavigationProperties.Enable;
+            this.NavigationProperties.VirtualNavigationProperties = settings.NavigationProperties.VirtualNavigationProperties;
+            this.NavigationProperties.OverrideNavigationProperties = settings.NavigationProperties.OverrideNavigationProperties;
+            this.NavigationProperties.ManyToManyJoinTable = settings.NavigationProperties.ManyToManyJoinTable;
+            this.NavigationProperties.Comments = settings.NavigationProperties.Comments;
+            this.NavigationProperties.ListNavigationProperties = settings.NavigationProperties.ListNavigationProperties;
+            this.NavigationProperties.IListNavigationProperties = settings.NavigationProperties.IListNavigationProperties;
+            this.NavigationProperties.ICollectionNavigationProperties = settings.NavigationProperties.ICollectionNavigationProperties;
+            this.NavigationProperties.IEnumerableNavigationProperties = settings.NavigationProperties.IEnumerableNavigationProperties;
 
             #endregion
 
@@ -211,11 +212,10 @@ namespace POCOGenerator
         {
             lock (lockObject)
             {
-                this.ConnectionString = null;
-                this.RDBMS = RDBMS.None;
+                this.Connection.Reset();
                 this.POCO.Reset();
-                this.NavigationProperties.Reset();
                 this.ClassName.Reset();
+                this.NavigationProperties.Reset();
                 this.EFAnnotations.Reset();
                 this.DatabaseObjects.Reset();
                 this.SyntaxHighlight.Reset();
@@ -226,52 +226,76 @@ namespace POCOGenerator
 
         #region Settings
 
-        private string connectionString;
-        public string ConnectionString
-        {
-            get
-            {
-                lock (lockObject)
-                {
-                    return connectionString;
-                }
-            }
-
-            set
-            {
-                lock (lockObject)
-                {
-                    connectionString = value;
-                }
-            }
-        }
-
-        private RDBMS rdbms = RDBMS.None;
-        public RDBMS RDBMS
-        {
-            get
-            {
-                lock (lockObject)
-                {
-                    return rdbms;
-                }
-            }
-
-            set
-            {
-                lock (lockObject)
-                {
-                    rdbms = value;
-                }
-            }
-        }
-
+        public Connection Connection { get; private set; }
         public POCO POCO { get; private set; }
-        public NavigationProperties NavigationProperties { get; private set; }
         public ClassName ClassName { get; private set; }
+        public NavigationProperties NavigationProperties { get; private set; }
         public EFAnnotations EFAnnotations { get; private set; }
         public DatabaseObjects DatabaseObjects { get; private set; }
         public SyntaxHighlight SyntaxHighlight { get; private set; }
+
+        #endregion
+
+        #region Connection Settings
+
+        private sealed class ConnectionSettings : Connection
+        {
+            private readonly object lockObject;
+
+            internal ConnectionSettings(object lockObject)
+            {
+                this.lockObject = lockObject;
+            }
+
+            public void Reset()
+            {
+                lock (lockObject)
+                {
+                    this.ConnectionString = null;
+                    this.RDBMS = RDBMS.None;
+                }
+            }
+
+            private string connectionString;
+            public string ConnectionString
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return connectionString;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        connectionString = value;
+                    }
+                }
+            }
+
+            private RDBMS rdbms = RDBMS.None;
+            public RDBMS RDBMS
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return rdbms;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        rdbms = value;
+                    }
+                }
+            }
+        }
 
         #endregion
 
@@ -810,294 +834,6 @@ namespace POCOGenerator
 
         #endregion
 
-        #region Navigation Properties Settings
-
-        private sealed class NavigationPropertiesSettings : NavigationProperties, INavigationPropertiesIteratorSettings
-        {
-            private readonly object lockObject;
-
-            internal NavigationPropertiesSettings(object lockObject)
-            {
-                this.lockObject = lockObject;
-            }
-
-            public void Reset()
-            {
-                lock (lockObject)
-                {
-                    this.Enable = false;
-                    this.VirtualNavigationProperties = false;
-                    this.OverrideNavigationProperties = false;
-                    this.ManyToManyJoinTable = false;
-                    this.Comments = false;
-                    this.ListNavigationProperties = true;
-                    this.IListNavigationProperties = false;
-                    this.ICollectionNavigationProperties = false;
-                    this.IEnumerableNavigationProperties = false;
-                }
-            }
-
-            private bool enable;
-            public bool Enable
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return enable;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        enable = value;
-                    }
-                }
-            }
-
-            private bool virtualNavigationProperties;
-            private bool overrideNavigationProperties;
-
-            public bool VirtualNavigationProperties
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return virtualNavigationProperties;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        if (virtualNavigationProperties != value)
-                        {
-                            virtualNavigationProperties = value;
-
-                            if (virtualNavigationProperties && virtualNavigationProperties == overrideNavigationProperties)
-                                overrideNavigationProperties = false;
-                        }
-                    }
-                }
-            }
-
-            public bool OverrideNavigationProperties
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return overrideNavigationProperties;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        if (overrideNavigationProperties != value)
-                        {
-                            overrideNavigationProperties = value;
-
-                            if (overrideNavigationProperties && virtualNavigationProperties == overrideNavigationProperties)
-                                virtualNavigationProperties = false;
-                        }
-                    }
-                }
-            }
-
-            private bool manyToManyJoinTable;
-            public bool ManyToManyJoinTable
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return manyToManyJoinTable;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        manyToManyJoinTable = value;
-                    }
-                }
-            }
-
-            private bool comments;
-            public bool Comments
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return comments;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        comments = value;
-                    }
-                }
-            }
-
-            private bool listNavigationProperties = true;
-            private bool ilistNavigationProperties;
-            private bool icollectionNavigationProperties;
-            private bool ienumerableNavigationProperties;
-
-            public bool ListNavigationProperties
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return listNavigationProperties;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        if (listNavigationProperties != value)
-                        {
-                            if (value)
-                            {
-                                listNavigationProperties = true;
-                                ilistNavigationProperties = false;
-                                icollectionNavigationProperties = false;
-                                ienumerableNavigationProperties = false;
-                            }
-                            else
-                            {
-                                listNavigationProperties = false;
-                                ilistNavigationProperties = true;
-                                icollectionNavigationProperties = false;
-                                ienumerableNavigationProperties = false;
-                            }
-                        }
-                    }
-                }
-            }
-
-            public bool IListNavigationProperties
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return ilistNavigationProperties;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        if (ilistNavigationProperties != value)
-                        {
-                            if (value)
-                            {
-                                listNavigationProperties = false;
-                                ilistNavigationProperties = true;
-                                icollectionNavigationProperties = false;
-                                ienumerableNavigationProperties = false;
-                            }
-                            else
-                            {
-                                listNavigationProperties = true;
-                                ilistNavigationProperties = false;
-                                icollectionNavigationProperties = false;
-                                ienumerableNavigationProperties = false;
-                            }
-                        }
-                    }
-                }
-            }
-
-            public bool ICollectionNavigationProperties
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return icollectionNavigationProperties;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        if (icollectionNavigationProperties != value)
-                        {
-                            if (value)
-                            {
-                                listNavigationProperties = false;
-                                ilistNavigationProperties = false;
-                                icollectionNavigationProperties = true;
-                                ienumerableNavigationProperties = false;
-                            }
-                            else
-                            {
-                                listNavigationProperties = true;
-                                ilistNavigationProperties = false;
-                                icollectionNavigationProperties = false;
-                                ienumerableNavigationProperties = false;
-                            }
-                        }
-                    }
-                }
-            }
-
-            public bool IEnumerableNavigationProperties
-            {
-                get
-                {
-                    lock (lockObject)
-                    {
-                        return ienumerableNavigationProperties;
-                    }
-                }
-
-                set
-                {
-                    lock (lockObject)
-                    {
-                        if (ienumerableNavigationProperties != value)
-                        {
-                            if (value)
-                            {
-                                listNavigationProperties = false;
-                                ilistNavigationProperties = false;
-                                icollectionNavigationProperties = false;
-                                ienumerableNavigationProperties = true;
-                            }
-                            else
-                            {
-                                listNavigationProperties = true;
-                                ilistNavigationProperties = false;
-                                icollectionNavigationProperties = false;
-                                ienumerableNavigationProperties = false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        #endregion
-
         #region Class Name Settings
 
         private sealed class ClassNameSettings : ClassName, IClassNameIteratorSettings
@@ -1448,6 +1184,294 @@ namespace POCOGenerator
                     lock (lockObject)
                     {
                         suffix = value;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Navigation Properties Settings
+
+        private sealed class NavigationPropertiesSettings : NavigationProperties, INavigationPropertiesIteratorSettings
+        {
+            private readonly object lockObject;
+
+            internal NavigationPropertiesSettings(object lockObject)
+            {
+                this.lockObject = lockObject;
+            }
+
+            public void Reset()
+            {
+                lock (lockObject)
+                {
+                    this.Enable = false;
+                    this.VirtualNavigationProperties = false;
+                    this.OverrideNavigationProperties = false;
+                    this.ManyToManyJoinTable = false;
+                    this.Comments = false;
+                    this.ListNavigationProperties = true;
+                    this.IListNavigationProperties = false;
+                    this.ICollectionNavigationProperties = false;
+                    this.IEnumerableNavigationProperties = false;
+                }
+            }
+
+            private bool enable;
+            public bool Enable
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return enable;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        enable = value;
+                    }
+                }
+            }
+
+            private bool virtualNavigationProperties;
+            private bool overrideNavigationProperties;
+
+            public bool VirtualNavigationProperties
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return virtualNavigationProperties;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        if (virtualNavigationProperties != value)
+                        {
+                            virtualNavigationProperties = value;
+
+                            if (virtualNavigationProperties && virtualNavigationProperties == overrideNavigationProperties)
+                                overrideNavigationProperties = false;
+                        }
+                    }
+                }
+            }
+
+            public bool OverrideNavigationProperties
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return overrideNavigationProperties;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        if (overrideNavigationProperties != value)
+                        {
+                            overrideNavigationProperties = value;
+
+                            if (overrideNavigationProperties && virtualNavigationProperties == overrideNavigationProperties)
+                                virtualNavigationProperties = false;
+                        }
+                    }
+                }
+            }
+
+            private bool manyToManyJoinTable;
+            public bool ManyToManyJoinTable
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return manyToManyJoinTable;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        manyToManyJoinTable = value;
+                    }
+                }
+            }
+
+            private bool comments;
+            public bool Comments
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return comments;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        comments = value;
+                    }
+                }
+            }
+
+            private bool listNavigationProperties = true;
+            private bool ilistNavigationProperties;
+            private bool icollectionNavigationProperties;
+            private bool ienumerableNavigationProperties;
+
+            public bool ListNavigationProperties
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return listNavigationProperties;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        if (listNavigationProperties != value)
+                        {
+                            if (value)
+                            {
+                                listNavigationProperties = true;
+                                ilistNavigationProperties = false;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = false;
+                            }
+                            else
+                            {
+                                listNavigationProperties = false;
+                                ilistNavigationProperties = true;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            public bool IListNavigationProperties
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return ilistNavigationProperties;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        if (ilistNavigationProperties != value)
+                        {
+                            if (value)
+                            {
+                                listNavigationProperties = false;
+                                ilistNavigationProperties = true;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = false;
+                            }
+                            else
+                            {
+                                listNavigationProperties = true;
+                                ilistNavigationProperties = false;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            public bool ICollectionNavigationProperties
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return icollectionNavigationProperties;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        if (icollectionNavigationProperties != value)
+                        {
+                            if (value)
+                            {
+                                listNavigationProperties = false;
+                                ilistNavigationProperties = false;
+                                icollectionNavigationProperties = true;
+                                ienumerableNavigationProperties = false;
+                            }
+                            else
+                            {
+                                listNavigationProperties = true;
+                                ilistNavigationProperties = false;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            public bool IEnumerableNavigationProperties
+            {
+                get
+                {
+                    lock (lockObject)
+                    {
+                        return ienumerableNavigationProperties;
+                    }
+                }
+
+                set
+                {
+                    lock (lockObject)
+                    {
+                        if (ienumerableNavigationProperties != value)
+                        {
+                            if (value)
+                            {
+                                listNavigationProperties = false;
+                                ilistNavigationProperties = false;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = true;
+                            }
+                            else
+                            {
+                                listNavigationProperties = true;
+                                ilistNavigationProperties = false;
+                                icollectionNavigationProperties = false;
+                                ienumerableNavigationProperties = false;
+                            }
+                        }
                     }
                 }
             }
@@ -2238,19 +2262,19 @@ namespace POCOGenerator
             }
         }
 
-        public INavigationPropertiesIteratorSettings NavigationPropertiesIteratorSettings
-        {
-            get
-            {
-                return (NavigationPropertiesSettings)this.NavigationProperties;
-            }
-        }
-
         public IClassNameIteratorSettings ClassNameIteratorSettings
         {
             get
             {
                 return (ClassNameSettings)this.ClassName;
+            }
+        }
+
+        public INavigationPropertiesIteratorSettings NavigationPropertiesIteratorSettings
+        {
+            get
+            {
+                return (NavigationPropertiesSettings)this.NavigationProperties;
             }
         }
 
@@ -2278,16 +2302,9 @@ namespace POCOGenerator
         void Reset();
 
         /// <summary>
-        /// Gets or sets the connection string.
-        /// <para>When <see cref="RDBMS"/> is set to None, the generator will try to determine the <see cref="RDBMS"/> based on the connection string.</para>
+        /// Gets the Connection settings.
         /// </summary>
-        string ConnectionString { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Relational Database Management System.
-        /// <para>When this setting is set to None, the generator will try to determine this setting based on the connection string.</para>
-        /// </summary>
-        RDBMS RDBMS { get; set; }
+        Connection Connection { get; }
 
         /// <summary>
         /// Gets the POCO settings.
@@ -2295,14 +2312,14 @@ namespace POCOGenerator
         POCO POCO { get; }
 
         /// <summary>
-        /// Gets the navigation properties settings.
-        /// </summary>
-        NavigationProperties NavigationProperties { get; }
-
-        /// <summary>
         /// Gets the class name settings.
         /// </summary>
         ClassName ClassName { get; }
+
+        /// <summary>
+        /// Gets the navigation properties settings.
+        /// </summary>
+        NavigationProperties NavigationProperties { get; }
 
         /// <summary>
         /// Gets the EF annotations settings.
@@ -2318,6 +2335,33 @@ namespace POCOGenerator
         /// Gets the settings that determine the colors for syntax elements.
         /// </summary>
         SyntaxHighlight SyntaxHighlight { get; }
+    }
+
+    #endregion
+
+    #region Connection
+
+    /// <summary>
+    /// The settings determine the connection to the RDBMS server.
+    /// </summary>
+    public interface Connection
+    {
+        /// <summary>
+        /// Resets the connection settings to their default values.
+        /// </summary>
+        void Reset();
+
+        /// <summary>
+        /// Gets or sets the connection string.
+        /// <para>When <see cref="RDBMS"/> is set to <see cref="RDBMS.None"/>, the generator will try to determine the <see cref="RDBMS"/> based on the connection string.</para>
+        /// </summary>
+        string ConnectionString { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Relational Database Management System.
+        /// <para>When this setting is set to <see cref="RDBMS.None"/>, the generator will try to determine this setting based on the connection string.</para>
+        /// </summary>
+        RDBMS RDBMS { get; set; }
     }
 
     #endregion
@@ -2445,74 +2489,6 @@ namespace POCOGenerator
 
     #endregion
 
-    #region Navigation Properties
-
-    /// <summary>
-    /// The settings for the navigation properties.
-    /// </summary>
-    public interface NavigationProperties
-    {
-        /// <summary>
-        /// Resets the navigation properties settings to their default values.
-        /// </summary>
-        void Reset();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to enable navigation properties.
-        /// </summary>
-        bool Enable { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether navigation property methods will be modified to be virtual methods.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
-        bool VirtualNavigationProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether navigation property methods will be modified to be override methods.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
-        bool OverrideNavigationProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate a join table in a many-to-many relationship. In a many-to-many relationship, the join table is hidden by default.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
-        bool ManyToManyJoinTable { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate a comment of the original SQL Server foreign key.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
-        bool Comments { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.List&lt;T&gt;"/>.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>true</c>.</para>
-        /// </summary>
-        bool ListNavigationProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.IList&lt;T&gt;"/>.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>true</c>.</para>
-        /// </summary>
-        bool IListNavigationProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.ICollection&lt;T&gt;"/>.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>false</c>.</para>
-        /// </summary>
-        bool ICollectionNavigationProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/>.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>false</c>.</para>
-        /// </summary>
-        bool IEnumerableNavigationProperties { get; set; }
-    }
-
-    #endregion
-
     #region Class Name
 
     /// <summary>
@@ -2615,6 +2591,74 @@ namespace POCOGenerator
         /// <para>The value must be not null and not an empty string to take effect.</para>
         /// </summary>
         string Suffix { get; set; }
+    }
+
+    #endregion
+
+    #region Navigation Properties
+
+    /// <summary>
+    /// The settings for the navigation properties.
+    /// </summary>
+    public interface NavigationProperties
+    {
+        /// <summary>
+        /// Resets the navigation properties settings to their default values.
+        /// </summary>
+        void Reset();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to enable navigation properties.
+        /// </summary>
+        bool Enable { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether navigation property methods will be modified to be virtual methods.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
+        /// </summary>
+        bool VirtualNavigationProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether navigation property methods will be modified to be override methods.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
+        /// </summary>
+        bool OverrideNavigationProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate a join table in a many-to-many relationship. In a many-to-many relationship, the join table is hidden by default.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
+        /// </summary>
+        bool ManyToManyJoinTable { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate a comment of the original SQL Server foreign key.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
+        /// </summary>
+        bool Comments { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.List&lt;T&gt;"/>.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>true</c>.</para>
+        /// </summary>
+        bool ListNavigationProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.IList&lt;T&gt;"/>.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>true</c>.</para>
+        /// </summary>
+        bool IListNavigationProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.ICollection&lt;T&gt;"/>.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>false</c>.</para>
+        /// </summary>
+        bool ICollectionNavigationProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/>.
+        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>false</c>.</para>
+        /// </summary>
+        bool IEnumerableNavigationProperties { get; set; }
     }
 
     #endregion

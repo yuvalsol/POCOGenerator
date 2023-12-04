@@ -11,10 +11,10 @@ namespace MultipleFilesDemo
         static void Main(string[] args)
         {
             IGenerator generator = GeneratorFactory.GetGenerator();
-            try { generator.Settings.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
-            if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
-                generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
-            generator.Settings.RDBMS = RDBMS.SQLServer;
+            try { generator.Settings.Connection.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
+            if (string.IsNullOrEmpty(generator.Settings.Connection.ConnectionString))
+                generator.Settings.Connection.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
+            generator.Settings.Connection.RDBMS = RDBMS.SQLServer;
             generator.Settings.DatabaseObjects.IncludeAll = true;
             generator.Settings.POCO.Using = true;
             generator.Settings.POCO.Namespace = "MultipleFilesDemo";

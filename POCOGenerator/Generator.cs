@@ -92,7 +92,7 @@ namespace POCOGenerator
                 bool isEnableTVPs = IsEnableDbObjects(this.settingsInternal.DatabaseObjects.IncludeAll, this.settingsInternal.DatabaseObjects.TVPs.IncludeAll, this.settingsInternal.DatabaseObjects.TVPs.ExcludeAll, this.settingsInternal.DatabaseObjects.TVPs.Include);
 
                 // get db helper
-                this.dbHelper = this.dbHandler.GetDbHelper(this.settingsInternal.ConnectionString);
+                this.dbHelper = this.dbHandler.GetDbHelper(this.settingsInternal.Connection.ConnectionString);
 
                 // create generator support
                 this.Support = new GeneratorSupport(this.dbHelper.Support);
@@ -383,15 +383,15 @@ namespace POCOGenerator
 
         private GeneratorResults ValidateConnectionString(ref IDbHandler dbHandler, ref string serverName, ref string instanceName, ref string userId, ref string initialDatabase)
         {
-            if (string.IsNullOrEmpty(this.settingsInternal.ConnectionString))
+            if (string.IsNullOrEmpty(this.settingsInternal.Connection.ConnectionString))
                 return GeneratorResults.ConnectionStringMissing;
 
-            if (this.settingsInternal.RDBMS == RDBMS.None)
+            if (this.settingsInternal.Connection.RDBMS == RDBMS.None)
             {
                 var items = Enum.GetValues(typeof(RDBMS))
                     .Cast<RDBMS>()
                     .Where(rdbms => rdbms != RDBMS.None)
-                    .Where(rdbms => GetDbHandler(rdbms).GetConnectionStringParser().Validate(this.settingsInternal.ConnectionString))
+                    .Where(rdbms => GetDbHandler(rdbms).GetConnectionStringParser().Validate(this.settingsInternal.Connection.ConnectionString))
                     .ToArray();
 
                 if (items.Length == 0)
@@ -400,10 +400,10 @@ namespace POCOGenerator
                 }
                 else if (items.Length == 1)
                 {
-                    this.settingsInternal.RDBMS = items[0];
-                    dbHandler = GetDbHandler(this.settingsInternal.RDBMS);
+                    this.settingsInternal.Connection.RDBMS = items[0];
+                    dbHandler = GetDbHandler(this.settingsInternal.Connection.RDBMS);
 
-                    if (dbHandler.GetConnectionStringParser().Ping(this.settingsInternal.ConnectionString) == false)
+                    if (dbHandler.GetConnectionStringParser().Ping(this.settingsInternal.Connection.ConnectionString) == false)
                     {
                         dbHandler = null;
                         return GeneratorResults.ServerNotResponding;
@@ -411,15 +411,15 @@ namespace POCOGenerator
                 }
                 else if (items.Length > 1)
                 {
-                    items = items.Where(rdbms => GetDbHandler(rdbms).GetConnectionStringParser().Ping(this.settingsInternal.ConnectionString)).ToArray();
+                    items = items.Where(rdbms => GetDbHandler(rdbms).GetConnectionStringParser().Ping(this.settingsInternal.Connection.ConnectionString)).ToArray();
                     if (items.Length == 0)
                     {
                         return GeneratorResults.ConnectionStringNotMatchAnyRDBMS;
                     }
                     else if (items.Length == 1)
                     {
-                        this.settingsInternal.RDBMS = items[0];
-                        dbHandler = GetDbHandler(this.settingsInternal.RDBMS);
+                        this.settingsInternal.Connection.RDBMS = items[0];
+                        dbHandler = GetDbHandler(this.settingsInternal.Connection.RDBMS);
                     }
                     else if (items.Length > 1)
                     {
@@ -429,25 +429,25 @@ namespace POCOGenerator
             }
             else
             {
-                dbHandler = GetDbHandler(this.settingsInternal.RDBMS);
+                dbHandler = GetDbHandler(this.settingsInternal.Connection.RDBMS);
 
-                if (dbHandler.GetConnectionStringParser().Validate(this.settingsInternal.ConnectionString) == false)
+                if (dbHandler.GetConnectionStringParser().Validate(this.settingsInternal.Connection.ConnectionString) == false)
                 {
                     dbHandler = null;
                     return GeneratorResults.ConnectionStringMalformed;
                 }
 
-                if (dbHandler.GetConnectionStringParser().Ping(this.settingsInternal.ConnectionString) == false)
+                if (dbHandler.GetConnectionStringParser().Ping(this.settingsInternal.Connection.ConnectionString) == false)
                 {
                     dbHandler = null;
                     return GeneratorResults.ServerNotResponding;
                 }
             }
 
-            this.settingsInternal.ConnectionString = dbHandler.GetConnectionStringParser().Fix(this.settingsInternal.ConnectionString);
+            this.settingsInternal.Connection.ConnectionString = dbHandler.GetConnectionStringParser().Fix(this.settingsInternal.Connection.ConnectionString);
 
             bool integratedSecurity = false;
-            dbHandler.GetConnectionStringParser().Parse(this.settingsInternal.ConnectionString, ref serverName, ref initialDatabase, ref userId, ref integratedSecurity);
+            dbHandler.GetConnectionStringParser().Parse(this.settingsInternal.Connection.ConnectionString, ref serverName, ref initialDatabase, ref userId, ref integratedSecurity);
 
             if (string.IsNullOrEmpty(serverName))
                 return GeneratorResults.ConnectionStringMalformed;

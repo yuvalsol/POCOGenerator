@@ -7,8 +7,8 @@ namespace POCOGenerator.POCOIterators
     public interface IDbIteratorSettings
     {
         IPOCOIteratorSettings POCOIteratorSettings { get; }
-        INavigationPropertiesIteratorSettings NavigationPropertiesIteratorSettings { get; }
         IClassNameIteratorSettings ClassNameIteratorSettings { get; }
+        INavigationPropertiesIteratorSettings NavigationPropertiesIteratorSettings { get; }
         IEFAnnotationsIteratorSettings EFAnnotationsIteratorSettings { get; }
     }
 
@@ -42,23 +42,6 @@ namespace POCOGenerator.POCOIterators
 
     #endregion
 
-    #region Navigation Properties Iterator Settings
-
-    public interface INavigationPropertiesIteratorSettings
-    {
-        bool Enable { get; set; }
-        bool VirtualNavigationProperties { get; set; }
-        bool OverrideNavigationProperties { get; set; }
-        bool ManyToManyJoinTable { get; set; }
-        bool Comments { get; set; }
-        bool ListNavigationProperties { get; set; }
-        bool IListNavigationProperties { get; set; }
-        bool ICollectionNavigationProperties { get; set; }
-        bool IEnumerableNavigationProperties { get; set; }
-    }
-
-    #endregion
-
     #region Class Name Iterator Settings
 
     public interface IClassNameIteratorSettings
@@ -79,6 +62,23 @@ namespace POCOGenerator.POCOIterators
         string FixedClassName { get; set; }
         string Prefix { get; set; }
         string Suffix { get; set; }
+    }
+
+    #endregion
+
+    #region Navigation Properties Iterator Settings
+
+    public interface INavigationPropertiesIteratorSettings
+    {
+        bool Enable { get; set; }
+        bool VirtualNavigationProperties { get; set; }
+        bool OverrideNavigationProperties { get; set; }
+        bool ManyToManyJoinTable { get; set; }
+        bool Comments { get; set; }
+        bool ListNavigationProperties { get; set; }
+        bool IListNavigationProperties { get; set; }
+        bool ICollectionNavigationProperties { get; set; }
+        bool IEnumerableNavigationProperties { get; set; }
     }
 
     #endregion

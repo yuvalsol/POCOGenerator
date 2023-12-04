@@ -10,10 +10,10 @@ namespace SelectingObjectsDemo
         static void Main(string[] args)
         {
             IGenerator generator = GeneratorFactory.GetGenerator();
-            try { generator.Settings.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
-            if (string.IsNullOrEmpty(generator.Settings.ConnectionString))
-                generator.Settings.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
-            generator.Settings.RDBMS = RDBMS.SQLServer;
+            try { generator.Settings.Connection.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
+            if (string.IsNullOrEmpty(generator.Settings.Connection.ConnectionString))
+                generator.Settings.Connection.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
+            generator.Settings.Connection.RDBMS = RDBMS.SQLServer;
 
             // database object is selected when:
             // 1. explicitly included: Settings.IncludeAll, Settings.Tables.IncludeAll, Settings.Tables.Include.Add(), ...
