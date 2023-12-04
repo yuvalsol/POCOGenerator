@@ -12,7 +12,6 @@ namespace ConsoleDemo
             try { generator.Settings.Connection.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
             if (string.IsNullOrEmpty(generator.Settings.Connection.ConnectionString))
                 generator.Settings.Connection.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
-            generator.Settings.Connection.RDBMS = RDBMS.SQLServer;
             generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
             generator.Settings.POCO.CommentsWithoutNull = true;
             generator.Settings.ClassName.IncludeSchema = true;

@@ -13,7 +13,6 @@ namespace WildcardsDemo
             try { generator.Settings.Connection.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
             if (string.IsNullOrEmpty(generator.Settings.Connection.ConnectionString))
                 generator.Settings.Connection.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
-            generator.Settings.Connection.RDBMS = RDBMS.SQLServer;
 
             // all the tables under Sales schema
             generator.Settings.DatabaseObjects.Tables.Include.Add("Sales.*");

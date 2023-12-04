@@ -13,7 +13,6 @@ namespace SkipAndStopDemo
             try { generator.Settings.Connection.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
             if (string.IsNullOrEmpty(generator.Settings.Connection.ConnectionString))
                 generator.Settings.Connection.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True";
-            generator.Settings.Connection.RDBMS = RDBMS.SQLServer;
 
             generator.Settings.ClassName.IncludeSchema = true;
             generator.Settings.ClassName.SchemaSeparator = "_";

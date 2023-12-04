@@ -14,7 +14,6 @@ namespace ComplexTypesDemo
             try { generator.Settings.Connection.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }
             if (string.IsNullOrEmpty(generator.Settings.Connection.ConnectionString))
                 generator.Settings.Connection.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ComplexTypesDB;Integrated Security=True";
-            generator.Settings.Connection.RDBMS = RDBMS.SQLServer;
             generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
 
             GeneratorResults results = generator.Generate();
