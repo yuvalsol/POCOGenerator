@@ -3,7 +3,61 @@ using POCOGenerator.Objects;
 
 namespace POCOGenerator
 {
-    #region Server
+    #region Interfaces
+
+    public interface IGeneratingEventArgs
+    {
+    }
+
+    public interface IObjectsGeneratingEventArgs : IGeneratingEventArgs
+    {
+    }
+
+    public interface IObjectGeneratingEventArgs : IGeneratingEventArgs
+    {
+        IDbObject DbObject { get; }
+        string ClassName { get; }
+        string Error { get; }
+        string Namespace { get; }
+    }
+
+    public interface IPOCOEventArgs
+    {
+        IDbObject DbObject { get; }
+        string ClassName { get; }
+        string Error { get; }
+        string POCO { get; }
+    }
+
+    public interface IGeneratedEventArgs
+    {
+    }
+
+    public interface IObjectGeneratedEventArgs : IGeneratedEventArgs
+    {
+        IDbObject DbObject { get; }
+        string ClassName { get; }
+        string Error { get; }
+        string Namespace { get; }
+    }
+
+    public interface IObjectsGeneratedEventArgs : IGeneratedEventArgs
+    {
+    }
+
+    public interface ISkipGenerating
+    {
+        bool Skip { get; set; }
+    }
+
+    public interface IStopGenerating
+    {
+        bool Stop { get; set; }
+    }
+
+    #endregion
+
+    #region Server Built
 
     public sealed class ServerBuiltAsyncEventArgs : EventArgs
     {
@@ -26,7 +80,11 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class ServerGeneratingAsyncEventArgs : EventArgs
+    #endregion
+
+    #region Server
+
+    public sealed class ServerGeneratingAsyncEventArgs : EventArgs, IGeneratingEventArgs
     {
         internal ServerGeneratingAsyncEventArgs(Server server)
         {
@@ -36,7 +94,7 @@ namespace POCOGenerator
         public Server Server { get; private set; }
     }
 
-    public sealed class ServerGeneratingEventArgs : EventArgs
+    public sealed class ServerGeneratingEventArgs : EventArgs, IGeneratingEventArgs, IStopGenerating
     {
         internal ServerGeneratingEventArgs(Server server)
         {
@@ -47,7 +105,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class ServerGeneratedAsyncEventArgs : EventArgs
+    public sealed class ServerGeneratedAsyncEventArgs : EventArgs, IGeneratedEventArgs
     {
         internal ServerGeneratedAsyncEventArgs(Server server)
         {
@@ -57,7 +115,7 @@ namespace POCOGenerator
         public Server Server { get; private set; }
     }
 
-    public sealed class ServerGeneratedEventArgs : EventArgs
+    public sealed class ServerGeneratedEventArgs : EventArgs, IGeneratedEventArgs, IStopGenerating
     {
         internal ServerGeneratedEventArgs(Server server)
         {
@@ -72,7 +130,7 @@ namespace POCOGenerator
 
     #region Database
 
-    public sealed class DatabaseGeneratingAsyncEventArgs : EventArgs
+    public sealed class DatabaseGeneratingAsyncEventArgs : EventArgs, IGeneratingEventArgs
     {
         internal DatabaseGeneratingAsyncEventArgs(Database database)
         {
@@ -82,7 +140,7 @@ namespace POCOGenerator
         public Database Database { get; private set; }
     }
 
-    public sealed class DatabaseGeneratingEventArgs : EventArgs
+    public sealed class DatabaseGeneratingEventArgs : EventArgs, IGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal DatabaseGeneratingEventArgs(Database database)
         {
@@ -94,7 +152,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class DatabaseGeneratedAsyncEventArgs : EventArgs
+    public sealed class DatabaseGeneratedAsyncEventArgs : EventArgs, IGeneratedEventArgs
     {
         internal DatabaseGeneratedAsyncEventArgs(Database database)
         {
@@ -104,7 +162,7 @@ namespace POCOGenerator
         public Database Database { get; private set; }
     }
 
-    public sealed class DatabaseGeneratedEventArgs : EventArgs
+    public sealed class DatabaseGeneratedEventArgs : EventArgs, IGeneratedEventArgs, IStopGenerating
     {
         internal DatabaseGeneratedEventArgs(Database database)
         {
@@ -119,14 +177,14 @@ namespace POCOGenerator
 
     #region Table
 
-    public sealed class TablesGeneratingAsyncEventArgs : EventArgs
+    public sealed class TablesGeneratingAsyncEventArgs : EventArgs, IObjectsGeneratingEventArgs
     {
         internal TablesGeneratingAsyncEventArgs()
         {
         }
     }
 
-    public sealed class TablesGeneratingEventArgs : EventArgs
+    public sealed class TablesGeneratingEventArgs : EventArgs, IObjectsGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal TablesGeneratingEventArgs()
         {
@@ -136,7 +194,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class TableGeneratingAsyncEventArgs : EventArgs
+    public sealed class TableGeneratingAsyncEventArgs : EventArgs, IObjectGeneratingEventArgs
     {
         internal TableGeneratingAsyncEventArgs(Table table, string @namespace)
         {
@@ -145,12 +203,13 @@ namespace POCOGenerator
         }
 
         public Table Table { get; private set; }
+        public IDbObject DbObject { get { return this.Table; } }
         public string ClassName { get { return this.Table.ClassName; } }
         public string Error { get { return this.Table.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class TableGeneratingEventArgs : EventArgs
+    public sealed class TableGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal TableGeneratingEventArgs(Table table, string @namespace)
         {
@@ -159,6 +218,7 @@ namespace POCOGenerator
         }
 
         public Table Table { get; private set; }
+        public IDbObject DbObject { get { return this.Table; } }
         public string ClassName { get { return this.Table.ClassName; } }
         public string Error { get { return this.Table.Error; } }
         public string Namespace { get; set; }
@@ -166,7 +226,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class TablePOCOAsyncEventArgs : EventArgs
+    public sealed class TablePOCOAsyncEventArgs : EventArgs, IPOCOEventArgs
     {
         internal TablePOCOAsyncEventArgs(Table table, string poco)
         {
@@ -175,12 +235,13 @@ namespace POCOGenerator
         }
 
         public Table Table { get; private set; }
+        public IDbObject DbObject { get { return this.Table; } }
         public string ClassName { get { return this.Table.ClassName; } }
         public string Error { get { return this.Table.Error; } }
         public string POCO { get; private set; }
     }
 
-    public sealed class TablePOCOEventArgs : EventArgs
+    public sealed class TablePOCOEventArgs : EventArgs, IPOCOEventArgs, IStopGenerating
     {
         internal TablePOCOEventArgs(Table table, string poco)
         {
@@ -189,13 +250,14 @@ namespace POCOGenerator
         }
 
         public Table Table { get; private set; }
+        public IDbObject DbObject { get { return this.Table; } }
         public string ClassName { get { return this.Table.ClassName; } }
         public string Error { get { return this.Table.Error; } }
         public string POCO { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class TableGeneratedAsyncEventArgs : EventArgs
+    public sealed class TableGeneratedAsyncEventArgs : EventArgs, IObjectGeneratedEventArgs
     {
         internal TableGeneratedAsyncEventArgs(Table table, string @namespace)
         {
@@ -204,12 +266,13 @@ namespace POCOGenerator
         }
 
         public Table Table { get; private set; }
+        public IDbObject DbObject { get { return this.Table; } }
         public string ClassName { get { return this.Table.ClassName; } }
         public string Error { get { return this.Table.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class TableGeneratedEventArgs : EventArgs
+    public sealed class TableGeneratedEventArgs : EventArgs, IObjectGeneratedEventArgs, IStopGenerating
     {
         internal TableGeneratedEventArgs(Table table, string @namespace)
         {
@@ -218,20 +281,21 @@ namespace POCOGenerator
         }
 
         public Table Table { get; private set; }
+        public IDbObject DbObject { get { return this.Table; } }
         public string ClassName { get { return this.Table.ClassName; } }
         public string Error { get { return this.Table.Error; } }
         public string Namespace { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class TablesGeneratedAsyncEventArgs : EventArgs
+    public sealed class TablesGeneratedAsyncEventArgs : EventArgs, IObjectsGeneratedEventArgs
     {
         internal TablesGeneratedAsyncEventArgs()
         {
         }
     }
 
-    public sealed class TablesGeneratedEventArgs : EventArgs
+    public sealed class TablesGeneratedEventArgs : EventArgs, IObjectsGeneratedEventArgs, IStopGenerating
     {
         internal TablesGeneratedEventArgs()
         {
@@ -244,14 +308,14 @@ namespace POCOGenerator
 
     #region Complex Type Table
 
-    public sealed class ComplexTypeTablesGeneratingAsyncEventArgs : EventArgs
+    public sealed class ComplexTypeTablesGeneratingAsyncEventArgs : EventArgs, IObjectsGeneratingEventArgs
     {
         internal ComplexTypeTablesGeneratingAsyncEventArgs()
         {
         }
     }
 
-    public sealed class ComplexTypeTablesGeneratingEventArgs : EventArgs
+    public sealed class ComplexTypeTablesGeneratingEventArgs : EventArgs, IObjectsGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal ComplexTypeTablesGeneratingEventArgs()
         {
@@ -261,7 +325,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class ComplexTypeTableGeneratingAsyncEventArgs : EventArgs
+    public sealed class ComplexTypeTableGeneratingAsyncEventArgs : EventArgs, IObjectGeneratingEventArgs
     {
         internal ComplexTypeTableGeneratingAsyncEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
         {
@@ -270,12 +334,13 @@ namespace POCOGenerator
         }
 
         public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public IDbObject DbObject { get { return this.ComplexTypeTable; } }
         public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
         public string Error { get { return this.ComplexTypeTable.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class ComplexTypeTableGeneratingEventArgs : EventArgs
+    public sealed class ComplexTypeTableGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal ComplexTypeTableGeneratingEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
         {
@@ -284,6 +349,7 @@ namespace POCOGenerator
         }
 
         public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public IDbObject DbObject { get { return this.ComplexTypeTable; } }
         public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
         public string Error { get { return this.ComplexTypeTable.Error; } }
         public string Namespace { get; set; }
@@ -291,7 +357,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class ComplexTypeTablePOCOAsyncEventArgs : EventArgs
+    public sealed class ComplexTypeTablePOCOAsyncEventArgs : EventArgs, IPOCOEventArgs
     {
         internal ComplexTypeTablePOCOAsyncEventArgs(ComplexTypeTable complexTypeTable, string poco)
         {
@@ -300,12 +366,13 @@ namespace POCOGenerator
         }
 
         public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public IDbObject DbObject { get { return this.ComplexTypeTable; } }
         public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
         public string Error { get { return this.ComplexTypeTable.Error; } }
         public string POCO { get; private set; }
     }
 
-    public sealed class ComplexTypeTablePOCOEventArgs : EventArgs
+    public sealed class ComplexTypeTablePOCOEventArgs : EventArgs, IPOCOEventArgs, IStopGenerating
     {
         internal ComplexTypeTablePOCOEventArgs(ComplexTypeTable complexTypeTable, string poco)
         {
@@ -314,13 +381,14 @@ namespace POCOGenerator
         }
 
         public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public IDbObject DbObject { get { return this.ComplexTypeTable; } }
         public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
         public string Error { get { return this.ComplexTypeTable.Error; } }
         public string POCO { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class ComplexTypeTableGeneratedAsyncEventArgs : EventArgs
+    public sealed class ComplexTypeTableGeneratedAsyncEventArgs : EventArgs, IObjectGeneratedEventArgs
     {
         internal ComplexTypeTableGeneratedAsyncEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
         {
@@ -329,12 +397,13 @@ namespace POCOGenerator
         }
 
         public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public IDbObject DbObject { get { return this.ComplexTypeTable; } }
         public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
         public string Error { get { return this.ComplexTypeTable.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class ComplexTypeTableGeneratedEventArgs : EventArgs
+    public sealed class ComplexTypeTableGeneratedEventArgs : EventArgs, IObjectGeneratedEventArgs, IStopGenerating
     {
         internal ComplexTypeTableGeneratedEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
         {
@@ -343,20 +412,21 @@ namespace POCOGenerator
         }
 
         public ComplexTypeTable ComplexTypeTable { get; private set; }
+        public IDbObject DbObject { get { return this.ComplexTypeTable; } }
         public string ClassName { get { return this.ComplexTypeTable.ClassName; } }
         public string Error { get { return this.ComplexTypeTable.Error; } }
         public string Namespace { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class ComplexTypeTablesGeneratedAsyncEventArgs : EventArgs
+    public sealed class ComplexTypeTablesGeneratedAsyncEventArgs : EventArgs, IObjectsGeneratedEventArgs
     {
         internal ComplexTypeTablesGeneratedAsyncEventArgs()
         {
         }
     }
 
-    public sealed class ComplexTypeTablesGeneratedEventArgs : EventArgs
+    public sealed class ComplexTypeTablesGeneratedEventArgs : EventArgs, IObjectsGeneratedEventArgs, IStopGenerating
     {
         internal ComplexTypeTablesGeneratedEventArgs()
         {
@@ -369,14 +439,14 @@ namespace POCOGenerator
 
     #region View
 
-    public sealed class ViewsGeneratingAsyncEventArgs : EventArgs
+    public sealed class ViewsGeneratingAsyncEventArgs : EventArgs, IObjectsGeneratingEventArgs
     {
         internal ViewsGeneratingAsyncEventArgs()
         {
         }
     }
 
-    public sealed class ViewsGeneratingEventArgs : EventArgs
+    public sealed class ViewsGeneratingEventArgs : EventArgs, IObjectsGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal ViewsGeneratingEventArgs()
         {
@@ -386,7 +456,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class ViewGeneratingAsyncEventArgs : EventArgs
+    public sealed class ViewGeneratingAsyncEventArgs : EventArgs, IObjectGeneratingEventArgs
     {
         internal ViewGeneratingAsyncEventArgs(View view, string @namespace)
         {
@@ -395,12 +465,13 @@ namespace POCOGenerator
         }
 
         public View View { get; private set; }
+        public IDbObject DbObject { get { return this.View; } }
         public string ClassName { get { return this.View.ClassName; } }
         public string Error { get { return this.View.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class ViewGeneratingEventArgs : EventArgs
+    public sealed class ViewGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal ViewGeneratingEventArgs(View view, string @namespace)
         {
@@ -409,6 +480,7 @@ namespace POCOGenerator
         }
 
         public View View { get; private set; }
+        public IDbObject DbObject { get { return this.View; } }
         public string ClassName { get { return this.View.ClassName; } }
         public string Error { get { return this.View.Error; } }
         public string Namespace { get; set; }
@@ -416,7 +488,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class ViewPOCOAsyncEventArgs : EventArgs
+    public sealed class ViewPOCOAsyncEventArgs : EventArgs, IPOCOEventArgs
     {
         internal ViewPOCOAsyncEventArgs(View view, string poco)
         {
@@ -425,12 +497,13 @@ namespace POCOGenerator
         }
 
         public View View { get; private set; }
+        public IDbObject DbObject { get { return this.View; } }
         public string ClassName { get { return this.View.ClassName; } }
         public string Error { get { return this.View.Error; } }
         public string POCO { get; private set; }
     }
 
-    public sealed class ViewPOCOEventArgs : EventArgs
+    public sealed class ViewPOCOEventArgs : EventArgs, IPOCOEventArgs, IStopGenerating
     {
         internal ViewPOCOEventArgs(View view, string poco)
         {
@@ -439,13 +512,14 @@ namespace POCOGenerator
         }
 
         public View View { get; private set; }
+        public IDbObject DbObject { get { return this.View; } }
         public string ClassName { get { return this.View.ClassName; } }
         public string Error { get { return this.View.Error; } }
         public string POCO { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class ViewGeneratedAsyncEventArgs : EventArgs
+    public sealed class ViewGeneratedAsyncEventArgs : EventArgs, IObjectGeneratedEventArgs
     {
         internal ViewGeneratedAsyncEventArgs(View view, string @namespace)
         {
@@ -454,12 +528,13 @@ namespace POCOGenerator
         }
 
         public View View { get; private set; }
+        public IDbObject DbObject { get { return this.View; } }
         public string ClassName { get { return this.View.ClassName; } }
         public string Error { get { return this.View.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class ViewGeneratedEventArgs : EventArgs
+    public sealed class ViewGeneratedEventArgs : EventArgs, IObjectGeneratedEventArgs, IStopGenerating
     {
         internal ViewGeneratedEventArgs(View view, string @namespace)
         {
@@ -468,20 +543,21 @@ namespace POCOGenerator
         }
 
         public View View { get; private set; }
+        public IDbObject DbObject { get { return this.View; } }
         public string ClassName { get { return this.View.ClassName; } }
         public string Error { get { return this.View.Error; } }
         public string Namespace { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class ViewsGeneratedAsyncEventArgs : EventArgs
+    public sealed class ViewsGeneratedAsyncEventArgs : EventArgs, IObjectsGeneratedEventArgs
     {
         internal ViewsGeneratedAsyncEventArgs()
         {
         }
     }
 
-    public sealed class ViewsGeneratedEventArgs : EventArgs
+    public sealed class ViewsGeneratedEventArgs : EventArgs, IObjectsGeneratedEventArgs, IStopGenerating
     {
         internal ViewsGeneratedEventArgs()
         {
@@ -494,14 +570,14 @@ namespace POCOGenerator
 
     #region Procedure
 
-    public sealed class ProceduresGeneratingAsyncEventArgs : EventArgs
+    public sealed class ProceduresGeneratingAsyncEventArgs : EventArgs, IObjectsGeneratingEventArgs
     {
         internal ProceduresGeneratingAsyncEventArgs()
         {
         }
     }
 
-    public sealed class ProceduresGeneratingEventArgs : EventArgs
+    public sealed class ProceduresGeneratingEventArgs : EventArgs, IObjectsGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal ProceduresGeneratingEventArgs()
         {
@@ -511,7 +587,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class ProcedureGeneratingAsyncEventArgs : EventArgs
+    public sealed class ProcedureGeneratingAsyncEventArgs : EventArgs, IObjectGeneratingEventArgs
     {
         internal ProcedureGeneratingAsyncEventArgs(Procedure procedure, string @namespace)
         {
@@ -520,12 +596,13 @@ namespace POCOGenerator
         }
 
         public Procedure Procedure { get; private set; }
+        public IDbObject DbObject { get { return this.Procedure; } }
         public string ClassName { get { return this.Procedure.ClassName; } }
         public string Error { get { return this.Procedure.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class ProcedureGeneratingEventArgs : EventArgs
+    public sealed class ProcedureGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal ProcedureGeneratingEventArgs(Procedure procedure, string @namespace)
         {
@@ -534,6 +611,7 @@ namespace POCOGenerator
         }
 
         public Procedure Procedure { get; private set; }
+        public IDbObject DbObject { get { return this.Procedure; } }
         public string ClassName { get { return this.Procedure.ClassName; } }
         public string Error { get { return this.Procedure.Error; } }
         public string Namespace { get; set; }
@@ -541,7 +619,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class ProcedurePOCOAsyncEventArgs : EventArgs
+    public sealed class ProcedurePOCOAsyncEventArgs : EventArgs, IPOCOEventArgs
     {
         internal ProcedurePOCOAsyncEventArgs(Procedure procedure, string poco)
         {
@@ -550,12 +628,13 @@ namespace POCOGenerator
         }
 
         public Procedure Procedure { get; private set; }
+        public IDbObject DbObject { get { return this.Procedure; } }
         public string ClassName { get { return this.Procedure.ClassName; } }
         public string Error { get { return this.Procedure.Error; } }
         public string POCO { get; private set; }
     }
 
-    public sealed class ProcedurePOCOEventArgs : EventArgs
+    public sealed class ProcedurePOCOEventArgs : EventArgs, IPOCOEventArgs, IStopGenerating
     {
         internal ProcedurePOCOEventArgs(Procedure procedure, string poco)
         {
@@ -564,13 +643,14 @@ namespace POCOGenerator
         }
 
         public Procedure Procedure { get; private set; }
+        public IDbObject DbObject { get { return this.Procedure; } }
         public string ClassName { get { return this.Procedure.ClassName; } }
         public string Error { get { return this.Procedure.Error; } }
         public string POCO { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class ProcedureGeneratedAsyncEventArgs : EventArgs
+    public sealed class ProcedureGeneratedAsyncEventArgs : EventArgs, IObjectGeneratedEventArgs
     {
         internal ProcedureGeneratedAsyncEventArgs(Procedure procedure, string @namespace)
         {
@@ -579,12 +659,13 @@ namespace POCOGenerator
         }
 
         public Procedure Procedure { get; private set; }
+        public IDbObject DbObject { get { return this.Procedure; } }
         public string ClassName { get { return this.Procedure.ClassName; } }
         public string Error { get { return this.Procedure.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class ProcedureGeneratedEventArgs : EventArgs
+    public sealed class ProcedureGeneratedEventArgs : EventArgs, IObjectGeneratedEventArgs, IStopGenerating
     {
         internal ProcedureGeneratedEventArgs(Procedure procedure, string @namespace)
         {
@@ -593,20 +674,21 @@ namespace POCOGenerator
         }
 
         public Procedure Procedure { get; private set; }
+        public IDbObject DbObject { get { return this.Procedure; } }
         public string ClassName { get { return this.Procedure.ClassName; } }
         public string Error { get { return this.Procedure.Error; } }
         public string Namespace { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class ProceduresGeneratedAsyncEventArgs : EventArgs
+    public sealed class ProceduresGeneratedAsyncEventArgs : EventArgs, IObjectsGeneratedEventArgs
     {
         internal ProceduresGeneratedAsyncEventArgs()
         {
         }
     }
 
-    public sealed class ProceduresGeneratedEventArgs : EventArgs
+    public sealed class ProceduresGeneratedEventArgs : EventArgs, IObjectsGeneratedEventArgs, IStopGenerating
     {
         internal ProceduresGeneratedEventArgs()
         {
@@ -619,14 +701,14 @@ namespace POCOGenerator
 
     #region Function
 
-    public sealed class FunctionsGeneratingAsyncEventArgs : EventArgs
+    public sealed class FunctionsGeneratingAsyncEventArgs : EventArgs, IObjectsGeneratingEventArgs
     {
         internal FunctionsGeneratingAsyncEventArgs()
         {
         }
     }
 
-    public sealed class FunctionsGeneratingEventArgs : EventArgs
+    public sealed class FunctionsGeneratingEventArgs : EventArgs, IObjectsGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal FunctionsGeneratingEventArgs()
         {
@@ -636,7 +718,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class FunctionGeneratingAsyncEventArgs : EventArgs
+    public sealed class FunctionGeneratingAsyncEventArgs : EventArgs, IObjectGeneratingEventArgs
     {
         internal FunctionGeneratingAsyncEventArgs(Function function, string @namespace)
         {
@@ -645,12 +727,13 @@ namespace POCOGenerator
         }
 
         public Function Function { get; private set; }
+        public IDbObject DbObject { get { return this.Function; } }
         public string ClassName { get { return this.Function.ClassName; } }
         public string Error { get { return this.Function.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class FunctionGeneratingEventArgs : EventArgs
+    public sealed class FunctionGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal FunctionGeneratingEventArgs(Function function, string @namespace)
         {
@@ -659,6 +742,7 @@ namespace POCOGenerator
         }
 
         public Function Function { get; private set; }
+        public IDbObject DbObject { get { return this.Function; } }
         public string ClassName { get { return this.Function.ClassName; } }
         public string Error { get { return this.Function.Error; } }
         public string Namespace { get; set; }
@@ -666,7 +750,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class FunctionPOCOAsyncEventArgs : EventArgs
+    public sealed class FunctionPOCOAsyncEventArgs : EventArgs, IPOCOEventArgs
     {
         internal FunctionPOCOAsyncEventArgs(Function function, string poco)
         {
@@ -675,12 +759,13 @@ namespace POCOGenerator
         }
 
         public Function Function { get; private set; }
+        public IDbObject DbObject { get { return this.Function; } }
         public string ClassName { get { return this.Function.ClassName; } }
         public string Error { get { return this.Function.Error; } }
         public string POCO { get; private set; }
     }
 
-    public sealed class FunctionPOCOEventArgs : EventArgs
+    public sealed class FunctionPOCOEventArgs : EventArgs, IPOCOEventArgs, IStopGenerating
     {
         internal FunctionPOCOEventArgs(Function function, string poco)
         {
@@ -689,13 +774,14 @@ namespace POCOGenerator
         }
 
         public Function Function { get; private set; }
+        public IDbObject DbObject { get { return this.Function; } }
         public string ClassName { get { return this.Function.ClassName; } }
         public string Error { get { return this.Function.Error; } }
         public string POCO { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class FunctionGeneratedAsyncEventArgs : EventArgs
+    public sealed class FunctionGeneratedAsyncEventArgs : EventArgs, IObjectGeneratedEventArgs
     {
         internal FunctionGeneratedAsyncEventArgs(Function function, string @namespace)
         {
@@ -704,12 +790,13 @@ namespace POCOGenerator
         }
 
         public Function Function { get; private set; }
+        public IDbObject DbObject { get { return this.Function; } }
         public string ClassName { get { return this.Function.ClassName; } }
         public string Error { get { return this.Function.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class FunctionGeneratedEventArgs : EventArgs
+    public sealed class FunctionGeneratedEventArgs : EventArgs, IObjectGeneratedEventArgs, IStopGenerating
     {
         internal FunctionGeneratedEventArgs(Function function, string @namespace)
         {
@@ -718,20 +805,21 @@ namespace POCOGenerator
         }
 
         public Function Function { get; private set; }
+        public IDbObject DbObject { get { return this.Function; } }
         public string ClassName { get { return this.Function.ClassName; } }
         public string Error { get { return this.Function.Error; } }
         public string Namespace { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class FunctionsGeneratedAsyncEventArgs : EventArgs
+    public sealed class FunctionsGeneratedAsyncEventArgs : EventArgs, IObjectsGeneratedEventArgs
     {
         internal FunctionsGeneratedAsyncEventArgs()
         {
         }
     }
 
-    public sealed class FunctionsGeneratedEventArgs : EventArgs
+    public sealed class FunctionsGeneratedEventArgs : EventArgs, IObjectsGeneratedEventArgs, IStopGenerating
     {
         internal FunctionsGeneratedEventArgs()
         {
@@ -744,14 +832,14 @@ namespace POCOGenerator
 
     #region TVP
 
-    public sealed class TVPsGeneratingAsyncEventArgs : EventArgs
+    public sealed class TVPsGeneratingAsyncEventArgs : EventArgs, IObjectsGeneratingEventArgs
     {
         internal TVPsGeneratingAsyncEventArgs()
         {
         }
     }
 
-    public sealed class TVPsGeneratingEventArgs : EventArgs
+    public sealed class TVPsGeneratingEventArgs : EventArgs, IObjectsGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal TVPsGeneratingEventArgs()
         {
@@ -761,7 +849,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class TVPGeneratingAsyncEventArgs : EventArgs
+    public sealed class TVPGeneratingAsyncEventArgs : EventArgs, IObjectGeneratingEventArgs
     {
         internal TVPGeneratingAsyncEventArgs(TVP tvp, string @namespace)
         {
@@ -770,12 +858,13 @@ namespace POCOGenerator
         }
 
         public TVP TVP { get; private set; }
+        public IDbObject DbObject { get { return this.TVP; } }
         public string ClassName { get { return this.TVP.ClassName; } }
         public string Error { get { return this.TVP.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class TVPGeneratingEventArgs : EventArgs
+    public sealed class TVPGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
     {
         internal TVPGeneratingEventArgs(TVP tvp, string @namespace)
         {
@@ -784,6 +873,7 @@ namespace POCOGenerator
         }
 
         public TVP TVP { get; private set; }
+        public IDbObject DbObject { get { return this.TVP; } }
         public string ClassName { get { return this.TVP.ClassName; } }
         public string Error { get { return this.TVP.Error; } }
         public string Namespace { get; set; }
@@ -791,7 +881,7 @@ namespace POCOGenerator
         public bool Stop { get; set; }
     }
 
-    public sealed class TVPPOCOAsyncEventArgs : EventArgs
+    public sealed class TVPPOCOAsyncEventArgs : EventArgs, IPOCOEventArgs
     {
         internal TVPPOCOAsyncEventArgs(TVP tvp, string poco)
         {
@@ -800,12 +890,13 @@ namespace POCOGenerator
         }
 
         public TVP TVP { get; private set; }
+        public IDbObject DbObject { get { return this.TVP; } }
         public string ClassName { get { return this.TVP.ClassName; } }
         public string Error { get { return this.TVP.Error; } }
         public string POCO { get; private set; }
     }
 
-    public sealed class TVPPOCOEventArgs : EventArgs
+    public sealed class TVPPOCOEventArgs : EventArgs, IPOCOEventArgs, IStopGenerating
     {
         internal TVPPOCOEventArgs(TVP tvp, string poco)
         {
@@ -814,13 +905,14 @@ namespace POCOGenerator
         }
 
         public TVP TVP { get; private set; }
+        public IDbObject DbObject { get { return this.TVP; } }
         public string ClassName { get { return this.TVP.ClassName; } }
         public string Error { get { return this.TVP.Error; } }
         public string POCO { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class TVPGeneratedAsyncEventArgs : EventArgs
+    public sealed class TVPGeneratedAsyncEventArgs : EventArgs, IObjectGeneratedEventArgs
     {
         internal TVPGeneratedAsyncEventArgs(TVP tvp, string @namespace)
         {
@@ -829,12 +921,13 @@ namespace POCOGenerator
         }
 
         public TVP TVP { get; private set; }
+        public IDbObject DbObject { get { return this.TVP; } }
         public string ClassName { get { return this.TVP.ClassName; } }
         public string Error { get { return this.TVP.Error; } }
         public string Namespace { get; private set; }
     }
 
-    public sealed class TVPGeneratedEventArgs : EventArgs
+    public sealed class TVPGeneratedEventArgs : EventArgs, IObjectGeneratedEventArgs, IStopGenerating
     {
         internal TVPGeneratedEventArgs(TVP tvp, string @namespace)
         {
@@ -843,20 +936,21 @@ namespace POCOGenerator
         }
 
         public TVP TVP { get; private set; }
+        public IDbObject DbObject { get { return this.TVP; } }
         public string ClassName { get { return this.TVP.ClassName; } }
         public string Error { get { return this.TVP.Error; } }
         public string Namespace { get; private set; }
         public bool Stop { get; set; }
     }
 
-    public sealed class TVPsGeneratedAsyncEventArgs : EventArgs
+    public sealed class TVPsGeneratedAsyncEventArgs : EventArgs, IObjectsGeneratedEventArgs
     {
         internal TVPsGeneratedAsyncEventArgs()
         {
         }
     }
 
-    public sealed class TVPsGeneratedEventArgs : EventArgs
+    public sealed class TVPsGeneratedEventArgs : EventArgs, IObjectsGeneratedEventArgs, IStopGenerating
     {
         internal TVPsGeneratedEventArgs()
         {
