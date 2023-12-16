@@ -406,7 +406,7 @@ Right now, there is no plan to wrap the class library in a NuGet package, and it
 
 ### Instantiation
 
-Output-empty generator. The generator doesn't write to any underline output source. This one is useful in conjunction with events. Example at [EventsDemo](#eventsdemo "EventsDemo").
+Output-empty generator. The generator doesn't write to any underline output source. This one is useful in conjunction with events.
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
@@ -505,6 +505,8 @@ generator.Settings.DatabaseObjects.Tables.Include.Add("Sales.*");
 
 ### Settings
 
+#### Settings.Connection
+
 Settings group `Connection`. These settings determine the connection to the server. The setting `RDBMS` is a hint, for the generator, what is the server type and what is the appropriate structure of the connection string. It is unnecessary to set it prior to establishing a connection. When `RDBMS` is set to `None`, the generator will try to set the `RDBMS` setting based on the connection string. If it doesn't succeed, the return value will be an error. Setting `RDBMS` beforehand can be useful if the connection string is valid for more than one RDBMS.
 
 ```cs
@@ -526,6 +528,8 @@ generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.Connection.RDBMS = RDBMS.SQLServer;
 ```
+
+#### Settings.POCO
 
 Settings group `POCO`. These settings determine the structure of the POCO. Most settings are explained at [POCO Settings](#poco-settings "POCO Settings").
 
@@ -554,13 +558,15 @@ generator.Settings.POCO.Tab = "    "; // 4 spaces
 
 There are two settings that don't appear in [POCO Generator UI](#poco-generator-ui "POCO Generator UI") - `WrapAroundEachClass` and `Tab`.
 
-The `WrapAroundEachClass` setting determines whether to wrap a namespace and a using directive clause around each class individually. This is useful when generating to multiple outputs, such as multiple files. Example at [MultipleFilesDemo](#multiplefilesdemo "MultipleFilesDemo").
+The `WrapAroundEachClass` setting determines whether to wrap a namespace and using directives around each class individually. This is useful when generating to multiple outputs, such as multiple files. Example at [MultipleFilesDemo](#multiplefilesdemo "MultipleFilesDemo").
 
-The `Tab` setting determines the indention of the code. The default is 4 spaces. Changing the indentation from spaces to a tab character:
+The `Tab` setting determines the indention of the code. The default is 4 spaces. To change the indentation from spaces to a tab character:
 
 ```cs
 generator.Settings.POCO.Tab = "\t";
 ```
+
+#### Settings.ClassName
 
 Settings group `ClassName`. These settings modify the initial class name. All settings are explained at [Class Name Settings](#class-name-settings "Class Name Settings").
 
@@ -583,6 +589,8 @@ generator.Settings.ClassName.Prefix = null;
 generator.Settings.ClassName.Suffix = null;
 ```
 
+#### Settings.NavigationProperties
+
 Settings group `NavigationProperties`. These settings enable navigation properties and determine how they are constructed. All settings are explained at [Navigation Properties Settings](#navigation-properties-settings "Navigation Properties Settings").
 
 ```cs
@@ -596,6 +604,8 @@ generator.Settings.NavigationProperties.IListNavigationProperties = false;
 generator.Settings.NavigationProperties.ICollectionNavigationProperties = false;
 generator.Settings.NavigationProperties.IEnumerableNavigationProperties = false;
 ```
+
+#### Settings.EFAnnotations
 
 Settings group `EFAnnotations`. These settings add Code-First Entity Framework attributes to POCO classes. All settings are explained at [EF Annotations Settings](#ef-annotations-settings "EF Annotations Settings").
 
@@ -613,6 +623,8 @@ generator.Settings.EFAnnotations.Index = false;
 generator.Settings.EFAnnotations.ForeignKeyAndInverseProperty = false;
 ```
 
+#### Settings.SyntaxHighlight
+
 Settings group `SyntaxHighlight`. These settings determine the syntax highlight colors, when coloring is applicable. Examples at [ConsoleColorDarkThemeDemo](#consolecolordarkthemedemo "ConsoleColorDarkThemeDemo") and [RichTextBoxDemo](#richtextboxdemo "RichTextBoxDemo"). The following are the syntax highlight default colors.
 
 ```cs
@@ -627,13 +639,315 @@ generator.Settings.SyntaxHighlight.Background = Color.FromArgb(255, 255, 255); /
 
 ### Events
 
+POCO Generator provides access to the its processing products through the use of events. The user subscribes to events prior to running the generator. Once the generator runs, it will fire any registered event with an event argument. The event argument may contain 1. control properties over what the generator will process (`Skip` and `Stop`), 2. class objects that represent the database objects, such as tables, views, procedures and more, 3. the POCO class text.
+
+All events have synchronized and asynchronized versions. The name of asynchronized events end with `Async`. The asynchronized event is always raised first and then the synchronized event (if they are subscribed to). The synchronized event will block the progress of the generator until all the event handlers return. The asynchronized event will not block the generator, even when an unhandled error is thrown in the asynchronized event handler. Once the asynchronized event is fired, the generator continues its run.
+
+Example at [EventsDemo](#eventsdemo "EventsDemo") shows all the synchronized events that the generator fires while running and all their event argument properties.
+
+For synchronized events, the event argument has a `Stop` property. When `Stop` is set to `true`, the generator stops immediately.
+
+```cs
+// Tables Generating
+generator.TablesGenerating += (object sender, TablesGeneratingEventArgs e) =>
+{
+    // stop the generator
+    e.Stop = true;
+};
+
+// Table Generating
+generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
+{
+    // stop the generator
+    e.Stop = true;
+};
+```
+
+Events with `Generating` in their name are fired _before_ the class object (or a group of class objects) is processed. For synchronized events, the event argument has a `Skip` property. When `Skip` is set to `true`, the generator skips processing the current class object and move on to the next one.
+
+```cs
+// Tables Generating
+generator.TablesGenerating += (object sender, TablesGeneratingEventArgs e) =>
+{
+    // skip processing all tables and move on to views
+    e.Skip = true;
+};
+
+// Table Generating
+generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
+{
+    // skip processing the current table and move on to the next table
+    e.Skip = true;
+};
+```
+
+Example of how to use `Skip` and `Stop` at [SkipAndStopDemo](#skipandstopdemo "SkipAndStopDemo").
+
+Events with `POCO` in their name are fired _after_ the generator is done processing the class object and has the POCO class text. For synchronized and asynchronized events, the event argument has a `POCO` property which holds the class text.
+
+```cs
+// Table POCO
+generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
+{
+    string poco = e.POCO;
+};
+```
+
+Events with `Generated` in their name are fired _after_ the class object (or a group of class objects) is processed.
+
+```cs
+// Table Generated
+generator.TableGenerated += (object sender, TableGeneratedEventArgs e) =>
+{
+    // stop the generator
+    e.Stop = false;
+};
+
+// Tables Generated
+generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
+{
+    // stop the generator
+    e.Stop = false;
+};
+```
+
+#### Events Order
+
+The Server Built event (`ServerBuiltAsync`, `ServerBuilt`) is fired after the POCO Generator have built internally all the class objects, `Server`, `Database`, `Table` and more. The event is fired before any other event.
+
+Example at [ServerTreeDemo](#servertreedemo "ServerTreeDemo").
+
+```cs
+// Server Built
+generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>
+{
+    // server class object
+    Server server = e.Server;
+    e.Stop = false;
+};
+```
+
+For each group of class objects
+- Group generating event is fired once before the the group is processed.
+- For each class object in the group
+    - Class object generating event is fired.
+    - POCO class text generated event is fired.
+    - Class object generated event is fired.
+- Group generated event is fired once after the the group is processed.
+
+The following code snippet shows the order of synchronized events that are fired when the generator processes tables. It also lists the properties that are accessible from the various event arguments. The other object types - complex type tables, views, procedures, functions, TVPs - have similar events, with the name of the object type set as the prefix of the event names.
+
+```cs
+// Tables Generating event fire before all the tables are processed
+generator.TablesGenerating += (object sender, TablesGeneratingEventArgs e) =>
+{
+    e.Skip = false;
+    e.Stop = false;
+};
+
+// Table Generating event fire for each table before it is processed
+generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
+{
+    // table class object
+    Table table = e.Table;
+    // poco class name based on Settings.ClassName
+    string className = e.ClassName;
+    // custom namespace based on Settings.POCO.Namespace
+    e.Namespace = e.Namespace;
+    string error = e.Error;
+    e.Skip = false;
+    e.Stop = false;
+};
+
+// Table POCO event fire for each table after the POCO class text is generated
+generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
+{
+    Table table = e.Table;
+    string className = e.ClassName;
+    // poco class text
+    string poco = e.POCO;
+    string error = e.Error;
+    e.Stop = false;
+};
+
+// Table Generated event fire for each table after it is processed
+generator.TableGenerated += (object sender, TableGeneratedEventArgs e) =>
+{
+    Table table = e.Table;
+    string className = e.ClassName;
+    string @namespace = e.Namespace;
+    string error = e.Error;
+    e.Stop = false;
+};
+
+// Tables Generated event fire after all the tables are processed
+generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
+{
+    e.Stop = false;
+};
+```
+
+List of all events. The events are listed in order of execution.
+
+```cs
+// Server Built
+EventHandler<ServerBuiltAsyncEventArgs> ServerBuiltAsync;
+EventHandler<ServerBuiltEventArgs> ServerBuilt;
+
+/**************************************************************************/
+
+// Server Generating
+EventHandler<ServerGeneratingAsyncEventArgs> ServerGeneratingAsync;
+EventHandler<ServerGeneratingEventArgs> ServerGenerating;
+
+/**************************************************************************/
+
+// Database Generating
+EventHandler<DatabaseGeneratingAsyncEventArgs> DatabaseGeneratingAsync;
+EventHandler<DatabaseGeneratingEventArgs> DatabaseGenerating;
+
+/**************************************************************************/
+
+/* Tables */
+
+// Tables Generating
+EventHandler<TablesGeneratingAsyncEventArgs> TablesGeneratingAsync;
+EventHandler<TablesGeneratingEventArgs> TablesGenerating;
+
+// Table
+EventHandler<TableGeneratingAsyncEventArgs> TableGeneratingAsync;
+EventHandler<TableGeneratingEventArgs> TableGenerating;
+EventHandler<TablePOCOAsyncEventArgs> TablePOCOAsync;
+EventHandler<TablePOCOEventArgs> TablePOCO;
+EventHandler<TableGeneratedAsyncEventArgs> TableGeneratedAsync;
+EventHandler<TableGeneratedEventArgs> TableGenerated;
+
+// Tables Generated
+EventHandler<TablesGeneratedAsyncEventArgs> TablesGeneratedAsync;
+EventHandler<TablesGeneratedEventArgs> TablesGenerated;
+
+/**************************************************************************/
+
+/* Complex Type Tables */
+
+// Complex Type Tables Generating
+EventHandler<ComplexTypeTablesGeneratingAsyncEventArgs> ComplexTypeTablesGeneratingAsync;
+EventHandler<ComplexTypeTablesGeneratingEventArgs> ComplexTypeTablesGenerating;
+
+// Complex Type Table
+EventHandler<ComplexTypeTableGeneratingAsyncEventArgs> ComplexTypeTableGeneratingAsync;
+EventHandler<ComplexTypeTableGeneratingEventArgs> ComplexTypeTableGenerating;
+EventHandler<ComplexTypeTablePOCOAsyncEventArgs> ComplexTypeTablePOCOAsync;
+EventHandler<ComplexTypeTablePOCOEventArgs> ComplexTypeTablePOCO;
+EventHandler<ComplexTypeTableGeneratedAsyncEventArgs> ComplexTypeTableGeneratedAsync;
+EventHandler<ComplexTypeTableGeneratedEventArgs> ComplexTypeTableGenerated;
+
+// Complex Type Tables Generated
+EventHandler<ComplexTypeTablesGeneratedAsyncEventArgs> ComplexTypeTablesGeneratedAsync;
+EventHandler<ComplexTypeTablesGeneratedEventArgs> ComplexTypeTablesGenerated;
+
+/**************************************************************************/
+
+/* Views */
+
+// Views Generating
+EventHandler<ViewsGeneratingAsyncEventArgs> ViewsGeneratingAsync;
+EventHandler<ViewsGeneratingEventArgs> ViewsGenerating;
+
+// View
+EventHandler<ViewGeneratingAsyncEventArgs> ViewGeneratingAsync;
+EventHandler<ViewGeneratingEventArgs> ViewGenerating;
+EventHandler<ViewPOCOAsyncEventArgs> ViewPOCOAsync;
+EventHandler<ViewPOCOEventArgs> ViewPOCO;
+EventHandler<ViewGeneratedAsyncEventArgs> ViewGeneratedAsync;
+EventHandler<ViewGeneratedEventArgs> ViewGenerated;
+
+// Views Generated
+EventHandler<ViewsGeneratedAsyncEventArgs> ViewsGeneratedAsync;
+EventHandler<ViewsGeneratedEventArgs> ViewsGenerated;
+
+/**************************************************************************/
+
+/* Procedures */
+
+// Procedures Generating
+EventHandler<ProceduresGeneratingAsyncEventArgs> ProceduresGeneratingAsync;
+EventHandler<ProceduresGeneratingEventArgs> ProceduresGenerating;
+
+// Procedure
+EventHandler<ProcedureGeneratingAsyncEventArgs> ProcedureGeneratingAsync;
+EventHandler<ProcedureGeneratingEventArgs> ProcedureGenerating;
+EventHandler<ProcedurePOCOAsyncEventArgs> ProcedurePOCOAsync;
+EventHandler<ProcedurePOCOEventArgs> ProcedurePOCO;
+EventHandler<ProcedureGeneratedAsyncEventArgs> ProcedureGeneratedAsync;
+EventHandler<ProcedureGeneratedEventArgs> ProcedureGenerated;
+
+// Procedures Generated
+EventHandler<ProceduresGeneratedAsyncEventArgs> ProceduresGeneratedAsync;
+EventHandler<ProceduresGeneratedEventArgs> ProceduresGenerated;
+
+/**************************************************************************/
+
+/* Functions */
+
+// Functions Generating
+EventHandler<FunctionsGeneratingAsyncEventArgs> FunctionsGeneratingAsync;
+EventHandler<FunctionsGeneratingEventArgs> FunctionsGenerating;
+
+// Function
+EventHandler<FunctionGeneratingAsyncEventArgs> FunctionGeneratingAsync;
+EventHandler<FunctionGeneratingEventArgs> FunctionGenerating;
+EventHandler<FunctionPOCOAsyncEventArgs> FunctionPOCOAsync;
+EventHandler<FunctionPOCOEventArgs> FunctionPOCO;
+EventHandler<FunctionGeneratedAsyncEventArgs> FunctionGeneratedAsync;
+EventHandler<FunctionGeneratedEventArgs> FunctionGenerated;
+
+// Functions Generated
+EventHandler<FunctionsGeneratedAsyncEventArgs> FunctionsGeneratedAsync;
+EventHandler<FunctionsGeneratedEventArgs> FunctionsGenerated;
+
+/**************************************************************************/
+
+/* TVPs */
+
+// TVPs Generating
+EventHandler<TVPsGeneratingAsyncEventArgs> TVPsGeneratingAsync;
+EventHandler<TVPsGeneratingEventArgs> TVPsGenerating;
+
+// TVP
+EventHandler<TVPGeneratingAsyncEventArgs> TVPGeneratingAsync;
+EventHandler<TVPGeneratingEventArgs> TVPGenerating;
+EventHandler<TVPPOCOAsyncEventArgs> TVPPOCOAsync;
+EventHandler<TVPPOCOEventArgs> TVPPOCO;
+EventHandler<TVPGeneratedAsyncEventArgs> TVPGeneratedAsync;
+EventHandler<TVPGeneratedEventArgs> TVPGenerated;
+
+// TVPs Generated
+EventHandler<TVPsGeneratedAsyncEventArgs> TVPsGeneratedAsync;
+EventHandler<TVPsGeneratedEventArgs> TVPsGenerated;
+
+/**************************************************************************/
+
+// Database Generated
+EventHandler<DatabaseGeneratedAsyncEventArgs> DatabaseGeneratedAsync;
+EventHandler<DatabaseGeneratedEventArgs> DatabaseGenerated;
+
+/**************************************************************************/
+
+// Server Generated
+EventHandler<ServerGeneratedAsyncEventArgs> ServerGeneratedAsync;
+EventHandler<ServerGeneratedEventArgs> ServerGenerated;
+```
+
 ### Generate
+
+make copy of settings and event.
 
 ### Generate Again
 
 ### Return Value and Error Handling
 
-
+Unhandled error thrown in a synchronized event will stop the generator from continuing, the generator's return value will be `GeneratorResults.UnexpectedError` and The generator's `Error` property will be set with the error. Unhandled error thrown in an asynchronized event will be ignored by the generator and it will continue running.
 
 ## Demos
 
@@ -1102,9 +1416,9 @@ public class Address
 #### EventsDemo
 Demo code [EventsDemo/Program.cs](Demos/Events/EventsDemo/Program.cs "EventsDemo/Program.cs").
 
-The demo shows all the events the generator fires while running, how to register to them and lists the properties their event arguments expose.
+The demo shows all the synchronized events that the generator fires while running, how to subscribe to them and lists the properties their event arguments expose.
 
-The generator doesn't write directly to the Console, but rather create an output-empty generator and then register to events that handle POCO text. The POCO text is then passed from the event argument and written to the Console.
+The generator doesn't write directly to the Console, but rather create an output-empty generator and then subscribe to events that handle POCO class text. The POCO class text is then passed from the event argument and written to the Console.
 
 ```cs
 IGenerator generator = GeneratorFactory.GetGenerator();
@@ -1186,8 +1500,8 @@ generator.TableGenerating += (object sender, TableGeneratingEventArgs e) =>
     e.Namespace = @namespace + "." + database + "." + dbGroup + "." + schema;
 };
 
-// TablePOCO event fire for each table after the POCO text is generated
-// save table POCO text to file
+// TablePOCO event fire for each table after the POCO class text is generated
+// save table POCO class text to file
 generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
 {
     // schema folder
