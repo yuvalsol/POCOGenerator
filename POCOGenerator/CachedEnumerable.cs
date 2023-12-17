@@ -1,6 +1,6 @@
 ﻿namespace System.Collections.Generic
 {
-    public sealed class CachedEnumerable<TSource, TResult> : IEnumerable<TResult>
+    internal sealed class CachedEnumerable<TSource, TResult> : IEnumerable<TResult>
     {
         private readonly IEnumerable<TSource> source;
         private readonly Func<TSource, TResult> selector;

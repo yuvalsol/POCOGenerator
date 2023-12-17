@@ -51,6 +51,7 @@
     <Compile Include="..\Solution Items\SolutionAssemblyInfo.cs">
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CachedEnumerable.cs" />
     <Compile Include="DatabaseAccessibleObjects.cs" />
     <Compile Include="EventExtensions.cs" />
     <Compile Include="Objects\Database.cs" />
