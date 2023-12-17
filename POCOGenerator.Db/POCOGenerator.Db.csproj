@@ -46,6 +46,7 @@
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ConnectionStringParser.cs" />
+    <Compile Include="DataTableExtensions.cs" />
     <Compile Include="DbHelper.cs" />
     <Compile Include="DbObjects\ComplexTypeTable.cs" />
     <Compile Include="DbObjects\ComplexTypeTableColumn.cs" />
