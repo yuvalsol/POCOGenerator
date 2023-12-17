@@ -645,7 +645,7 @@ All events have synchronized and asynchronized versions. The name of asynchroniz
 
 Example at [EventsDemo](#eventsdemo "EventsDemo") shows all the synchronized events that the generator fires while running and all their event argument properties.
 
-For synchronized events, the event argument has a `Stop` property. When `Stop` is set to `true`, the generator stops immediately.
+For synchronized events, the event argument has a `Stop` property. When `Stop` is set to `true`, the generator stops immediately. If two or more event handlers were subscribed to a synchronized event and the first event handler stops the generator, the following event handlers will not be invoked.
 
 ```cs
 // Tables Generating
@@ -728,12 +728,14 @@ generator.ServerBuilt += (object sender, ServerBuiltEventArgs e) =>
 ```
 
 For each group of class objects
-- Group generating event is fired once before the the group is processed.
-- For each class object in the group
-    - Class object generating event is fired.
-    - POCO class text generated event is fired.
-    - Class object generated event is fired.
-- Group generated event is fired once after the the group is processed.
+1. Group generating event is fired once before the group is processed.
+2. For each class object in the group
+    1. Class object generating event is fired.
+    2. POCO class text generated event is fired.
+    3. Class object generated event is fired.
+3. Group generated event is fired once after the group is processed.
+
+If a group doesn't exist in the database or was not selected for processing, the generator will not fire any of that group events, even if event handlers were subscribed to them. For example, if the database has no views, the generator will not fire any views events, such as `ViewsGenerating`, `ViewGenerating`, `ViewPOCO` and other view events.
 
 The following code snippet shows the order of synchronized events that are fired when the generator processes tables. It also lists the properties that are accessible from the various event arguments. The other object types - complex type tables, views, procedures, functions, TVPs - have similar events, with the name of the object type set as the prefix of the event names.
 
@@ -789,155 +791,187 @@ generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
 
 List of all events. The events are listed in order of execution.
 
+<details>
+<summary>Server Built</summary>
+
 ```cs
 // Server Built
-EventHandler<ServerBuiltAsyncEventArgs> ServerBuiltAsync;
-EventHandler<ServerBuiltEventArgs> ServerBuilt;
+event EventHandler<ServerBuiltAsyncEventArgs> ServerBuiltAsync;
+event EventHandler<ServerBuiltEventArgs> ServerBuilt;
+```
+</details>
 
-/**************************************************************************/
+<details>
+<summary>Server Generating</summary>
 
+```cs
 // Server Generating
-EventHandler<ServerGeneratingAsyncEventArgs> ServerGeneratingAsync;
-EventHandler<ServerGeneratingEventArgs> ServerGenerating;
+event EventHandler<ServerGeneratingAsyncEventArgs> ServerGeneratingAsync;
+event EventHandler<ServerGeneratingEventArgs> ServerGenerating;
+```
+</details>
 
-/**************************************************************************/
+<details>
+<summary>Database Generating</summary>
 
+```cs
 // Database Generating
-EventHandler<DatabaseGeneratingAsyncEventArgs> DatabaseGeneratingAsync;
-EventHandler<DatabaseGeneratingEventArgs> DatabaseGenerating;
+event EventHandler<DatabaseGeneratingAsyncEventArgs> DatabaseGeneratingAsync;
+event EventHandler<DatabaseGeneratingEventArgs> DatabaseGenerating;
+```
+</details>
 
-/**************************************************************************/
+<details>
+<summary>Tables</summary>
 
-/* Tables */
-
+```cs
 // Tables Generating
-EventHandler<TablesGeneratingAsyncEventArgs> TablesGeneratingAsync;
-EventHandler<TablesGeneratingEventArgs> TablesGenerating;
+event EventHandler<TablesGeneratingAsyncEventArgs> TablesGeneratingAsync;
+event EventHandler<TablesGeneratingEventArgs> TablesGenerating;
 
 // Table
-EventHandler<TableGeneratingAsyncEventArgs> TableGeneratingAsync;
-EventHandler<TableGeneratingEventArgs> TableGenerating;
-EventHandler<TablePOCOAsyncEventArgs> TablePOCOAsync;
-EventHandler<TablePOCOEventArgs> TablePOCO;
-EventHandler<TableGeneratedAsyncEventArgs> TableGeneratedAsync;
-EventHandler<TableGeneratedEventArgs> TableGenerated;
+event EventHandler<TableGeneratingAsyncEventArgs> TableGeneratingAsync;
+event EventHandler<TableGeneratingEventArgs> TableGenerating;
+event EventHandler<TablePOCOAsyncEventArgs> TablePOCOAsync;
+event EventHandler<TablePOCOEventArgs> TablePOCO;
+event EventHandler<TableGeneratedAsyncEventArgs> TableGeneratedAsync;
+event EventHandler<TableGeneratedEventArgs> TableGenerated;
 
 // Tables Generated
-EventHandler<TablesGeneratedAsyncEventArgs> TablesGeneratedAsync;
-EventHandler<TablesGeneratedEventArgs> TablesGenerated;
+event EventHandler<TablesGeneratedAsyncEventArgs> TablesGeneratedAsync;
+event EventHandler<TablesGeneratedEventArgs> TablesGenerated;
+```
+</details>
 
-/**************************************************************************/
+<details>
+<summary>Complex Type Tables</summary>
 
-/* Complex Type Tables */
-
+```cs
 // Complex Type Tables Generating
-EventHandler<ComplexTypeTablesGeneratingAsyncEventArgs> ComplexTypeTablesGeneratingAsync;
-EventHandler<ComplexTypeTablesGeneratingEventArgs> ComplexTypeTablesGenerating;
+event EventHandler<ComplexTypeTablesGeneratingAsyncEventArgs> ComplexTypeTablesGeneratingAsync;
+event EventHandler<ComplexTypeTablesGeneratingEventArgs> ComplexTypeTablesGenerating;
 
 // Complex Type Table
-EventHandler<ComplexTypeTableGeneratingAsyncEventArgs> ComplexTypeTableGeneratingAsync;
-EventHandler<ComplexTypeTableGeneratingEventArgs> ComplexTypeTableGenerating;
-EventHandler<ComplexTypeTablePOCOAsyncEventArgs> ComplexTypeTablePOCOAsync;
-EventHandler<ComplexTypeTablePOCOEventArgs> ComplexTypeTablePOCO;
-EventHandler<ComplexTypeTableGeneratedAsyncEventArgs> ComplexTypeTableGeneratedAsync;
-EventHandler<ComplexTypeTableGeneratedEventArgs> ComplexTypeTableGenerated;
+event EventHandler<ComplexTypeTableGeneratingAsyncEventArgs> ComplexTypeTableGeneratingAsync;
+event EventHandler<ComplexTypeTableGeneratingEventArgs> ComplexTypeTableGenerating;
+event EventHandler<ComplexTypeTablePOCOAsyncEventArgs> ComplexTypeTablePOCOAsync;
+event EventHandler<ComplexTypeTablePOCOEventArgs> ComplexTypeTablePOCO;
+event EventHandler<ComplexTypeTableGeneratedAsyncEventArgs> ComplexTypeTableGeneratedAsync;
+event EventHandler<ComplexTypeTableGeneratedEventArgs> ComplexTypeTableGenerated;
 
 // Complex Type Tables Generated
-EventHandler<ComplexTypeTablesGeneratedAsyncEventArgs> ComplexTypeTablesGeneratedAsync;
-EventHandler<ComplexTypeTablesGeneratedEventArgs> ComplexTypeTablesGenerated;
+event EventHandler<ComplexTypeTablesGeneratedAsyncEventArgs> ComplexTypeTablesGeneratedAsync;
+event EventHandler<ComplexTypeTablesGeneratedEventArgs> ComplexTypeTablesGenerated;
+```
+</details>
 
-/**************************************************************************/
+<details>
+<summary>Views</summary>
 
-/* Views */
-
+```cs
 // Views Generating
-EventHandler<ViewsGeneratingAsyncEventArgs> ViewsGeneratingAsync;
-EventHandler<ViewsGeneratingEventArgs> ViewsGenerating;
+event EventHandler<ViewsGeneratingAsyncEventArgs> ViewsGeneratingAsync;
+event EventHandler<ViewsGeneratingEventArgs> ViewsGenerating;
 
 // View
-EventHandler<ViewGeneratingAsyncEventArgs> ViewGeneratingAsync;
-EventHandler<ViewGeneratingEventArgs> ViewGenerating;
-EventHandler<ViewPOCOAsyncEventArgs> ViewPOCOAsync;
-EventHandler<ViewPOCOEventArgs> ViewPOCO;
-EventHandler<ViewGeneratedAsyncEventArgs> ViewGeneratedAsync;
-EventHandler<ViewGeneratedEventArgs> ViewGenerated;
+event EventHandler<ViewGeneratingAsyncEventArgs> ViewGeneratingAsync;
+event EventHandler<ViewGeneratingEventArgs> ViewGenerating;
+event EventHandler<ViewPOCOAsyncEventArgs> ViewPOCOAsync;
+event EventHandler<ViewPOCOEventArgs> ViewPOCO;
+event EventHandler<ViewGeneratedAsyncEventArgs> ViewGeneratedAsync;
+event EventHandler<ViewGeneratedEventArgs> ViewGenerated;
 
 // Views Generated
-EventHandler<ViewsGeneratedAsyncEventArgs> ViewsGeneratedAsync;
-EventHandler<ViewsGeneratedEventArgs> ViewsGenerated;
+event EventHandler<ViewsGeneratedAsyncEventArgs> ViewsGeneratedAsync;
+event EventHandler<ViewsGeneratedEventArgs> ViewsGenerated;
+```
+</details>
 
-/**************************************************************************/
+<details>
+<summary>Procedures</summary>
 
-/* Procedures */
-
+```cs
 // Procedures Generating
-EventHandler<ProceduresGeneratingAsyncEventArgs> ProceduresGeneratingAsync;
-EventHandler<ProceduresGeneratingEventArgs> ProceduresGenerating;
+event EventHandler<ProceduresGeneratingAsyncEventArgs> ProceduresGeneratingAsync;
+event EventHandler<ProceduresGeneratingEventArgs> ProceduresGenerating;
 
 // Procedure
-EventHandler<ProcedureGeneratingAsyncEventArgs> ProcedureGeneratingAsync;
-EventHandler<ProcedureGeneratingEventArgs> ProcedureGenerating;
-EventHandler<ProcedurePOCOAsyncEventArgs> ProcedurePOCOAsync;
-EventHandler<ProcedurePOCOEventArgs> ProcedurePOCO;
-EventHandler<ProcedureGeneratedAsyncEventArgs> ProcedureGeneratedAsync;
-EventHandler<ProcedureGeneratedEventArgs> ProcedureGenerated;
+event EventHandler<ProcedureGeneratingAsyncEventArgs> ProcedureGeneratingAsync;
+event EventHandler<ProcedureGeneratingEventArgs> ProcedureGenerating;
+event EventHandler<ProcedurePOCOAsyncEventArgs> ProcedurePOCOAsync;
+event EventHandler<ProcedurePOCOEventArgs> ProcedurePOCO;
+event EventHandler<ProcedureGeneratedAsyncEventArgs> ProcedureGeneratedAsync;
+event EventHandler<ProcedureGeneratedEventArgs> ProcedureGenerated;
 
 // Procedures Generated
-EventHandler<ProceduresGeneratedAsyncEventArgs> ProceduresGeneratedAsync;
-EventHandler<ProceduresGeneratedEventArgs> ProceduresGenerated;
+event EventHandler<ProceduresGeneratedAsyncEventArgs> ProceduresGeneratedAsync;
+event EventHandler<ProceduresGeneratedEventArgs> ProceduresGenerated;
+```
+</details>
 
-/**************************************************************************/
+<details>
+<summary>Functions</summary>
 
-/* Functions */
-
+```cs
 // Functions Generating
-EventHandler<FunctionsGeneratingAsyncEventArgs> FunctionsGeneratingAsync;
-EventHandler<FunctionsGeneratingEventArgs> FunctionsGenerating;
+event EventHandler<FunctionsGeneratingAsyncEventArgs> FunctionsGeneratingAsync;
+event EventHandler<FunctionsGeneratingEventArgs> FunctionsGenerating;
 
 // Function
-EventHandler<FunctionGeneratingAsyncEventArgs> FunctionGeneratingAsync;
-EventHandler<FunctionGeneratingEventArgs> FunctionGenerating;
-EventHandler<FunctionPOCOAsyncEventArgs> FunctionPOCOAsync;
-EventHandler<FunctionPOCOEventArgs> FunctionPOCO;
-EventHandler<FunctionGeneratedAsyncEventArgs> FunctionGeneratedAsync;
-EventHandler<FunctionGeneratedEventArgs> FunctionGenerated;
+event EventHandler<FunctionGeneratingAsyncEventArgs> FunctionGeneratingAsync;
+event EventHandler<FunctionGeneratingEventArgs> FunctionGenerating;
+event EventHandler<FunctionPOCOAsyncEventArgs> FunctionPOCOAsync;
+event EventHandler<FunctionPOCOEventArgs> FunctionPOCO;
+event EventHandler<FunctionGeneratedAsyncEventArgs> FunctionGeneratedAsync;
+event EventHandler<FunctionGeneratedEventArgs> FunctionGenerated;
 
 // Functions Generated
-EventHandler<FunctionsGeneratedAsyncEventArgs> FunctionsGeneratedAsync;
-EventHandler<FunctionsGeneratedEventArgs> FunctionsGenerated;
+event EventHandler<FunctionsGeneratedAsyncEventArgs> FunctionsGeneratedAsync;
+event EventHandler<FunctionsGeneratedEventArgs> FunctionsGenerated;
+```
+</details>
 
-/**************************************************************************/
+<details>
+<summary>TVPs</summary>
 
-/* TVPs */
-
+```cs
 // TVPs Generating
-EventHandler<TVPsGeneratingAsyncEventArgs> TVPsGeneratingAsync;
-EventHandler<TVPsGeneratingEventArgs> TVPsGenerating;
+event EventHandler<TVPsGeneratingAsyncEventArgs> TVPsGeneratingAsync;
+event EventHandler<TVPsGeneratingEventArgs> TVPsGenerating;
 
 // TVP
-EventHandler<TVPGeneratingAsyncEventArgs> TVPGeneratingAsync;
-EventHandler<TVPGeneratingEventArgs> TVPGenerating;
-EventHandler<TVPPOCOAsyncEventArgs> TVPPOCOAsync;
-EventHandler<TVPPOCOEventArgs> TVPPOCO;
-EventHandler<TVPGeneratedAsyncEventArgs> TVPGeneratedAsync;
-EventHandler<TVPGeneratedEventArgs> TVPGenerated;
+event EventHandler<TVPGeneratingAsyncEventArgs> TVPGeneratingAsync;
+event EventHandler<TVPGeneratingEventArgs> TVPGenerating;
+event EventHandler<TVPPOCOAsyncEventArgs> TVPPOCOAsync;
+event EventHandler<TVPPOCOEventArgs> TVPPOCO;
+event EventHandler<TVPGeneratedAsyncEventArgs> TVPGeneratedAsync;
+event EventHandler<TVPGeneratedEventArgs> TVPGenerated;
 
 // TVPs Generated
-EventHandler<TVPsGeneratedAsyncEventArgs> TVPsGeneratedAsync;
-EventHandler<TVPsGeneratedEventArgs> TVPsGenerated;
-
-/**************************************************************************/
-
-// Database Generated
-EventHandler<DatabaseGeneratedAsyncEventArgs> DatabaseGeneratedAsync;
-EventHandler<DatabaseGeneratedEventArgs> DatabaseGenerated;
-
-/**************************************************************************/
-
-// Server Generated
-EventHandler<ServerGeneratedAsyncEventArgs> ServerGeneratedAsync;
-EventHandler<ServerGeneratedEventArgs> ServerGenerated;
+event EventHandler<TVPsGeneratedAsyncEventArgs> TVPsGeneratedAsync;
+event EventHandler<TVPsGeneratedEventArgs> TVPsGenerated;
 ```
+</details>
+
+<details>
+<summary>Database Generated</summary>
+
+```cs
+// Database Generated
+event EventHandler<DatabaseGeneratedAsyncEventArgs> DatabaseGeneratedAsync;
+event EventHandler<DatabaseGeneratedEventArgs> DatabaseGenerated;
+```
+</details>
+
+<details>
+<summary>Server Generated</summary>
+
+```cs
+// Server Generated
+event EventHandler<ServerGeneratedAsyncEventArgs> ServerGeneratedAsync;
+event EventHandler<ServerGeneratedEventArgs> ServerGenerated;
+```
+</details>
 
 ### Generate
 
