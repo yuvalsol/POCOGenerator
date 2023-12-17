@@ -52,6 +52,7 @@
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DatabaseAccessibleObjects.cs" />
+    <Compile Include="EventExtensions.cs" />
     <Compile Include="Objects\Database.cs" />
     <Compile Include="Objects\ForeignKey.cs" />
     <Compile Include="Objects\Function.cs" />

@@ -1,57 +1,17 @@
 ﻿namespace System
 {
-    public static partial class EventExtensions
+    internal static partial class EventExtensions
     {
-        public static void Raise(this EventHandler handler, object sender, EventArgs args)
-        {
-            if (handler != null)
-            {
-                foreach (EventHandler listener in handler.GetInvocationList())
-                    listener.Invoke(sender, args);
-            }
-        }
-
-        public static EventArgs Raise(this EventHandler handler, object sender, Func<EventArgs> argsHandler)
-        {
-            if (handler != null)
-            {
-                EventArgs args = argsHandler();
-                foreach (EventHandler listener in handler.GetInvocationList())
-                    listener.Invoke(sender, args);
-                return args;
-            }
-
-            return null;
-        }
-
-        public static void RaiseAsync(this EventHandler handler, object sender, EventArgs args)
-        {
-            if (handler != null)
-            {
-                foreach (EventHandler listener in handler.GetInvocationList())
-                    listener.BeginInvoke(sender, args, (ar) => { try { listener.EndInvoke(ar); } catch { } }, null);
-            }
-        }
-
-        public static EventArgs RaiseAsync(this EventHandler handler, object sender, Func<EventArgs> argsHandler)
-        {
-            if (handler != null)
-            {
-                EventArgs args = argsHandler();
-                foreach (EventHandler listener in handler.GetInvocationList())
-                    listener.BeginInvoke(sender, args, (ar) => { try { listener.EndInvoke(ar); } catch { } }, null);
-                return args;
-            }
-
-            return null;
-        }
-
         public static void Raise<TEventArgs>(this EventHandler<TEventArgs> handler, object sender, TEventArgs args) where TEventArgs : EventArgs
         {
             if (handler != null)
             {
                 foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList())
+                {
                     listener.Invoke(sender, args);
+                    if (args != null && args is POCOGenerator.IStopGenerating stopGenerating && stopGenerating.Stop)
+                        return;
+                }
             }
         }
 
@@ -61,7 +21,11 @@
             {
                 TEventArgs args = argsHandler();
                 foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList())
+                {
                     listener.Invoke(sender, args);
+                    if (args != null && args is POCOGenerator.IStopGenerating stopGenerating && stopGenerating.Stop)
+                        return args;
+                }
                 return args;
             }
 

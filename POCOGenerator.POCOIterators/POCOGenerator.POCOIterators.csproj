@@ -47,6 +47,7 @@
     </Compile>
     <Compile Include="DbIterator.cs" />
     <Compile Include="DbIteratorEventArgs.cs" />
+    <Compile Include="EventExtensions.cs" />
     <Compile Include="IDbIterator.cs" />
     <Compile Include="IDbIteratorSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

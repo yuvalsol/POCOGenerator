@@ -51,7 +51,6 @@
     <Compile Include="CachedEnumerable.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="DataTableExtensions.cs" />
-    <Compile Include="EventExtensions.cs" />
     <Compile Include="NameHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

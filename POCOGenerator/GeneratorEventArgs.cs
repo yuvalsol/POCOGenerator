@@ -69,7 +69,7 @@ namespace POCOGenerator
         public Server Server { get; private set; }
     }
 
-    public sealed class ServerBuiltEventArgs : EventArgs
+    public sealed class ServerBuiltEventArgs : EventArgs, IStopGenerating
     {
         internal ServerBuiltEventArgs(Server server)
         {

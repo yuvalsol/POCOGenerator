@@ -3,6 +3,15 @@ using POCOGenerator.DbObjects;
 
 namespace POCOGenerator.POCOIterators
 {
+    #region Interfaces
+
+    public interface IStopGenerating
+    {
+        bool Stop { get; }
+    }
+
+    #endregion
+
     #region Server
 
     public sealed class ServerGeneratingAsyncEventArgs : EventArgs
@@ -15,7 +24,7 @@ namespace POCOGenerator.POCOIterators
         public IServer Server { get; private set; }
     }
 
-    public sealed class ServerGeneratingEventArgs : EventArgs
+    public sealed class ServerGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal ServerGeneratingEventArgs(IServer server)
         {
@@ -36,7 +45,7 @@ namespace POCOGenerator.POCOIterators
         public IServer Server { get; private set; }
     }
 
-    public sealed class ServerGeneratedEventArgs : EventArgs
+    public sealed class ServerGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal ServerGeneratedEventArgs(IServer server)
         {
@@ -61,7 +70,7 @@ namespace POCOGenerator.POCOIterators
         public IDatabase Database { get; private set; }
     }
 
-    public sealed class DatabaseGeneratingEventArgs : EventArgs
+    public sealed class DatabaseGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal DatabaseGeneratingEventArgs(IDatabase database)
         {
@@ -83,7 +92,7 @@ namespace POCOGenerator.POCOIterators
         public IDatabase Database { get; private set; }
     }
 
-    public sealed class DatabaseGeneratedEventArgs : EventArgs
+    public sealed class DatabaseGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal DatabaseGeneratedEventArgs(IDatabase database)
         {
@@ -105,7 +114,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class TablesGeneratingEventArgs : EventArgs
+    public sealed class TablesGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal TablesGeneratingEventArgs()
         {
@@ -127,7 +136,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class TableGeneratingEventArgs : EventArgs
+    public sealed class TableGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal TableGeneratingEventArgs(ITable table, string @namespace)
         {
@@ -153,7 +162,7 @@ namespace POCOGenerator.POCOIterators
         public string POCO { get; private set; }
     }
 
-    public sealed class TablePOCOEventArgs : EventArgs
+    public sealed class TablePOCOEventArgs : EventArgs, IStopGenerating
     {
         internal TablePOCOEventArgs(ITable table, string poco)
         {
@@ -178,7 +187,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class TableGeneratedEventArgs : EventArgs
+    public sealed class TableGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal TableGeneratedEventArgs(ITable table, string @namespace)
         {
@@ -198,7 +207,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class TablesGeneratedEventArgs : EventArgs
+    public sealed class TablesGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal TablesGeneratedEventArgs()
         {
@@ -218,7 +227,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class ComplexTypeTablesGeneratingEventArgs : EventArgs
+    public sealed class ComplexTypeTablesGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal ComplexTypeTablesGeneratingEventArgs()
         {
@@ -240,7 +249,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class ComplexTypeTableGeneratingEventArgs : EventArgs
+    public sealed class ComplexTypeTableGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal ComplexTypeTableGeneratingEventArgs(IComplexTypeTable complexTypeTable, string @namespace)
         {
@@ -266,7 +275,7 @@ namespace POCOGenerator.POCOIterators
         public string POCO { get; private set; }
     }
 
-    public sealed class ComplexTypeTablePOCOEventArgs : EventArgs
+    public sealed class ComplexTypeTablePOCOEventArgs : EventArgs, IStopGenerating
     {
         internal ComplexTypeTablePOCOEventArgs(IComplexTypeTable complexTypeTable, string poco)
         {
@@ -291,7 +300,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class ComplexTypeTableGeneratedEventArgs : EventArgs
+    public sealed class ComplexTypeTableGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal ComplexTypeTableGeneratedEventArgs(IComplexTypeTable complexTypeTable, string @namespace)
         {
@@ -311,7 +320,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class ComplexTypeTablesGeneratedEventArgs : EventArgs
+    public sealed class ComplexTypeTablesGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal ComplexTypeTablesGeneratedEventArgs()
         {
@@ -331,7 +340,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class ViewsGeneratingEventArgs : EventArgs
+    public sealed class ViewsGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal ViewsGeneratingEventArgs()
         {
@@ -353,7 +362,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class ViewGeneratingEventArgs : EventArgs
+    public sealed class ViewGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal ViewGeneratingEventArgs(IView view, string @namespace)
         {
@@ -379,7 +388,7 @@ namespace POCOGenerator.POCOIterators
         public string POCO { get; private set; }
     }
 
-    public sealed class ViewPOCOEventArgs : EventArgs
+    public sealed class ViewPOCOEventArgs : EventArgs, IStopGenerating
     {
         internal ViewPOCOEventArgs(IView view, string poco)
         {
@@ -404,7 +413,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class ViewGeneratedEventArgs : EventArgs
+    public sealed class ViewGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal ViewGeneratedEventArgs(IView view, string @namespace)
         {
@@ -424,7 +433,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class ViewsGeneratedEventArgs : EventArgs
+    public sealed class ViewsGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal ViewsGeneratedEventArgs()
         {
@@ -444,7 +453,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class ProceduresGeneratingEventArgs : EventArgs
+    public sealed class ProceduresGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal ProceduresGeneratingEventArgs()
         {
@@ -466,7 +475,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class ProcedureGeneratingEventArgs : EventArgs
+    public sealed class ProcedureGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal ProcedureGeneratingEventArgs(IProcedure procedure, string @namespace)
         {
@@ -492,7 +501,7 @@ namespace POCOGenerator.POCOIterators
         public string POCO { get; private set; }
     }
 
-    public sealed class ProcedurePOCOEventArgs : EventArgs
+    public sealed class ProcedurePOCOEventArgs : EventArgs, IStopGenerating
     {
         internal ProcedurePOCOEventArgs(IProcedure procedure, string poco)
         {
@@ -517,7 +526,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class ProcedureGeneratedEventArgs : EventArgs
+    public sealed class ProcedureGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal ProcedureGeneratedEventArgs(IProcedure procedure, string @namespace)
         {
@@ -537,7 +546,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class ProceduresGeneratedEventArgs : EventArgs
+    public sealed class ProceduresGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal ProceduresGeneratedEventArgs()
         {
@@ -557,7 +566,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class FunctionsGeneratingEventArgs : EventArgs
+    public sealed class FunctionsGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal FunctionsGeneratingEventArgs()
         {
@@ -579,7 +588,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class FunctionGeneratingEventArgs : EventArgs
+    public sealed class FunctionGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal FunctionGeneratingEventArgs(IFunction function, string @namespace)
         {
@@ -605,7 +614,7 @@ namespace POCOGenerator.POCOIterators
         public string POCO { get; private set; }
     }
 
-    public sealed class FunctionPOCOEventArgs : EventArgs
+    public sealed class FunctionPOCOEventArgs : EventArgs, IStopGenerating
     {
         internal FunctionPOCOEventArgs(IFunction function, string poco)
         {
@@ -630,7 +639,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class FunctionGeneratedEventArgs : EventArgs
+    public sealed class FunctionGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal FunctionGeneratedEventArgs(IFunction function, string @namespace)
         {
@@ -650,7 +659,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class FunctionsGeneratedEventArgs : EventArgs
+    public sealed class FunctionsGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal FunctionsGeneratedEventArgs()
         {
@@ -670,7 +679,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class TVPsGeneratingEventArgs : EventArgs
+    public sealed class TVPsGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal TVPsGeneratingEventArgs()
         {
@@ -692,7 +701,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class TVPGeneratingEventArgs : EventArgs
+    public sealed class TVPGeneratingEventArgs : EventArgs, IStopGenerating
     {
         internal TVPGeneratingEventArgs(ITVP tvp, string @namespace)
         {
@@ -718,7 +727,7 @@ namespace POCOGenerator.POCOIterators
         public string POCO { get; private set; }
     }
 
-    public sealed class TVPPOCOEventArgs : EventArgs
+    public sealed class TVPPOCOEventArgs : EventArgs, IStopGenerating
     {
         internal TVPPOCOEventArgs(ITVP tvp, string poco)
         {
@@ -743,7 +752,7 @@ namespace POCOGenerator.POCOIterators
         public string Namespace { get; private set; }
     }
 
-    public sealed class TVPGeneratedEventArgs : EventArgs
+    public sealed class TVPGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal TVPGeneratedEventArgs(ITVP tvp, string @namespace)
         {
@@ -763,7 +772,7 @@ namespace POCOGenerator.POCOIterators
         }
     }
 
-    public sealed class TVPsGeneratedEventArgs : EventArgs
+    public sealed class TVPsGeneratedEventArgs : EventArgs, IStopGenerating
     {
         internal TVPsGeneratedEventArgs()
         {
