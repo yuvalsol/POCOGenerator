@@ -461,7 +461,7 @@ generator.RedirectToConsoleColor();
 generator.RedirectTo(RichTextBox richTextBox);
 ```
 
-### Selecting Objects
+### Selecting Database Objects
 
 A database object is selected when these two conditions are met:
 1. **Explicitly included**. Selecting a database object is done by `Settings.DatabaseObjects` properties and methods that have `Include` in their name, such as
@@ -699,21 +699,19 @@ Events with `Generated` in their name are fired _after_ the class object (or a g
 // Table Generated
 generator.TableGenerated += (object sender, TableGeneratedEventArgs e) =>
 {
-    // stop the generator
     e.Stop = false;
 };
 
 // Tables Generated
 generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
 {
-    // stop the generator
     e.Stop = false;
 };
 ```
 
 #### Events Order
 
-The Server Built event (`ServerBuiltAsync`, `ServerBuilt`) is fired after the POCO Generator have built internally all the class objects, `Server`, `Database`, `Table` and more. The event is fired before any other event.
+The Server Built event (`ServerBuiltAsync`, `ServerBuilt`) is fired after the generator has internally built all the class objects, `Server`, `Database`, `Table` and more. The event is fired before any other event.
 
 Example at [ServerTreeDemo](#servertreedemo "ServerTreeDemo").
 
@@ -735,7 +733,7 @@ For each group of class objects
     3. Class object generated event is fired.
 3. Group generated event is fired once after the group is processed.
 
-If a group doesn't exist in the database or was not selected for processing, the generator will not fire any of that group events, even if event handlers were subscribed to them. For example, if the database has no views, the generator will not fire any views events, such as `ViewsGenerating`, `ViewGenerating`, `ViewPOCO` and other view events.
+If a group doesn't exist in the database or was not selected for processing, the generator will not fire any of that group events, even if event handlers were subscribed to them. For example, if the database has no views, the generator will not fire any view events, such as `ViewsGenerating`, `ViewGenerating`, `ViewPOCO` and other view events.
 
 The following code snippet shows the order of synchronized events that are fired when the generator processes tables. It also lists the properties that are accessible from the various event arguments. The other object types - complex type tables, views, procedures, functions, TVPs - have similar events, with the name of the object type set as the prefix of the event names.
 
@@ -975,21 +973,34 @@ event EventHandler<ServerGeneratedEventArgs> ServerGenerated;
 
 ### Generate
 
-make copy of settings and event.
+Launching the generator:
+
+```cs
+generator.Generate();
+```
+
+At first the generator will make internal copies of all settings and events and, while running, it will reference to them. This measure is taken to prevent changing settings in event handlers while the generator runs and subscription to & unsubscription from events which might cause condition racing. Any changes done to settings and events during the generator run will only take effect the next time the generator is launched.
+
+Next, the generator will try to establish connection to the server. If successful, it will build class objects that represent the server, databases and any other database objects that were selected for processing in [`Settings.DatabaseObjects`](#selecting-database-objects "Selecting Database Objects").
+
+When that is done and if there are any subscriptions, the generator will fire the Server Built event (`ServerBuiltAsync`, `ServerBuilt`) with `Server` class object accessible from the event argument. All other class objects are accessible, directly or indirectly, from the `Server` class object: `Server` -> `Database` -> `Table`, `View`...
+
+Finally, the generator will traverse all these class objects and generate POCOs from them.
 
 ### Generate Again
 
 ### Return Value and Error Handling
 
-Unhandled error thrown in a synchronized event will stop the generator from continuing, the generator's return value will be `GeneratorResults.UnexpectedError` and The generator's `Error` property will be set with the error. Unhandled error thrown in an asynchronized event will be ignored by the generator and it will continue running.
+Unhandled error thrown in a synchronized event will stop the generator from continuing, the generator's return value will be `GeneratorResults.UnexpectedError` and The generator's `Error` property will be set with the error. Unhandled error thrown in an asynchronized event will be ignored (exceptions are swallowed) by the generator and it will continue running.
 
 ## Demos
 
 The demos are code examples of the various ways to integrate POCO Generator in projects. You can test the demos by downloading them from Releases. Under each demo folder there is a file **ConnectionString.txt** from which the demo reads the database connection string, so edit that before running the demo.
 
-### Text
+### Text Demos
 
 #### StringBuilderDemo
+
 Demo code [StringBuilderDemo/Program.cs](Demos/Text/StringBuilderDemo/Program.cs "StringBuilderDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to a `StringBuilder`.
@@ -1007,6 +1018,7 @@ Console.WriteLine(output);
 ```
 
 #### TextWriterDemo
+
 Demo code [TextWriterDemo/Program.cs](Demos/Text/TextWriterDemo/Program.cs "TextWriterDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to a `TextWriter` (abstract base class of `StreamWriter` and `StringWriter`).
@@ -1029,9 +1041,10 @@ using (MemoryStream stream = new MemoryStream())
 }
 ```
 
-### Stream
+### Stream Demos
 
 #### MemoryStreamDemo
+
 Demo code [MemoryStreamDemo/Program.cs](Demos/Stream/MemoryStreamDemo/Program.cs "MemoryStreamDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to a `MemoryStream`.
@@ -1052,6 +1065,7 @@ using (MemoryStream stream = new MemoryStream())
 ```
 
 #### FileStreamDemo
+
 Demo code [FileStreamDemo/Program.cs](Demos/Stream/FileStreamDemo/Program.cs "FileStreamDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to a `FileStream`.
@@ -1068,9 +1082,10 @@ using (FileStream stream = File.Open(filePath, FileMode.Create))
 }
 ```
 
-### Console
+### Console Demos
 
 #### ConsoleDemo
+
 Demo code [ConsoleDemo/Program.cs](Demos/Console/ConsoleDemo/Program.cs "ConsoleDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to the Console.
@@ -1084,6 +1099,7 @@ generator.Generate();
 ```
 
 #### ConsoleColorDemo
+
 Demo code [ConsoleColorDemo/Program.cs](Demos/Console/ConsoleColorDemo/Program.cs "ConsoleColorDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to the Console with syntax highlight using predefined colors.
@@ -1107,6 +1123,7 @@ generator.Generate();
 ```
 
 #### ConsoleColorDarkThemeDemo
+
 Demo code [ConsoleColorDarkThemeDemo/Program.cs](Demos/Console/ConsoleColorDarkThemeDemo/Program.cs "ConsoleColorDarkThemeDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to the Console with custom syntax highlight.
@@ -1138,9 +1155,10 @@ generator.Settings.SyntaxHighlight.Background = Color.FromArgb(0, 0, 0);
 generator.Generate();
 ```
 
-### RichTextBox
+### RichTextBox Demos
 
 #### RichTextBoxDemo
+
 Demo code [RichTextBoxDemo/DemoForm.cs](Demos/RichTextBox/RichTextBoxDemo/DemoForm.cs "RichTextBoxDemo/DemoForm.cs").
 
 The demo demonstrates how to write POCOs to WinForms `RichTextBox` control.
@@ -1160,9 +1178,10 @@ Dark theme syntax highlight colors are listed at [ConsoleColorDarkThemeDemo](#co
 
 ![RichTextBox Demo Dark Theme](./Solution%20Items/Images/RichTextBoxDemoDarkTheme.jpg "RichTextBox Demo Dark Theme")
 
-### Selecting Objects
+### Selecting Objects Demos
 
 #### SelectingObjectsDemo
+
 Demo code [SelectingObjectsDemo/Program.cs](Demos/SelectingObjects/SelectingObjectsDemo/Program.cs "SelectingObjectsDemo/Program.cs").
 
 The demo demonstrates how to select specific database objects for POCO generating.
@@ -1227,6 +1246,7 @@ Purchasing.vVendorWithContacts
 ```
 
 #### WildcardsDemo
+
 Demo code [WildcardsDemo/Program.cs](Demos/SelectingObjects/WildcardsDemo/Program.cs "WildcardsDemo/Program.cs").
 
 The demo demonstrates the usage of wildcards when selecting specific database objects for POCO generating.
@@ -1249,6 +1269,7 @@ generator.Generate();
 ```
 
 #### SkipAndStopDemo
+
 Demo code [SkipAndStopDemo/Program.cs](Demos/SelectingObjects/SkipAndStopDemo/Program.cs "SkipAndStopDemo/Program.cs").
 
 The demo demonstrates how to _skip_ database objects from POCO generating and how to _stop_ the generator from continuing generating POCOs.
@@ -1291,9 +1312,10 @@ generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
 generator.Generate();
 ```
 
-### Generate POCOs
+### Generate POCOs Demos
 
 #### GeneratePOCOsDemo
+
 Demo code [GeneratePOCOsDemo/Program.cs](Demos/GeneratePOCOs/GeneratePOCOsDemo/Program.cs "GeneratePOCOsDemo/Program.cs").
 
 The demo demonstrates how to generate POCOs more than once without calling the database again. POCO Generator runs in two steps, the first step is to query the database and build class objects that represent the database objects, such as tables, views and more. The second step is to traverse them and generate POCOs based on all the settings that govern how the POCOs should be constructed.
@@ -1379,6 +1401,7 @@ public class Store
 ```
 
 #### ComplexTypesDemo
+
 Demo code [ComplexTypesDemo/Program.cs](Demos/GeneratePOCOs/ComplexTypesDemo/Program.cs "ComplexTypesDemo/Program.cs") and SQL Server `ComplexTypesDB` database create script [ComplexTypesDemo/ComplexTypesDB.sql](Demos/GeneratePOCOs/ComplexTypesDemo/ComplexTypesDB.sql "ComplexTypesDemo/ComplexTypesDB.sql").
 
 Description how complex types are detected and built at **Complex Types** option under [POCO Settings](#poco-settings "POCO Settings").
@@ -1445,9 +1468,10 @@ public class Address
 }
 ```
 
-### Events
+### Events Demos
 
 #### EventsDemo
+
 Demo code [EventsDemo/Program.cs](Demos/Events/EventsDemo/Program.cs "EventsDemo/Program.cs").
 
 The demo shows all the synchronized events that the generator fires while running, how to subscribe to them and lists the properties their event arguments expose.
@@ -1484,6 +1508,7 @@ generator.Generate();
 ```
 
 #### MultipleFilesDemo
+
 Demo code [MultipleFilesDemo/Program.cs](Demos/Events/MultipleFilesDemo/Program.cs "MultipleFilesDemo/Program.cs").
 
 The demo demonstrates how to leverage the POCO Generator events towards writing multiple POCO files, one file for each POCO, into a tree-like directories. This demo is closely resembles POCO Generator UI's **Multiple Files - Relative Folders** option under [Export To Files Settings](#export-to-files-settings "Export To Files Settings").
@@ -1567,9 +1592,10 @@ generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
 generator.Generate();
 ```
 
-### Server Tree
+### Server Tree Demos
 
 #### ServerTreeDemo
+
 Demo code [ServerTreeDemo/Program.cs](Demos/ServerTree/ServerTreeDemo/Program.cs "ServerTreeDemo/Program.cs").
 
 The demo demonstrates how to work with the class objects that POCO Generator builds from database objects. These class objects represent the server, databases, tables, views, procedures, functions, TVPs and more.
@@ -1628,6 +1654,7 @@ The server tree
 ```
 
 #### DetailedServerTreeDemo
+
 Demo code [DetailedServerTreeDemo/Program.cs](Demos/ServerTree/DetailedServerTreeDemo/Program.cs "DetailedServerTreeDemo/Program.cs").
 
 The demo works the same as [ServerTreeDemo](#servertreedemo "ServerTreeDemo") but prints more information about the class objects. For tables, it prints their columns, primary keys, unique keys, foreign keys and indexes. For views, it prints their columns and indexes. For procedures and table-valued functions, it prints their parameters and columns. For TVPs, it prints their columns.
@@ -1697,6 +1724,7 @@ The demo works the same as [ServerTreeDemo](#servertreedemo "ServerTreeDemo") bu
 ```
 
 #### NavigationPropertiesDemo
+
 Demo code [NavigationPropertiesDemo/Program.cs](Demos/ServerTree/NavigationPropertiesDemo/Program.cs "NavigationPropertiesDemo/Program.cs").
 
 The demo works the same as [DetailedServerTreeDemo](#detailedservertreedemo "DetailedServerTreeDemo") but is limited to tables and prints information about tables navigation properties.
