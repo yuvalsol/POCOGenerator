@@ -32,7 +32,7 @@
         <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\POCOGenerator">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
-        <Copy SourceFiles="$(SolutionDir)Solution Items\Disclaimer.txt" DestinationFolder="$(SolutionDir)Output">
+        <Copy SourceFiles="$(SolutionDir)Solution Items\Disclaimer.txt" DestinationFolder="$(SolutionDir)Output\POCOGenerator">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
         <Message Importance="high" Text="Copy To Output '%(CopiedSuccessfully.Identity)'"></Message>
