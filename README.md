@@ -989,9 +989,46 @@ Finally, the generator will traverse all these class objects and generate POCOs 
 
 ### Generate Again
 
+Launching the generator without calling the database again:
+
+```cs
+generator.GeneratePOCOs();
+```
+
+When the generator is done running, the class objects it created are not discarded and are kept for successive runs. If the connection string is not changed and the list of previously selected database objects stays the same, there is no need to call the database again and go through the whole stage of building class objects.
+
+By changing the settings that control how the POCOs are constructed, and then calling `GeneratePOCOs()`, the generator can make successive runs without querying the database and generating different POCOs for each run.
+
+If the generator is launched with `GeneratePOCOs()` and it hadn't made it first run yet, it will fall back to `Generate()`.
+
+Example at [GeneratePOCOsDemo](#generatepocosdemo "GeneratePOCOsDemo").
+
 ### Return Value and Error Handling
 
-Unhandled error thrown in a synchronized event will stop the generator from continuing, the generator's return value will be `GeneratorResults.UnexpectedError` and The generator's `Error` property will be set with the error. Unhandled error thrown in an asynchronized event will be ignored (exceptions are swallowed) by the generator and it will continue running.
+After each call of `Generate()` or `GeneratePOCOs()`, the generator returns an value of enum [`GeneratorResults`](POCOGenerator/GeneratorResults.cs "GeneratorResults.cs"). The return value indicates if the run was successful or if there was an error. There is also a possible warning if no database objects were selected for processing. The generator doesn't throw exceptions, rather it has an `Error` property which is populated with an exception if there is an unexpected error.
+
+This code snippet shows how to check if there are any errors and prints out the generator return value.
+
+```cs
+GeneratorResults results = generator.Generate();
+
+bool isNoError = (results == GeneratorResults.None);
+bool isError = (results & GeneratorResults.Error) == GeneratorResults.Error;
+bool isWarning = (results & GeneratorResults.Warning) == GeneratorResults.Warning;
+
+if (isNoError)
+    Console.WriteLine("No Error");
+else if (isError)
+    Console.WriteLine("Error Result: {0}", results);
+else if (isWarning)
+    Console.WriteLine("Warning Result: {0}", results);
+
+Exception error = generator.Error;
+if (error != null)
+    Console.WriteLine("Error: {0}", error.Message);
+```
+
+Unhandled error thrown in a synchronized event will stop the generator from continuing, the generator return value will be `GeneratorResults.UnexpectedError` and the generator `Error` property will be set with the thrown exception. Unhandled error thrown in an asynchronized event will be ignored (exceptions are swallowed) by the generator and it will continue running.
 
 ## Demos
 
