@@ -45,6 +45,11 @@ namespace POCOGenerator
     {
     }
 
+    public interface INamespaceGenerating
+    {
+        string Namespace { get; set; }
+    }
+
     public interface ISkipGenerating
     {
         bool Skip { get; set; }
@@ -209,7 +214,7 @@ namespace POCOGenerator
         public string Namespace { get; private set; }
     }
 
-    public sealed class TableGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
+    public sealed class TableGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, INamespaceGenerating, ISkipGenerating, IStopGenerating
     {
         internal TableGeneratingEventArgs(Table table, string @namespace)
         {
@@ -340,7 +345,7 @@ namespace POCOGenerator
         public string Namespace { get; private set; }
     }
 
-    public sealed class ComplexTypeTableGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
+    public sealed class ComplexTypeTableGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, INamespaceGenerating, ISkipGenerating, IStopGenerating
     {
         internal ComplexTypeTableGeneratingEventArgs(ComplexTypeTable complexTypeTable, string @namespace)
         {
@@ -471,7 +476,7 @@ namespace POCOGenerator
         public string Namespace { get; private set; }
     }
 
-    public sealed class ViewGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
+    public sealed class ViewGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, INamespaceGenerating, ISkipGenerating, IStopGenerating
     {
         internal ViewGeneratingEventArgs(View view, string @namespace)
         {
@@ -602,7 +607,7 @@ namespace POCOGenerator
         public string Namespace { get; private set; }
     }
 
-    public sealed class ProcedureGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
+    public sealed class ProcedureGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, INamespaceGenerating, ISkipGenerating, IStopGenerating
     {
         internal ProcedureGeneratingEventArgs(Procedure procedure, string @namespace)
         {
@@ -733,7 +738,7 @@ namespace POCOGenerator
         public string Namespace { get; private set; }
     }
 
-    public sealed class FunctionGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
+    public sealed class FunctionGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, INamespaceGenerating, ISkipGenerating, IStopGenerating
     {
         internal FunctionGeneratingEventArgs(Function function, string @namespace)
         {
@@ -864,7 +869,7 @@ namespace POCOGenerator
         public string Namespace { get; private set; }
     }
 
-    public sealed class TVPGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, ISkipGenerating, IStopGenerating
+    public sealed class TVPGeneratingEventArgs : EventArgs, IObjectGeneratingEventArgs, INamespaceGenerating, ISkipGenerating, IStopGenerating
     {
         internal TVPGeneratingEventArgs(TVP tvp, string @namespace)
         {
