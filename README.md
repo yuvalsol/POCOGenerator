@@ -971,6 +971,60 @@ event EventHandler<ServerGeneratedEventArgs> ServerGenerated;
 ```
 </details>
 
+#### Event Arguments Inheritance Hierarchy
+
+The event arguments have an inheritance hierarchy, which can be utilized to consolidate several event handlers into one.
+
+- **`IGeneratingEventArgs`** - Event arguments of events with `Generating` in their name.
+- **`IObjectsGeneratingEventArgs`** - Event arguments of group generating events (`TablesGeneratingEventArgs`). Inherit from **IGeneratingEventArgs**.
+- **`IObjectGeneratingEventArgs`** - Event arguments of class object generating events (`TableGeneratingEventArgs`). Inherit from **IGeneratingEventArgs**.
+- **`IPOCOEventArgs`** - Event arguments of POCO class text generated events (`TablePOCOEventArgs`). Events with `POCO` in their name.
+- **`IGeneratedEventArgs`** - Event arguments of events with `Generated` in their name.
+- **`IObjectsGeneratedEventArgs`** - Event arguments of group generated events (`TablesGeneratedEventArgs`). Inherit from **IGeneratedEventArgs**.
+- **`IObjectGeneratedEventArgs`** - Event arguments of class object generated events (`TableGeneratedEventArgs`). Inherit from **IGeneratedEventArgs**.
+- **`INamespaceGenerating`** - Event arguments with `Namespace` getter & setter.
+- **`ISkipGenerating`** - Event arguments with `Skip` getter & setter.
+- **`IStopGenerating`** - Event arguments with `Stop` getter & setter.
+
+The following code consolidates all the class object generating events into one event handler.
+
+```cs
+generator.TableGenerating += ObjectGenerating;
+generator.ComplexTypeTableGenerating += ObjectGenerating;
+generator.ViewGenerating += ObjectGenerating;
+generator.ProcedureGenerating += ObjectGenerating;
+generator.FunctionGenerating += ObjectGenerating;
+generator.TVPGenerating += ObjectGenerating;
+
+void ObjectGenerating(object sender, IObjectGeneratingEventArgs e)
+{
+    IDbObject dbObject = e.DbObject;
+    string name = dbObject.Name;
+    string schema = dbObject.Schema;
+
+    foreach (IDbColumn dbColumn in dbObject.Columns)
+    {
+        string column = dbColumn.ToString();
+    }
+
+    string className = e.ClassName;
+    string error = e.Error;
+    string @namespace = e.Namespace;
+
+    if (e is INamespaceGenerating ns)
+    {
+        ns.Namespace = "CustomNamespace" +
+            (string.IsNullOrEmpty(ns.Namespace) ? "" : "." + ns.Namespace);
+    }
+
+    if (e is ISkipGenerating sk)
+        sk.Skip = false;
+
+    if (e is IStopGenerating st)
+        st.Stop = false;
+}
+```
+
 ### Generate
 
 Launching the generator:
