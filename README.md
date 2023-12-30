@@ -11,13 +11,15 @@ There are five types of database objects that POCOs are generated from:
 - Views
 - Stored Procedures
 - Table-valued Functions
-- User-Defined Table Types (TVP)
+- User-Defined Table Types (TVP[^1])
 
 POCO Generator also detects primary keys, foreign keys, unique keys, indexes and more.
 
 POCO Generator requires .NET Framework 4.6.2 Runtime.
 
 Original article and previous version of [POCO Generator on CodeProject](https://www.codeproject.com/Articles/892233/POCO-Generator "POCO Generator on CodeProject").
+
+[^1]: Table-valued parameters (TVPs) are declared by using user-defined table types and are scoped to stored procedures and functions. POCO Generator generates user-defined table types but uses the acronym TVP (table-valued parameter) interchangeably with user-defined table type although they are different things.
 
 # Disclaimer
 
