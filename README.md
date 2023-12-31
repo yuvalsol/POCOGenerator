@@ -11,7 +11,7 @@ There are five types of database objects that POCOs are generated from:
 - Views
 - Stored Procedures
 - Table-valued Functions
-- User-Defined Table Types (TVP[^1])
+- User-Defined Table Types (TVP)[^1]
 
 POCO Generator also detects primary keys, foreign keys, unique keys, indexes and more.
 
