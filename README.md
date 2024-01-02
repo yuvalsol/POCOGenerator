@@ -974,20 +974,42 @@ event EventHandler<ServerGeneratedEventArgs> ServerGenerated;
 ```
 </details>
 
-#### Event Arguments Inheritance Hierarchy
+#### Event Arguments Interfaces
 
-The event arguments have an inheritance hierarchy, which can be utilized to consolidate several event handlers into one.
+The event arguments have several interfaces that they inherit from. These can be utilize to consolidate several event handlers into one.
+
+Generating interfaces:
 
 - **`IGeneratingEventArgs`** - Event arguments of events with `Generating` in their name.
-- **`IObjectsGeneratingEventArgs`** - Event arguments of group generating events (`TablesGeneratingEventArgs`). Inherit from **IGeneratingEventArgs**.
-- **`IObjectGeneratingEventArgs`** - Event arguments of class object generating events (`TableGeneratingEventArgs`). Inherit from **IGeneratingEventArgs**.
-- **`IPOCOEventArgs`** - Event arguments of POCO class text generated events (`TablePOCOEventArgs`). Events with `POCO` in their name.
+- **`IObjectsGeneratingEventArgs`** - Event arguments of group generating events (e.g. `TablesGeneratingEventArgs`). Inherit from **IGeneratingEventArgs**.
+- **`IObjectGeneratingEventArgs`** - Event arguments of object generating events (e.g. `TableGeneratingEventArgs`). Inherit from **IGeneratingEventArgs**.
+
+POCO interface:
+
+- **`IPOCOEventArgs`** - Event arguments of POCO class text generated events (e.g. `TablePOCOEventArgs`). Events with `POCO` in their name.
+
+Generated interfaces:
+
 - **`IGeneratedEventArgs`** - Event arguments of events with `Generated` in their name.
-- **`IObjectsGeneratedEventArgs`** - Event arguments of group generated events (`TablesGeneratedEventArgs`). Inherit from **IGeneratedEventArgs**.
-- **`IObjectGeneratedEventArgs`** - Event arguments of class object generated events (`TableGeneratedEventArgs`). Inherit from **IGeneratedEventArgs**.
-- **`INamespaceGenerating`** - Event arguments with `Namespace` getter & setter.
-- **`ISkipGenerating`** - Event arguments with `Skip` getter & setter.
-- **`IStopGenerating`** - Event arguments with `Stop` getter & setter.
+- **`IObjectsGeneratedEventArgs`** - Event arguments of group generated events (e.g. `TablesGeneratedEventArgs`). Inherit from **IGeneratedEventArgs**.
+- **`IObjectGeneratedEventArgs`** - Event arguments of object generated events (e.g. `TableGeneratedEventArgs`). Inherit from **IGeneratedEventArgs**.
+
+Object interfaces:
+
+- **`IServerEventArgs`** - Event arguments with `Server` object read property.
+- **`IDatabaseEventArgs`** - Event arguments with `Database` object read property.
+- **`ITableEventArgs`** - Event arguments with `Table` object read property.
+- **`IComplexTypeTableEventArgs`** - Event arguments with `ComplexTypeTable` object read property.
+- **`IViewEventArgs`** - Event arguments with `View` object read property.
+- **`IProcedureEventArgs`** - Event arguments with `Procedure` object read property.
+- **`IFunctionEventArgs`** - Event arguments with `Function` object read property.
+- **`ITVPEventArgs`** - Event arguments with `TVP` object read property.
+
+Data interfaces:
+
+- **`INamespaceGenerating`** - Event arguments with `Namespace` read & write property.
+- **`ISkipGenerating`** - Event arguments with `Skip` read & write property.
+- **`IStopGenerating`** - Event arguments with `Stop` read & write property.
 
 The following code consolidates all the class object generating events into one event handler.
 
