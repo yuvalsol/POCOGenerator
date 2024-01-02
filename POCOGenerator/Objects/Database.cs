@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace POCOGenerator.Objects
 {
+    /// <summary>Represents a RDBMS database.</summary>
     public sealed class Database
     {
         private readonly POCOGenerator.DbObjects.IDatabase database;
@@ -21,9 +22,13 @@ namespace POCOGenerator.Objects
             return this.database == database;
         }
 
+        /// <summary>Gets the server that this database belongs to.</summary>
+        /// <value>The server that this database belongs to.</value>
         public Server Server { get; private set; }
 
         private CachedEnumerable<POCOGenerator.DbObjects.ITable, Table> tables;
+        /// <summary>Gets the collection of tables that belong to this database.</summary>
+        /// <value>Collection of tables.</value>
         public IEnumerable<Table> Tables
         {
             get
@@ -94,6 +99,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IView, View> views;
+        /// <summary>Gets the collection of views that belong to this database.</summary>
+        /// <value>Collection of views.</value>
         public IEnumerable<View> Views
         {
             get
@@ -118,6 +125,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IProcedure, Procedure> procedures;
+        /// <summary>Gets the collection of stored procedures that belong to this database.</summary>
+        /// <value>Collection of stored procedures.</value>
         public IEnumerable<Procedure> Procedures
         {
             get
@@ -142,6 +151,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IFunction, Function> functions;
+        /// <summary>Gets the collection of table-valued functions that belong to this database.</summary>
+        /// <value>Collection of table-valued functions.</value>
         public IEnumerable<Function> Functions
         {
             get
@@ -166,6 +177,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.ITVP, TVP> tvps;
+        /// <summary>Gets the collection of user-defined table types that belong to this database.</summary>
+        /// <value>Collection of user-defined table types.</value>
         public IEnumerable<TVP> TVPs
         {
             get
@@ -190,6 +203,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<Exception, string> errors;
+        /// <summary>Gets the collection of error messages that occurred during the generating process of this database.</summary>
+        /// <value>Collection of error messages.</value>
         public IEnumerable<string> Errors
         {
             get
@@ -226,10 +241,16 @@ namespace POCOGenerator.Objects
             }
         }
 
+        /// <summary>Gets the name of the database.</summary>
+        /// <value>The name of the database.</value>
         public string Name { get { return this.database.Name; } }
 
+        /// <summary>Gets the description of the database.</summary>
+        /// <value>The description of the database.</value>
         public string Description { get { return this.database.Description; } }
 
+        /// <summary>Returns a string that represents this database.</summary>
+        /// <returns>A string that represents this database.</returns>
         public override string ToString()
         {
             return this.database.ToString();

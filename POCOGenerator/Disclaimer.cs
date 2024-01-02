@@ -2,8 +2,10 @@
 
 namespace POCOGenerator
 {
+    /// <summary>Provides a disclaimer message about POCO Generator.</summary>
     public static class Disclaimer
     {
+        /// <summary>The disclaimer message about POCO Generator.</summary>
         public static readonly string Message =
             @"One person reported data loss after using this utility (Comments section in the original article on CodeProject).
 Some tables were cleared of all their records but they were able to restore them from backup.

@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace POCOGenerator.Objects
 {
+    /// <summary>Represents a database table.</summary>
     public sealed class Table : IDbObject
     {
         private readonly POCOGenerator.DbObjects.ITable table;
@@ -19,13 +20,23 @@ namespace POCOGenerator.Objects
             return this.table == table;
         }
 
+        /// <summary>Gets a value indicating whether this table is a many-to-many join table.</summary>
+        /// <value>
+        ///   <c>true</c> if this table is a many-to-many join table; otherwise, <c>false</c>.</value>
         public bool IsJoinTable { get { return this.table.IsJoinTable; } }
 
         internal string ClassName { get { return this.table.ClassName; } }
+
+        /// <summary>Gets the error message that occurred during the generating process of this table.</summary>
+        /// <value>The error message that occurred during the generating process of this table.</value>
         public string Error { get { return (this.table.Error != null ? this.table.Error.Message : null); } }
 
+        /// <summary>Gets the database that this table belongs to.</summary>
+        /// <value>The database that this table belongs to.</value>
         public Database Database { get; private set; }
 
+        /// <summary>Gets the collection of database columns that belong to this table.</summary>
+        /// <value>Collection of database columns.</value>
         public IEnumerable<IDbColumn> Columns
         {
             get
@@ -35,6 +46,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.ITableColumn, TableColumn> tableColumns;
+        /// <summary>Gets the columns of the table.</summary>
+        /// <value>The columns of the table.</value>
         public IEnumerable<TableColumn> TableColumns
         {
             get
@@ -53,6 +66,9 @@ namespace POCOGenerator.Objects
         }
 
         private PrimaryKey primaryKey;
+        /// <summary>Gets the primary key of the table.
+        /// <para>Returns <see langword="null" /> if the table has no primary key.</para></summary>
+        /// <value>The primary key of the table.</value>
         public PrimaryKey PrimaryKey
         {
             get
@@ -68,6 +84,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IUniqueKey, UniqueKey> uniqueKeys;
+        /// <summary>Gets the unique keys of the table.</summary>
+        /// <value>The unique keys of the table.</value>
         public IEnumerable<UniqueKey> UniqueKeys
         {
             get
@@ -86,6 +104,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IForeignKey, ForeignKey> foreignKeys;
+        /// <summary>Gets the foreign keys of the table.</summary>
+        /// <value>The foreign keys of the table.</value>
         public IEnumerable<ForeignKey> ForeignKeys
         {
             get
@@ -106,6 +126,8 @@ namespace POCOGenerator.Objects
         private CachedEnumerable<POCOGenerator.DbObjects.INavigationProperty, NavigationProperty> navigationPropertiesSingular;
         private CachedEnumerable<POCOGenerator.DbObjects.INavigationProperty, NavigationProperty> navigationPropertiesCollection;
         private CachedEnumerable<POCOGenerator.DbObjects.INavigationProperty, NavigationProperty> virtualNavigationProperties;
+        /// <summary>Gets the navigation properties of the table.</summary>
+        /// <value>The navigation properties of the table.</value>
         public IEnumerable<NavigationProperty> NavigationProperties
         {
             get
@@ -161,6 +183,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IIndex, TableIndex> indexes;
+        /// <summary>Gets the indexes of the table.</summary>
+        /// <value>The indexes of the table.</value>
         public IEnumerable<TableIndex> Indexes
         {
             get
@@ -179,6 +203,8 @@ namespace POCOGenerator.Objects
         }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IComplexTypeTable, ComplexTypeTable> complexTypeTables;
+        /// <summary>Gets the complex types of the table.</summary>
+        /// <value>The complex types of the table.</value>
         public IEnumerable<ComplexTypeTable> ComplexTypeTables
         {
             get
@@ -201,8 +227,14 @@ namespace POCOGenerator.Objects
             }
         }
 
+        /// <summary>Gets the name of the table.</summary>
+        /// <value>The name of the table.</value>
         public string Name { get { return this.table.Name; } }
 
+        /// <summary>Gets the schema of the table.
+        /// <para>Returns <see langword="null" /> if the RDBMS doesn't support schema.</para></summary>
+        /// <value>The schema of the table.</value>
+        /// <seealso cref="Support.SupportSchema" />
         public string Schema
         {
             get
@@ -213,8 +245,12 @@ namespace POCOGenerator.Objects
             }
         }
 
+        /// <summary>Gets the description of the table.</summary>
+        /// <value>The description of the table.</value>
         public string Description { get { return this.table.Description; } }
 
+        /// <summary>Returns a string that represents this table.</summary>
+        /// <returns>A string that represents this table.</returns>
         public override string ToString()
         {
             return this.table.ToString();

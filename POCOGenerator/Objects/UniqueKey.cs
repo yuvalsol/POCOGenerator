@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace POCOGenerator.Objects
 {
+    /// <summary>Represents a database unique key of a database table.</summary>
     public sealed class UniqueKey
     {
         private readonly POCOGenerator.DbObjects.IUniqueKey uniqueKey;
@@ -19,11 +19,17 @@ namespace POCOGenerator.Objects
             return this.uniqueKey == uniqueKey;
         }
 
+        /// <summary>Gets the table that this unique key belongs to.</summary>
+        /// <value>The table that this unique key belongs to.</value>
         public Table Table { get; private set; }
 
+        /// <summary>Gets the name of the unique key.</summary>
+        /// <value>The name of the unique key.</value>
         public string Name { get { return this.uniqueKey.Name; } }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IUniqueKeyColumn, UniqueKeyColumn> uniqueKeyColumns;
+        /// <summary>Gets the columns of the unique key.</summary>
+        /// <value>The columns of the unique key.</value>
         public IEnumerable<UniqueKeyColumn> UniqueKeyColumns
         {
             get
@@ -41,51 +47,11 @@ namespace POCOGenerator.Objects
             }
         }
 
+        /// <summary>Returns a string that represents this unique key.</summary>
+        /// <returns>A string that represents this unique key.</returns>
         public override string ToString()
         {
             return this.uniqueKey.ToString();
-        }
-    }
-
-    public sealed class UniqueKeyColumn
-    {
-        private readonly POCOGenerator.DbObjects.IUniqueKeyColumn uniqueKeyColumn;
-
-        internal UniqueKeyColumn(POCOGenerator.DbObjects.IUniqueKeyColumn uniqueKeyColumn, UniqueKey uniqueKey)
-        {
-            this.uniqueKeyColumn = uniqueKeyColumn;
-            this.UniqueKey = uniqueKey;
-        }
-
-        internal bool InternalEquals(POCOGenerator.DbObjects.IUniqueKeyColumn uniqueKeyColumn)
-        {
-            return this.uniqueKeyColumn == uniqueKeyColumn;
-        }
-
-        public UniqueKey UniqueKey { get; private set; }
-
-        private TableColumn tableColumn;
-        public TableColumn TableColumn
-        {
-            get
-            {
-                if (this.tableColumn == null)
-                    this.tableColumn = this.UniqueKey.Table.TableColumns.First(c => c.InternalEquals(this.uniqueKeyColumn.TableColumn));
-
-                return this.tableColumn;
-            }
-        }
-
-        public byte Ordinal { get { return this.uniqueKeyColumn.Ordinal; } }
-
-        public override string ToString()
-        {
-            return this.uniqueKeyColumn.ToString();
-        }
-
-        public string ToFullString()
-        {
-            return this.uniqueKeyColumn.ToFullString();
         }
     }
 }

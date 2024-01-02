@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace POCOGenerator.Objects
 {
+    /// <summary>Represents a way to navigate a relationship, defined by a foreign key, between tables.</summary>
     public sealed class NavigationProperty
     {
         private readonly POCOGenerator.DbObjects.INavigationProperty navigationProperty;
@@ -18,15 +19,37 @@ namespace POCOGenerator.Objects
             return this.navigationProperty == navigationProperty;
         }
 
+        /// <summary>Gets the table that this navigation property is referencing from.</summary>
+        /// <value>The table that this navigation property is referencing from.</value>
         public Table FromTable { get; private set; }
 
+        /// <summary>Gets the name of the navigation property.</summary>
+        /// <value>The name of the navigation property.</value>
         public string PropertyName { get { return this.ToString(); } }
+
+        /// <summary>Gets a value indicating whether this navigation property is referencing to a collection of <see cref="ToTable" />.</summary>
+        /// <value>
+        ///   <c>true</c> if this navigation property is a collection of <see cref="ToTable" />; otherwise, <c>false</c>.</value>
         public bool IsCollection { get { return this.navigationProperty.IsCollection; } }
+
+        /// <summary>Gets a value indicating whether this is a navigation property between tables that are connected between them with a many-to-many join table.</summary>
+        /// <value>
+        ///   <c>true</c> if this navigation property is a virtual navigation property; otherwise, <c>false</c>.</value>
         public bool IsVirtualNavigationProperty { get { return this.navigationProperty.IsVirtualNavigationProperty; } }
+
+        /// <summary>Gets a value indicating whether this navigation property is visible when <see cref="NavigationProperties.ManyToManyJoinTable" /> is <c>true</c>.</summary>
+        /// <value>
+        ///   <c>true</c> if this navigation property is visible when <see cref="NavigationProperties.ManyToManyJoinTable" /> is <c>true</c>; otherwise, <c>false</c>.</value>
         public bool IsVisibleWhenManyToManyJoinTableIsOn { get { return this.navigationProperty.IsVisibleWhenManyToManyJoinTableIsOn; } }
+
+        /// <summary>Gets a value indicating whether this navigation property is visible when <see cref="NavigationProperties.ManyToManyJoinTable" /> is <c>false</c>.</summary>
+        /// <value>
+        ///   <c>true</c> if this navigation property is visible when <see cref="NavigationProperties.ManyToManyJoinTable" /> is <c>false</c>; otherwise, <c>false</c>.</value>
         public bool IsVisibleWhenManyToManyJoinTableIsOff { get { return this.navigationProperty.IsVisibleWhenManyToManyJoinTableIsOff; } }
 
         private Table toTable;
+        /// <summary>Gets the table that this navigation property is referencing to.</summary>
+        /// <value>The table that this navigation property is referencing to.</value>
         public Table ToTable
         {
             get
@@ -50,6 +73,8 @@ namespace POCOGenerator.Objects
         }
 
         private ForeignKey foreignKey;
+        /// <summary>Gets the foreign key that defines the relationship between the tables.</summary>
+        /// <value>The foreign key that defines the relationship between the tables.</value>
         public ForeignKey ForeignKey
         {
             get
@@ -69,7 +94,9 @@ namespace POCOGenerator.Objects
             }
         }
 
-        public NavigationProperty inverseProperty;
+        private NavigationProperty inverseProperty;
+        /// <summary>Gets the navigation property from <see cref="ToTable" /> to <see cref="FromTable" />.</summary>
+        /// <value>The inverse navigation property.</value>
         public NavigationProperty InverseProperty
         {
             get
@@ -87,6 +114,8 @@ namespace POCOGenerator.Objects
             }
         }
 
+        /// <summary>Returns a string that represents this navigation property.</summary>
+        /// <returns>A string that represents this navigation property.</returns>
         public override string ToString()
         {
             return this.navigationProperty.ToString();

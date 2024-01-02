@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\POCOGenerator.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +55,7 @@
     <Compile Include="DatabaseAccessibleObjects.cs" />
     <Compile Include="EventExtensions.cs" />
     <Compile Include="Objects\Database.cs" />
+    <Compile Include="Objects\ForeignKeyColumn.cs" />
     <Compile Include="Objects\ForeignKey.cs" />
     <Compile Include="Objects\Function.cs" />
     <Compile Include="Objects\FunctionColumn.cs" />
@@ -63,13 +65,18 @@
     <Compile Include="Objects\IDbParameter.cs" />
     <Compile Include="Objects\IDbRoutine.cs" />
     <Compile Include="Objects\Index.cs" />
+    <Compile Include="Objects\IndexColumn.cs" />
     <Compile Include="Objects\NavigationProperty.cs" />
     <Compile Include="Objects\PrimaryKey.cs" />
+    <Compile Include="Objects\PrimaryKeyColumn.cs" />
     <Compile Include="Objects\Procedure.cs" />
     <Compile Include="Objects\ProcedureColumn.cs" />
     <Compile Include="Objects\ProcedureParameter.cs" />
     <Compile Include="Objects\ComplexTypeTable.cs" />
     <Compile Include="Objects\ComplexTypeTableColumn.cs" />
+    <Compile Include="Objects\TableIndex.cs" />
+    <Compile Include="Objects\TableIndexColumn.cs" />
+    <Compile Include="Objects\UniqueKeyColumn.cs" />
     <Compile Include="Objects\Version.cs" />
     <Compile Include="Objects\Server.cs" />
     <Compile Include="Objects\Table.cs" />
@@ -88,6 +95,8 @@
     <Compile Include="GeneratorSupport.cs" />
     <Compile Include="GeneratorWinFormsFactory.cs" />
     <Compile Include="IGenerator.cs" />
+    <Compile Include="Objects\ViewIndex.cs" />
+    <Compile Include="Objects\ViewIndexColumn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RDBMS.cs" />
   </ItemGroup>

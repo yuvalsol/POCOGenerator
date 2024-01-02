@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace POCOGenerator.Objects
 {
+    /// <summary>Represents a database primary key of a database table.</summary>
     public sealed class PrimaryKey
     {
         private readonly POCOGenerator.DbObjects.IPrimaryKey primaryKey;
@@ -19,11 +19,17 @@ namespace POCOGenerator.Objects
             return this.primaryKey == primaryKey;
         }
 
+        /// <summary>Gets the table that this primary key belongs to.</summary>
+        /// <value>The table that this primary key belongs to.</value>
         public Table Table { get; private set; }
 
+        /// <summary>Gets the name of the primary key.</summary>
+        /// <value>The name of the primary key.</value>
         public string Name { get { return this.primaryKey.Name; } }
 
         private CachedEnumerable<POCOGenerator.DbObjects.IPrimaryKeyColumn, PrimaryKeyColumn> primaryKeyColumns;
+        /// <summary>Gets the columns of the primary key.</summary>
+        /// <value>The columns of the primary key.</value>
         public IEnumerable<PrimaryKeyColumn> PrimaryKeyColumns
         {
             get
@@ -41,51 +47,11 @@ namespace POCOGenerator.Objects
             }
         }
 
+        /// <summary>Returns a string that represents this primary key.</summary>
+        /// <returns>A string that represents this primary key.</returns>
         public override string ToString()
         {
             return this.primaryKey.ToString();
-        }
-    }
-
-    public sealed class PrimaryKeyColumn
-    {
-        private readonly POCOGenerator.DbObjects.IPrimaryKeyColumn primaryKeyColumn;
-
-        internal PrimaryKeyColumn(POCOGenerator.DbObjects.IPrimaryKeyColumn primaryKeyColumn, PrimaryKey primaryKey)
-        {
-            this.primaryKeyColumn = primaryKeyColumn;
-            this.PrimaryKey = primaryKey;
-        }
-
-        internal bool InternalEquals(POCOGenerator.DbObjects.IPrimaryKeyColumn primaryKeyColumn)
-        {
-            return this.primaryKeyColumn == primaryKeyColumn;
-        }
-
-        public PrimaryKey PrimaryKey { get; private set; }
-
-        private TableColumn tableColumn;
-        public TableColumn TableColumn
-        {
-            get
-            {
-                if (this.tableColumn == null)
-                    this.tableColumn = this.PrimaryKey.Table.TableColumns.First(c => c.InternalEquals(this.primaryKeyColumn.TableColumn));
-
-                return this.tableColumn;
-            }
-        }
-
-        public byte Ordinal { get { return this.primaryKeyColumn.Ordinal; } }
-
-        public override string ToString()
-        {
-            return this.primaryKeyColumn.ToString();
-        }
-
-        public string ToFullString()
-        {
-            return this.primaryKeyColumn.ToFullString();
         }
     }
 }

@@ -1868,7 +1868,7 @@ namespace POCOGenerator
                 }
             }
 
-            private SyncList<string> include;
+            private readonly SyncList<string> include;
             public IList<string> Include
             {
                 get
@@ -1880,7 +1880,7 @@ namespace POCOGenerator
                 }
             }
 
-            private SyncList<string> exclude;
+            private readonly SyncList<string> exclude;
             public IList<string> Exclude
             {
                 get
@@ -1895,7 +1895,7 @@ namespace POCOGenerator
 
         private sealed class SyncList<T> : IList<T>
         {
-            private List<T> list = new List<T>();
+            private readonly List<T> list = new List<T>();
             private readonly object lockObject;
 
             public SyncList(object lockObject)
@@ -2291,49 +2291,31 @@ namespace POCOGenerator
 
     #region Settings
 
-    /// <summary>
-    /// The settings determine what database objects will be generated to classes and how the POCO classes will be generated.
-    /// </summary>
+    /// <summary>The settings determine the database connection, what database objects will be generated to classes and how the POCO classes will be generated.</summary>
     public interface Settings
     {
-        /// <summary>
-        /// Reset all settings to their default values.
-        /// </summary>
+        /// <summary>Resets all settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets the Connection settings.
-        /// </summary>
+        /// <summary>Gets the Connection settings.</summary>
         Connection Connection { get; }
 
-        /// <summary>
-        /// Gets the POCO settings.
-        /// </summary>
+        /// <summary>Gets the POCO settings.</summary>
         POCO POCO { get; }
 
-        /// <summary>
-        /// Gets the class name settings.
-        /// </summary>
+        /// <summary>Gets the class name settings.</summary>
         ClassName ClassName { get; }
 
-        /// <summary>
-        /// Gets the navigation properties settings.
-        /// </summary>
+        /// <summary>Gets the navigation properties settings.</summary>
         NavigationProperties NavigationProperties { get; }
 
-        /// <summary>
-        /// Gets the EF annotations settings.
-        /// </summary>
+        /// <summary>Gets the EF annotations settings.</summary>
         EFAnnotations EFAnnotations { get; }
 
-        /// <summary>
-        /// Gets the settings that determine which database objects to generate classes out of and which database objects to exclude from generating classes.
-        /// </summary>
+        /// <summary>Gets the settings that determine which database objects to generate classes out of and which database objects to exclude from generating classes.</summary>
         DatabaseObjects DatabaseObjects { get; }
 
-        /// <summary>
-        /// Gets the settings that determine the colors for syntax elements.
-        /// </summary>
+        /// <summary>Gets the settings that determine the colors for syntax elements.</summary>
         SyntaxHighlight SyntaxHighlight { get; }
     }
 
@@ -2341,26 +2323,20 @@ namespace POCOGenerator
 
     #region Connection
 
-    /// <summary>
-    /// The settings determine the connection to the RDBMS server.
-    /// </summary>
+    /// <summary>The settings determine the connection to the RDBMS server.</summary>
     public interface Connection
     {
-        /// <summary>
-        /// Resets the connection settings to their default values.
-        /// </summary>
+        /// <summary>Resets the connection settings to their default values.</summary>
         void Reset();
 
         /// <summary>
         /// Gets or sets the connection string.
-        /// <para>When <see cref="RDBMS"/> is set to <see cref="RDBMS.None"/>, the generator will try to determine the <see cref="RDBMS"/> based on the connection string.</para>
-        /// </summary>
+        /// <para>When <see cref="RDBMS" /> is set to <see cref="RDBMS.None" />, the generator will try to determine the <see cref="RDBMS" /> based on the connection string.</para></summary>
         string ConnectionString { get; set; }
 
         /// <summary>
-        /// Gets or sets the Relational Database Management System.
-        /// <para>When this setting is set to <see cref="RDBMS.None"/>, the generator will try to determine this setting based on the connection string.</para>
-        /// </summary>
+        /// Gets or sets the relational database management system.
+        /// <para>When this setting is set to <see cref="RDBMS.None" />, the generator will try to determine this setting based on the connection string.</para></summary>
         RDBMS RDBMS { get; set; }
     }
 
@@ -2368,122 +2344,82 @@ namespace POCOGenerator
 
     #region POCO
 
-    /// <summary>
-    /// The settings determine how the POCO will be generated.
-    /// </summary>
+    /// <summary>The settings determine how the POCO will be generated.</summary>
     public interface POCO
     {
-        /// <summary>
-        /// Resets the POCO settings to their default values.
-        /// </summary>
+        /// <summary>Resets the POCO settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate class members as properties.
-        /// <para>The default value is <c>true</c>.</para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate class members as properties.
+        /// <para>The default value is <c>true</c>.</para></summary>
         bool Properties { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate class members as fields.
-        /// <para>The default value is <c>false</c>.</para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate class members as fields.
+        /// <para>The default value is <c>false</c>.</para></summary>
         bool Fields { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate class properties with 'virtual' modifier.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate class properties with <see langword="virtual" /> modifier.</summary>
         bool VirtualProperties { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate class properties with 'override' modifier.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate class properties with <see langword="override" /> modifier.</summary>
         bool OverrideProperties { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate classes with 'partial' modifier.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate classes with <see langword="partial" /> modifier.</summary>
         bool PartialClass { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate struct types as nullable when the SQL column is mapped to a .NET struct type and it is not nullable.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate struct types as nullable when the SQL column is mapped to a .NET struct type and it is not nullable.</summary>
         bool StructTypesNullable { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate comments for data members with the SQL column's data type and whether the SQL column is nullable or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate comments for data members with the SQL column's data type and whether the SQL column is nullable or not.</summary>
         bool Comments { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate comments for data members with the SQL column's data type. The column nullability will not be generated.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate comments for data members with the SQL column's data type. The column nullability will not be generated.</summary>
         bool CommentsWithoutNull { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate a using directive clause.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate a using directive clause.</summary>
         bool Using { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the using directive clause will be inside the namespace.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the using directive clause will be inside the namespace.</summary>
         bool UsingInsideNamespace { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate classes wrapped with a namespace.
-        /// <para>The value must be not null and not an empty string to take effect.</para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate classes wrapped with a namespace.
+        /// <para>The value must be not null and not an empty string to take effect.</para></summary>
         string Namespace { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to wrap a namespace and a using directive clause around each class individually.
-        /// <para>This setting is useful when generating to multiple outputs (such as multiple files).</para>
-        /// </summary>
+        /// <para>This setting is useful when generating to multiple outputs (such as multiple files).</para></summary>
         bool WrapAroundEachClass { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate classes with inheritance clause.
-        /// <para>The value must be not null and not an empty string to take effect.</para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate classes with inheritance clause.
+        /// <para>The value must be not null and not an empty string to take effect.</para></summary>
         string Inherit { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate initialize data members with default values.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate initialize data members with default values.</summary>
         bool ColumnDefaults { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate a new line between class members.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate a new line between class members.</summary>
         bool NewLineBetweenMembers { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate complex types.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate complex types.</summary>
         bool ComplexTypes { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate a string data member for a SQL enum &amp; set date types.
-        /// <para>This setting is applicable when the RDBMS supports SQL enum &amp; set data types, such as MySQL. The default value is <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable when the RDBMS supports SQL enum &amp; set data types, such as MySQL. The default value is <c>true</c>.</para></summary>
         bool EnumSQLTypeToString { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate an enum of type ushort for a SQL enum date type and an enum of type ulong for a SQL set date type.
-        /// <para>This setting is applicable when the RDBMS supports SQL enum &amp; set data types, such as MySQL. The default value is <c>false</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable when the RDBMS supports SQL enum &amp; set data types, such as MySQL. The default value is <c>false</c>.</para></summary>
         bool EnumSQLTypeToEnumUShort { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate an enum of type int for a SQL enum &amp; set date types.
-        /// <para>This setting is applicable when the RDBMS supports SQL enum &amp; set data types, such as MySQL. The default value is <c>false</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable when the RDBMS supports SQL enum &amp; set data types, such as MySQL. The default value is <c>false</c>.</para></summary>
         bool EnumSQLTypeToEnumInt { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating the tab string. The default values is 4 spaces.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating the tab string. The default value is 4 spaces.</summary>
         string Tab { get; set; }
     }
 
@@ -2491,105 +2427,75 @@ namespace POCOGenerator
 
     #region Class Name
 
-    /// <summary>
-    /// The settings for the class name transformations.
-    /// </summary>
+    /// <summary>The settings for the class name transformations.</summary>
     public interface ClassName
     {
-        /// <summary>
-        /// Resets the class name settings to their default values.
-        /// </summary>
+        /// <summary>Resets the class name settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the class name is changed from plural to singular.
-        /// <para>This setting is applicable only for tables, views & TVPs.</para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the class name is changed from plural to singular.
+        /// <para>This setting is applicable only for tables, views &amp; TVPs.</para></summary>
         bool Singular { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to add the database name to the class name.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to add the database name to the class name.</summary>
         bool IncludeDB { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the separator to add after the database name.
-        /// <para>This setting is applicable only when <see cref="ClassName.IncludeDB"/> is set to <c>true</c>.</para>
-        /// <para>The value must be not null and not an empty string to take effect.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="IncludeDB" /> is set to <c>true</c>.
+        /// The value must be not null and not an empty string to take effect.</para></summary>
         string DBSeparator { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to add the schema to the class name.
-        /// <para>This setting is applicable only when the RDBMS supports schema, such as SQLServer. </para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to add the schema to the class name.
+        /// <para>This setting is applicable only when the RDBMS supports schema, such as SQLServer.</para></summary>
         bool IncludeSchema { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to not add the schema to the class name when the schema is "dbo".
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to not add the schema to the class name when the schema is "dbo".</summary>
         bool IgnoreDboSchema { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the separator to add after the schema name.
-        /// <para>This setting is applicable only when <see cref="ClassName.IncludeSchema"/> is set to <c>true</c>.</para>
-        /// <para>The value must be not null and not an empty string to take effect.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="IncludeSchema" /> is set to <c>true</c>.
+        /// The value must be not null and not an empty string to take effect.</para></summary>
         string SchemaSeparator { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the separator to add between words in the class name. A word is defined as text between underscores or in a camel case.
-        /// <para>The value must be not null and not an empty string to take effect.</para>
-        /// </summary>
+        /// <para>The value must be not null and not an empty string to take effect.</para></summary>
         string WordsSeparator { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to change the class name to camel case.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to change the class name to camel case.</summary>
         bool CamelCase { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to change the class name to upper case.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to change the class name to upper case.</summary>
         bool UpperCase { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to change the class name to lower case.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to change the class name to lower case.</summary>
         bool LowerCase { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the string to search in the class name as part of the search-and-replace.
-        /// <para>The searching is case sensitive by default. The searching can be set to insensitive when <see cref="ClassName.SearchIgnoreCase"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>The searching is case sensitive by default. The searching can be set to insensitive when <see cref="SearchIgnoreCase" /> is set to <c>true</c>.</para></summary>
         string Search { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating the string to replace with the search string in the class name as part of the search-and-replace.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating the string to replace with the search string in the class name as part of the search-and-replace.</summary>
         string Replace { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the searching, as part of the search-and-replace, is case insensitive.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the searching, as part of the search-and-replace, is case insensitive.</summary>
         bool SearchIgnoreCase { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating a fixed class name for all generated classes.
-        /// <para>The value must be not null and not an empty string to take effect.</para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating a fixed class name for all generated classes.
+        /// <para>The value must be not null and not an empty string to take effect.</para></summary>
         string FixedClassName { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating a prefix string to be added to the start of the class name all generated classes.
-        /// <para>The value must be not null and not an empty string to take effect.</para>
-        /// </summary>
+        /// <para>The value must be not null and not an empty string to take effect.</para></summary>
         string Prefix { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating a suffix string to be added to the end of the class name all generated classes.
-        /// <para>The value must be not null and not an empty string to take effect.</para>
-        /// </summary>
+        /// <para>The value must be not null and not an empty string to take effect.</para></summary>
         string Suffix { get; set; }
     }
 
@@ -2597,67 +2503,53 @@ namespace POCOGenerator
 
     #region Navigation Properties
 
-    /// <summary>
-    /// The settings for the navigation properties.
-    /// </summary>
+    /// <summary>The settings for the navigation properties.</summary>
     public interface NavigationProperties
     {
-        /// <summary>
-        /// Resets the navigation properties settings to their default values.
-        /// </summary>
+        /// <summary>Resets the navigation properties settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to enable navigation properties.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to enable navigation properties.</summary>
         bool Enable { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether navigation property methods will be modified to be virtual methods.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool VirtualNavigationProperties { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether navigation property methods will be modified to be override methods.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool OverrideNavigationProperties { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate a join table in a many-to-many relationship. In a many-to-many relationship, the join table is hidden by default.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool ManyToManyJoinTable { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate a comment of the original SQL Server foreign key.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool Comments { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.List&lt;T&gt;"/>.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>true</c>.</para>
-        /// </summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="List{T}" />.
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>. The default value is <c>true</c>.</para></summary>
         bool ListNavigationProperties { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.IList&lt;T&gt;"/>.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>true</c>.</para>
-        /// </summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="IList{T}" />.
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>. The default value is <c>true</c>.</para></summary>
         bool IListNavigationProperties { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.ICollection&lt;T&gt;"/>.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>false</c>.</para>
-        /// </summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="ICollection{T}" />.
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>. The default value is <c>false</c>.</para></summary>
         bool ICollectionNavigationProperties { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/>.
-        /// <para>This setting is applicable only when <see cref="NavigationProperties.Enable"/> is set to <c>true</c>. The default value is <c>false</c>.</para>
-        /// </summary>
+        /// Gets or sets a value indicating whether to generate navigation properties as <see cref="IEnumerable{T}" />.
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>. The default value is <c>false</c>.</para></summary>
         bool IEnumerableNavigationProperties { get; set; }
     }
 
@@ -2665,80 +2557,62 @@ namespace POCOGenerator
 
     #region EF Annotations
 
-    /// <summary>
-    /// The settings for the Entity Framework annotations.
-    /// </summary>
+    /// <summary>The settings for the Entity Framework annotations.</summary>
     public interface EFAnnotations
     {
-        /// <summary>
-        /// Resets the Entity Framework annotations settings to their default values.
-        /// </summary>
+        /// <summary>Resets the Entity Framework annotations settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether Table, Key, MaxLength, Timestamp and DatabaseGenerated attributes are added to data members.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether Table, Key, MaxLength, Timestamp and DatabaseGenerated attributes are added to data members.</summary>
         bool Enable { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether Column attribute is added to data members.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether Column attribute is added to data members.
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool Column { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Required attribute is added to data members that are not nullable.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool Required { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Required attribute, with an error message, is added to data members that are not nullable.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool RequiredWithErrorMessage { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether ConcurrencyCheck attribute is added to Timestamp and RowVersion data members.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool ConcurrencyCheck { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether StringLength attribute is added to string data members.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool StringLength { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether Display attribute is added to data members.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether Display attribute is added to data members.
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool Display { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Description attribute is added to data members.
-        /// <para>The description is taken from SQL Server's extended properties (MS_Description) and MySQL's comment columns.</para>
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>The description is taken from SQL Server's extended properties (MS_Description) and MySQL's comment columns.
+        /// This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool Description { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to group properties into a ComplexType based on the first underscore in their SQL column name.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool ComplexType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Index attribute is added to data members. Index attribute is applicable for EF6 and above.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool Index { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether ForeignKey and InverseProperty attributes are added to navigation properties.
-        /// <para>This setting is applicable only when <see cref="EFAnnotations.Enable"/> is set to <c>true</c>.</para>
-        /// </summary>
+        /// <para>This setting is applicable only when <see cref="Enable" /> is set to <c>true</c>.</para></summary>
         bool ForeignKeyAndInverseProperty { get; set; }
     }
 
@@ -2746,44 +2620,28 @@ namespace POCOGenerator
 
     #region Database Objects
 
-    /// <summary>
-    /// The settings determine which database objects to generate classes out of and which database objects to exclude from generating classes.
-    /// </summary>
+    /// <summary>The settings determine which database objects to generate classes out of and which database objects to exclude from generating classes.</summary>
     public interface DatabaseObjects
     {
-        /// <summary>
-        /// Resets the database objects settings to their default values.
-        /// </summary>
+        /// <summary>Resets the database objects settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate classes out of all database objects.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to generate classes out of all database objects.</summary>
         bool IncludeAll { get; set; }
 
-        /// <summary>
-        /// Gets the settings that determine which tables to generate classes out of and which tables to exclude from generating classes.
-        /// </summary>
+        /// <summary>Gets the settings that determine which tables to generate classes out of and which tables to exclude from generating classes.</summary>
         Tables Tables { get; }
 
-        /// <summary>
-        /// Gets the settings that determine which views to generate classes out of and which views to exclude from generating classes.
-        /// </summary>
+        /// <summary>Gets the settings that determine which views to generate classes out of and which views to exclude from generating classes.</summary>
         Views Views { get; }
 
-        /// <summary>
-        /// Gets the settings that determine which stored procedures to generate classes out of and which stored procedures to exclude from generating classes.
-        /// </summary>
+        /// <summary>Gets the settings that determine which stored procedures to generate classes out of and which stored procedures to exclude from generating classes.</summary>
         StoredProcedures StoredProcedures { get; }
 
-        /// <summary>
-        /// Gets the settings that determine which functions to generate classes out of and which functions to exclude from generating classes.
-        /// </summary>
+        /// <summary>Gets the settings that determine which functions to generate classes out of and which functions to exclude from generating classes.</summary>
         Functions Functions { get; }
 
-        /// <summary>
-        /// Gets the settings that determine which TVPs to generate classes out of and which TVPs to exclude from generating classes.
-        /// </summary>
+        /// <summary>Gets the settings that determine which TVPs to generate classes out of and which TVPs to exclude from generating classes.</summary>
         TVPs TVPs { get; }
     }
 
@@ -2791,34 +2649,22 @@ namespace POCOGenerator
 
     #region Tables
 
-    /// <summary>
-    /// The settings determine which tables to generate classes out of and which tables to exclude from generating classes.
-    /// </summary>
+    /// <summary>The settings determine which tables to generate classes out of and which tables to exclude from generating classes.</summary>
     public interface Tables
     {
-        /// <summary>
-        /// Resets the tables settings to their default values.
-        /// </summary>
+        /// <summary>Resets the tables settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to include all tables to generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to include all tables to generated classes.</summary>
         bool IncludeAll { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to exclude all tables from generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to exclude all tables from generated classes.</summary>
         bool ExcludeAll { get; set; }
 
-        /// <summary>
-        /// List of tables to include to generated classes.
-        /// </summary>
+        /// <summary>List of tables to include to generated classes.</summary>
         IList<string> Include { get; }
 
-        /// <summary>
-        /// List of tables to exclude from generated classes.
-        /// </summary>
+        /// <summary>List of tables to exclude from generated classes.</summary>
         IList<string> Exclude { get; }
     }
 
@@ -2826,34 +2672,22 @@ namespace POCOGenerator
 
     #region Views
 
-    /// <summary>
-    /// The settings determine which views to generate classes out of and which views to exclude from generating classes.
-    /// </summary>
+    /// <summary>The settings determine which views to generate classes out of and which views to exclude from generating classes.</summary>
     public interface Views
     {
-        /// <summary>
-        /// Resets the views settings to their default values.
-        /// </summary>
+        /// <summary>Resets the views settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to include all views to generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to include all views to generated classes.</summary>
         bool IncludeAll { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to exclude all views from generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to exclude all views from generated classes.</summary>
         bool ExcludeAll { get; set; }
 
-        /// <summary>
-        /// List of views to include to generated classes.
-        /// </summary>
+        /// <summary>List of views to include to generated classes.</summary>
         IList<string> Include { get; }
 
-        /// <summary>
-        /// List of views to exclude from generated classes.
-        /// </summary>
+        /// <summary>List of views to exclude from generated classes.</summary>
         IList<string> Exclude { get; }
     }
 
@@ -2861,34 +2695,22 @@ namespace POCOGenerator
 
     #region Stored Procedures
 
-    /// <summary>
-    /// The settings determine which stored procedures to generate classes out of and which stored procedures to exclude from generating classes.
-    /// </summary>
+    /// <summary>The settings determine which stored procedures to generate classes out of and which stored procedures to exclude from generating classes.</summary>
     public interface StoredProcedures
     {
-        /// <summary>
-        /// Resets the stored procedures settings to their default values.
-        /// </summary>
+        /// <summary>Resets the stored procedures settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to include all stored procedures to generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to include all stored procedures to generated classes.</summary>
         bool IncludeAll { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to exclude all stored procedures from generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to exclude all stored procedures from generated classes.</summary>
         bool ExcludeAll { get; set; }
 
-        /// <summary>
-        /// List of stored procedures to include to generated classes.
-        /// </summary>
+        /// <summary>List of stored procedures to include to generated classes.</summary>
         IList<string> Include { get; }
 
-        /// <summary>
-        /// List of stored procedures to exclude from generated classes.
-        /// </summary>
+        /// <summary>List of stored procedures to exclude from generated classes.</summary>
         IList<string> Exclude { get; }
     }
 
@@ -2896,34 +2718,22 @@ namespace POCOGenerator
 
     #region Functions
 
-    /// <summary>
-    /// The settings determine which functions to generate classes out of and which functions to exclude from generating classes.
-    /// </summary>
+    /// <summary>The settings determine which functions to generate classes out of and which functions to exclude from generating classes.</summary>
     public interface Functions
     {
-        /// <summary>
-        /// Resets the functions settings to their default values.
-        /// </summary>
+        /// <summary>Resets the functions settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to include all functions to generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to include all functions to generated classes.</summary>
         bool IncludeAll { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to exclude all functions from generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to exclude all functions from generated classes.</summary>
         bool ExcludeAll { get; set; }
 
-        /// <summary>
-        /// List of functions to include to generated classes.
-        /// </summary>
+        /// <summary>List of functions to include to generated classes.</summary>
         IList<string> Include { get; }
 
-        /// <summary>
-        /// List of functions to exclude from generated classes.
-        /// </summary>
+        /// <summary>List of functions to exclude from generated classes.</summary>
         IList<string> Exclude { get; }
     }
 
@@ -2931,34 +2741,22 @@ namespace POCOGenerator
 
     #region TVPs
 
-    /// <summary>
-    /// The settings determine which TVPs to generate classes out of and which TVPs to exclude from generating classes.
-    /// </summary>
+    /// <summary>The settings determine which TVPs to generate classes out of and which TVPs to exclude from generating classes.</summary>
     public interface TVPs
     {
-        /// <summary>
-        /// Resets the TVPs settings to their default values.
-        /// </summary>
+        /// <summary>Resets the TVPs settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to include all TVPs to generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to include all TVPs to generated classes.</summary>
         bool IncludeAll { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to exclude all TVPs from generated classes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to exclude all TVPs from generated classes.</summary>
         bool ExcludeAll { get; set; }
 
-        /// <summary>
-        /// List of TVPs to include to generated classes.
-        /// </summary>
+        /// <summary>List of TVPs to include to generated classes.</summary>
         IList<string> Include { get; }
 
-        /// <summary>
-        /// List of TVPs to exclude from generated classes.
-        /// </summary>
+        /// <summary>List of TVPs to exclude from generated classes.</summary>
         IList<string> Exclude { get; }
     }
 
@@ -2966,50 +2764,39 @@ namespace POCOGenerator
 
     #region Syntax Highlight
 
-    /// <summary>
-    /// The settings determine the colors for syntax elements.
-    /// </summary>
+    /// <summary>The settings determine the colors for syntax elements.</summary>
     public interface SyntaxHighlight
     {
-        /// <summary>
-        /// Resets the syntax highlight settings to their default values.
-        /// </summary>
+        /// <summary>Resets the syntax highlight settings to their default values.</summary>
         void Reset();
 
-        /// <summary>
-        /// Gets or sets the color for a text (foreground)
+        /// <summary>Gets or sets the color for a text (foreground)
         /// that is not keyword, user type, string, comment or an error.
-        /// </summary>
+        /// <para>The default color is #000000.</para></summary>
         Color Text { get; set; }
 
-        /// <summary>
-        /// Gets or sets the color for a C# keyword.
-        /// </summary>
+        /// <summary>Gets or sets the color for a C# keyword.
+        /// <para>The default color is #0000FF.</para></summary>
         Color Keyword { get; set; }
 
-        /// <summary>
-        /// Gets or sets the color for a user type.
-        /// </summary>
+        /// <summary>Gets or sets the color for a user type.
+        /// <para>The default color is #2B91AF.</para></summary>
         Color UserType { get; set; }
 
-        /// <summary>
-        /// Gets or sets the color for a string.
-        /// </summary>
+        /// <summary>Gets or sets the color for a string.
+        /// <para>The default color is #A31515.</para></summary>
         Color String { get; set; }
 
-        /// <summary>
-        /// Gets or sets the color for a comment.
-        /// </summary>
+        /// <summary>Gets or sets the color for a comment.
+        /// <para>The default color is #008000.</para></summary>
         Color Comment { get; set; }
 
-        /// <summary>
-        /// Gets or sets the color for an error.
-        /// </summary>
+        /// <summary>Gets or sets the color for an error.
+        /// <para>The default color is #FF0000.</para></summary>
         Color Error { get; set; }
 
-        /// <summary>
-        /// Gets or sets the background color.
-        /// </summary>
+        /// <summary>Gets or sets the background color.
+        /// <para>The default color is #FFFFFF.</para></summary>
         Color Background { get; set; }
     }
 
