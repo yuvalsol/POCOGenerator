@@ -148,6 +148,7 @@
             this.checkReferencedTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkReferencingTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkAccessibleTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -349,6 +350,7 @@
             this.btnReset.Size = new System.Drawing.Size(45, 23);
             this.btnReset.TabIndex = 8;
             this.btnReset.Text = "Reset";
+            this.toolTip.SetToolTip(this.btnReset, "Reset settings to their default values.");
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
@@ -362,6 +364,7 @@
             this.btnDisclaimer.Size = new System.Drawing.Size(65, 23);
             this.btnDisclaimer.TabIndex = 10;
             this.btnDisclaimer.Text = "Disclaimer";
+            this.toolTip.SetToolTip(this.btnDisclaimer, "Disclaimer message about POCO Generator.");
             this.btnDisclaimer.UseVisualStyleBackColor = true;
             this.btnDisclaimer.Click += new System.EventHandler(this.btnDisclaimer_Click);
             // 
@@ -375,6 +378,7 @@
             this.btnConnect.Size = new System.Drawing.Size(57, 23);
             this.btnConnect.TabIndex = 7;
             this.btnConnect.Text = "Connect";
+            this.toolTip.SetToolTip(this.btnConnect, "Connect to server.");
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
@@ -420,6 +424,7 @@
             this.chkComplexTypes.Size = new System.Drawing.Size(98, 17);
             this.chkComplexTypes.TabIndex = 14;
             this.chkComplexTypes.Text = "Complex Types";
+            this.toolTip.SetToolTip(this.chkComplexTypes, "Reverse-engineer existing Entity Framework\'s complex types\r\nin the database.");
             this.chkComplexTypes.UseVisualStyleBackColor = true;
             this.chkComplexTypes.CheckedChanged += new System.EventHandler(this.chkComplexTypes_CheckedChanged);
             // 
@@ -432,6 +437,8 @@
             this.chkUsingInsideNamespace.Size = new System.Drawing.Size(142, 17);
             this.chkUsingInsideNamespace.TabIndex = 10;
             this.chkUsingInsideNamespace.Text = "using Inside Namespace";
+            this.toolTip.SetToolTip(this.chkUsingInsideNamespace, "If a custom namespace is set (Namespace setting), the using\r\nstatements are place" +
+        "d inside the namespace declaration.");
             this.chkUsingInsideNamespace.UseVisualStyleBackColor = true;
             this.chkUsingInsideNamespace.CheckedChanged += new System.EventHandler(this.chkUsingInsideNamespace_CheckedChanged);
             // 
@@ -460,6 +467,8 @@
             this.rdbEnumSQLTypeToEnumInt.TabIndex = 3;
             this.rdbEnumSQLTypeToEnumInt.TabStop = true;
             this.rdbEnumSQLTypeToEnumInt.Text = "enum int";
+            this.toolTip.SetToolTip(this.rdbEnumSQLTypeToEnumInt, "Enum and set type column will be generated as enumeration\r\nof type System.Int32 (" +
+        "int).");
             this.rdbEnumSQLTypeToEnumInt.UseVisualStyleBackColor = true;
             this.rdbEnumSQLTypeToEnumInt.CheckedChanged += new System.EventHandler(this.rdbEnumSQLTypeToEnumInt_CheckedChanged);
             // 
@@ -471,6 +480,7 @@
             this.lblSQLEnum.Size = new System.Drawing.Size(64, 13);
             this.lblSQLEnum.TabIndex = 0;
             this.lblSQLEnum.Text = "Enum Type:";
+            this.toolTip.SetToolTip(this.lblSQLEnum, "Determines how enum and set type columns are generated.");
             // 
             // rdbEnumSQLTypeToEnumUShort
             // 
@@ -482,6 +492,9 @@
             this.rdbEnumSQLTypeToEnumUShort.TabIndex = 2;
             this.rdbEnumSQLTypeToEnumUShort.TabStop = true;
             this.rdbEnumSQLTypeToEnumUShort.Text = "enum ushort";
+            this.toolTip.SetToolTip(this.rdbEnumSQLTypeToEnumUShort, "Enum type column will be generated as enumeration of type\r\nSystem.UInt16 (ushort)" +
+        " and set type column will be generated as\r\nbitwise enumeration of type System.UI" +
+        "nt64 (ulong).");
             this.rdbEnumSQLTypeToEnumUShort.UseVisualStyleBackColor = true;
             this.rdbEnumSQLTypeToEnumUShort.CheckedChanged += new System.EventHandler(this.rdbEnumSQLTypeToEnumUShort_CheckedChanged);
             // 
@@ -496,6 +509,7 @@
             this.rdbEnumSQLTypeToString.TabIndex = 1;
             this.rdbEnumSQLTypeToString.TabStop = true;
             this.rdbEnumSQLTypeToString.Text = "string";
+            this.toolTip.SetToolTip(this.rdbEnumSQLTypeToString, "The data member type will be string for both enum\r\nand set type columns.");
             this.rdbEnumSQLTypeToString.UseVisualStyleBackColor = true;
             this.rdbEnumSQLTypeToString.CheckedChanged += new System.EventHandler(this.rdbEnumSQLTypeToString_CheckedChanged);
             // 
@@ -510,6 +524,7 @@
             this.btnResetPOCOSettings.Size = new System.Drawing.Size(21, 19);
             this.btnResetPOCOSettings.TabIndex = 16;
             this.btnResetPOCOSettings.Text = "R";
+            this.toolTip.SetToolTip(this.btnResetPOCOSettings, "Reset POCO settings to their default values.");
             this.btnResetPOCOSettings.UseVisualStyleBackColor = true;
             this.btnResetPOCOSettings.Click += new System.EventHandler(this.btnResetPOCOSettings_Click);
             // 
@@ -536,6 +551,7 @@
             this.rdbProperties.TabIndex = 1;
             this.rdbProperties.TabStop = true;
             this.rdbProperties.Text = "Properties";
+            this.toolTip.SetToolTip(this.rdbProperties, "Data members are constructed as properties (getter & setter).");
             this.rdbProperties.UseVisualStyleBackColor = true;
             this.rdbProperties.CheckedChanged += new System.EventHandler(this.rdbProperties_CheckedChanged);
             // 
@@ -549,6 +565,7 @@
             this.rdbFields.TabIndex = 2;
             this.rdbFields.TabStop = true;
             this.rdbFields.Text = "Fields";
+            this.toolTip.SetToolTip(this.rdbFields, "Data members are constructed as fields.");
             this.rdbFields.UseVisualStyleBackColor = true;
             this.rdbFields.CheckedChanged += new System.EventHandler(this.rdbFields_CheckedChanged);
             // 
@@ -561,6 +578,7 @@
             this.chkVirtualProperties.Size = new System.Drawing.Size(105, 17);
             this.chkVirtualProperties.TabIndex = 3;
             this.chkVirtualProperties.Text = "Virtual Properties";
+            this.toolTip.SetToolTip(this.chkVirtualProperties, "Add virtual modifier to properties.");
             this.chkVirtualProperties.UseVisualStyleBackColor = true;
             this.chkVirtualProperties.CheckedChanged += new System.EventHandler(this.chkVirtualProperties_CheckedChanged);
             // 
@@ -573,6 +591,8 @@
             this.chkStructTypesNullable.Size = new System.Drawing.Size(127, 17);
             this.chkStructTypesNullable.TabIndex = 5;
             this.chkStructTypesNullable.Text = "Struct Types Nullable";
+            this.toolTip.SetToolTip(this.chkStructTypesNullable, "struct data members will be constructed as nullable (int?)\r\neven if they are not " +
+        "nullable in the database.");
             this.chkStructTypesNullable.UseVisualStyleBackColor = true;
             this.chkStructTypesNullable.CheckedChanged += new System.EventHandler(this.chkStructTypesNullable_CheckedChanged);
             // 
@@ -585,6 +605,8 @@
             this.chkComments.Size = new System.Drawing.Size(75, 17);
             this.chkComments.TabIndex = 7;
             this.chkComments.Text = "Comments";
+            this.toolTip.SetToolTip(this.chkComments, "Add a comment, to data members, about the original\r\ndatabase column type and whet" +
+        "her the column is nullable.");
             this.chkComments.UseVisualStyleBackColor = true;
             this.chkComments.CheckedChanged += new System.EventHandler(this.chkComments_CheckedChanged);
             // 
@@ -597,6 +619,7 @@
             this.chkCommentsWithoutNull.Size = new System.Drawing.Size(134, 17);
             this.chkCommentsWithoutNull.TabIndex = 8;
             this.chkCommentsWithoutNull.Text = "Comments Without null";
+            this.toolTip.SetToolTip(this.chkCommentsWithoutNull, "Add a comment, to data members, about the original\r\ndatabase column type.");
             this.chkCommentsWithoutNull.UseVisualStyleBackColor = true;
             this.chkCommentsWithoutNull.CheckedChanged += new System.EventHandler(this.chkCommentsWithoutNull_CheckedChanged);
             // 
@@ -609,6 +632,8 @@
             this.chkColumnDefaults.Size = new System.Drawing.Size(103, 17);
             this.chkColumnDefaults.TabIndex = 6;
             this.chkColumnDefaults.Text = "Column Defaults";
+            this.toolTip.SetToolTip(this.chkColumnDefaults, "Add data member initialization based on\r\nthe column\'s default value in the databa" +
+        "se.");
             this.chkColumnDefaults.UseVisualStyleBackColor = true;
             this.chkColumnDefaults.CheckedChanged += new System.EventHandler(this.chkColumnDefaults_CheckedChanged);
             // 
@@ -620,6 +645,7 @@
             this.lblNamespace.Size = new System.Drawing.Size(64, 13);
             this.lblNamespace.TabIndex = 0;
             this.lblNamespace.Text = "Namespace";
+            this.toolTip.SetToolTip(this.lblNamespace, "Wraps all the POCOs with a custom namespace.");
             // 
             // chkOverrideProperties
             // 
@@ -630,6 +656,7 @@
             this.chkOverrideProperties.Size = new System.Drawing.Size(116, 17);
             this.chkOverrideProperties.TabIndex = 4;
             this.chkOverrideProperties.Text = "Override Properties";
+            this.toolTip.SetToolTip(this.chkOverrideProperties, "Add override modifier to properties.");
             this.chkOverrideProperties.UseVisualStyleBackColor = true;
             this.chkOverrideProperties.CheckedChanged += new System.EventHandler(this.chkOverrideProperties_CheckedChanged);
             // 
@@ -658,6 +685,9 @@
             this.chkUsing.Size = new System.Drawing.Size(51, 17);
             this.chkUsing.TabIndex = 9;
             this.chkUsing.Text = "using";
+            this.toolTip.SetToolTip(this.chkUsing, "Add using statements at the beginning of all the POCOs.\r\nIf a custom namespace is" +
+        " set (Namespace setting), the using\r\nstatements are placed outside the namespace" +
+        " declaration.");
             this.chkUsing.UseVisualStyleBackColor = true;
             this.chkUsing.CheckedChanged += new System.EventHandler(this.chkUsing_CheckedChanged);
             // 
@@ -669,6 +699,7 @@
             this.lblInherit.Size = new System.Drawing.Size(36, 13);
             this.lblInherit.TabIndex = 0;
             this.lblInherit.Text = "Inherit";
+            this.toolTip.SetToolTip(this.lblInherit, "Add a comma-delimited list of inherit class and interfaces.");
             // 
             // chkPartialClass
             // 
@@ -679,6 +710,7 @@
             this.chkPartialClass.Size = new System.Drawing.Size(83, 17);
             this.chkPartialClass.TabIndex = 2;
             this.chkPartialClass.Text = "Partial Class";
+            this.toolTip.SetToolTip(this.chkPartialClass, "Add partial modifier to the class.");
             this.chkPartialClass.UseVisualStyleBackColor = true;
             this.chkPartialClass.CheckedChanged += new System.EventHandler(this.chkPartialClass_CheckedChanged);
             // 
@@ -691,6 +723,7 @@
             this.chkNewLineBetweenMembers.Size = new System.Drawing.Size(162, 17);
             this.chkNewLineBetweenMembers.TabIndex = 13;
             this.chkNewLineBetweenMembers.Text = "New Line Between Members";
+            this.toolTip.SetToolTip(this.chkNewLineBetweenMembers, "Add empty lines between POCO data members.");
             this.chkNewLineBetweenMembers.UseVisualStyleBackColor = true;
             this.chkNewLineBetweenMembers.CheckedChanged += new System.EventHandler(this.chkNewLineBetweenMembers_CheckedChanged);
             // 
@@ -726,6 +759,7 @@
             this.chkNavigationProperties.Size = new System.Drawing.Size(127, 17);
             this.chkNavigationProperties.TabIndex = 1;
             this.chkNavigationProperties.Text = "Navigation Properties";
+            this.toolTip.SetToolTip(this.chkNavigationProperties, "Add navigation properties and constructor\r\ninitialization, if necessary.");
             this.chkNavigationProperties.UseVisualStyleBackColor = true;
             this.chkNavigationProperties.CheckedChanged += new System.EventHandler(this.chkNavigationProperties_CheckedChanged);
             // 
@@ -738,6 +772,7 @@
             this.chkVirtualNavigationProperties.Size = new System.Drawing.Size(55, 17);
             this.chkVirtualNavigationProperties.TabIndex = 3;
             this.chkVirtualNavigationProperties.Text = "Virtual";
+            this.toolTip.SetToolTip(this.chkVirtualNavigationProperties, "Add virtual modifier to the navigation properties.");
             this.chkVirtualNavigationProperties.UseVisualStyleBackColor = true;
             this.chkVirtualNavigationProperties.CheckedChanged += new System.EventHandler(this.chkVirtualNavigationProperties_CheckedChanged);
             // 
@@ -752,6 +787,7 @@
             this.btnResetNavigationPropertiesSettings.Size = new System.Drawing.Size(21, 19);
             this.btnResetNavigationPropertiesSettings.TabIndex = 7;
             this.btnResetNavigationPropertiesSettings.Text = "R";
+            this.toolTip.SetToolTip(this.btnResetNavigationPropertiesSettings, "Reset Navigation Properties settings to their default values.");
             this.btnResetNavigationPropertiesSettings.UseVisualStyleBackColor = true;
             this.btnResetNavigationPropertiesSettings.Click += new System.EventHandler(this.btnResetNavigationPropertiesSettings_Click);
             // 
@@ -780,6 +816,8 @@
             this.rdbIListNavigationProperties.TabIndex = 2;
             this.rdbIListNavigationProperties.TabStop = true;
             this.rdbIListNavigationProperties.Text = "IList";
+            this.toolTip.SetToolTip(this.rdbIListNavigationProperties, "Set the collection navigation property to type IList\r\nand for constructor initial" +
+        "ization set to type List.");
             this.rdbIListNavigationProperties.UseVisualStyleBackColor = true;
             this.rdbIListNavigationProperties.CheckedChanged += new System.EventHandler(this.rdbIListNavigationProperties_CheckedChanged);
             // 
@@ -793,6 +831,8 @@
             this.rdbIEnumerableNavigationProperties.TabIndex = 4;
             this.rdbIEnumerableNavigationProperties.TabStop = true;
             this.rdbIEnumerableNavigationProperties.Text = "IEnumerable";
+            this.toolTip.SetToolTip(this.rdbIEnumerableNavigationProperties, "Set the collection navigation property to type IEnumerable\r\nand for constructor i" +
+        "nitialization set to type List.");
             this.rdbIEnumerableNavigationProperties.UseVisualStyleBackColor = true;
             this.rdbIEnumerableNavigationProperties.CheckedChanged += new System.EventHandler(this.rdbIEnumerableNavigationProperties_CheckedChanged);
             // 
@@ -806,6 +846,8 @@
             this.rdbICollectionNavigationProperties.TabIndex = 3;
             this.rdbICollectionNavigationProperties.TabStop = true;
             this.rdbICollectionNavigationProperties.Text = "ICollection";
+            this.toolTip.SetToolTip(this.rdbICollectionNavigationProperties, "Set the collection navigation property to type ICollection\r\nand for constructor i" +
+        "nitialization set to type HashSet.");
             this.rdbICollectionNavigationProperties.UseVisualStyleBackColor = true;
             this.rdbICollectionNavigationProperties.CheckedChanged += new System.EventHandler(this.rdbICollectionNavigationProperties_CheckedChanged);
             // 
@@ -820,6 +862,8 @@
             this.rdbListNavigationProperties.TabIndex = 1;
             this.rdbListNavigationProperties.TabStop = true;
             this.rdbListNavigationProperties.Text = "List";
+            this.toolTip.SetToolTip(this.rdbListNavigationProperties, "Set the collection navigation property to type List\r\nand for constructor initiali" +
+        "zation set to type List.");
             this.rdbListNavigationProperties.UseVisualStyleBackColor = true;
             this.rdbListNavigationProperties.CheckedChanged += new System.EventHandler(this.rdbListNavigationProperties_CheckedChanged);
             // 
@@ -832,6 +876,7 @@
             this.chkNavigationPropertiesComments.Size = new System.Drawing.Size(75, 17);
             this.chkNavigationPropertiesComments.TabIndex = 2;
             this.chkNavigationPropertiesComments.Text = "Comments";
+            this.toolTip.SetToolTip(this.chkNavigationPropertiesComments, "Add a comment about the underline foreign key\r\nof the navigation property.");
             this.chkNavigationPropertiesComments.UseVisualStyleBackColor = true;
             this.chkNavigationPropertiesComments.CheckedChanged += new System.EventHandler(this.chkNavigationPropertiesComments_CheckedChanged);
             // 
@@ -844,6 +889,8 @@
             this.chkManyToManyJoinTable.Size = new System.Drawing.Size(149, 17);
             this.chkManyToManyJoinTable.TabIndex = 5;
             this.chkManyToManyJoinTable.Text = "Many-To-Many Join Table";
+            this.toolTip.SetToolTip(this.chkManyToManyJoinTable, "In a Many-to-Many relationship, the join table is hidden\r\nby default. When this s" +
+        "etting is enabled, the join table is\r\nforcefully rendered.");
             this.chkManyToManyJoinTable.UseVisualStyleBackColor = true;
             this.chkManyToManyJoinTable.CheckedChanged += new System.EventHandler(this.chkManyToManyJoinTable_CheckedChanged);
             // 
@@ -856,6 +903,7 @@
             this.chkOverrideNavigationProperties.Size = new System.Drawing.Size(66, 17);
             this.chkOverrideNavigationProperties.TabIndex = 4;
             this.chkOverrideNavigationProperties.Text = "Override";
+            this.toolTip.SetToolTip(this.chkOverrideNavigationProperties, "Add override modifier to the navigation properties.");
             this.chkOverrideNavigationProperties.UseVisualStyleBackColor = true;
             this.chkOverrideNavigationProperties.CheckedChanged += new System.EventHandler(this.chkOverrideNavigationProperties_CheckedChanged);
             // 
@@ -906,6 +954,8 @@
             this.rdbFileNameDatabaseSchemaName.Size = new System.Drawing.Size(144, 17);
             this.rdbFileNameDatabaseSchemaName.TabIndex = 4;
             this.rdbFileNameDatabaseSchemaName.Text = "Database.Schema.Name";
+            this.toolTip.SetToolTip(this.rdbFileNameDatabaseSchemaName, "Exported file names are Database.Schema.Name.cs.\r\nApplicable when exporting to mu" +
+        "ltiple files.");
             this.rdbFileNameDatabaseSchemaName.UseVisualStyleBackColor = true;
             // 
             // rdbFileNameDatabaseName
@@ -917,6 +967,8 @@
             this.rdbFileNameDatabaseName.Size = new System.Drawing.Size(102, 17);
             this.rdbFileNameDatabaseName.TabIndex = 3;
             this.rdbFileNameDatabaseName.Text = "Database.Name";
+            this.toolTip.SetToolTip(this.rdbFileNameDatabaseName, "Exported file names are Database.Name.cs.\r\nApplicable when exporting to multiple " +
+        "files.");
             this.rdbFileNameDatabaseName.UseVisualStyleBackColor = true;
             // 
             // rdbFileNameSchemaName
@@ -928,6 +980,8 @@
             this.rdbFileNameSchemaName.Size = new System.Drawing.Size(95, 17);
             this.rdbFileNameSchemaName.TabIndex = 2;
             this.rdbFileNameSchemaName.Text = "Schema.Name";
+            this.toolTip.SetToolTip(this.rdbFileNameSchemaName, "Exported file names are Schema.Name.cs.\r\nApplicable when exporting to multiple fi" +
+        "les.");
             this.rdbFileNameSchemaName.UseVisualStyleBackColor = true;
             // 
             // rdbFileNameName
@@ -941,6 +995,7 @@
             this.rdbFileNameName.TabIndex = 1;
             this.rdbFileNameName.TabStop = true;
             this.rdbFileNameName.Text = "Name";
+            this.toolTip.SetToolTip(this.rdbFileNameName, "Exported file names are Name.cs.\r\nApplicable when exporting to multiple files.");
             this.rdbFileNameName.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel1
@@ -967,6 +1022,7 @@
             this.rdbSingleFile.TabIndex = 1;
             this.rdbSingleFile.TabStop = true;
             this.rdbSingleFile.Text = "Single File";
+            this.toolTip.SetToolTip(this.rdbSingleFile, "All the POCOs are saved to one file.\r\nThe file name is the name of the database.");
             this.rdbSingleFile.UseVisualStyleBackColor = true;
             // 
             // rdbMultipleFilesSingleFolder
@@ -978,6 +1034,7 @@
             this.rdbMultipleFilesSingleFolder.Size = new System.Drawing.Size(155, 17);
             this.rdbMultipleFilesSingleFolder.TabIndex = 2;
             this.rdbMultipleFilesSingleFolder.Text = "Multiple Files - Single Folder";
+            this.toolTip.SetToolTip(this.rdbMultipleFilesSingleFolder, "Each POCO is saved to its own file.\r\nAll the files are saved to the root folder.");
             this.rdbMultipleFilesSingleFolder.UseVisualStyleBackColor = true;
             // 
             // rdbMultipleFilesRelativeFolders
@@ -989,6 +1046,7 @@
             this.rdbMultipleFilesRelativeFolders.Size = new System.Drawing.Size(170, 17);
             this.rdbMultipleFilesRelativeFolders.TabIndex = 3;
             this.rdbMultipleFilesRelativeFolders.Text = "Multiple Files - Relative Folders";
+            this.toolTip.SetToolTip(this.rdbMultipleFilesRelativeFolders, resources.GetString("rdbMultipleFilesRelativeFolders.ToolTip"));
             this.rdbMultipleFilesRelativeFolders.UseVisualStyleBackColor = true;
             // 
             // btnFolder
@@ -1000,6 +1058,7 @@
             this.btnFolder.Size = new System.Drawing.Size(46, 23);
             this.btnFolder.TabIndex = 1;
             this.btnFolder.Text = "Folder";
+            this.toolTip.SetToolTip(this.btnFolder, "Select root folder for export files.");
             this.btnFolder.UseVisualStyleBackColor = true;
             this.btnFolder.Click += new System.EventHandler(this.btnFolder_Click);
             // 
@@ -1020,6 +1079,7 @@
             this.btnExport.Size = new System.Drawing.Size(47, 23);
             this.btnExport.TabIndex = 3;
             this.btnExport.Text = "Export";
+            this.toolTip.SetToolTip(this.btnExport, "Export POCOs to files.");
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
@@ -1073,6 +1133,8 @@
             this.chkSingular.Size = new System.Drawing.Size(64, 17);
             this.chkSingular.TabIndex = 1;
             this.chkSingular.Text = "Singular";
+            this.toolTip.SetToolTip(this.chkSingular, "Change the class name from plural to singular.\r\nApplicable only for tables, views" +
+        " & TVPs.");
             this.chkSingular.UseVisualStyleBackColor = true;
             this.chkSingular.CheckedChanged += new System.EventHandler(this.chkSingular_CheckedChanged);
             // 
@@ -1087,6 +1149,7 @@
             this.btnResetClassNameSettings.Size = new System.Drawing.Size(21, 19);
             this.btnResetClassNameSettings.TabIndex = 17;
             this.btnResetClassNameSettings.Text = "R";
+            this.toolTip.SetToolTip(this.btnResetClassNameSettings, "Reset Class Name settings to their default values.");
             this.btnResetClassNameSettings.UseVisualStyleBackColor = true;
             this.btnResetClassNameSettings.Click += new System.EventHandler(this.btnResetClassNameSettings_Click);
             // 
@@ -1108,6 +1171,7 @@
             this.chkCamelCase.Size = new System.Drawing.Size(79, 17);
             this.chkCamelCase.TabIndex = 8;
             this.chkCamelCase.Text = "CamelCase";
+            this.toolTip.SetToolTip(this.chkCamelCase, "Change class name to camel case.");
             this.chkCamelCase.UseVisualStyleBackColor = true;
             this.chkCamelCase.CheckedChanged += new System.EventHandler(this.chkCamelCase_CheckedChanged);
             // 
@@ -1120,6 +1184,7 @@
             this.chkUpperCase.Size = new System.Drawing.Size(94, 17);
             this.chkUpperCase.TabIndex = 9;
             this.chkUpperCase.Text = "UPPER CASE";
+            this.toolTip.SetToolTip(this.chkUpperCase, "Change class name to upper case.");
             this.chkUpperCase.UseVisualStyleBackColor = true;
             this.chkUpperCase.CheckedChanged += new System.EventHandler(this.chkUpperCase_CheckedChanged);
             // 
@@ -1132,6 +1197,7 @@
             this.chkLowerCase.Size = new System.Drawing.Size(77, 17);
             this.chkLowerCase.TabIndex = 10;
             this.chkLowerCase.Text = "lower case";
+            this.toolTip.SetToolTip(this.chkLowerCase, "Change class name to lower case.");
             this.chkLowerCase.UseVisualStyleBackColor = true;
             this.chkLowerCase.CheckedChanged += new System.EventHandler(this.chkLowerCase_CheckedChanged);
             // 
@@ -1143,6 +1209,8 @@
             this.lblWordsSeparator.Size = new System.Drawing.Size(87, 13);
             this.lblWordsSeparator.TabIndex = 0;
             this.lblWordsSeparator.Text = "Words Separator";
+            this.toolTip.SetToolTip(this.lblWordsSeparator, "Add a separator between words.\r\nWord are text between underscores or in a camel c" +
+        "ase.");
             // 
             // txtWordsSeparator
             // 
@@ -1160,6 +1228,7 @@
             this.lblPrefix.Size = new System.Drawing.Size(33, 13);
             this.lblPrefix.TabIndex = 0;
             this.lblPrefix.Text = "Prefix";
+            this.toolTip.SetToolTip(this.lblPrefix, "Add prefix text to the class name.");
             // 
             // txtPrefix
             // 
@@ -1178,6 +1247,7 @@
             this.lblSuffix.Size = new System.Drawing.Size(33, 13);
             this.lblSuffix.TabIndex = 0;
             this.lblSuffix.Text = "Suffix";
+            this.toolTip.SetToolTip(this.lblSuffix, "Add suffix text to the class name.");
             // 
             // txtSuffix
             // 
@@ -1206,6 +1276,7 @@
             this.lblFixedName.Size = new System.Drawing.Size(63, 13);
             this.lblFixedName.TabIndex = 0;
             this.lblFixedName.Text = "Fixed Name";
+            this.toolTip.SetToolTip(this.lblFixedName, "Set the name of the class to a fixed name.");
             // 
             // chkIncludeDB
             // 
@@ -1216,6 +1287,7 @@
             this.chkIncludeDB.Size = new System.Drawing.Size(79, 17);
             this.chkIncludeDB.TabIndex = 2;
             this.chkIncludeDB.Text = "Include DB";
+            this.toolTip.SetToolTip(this.chkIncludeDB, "Add the database name.");
             this.chkIncludeDB.UseVisualStyleBackColor = true;
             this.chkIncludeDB.CheckedChanged += new System.EventHandler(this.chkIncludeDB_CheckedChanged);
             // 
@@ -1227,6 +1299,7 @@
             this.lblDBSeparator.Size = new System.Drawing.Size(71, 13);
             this.lblDBSeparator.TabIndex = 0;
             this.lblDBSeparator.Text = "DB Separator";
+            this.toolTip.SetToolTip(this.lblDBSeparator, "Add a separator after the database name.");
             // 
             // chkSearchIgnoreCase
             // 
@@ -1237,6 +1310,7 @@
             this.chkSearchIgnoreCase.Size = new System.Drawing.Size(83, 17);
             this.chkSearchIgnoreCase.TabIndex = 13;
             this.chkSearchIgnoreCase.Text = "Ignore Case";
+            this.toolTip.SetToolTip(this.chkSearchIgnoreCase, "Enable case-insensitive search.");
             this.chkSearchIgnoreCase.UseVisualStyleBackColor = true;
             this.chkSearchIgnoreCase.CheckedChanged += new System.EventHandler(this.chkSearchIgnoreCase_CheckedChanged);
             // 
@@ -1265,6 +1339,7 @@
             this.chkIncludeSchema.Size = new System.Drawing.Size(103, 17);
             this.chkIncludeSchema.TabIndex = 4;
             this.chkIncludeSchema.Text = "Include Schema";
+            this.toolTip.SetToolTip(this.chkIncludeSchema, "Add the schema name.");
             this.chkIncludeSchema.UseVisualStyleBackColor = true;
             this.chkIncludeSchema.CheckedChanged += new System.EventHandler(this.chkIncludeSchema_CheckedChanged);
             // 
@@ -1276,6 +1351,7 @@
             this.lblReplace.Size = new System.Drawing.Size(47, 13);
             this.lblReplace.TabIndex = 0;
             this.lblReplace.Text = "Replace";
+            this.toolTip.SetToolTip(this.lblReplace, "Search and replace on the class name.\r\nSearch is case-sensitive.");
             // 
             // chkIgnoreDboSchema
             // 
@@ -1286,6 +1362,7 @@
             this.chkIgnoreDboSchema.Size = new System.Drawing.Size(119, 17);
             this.chkIgnoreDboSchema.TabIndex = 5;
             this.chkIgnoreDboSchema.Text = "Ignore dbo Schema";
+            this.toolTip.SetToolTip(this.chkIgnoreDboSchema, "If the schema name is dbo,\r\ndon\'t add the schema name.");
             this.chkIgnoreDboSchema.UseVisualStyleBackColor = true;
             this.chkIgnoreDboSchema.CheckedChanged += new System.EventHandler(this.chkIgnoreDboSchema_CheckedChanged);
             // 
@@ -1305,6 +1382,7 @@
             this.lblSchemaSeparator.Size = new System.Drawing.Size(95, 13);
             this.lblSchemaSeparator.TabIndex = 0;
             this.lblSchemaSeparator.Text = "Schema Separator";
+            this.toolTip.SetToolTip(this.lblSchemaSeparator, "Add a separator after the schema name.");
             // 
             // lblSearch
             // 
@@ -1314,6 +1392,7 @@
             this.lblSearch.Size = new System.Drawing.Size(41, 13);
             this.lblSearch.TabIndex = 0;
             this.lblSearch.Text = "Search";
+            this.toolTip.SetToolTip(this.lblSearch, "Search and replace on the class name.\r\nSearch is case-sensitive.");
             // 
             // txtSchemaSeparator
             // 
@@ -1373,6 +1452,7 @@
             this.btnResetEFAnnotationsSettings.Size = new System.Drawing.Size(21, 19);
             this.btnResetEFAnnotationsSettings.TabIndex = 12;
             this.btnResetEFAnnotationsSettings.Text = "R";
+            this.toolTip.SetToolTip(this.btnResetEFAnnotationsSettings, "Reset EF Annotations settings to their default values.");
             this.btnResetEFAnnotationsSettings.UseVisualStyleBackColor = true;
             this.btnResetEFAnnotationsSettings.Click += new System.EventHandler(this.btnResetEFAnnotationsSettings_Click);
             // 
@@ -1385,6 +1465,7 @@
             this.chkEF.Size = new System.Drawing.Size(39, 17);
             this.chkEF.TabIndex = 1;
             this.chkEF.Text = "EF";
+            this.toolTip.SetToolTip(this.chkEF, "Add EF main attributes.");
             this.chkEF.UseVisualStyleBackColor = true;
             this.chkEF.CheckedChanged += new System.EventHandler(this.chkEF_CheckedChanged);
             // 
@@ -1397,6 +1478,7 @@
             this.chkEFColumn.Size = new System.Drawing.Size(61, 17);
             this.chkEFColumn.TabIndex = 2;
             this.chkEFColumn.Text = "Column";
+            this.toolTip.SetToolTip(this.chkEFColumn, "Add Column attribute with the\r\ndatabase column\'s name and type.");
             this.chkEFColumn.UseVisualStyleBackColor = true;
             this.chkEFColumn.CheckedChanged += new System.EventHandler(this.chkEFColumn_CheckedChanged);
             // 
@@ -1409,6 +1491,7 @@
             this.chkEFConcurrencyCheck.Size = new System.Drawing.Size(117, 17);
             this.chkEFConcurrencyCheck.TabIndex = 5;
             this.chkEFConcurrencyCheck.Text = "ConcurrencyCheck";
+            this.toolTip.SetToolTip(this.chkEFConcurrencyCheck, "Add ConcurrencyCheck attribute to Timestamp\r\nand RowVersion properties.");
             this.chkEFConcurrencyCheck.UseVisualStyleBackColor = true;
             this.chkEFConcurrencyCheck.CheckedChanged += new System.EventHandler(this.chkEFConcurrencyCheck_CheckedChanged);
             // 
@@ -1422,6 +1505,7 @@
             this.chkEFComplexType.Size = new System.Drawing.Size(90, 17);
             this.chkEFComplexType.TabIndex = 9;
             this.chkEFComplexType.Text = "ComplexType";
+            this.toolTip.SetToolTip(this.chkEFComplexType, "Add ComplexType attribute to complex types.");
             this.chkEFComplexType.UseVisualStyleBackColor = true;
             this.chkEFComplexType.CheckedChanged += new System.EventHandler(this.chkEFComplexType_CheckedChanged);
             // 
@@ -1434,6 +1518,7 @@
             this.chkEFDescription.Size = new System.Drawing.Size(79, 17);
             this.chkEFDescription.TabIndex = 8;
             this.chkEFDescription.Text = "Description";
+            this.toolTip.SetToolTip(this.chkEFDescription, "Add Description attribute to table and columns.");
             this.chkEFDescription.UseVisualStyleBackColor = true;
             this.chkEFDescription.CheckedChanged += new System.EventHandler(this.chkEFDescription_CheckedChanged);
             // 
@@ -1447,6 +1532,9 @@
             this.chkEFIndex.Size = new System.Drawing.Size(80, 17);
             this.chkEFIndex.TabIndex = 10;
             this.chkEFIndex.Text = "Index (EF6)";
+            this.toolTip.SetToolTip(this.chkEFIndex, "Add Index attribute to data members that are part of an index.\r\nIf the index is u" +
+        "nique or clustered, the corresponding properties\r\nare set accordingly. Index att" +
+        "ribute is applicable starting from EF6.");
             this.chkEFIndex.UseVisualStyleBackColor = true;
             this.chkEFIndex.CheckedChanged += new System.EventHandler(this.chkEFIndex_CheckedChanged);
             // 
@@ -1460,6 +1548,7 @@
             this.chkEFForeignKeyAndInverseProperty.Size = new System.Drawing.Size(165, 17);
             this.chkEFForeignKeyAndInverseProperty.TabIndex = 11;
             this.chkEFForeignKeyAndInverseProperty.Text = "ForeignKey && InverseProperty";
+            this.toolTip.SetToolTip(this.chkEFForeignKeyAndInverseProperty, "Add ForeignKey and InverseProperty attributes\r\nto navigation properties.");
             this.chkEFForeignKeyAndInverseProperty.UseVisualStyleBackColor = true;
             this.chkEFForeignKeyAndInverseProperty.CheckedChanged += new System.EventHandler(this.chkEFForeignKeyAndInverseProperty_CheckedChanged);
             // 
@@ -1472,6 +1561,7 @@
             this.chkEFStringLength.Size = new System.Drawing.Size(86, 17);
             this.chkEFStringLength.TabIndex = 6;
             this.chkEFStringLength.Text = "StringLength";
+            this.toolTip.SetToolTip(this.chkEFStringLength, "Add StringLength attribute to string properties.");
             this.chkEFStringLength.UseVisualStyleBackColor = true;
             this.chkEFStringLength.CheckedChanged += new System.EventHandler(this.chkEFStringLength_CheckedChanged);
             // 
@@ -1484,6 +1574,7 @@
             this.chkEFDisplay.Size = new System.Drawing.Size(60, 17);
             this.chkEFDisplay.TabIndex = 7;
             this.chkEFDisplay.Text = "Display";
+            this.toolTip.SetToolTip(this.chkEFDisplay, "Add Display attribute.");
             this.chkEFDisplay.UseVisualStyleBackColor = true;
             this.chkEFDisplay.CheckedChanged += new System.EventHandler(this.chkEFDisplay_CheckedChanged);
             // 
@@ -1496,6 +1587,7 @@
             this.chkEFRequired.Size = new System.Drawing.Size(69, 17);
             this.chkEFRequired.TabIndex = 3;
             this.chkEFRequired.Text = "Required";
+            this.toolTip.SetToolTip(this.chkEFRequired, "Add Required attribute to properties that are not nullable.");
             this.chkEFRequired.UseVisualStyleBackColor = true;
             this.chkEFRequired.CheckedChanged += new System.EventHandler(this.chkEFRequired_CheckedChanged);
             // 
@@ -1508,6 +1600,8 @@
             this.chkEFRequiredWithErrorMessage.Size = new System.Drawing.Size(159, 17);
             this.chkEFRequiredWithErrorMessage.TabIndex = 4;
             this.chkEFRequiredWithErrorMessage.Text = "Required with ErrorMessage";
+            this.toolTip.SetToolTip(this.chkEFRequiredWithErrorMessage, "Add Required attribute to properties that are not nullable\r\nand also add an error" +
+        " message.");
             this.chkEFRequiredWithErrorMessage.UseVisualStyleBackColor = true;
             this.chkEFRequiredWithErrorMessage.CheckedChanged += new System.EventHandler(this.chkEFRequiredWithErrorMessage_CheckedChanged);
             // 
@@ -1546,6 +1640,7 @@
             this.btnCopy.Size = new System.Drawing.Size(41, 23);
             this.btnCopy.TabIndex = 6;
             this.btnCopy.Text = "Copy";
+            this.toolTip.SetToolTip(this.btnCopy, "Copy generated POCOs.");
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
@@ -1559,6 +1654,7 @@
             this.btnTypeMapping.Size = new System.Drawing.Size(85, 23);
             this.btnTypeMapping.TabIndex = 9;
             this.btnTypeMapping.Text = "Type Mapping";
+            this.toolTip.SetToolTip(this.btnTypeMapping, "Mapping from RDBMS data types to .NET data types.");
             this.btnTypeMapping.UseVisualStyleBackColor = true;
             this.btnTypeMapping.Click += new System.EventHandler(this.btnTypeMapping_Click);
             // 
@@ -1573,6 +1669,7 @@
             this.btnClose.Size = new System.Drawing.Size(43, 23);
             this.btnClose.TabIndex = 11;
             this.btnClose.Text = "Close";
+            this.toolTip.SetToolTip(this.btnClose, "Close POCO Generator.");
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -1605,6 +1702,10 @@
             this.checkAccessibleTablesToolStripMenuItem.Size = new System.Drawing.Size(455, 24);
             this.checkAccessibleTablesToolStripMenuItem.Text = "Check Recursively Tables Accessible From && To This Table";
             this.checkAccessibleTablesToolStripMenuItem.Click += new System.EventHandler(this.checkAccessibleTablesToolStripMenuItem_Click);
+            // 
+            // toolTip
+            // 
+            this.toolTip.AutomaticDelay = 1500;
             // 
             // POCOGeneratorForm
             // 
@@ -1779,5 +1880,6 @@
         private System.Windows.Forms.Button btnResetEFAnnotationsSettings;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.RadioButton rdbIListNavigationProperties;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
