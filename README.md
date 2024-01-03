@@ -2173,6 +2173,7 @@ order by [Name], Foreign_Schema, Foreign_Table, Ordinal
 ## Navigation Properties
 
 Navigation properties define the relationship between POCOs and are reflections of foreign keys between database tables. There are 3 types of relationships: One-to-Many, One-to-One, Many-to-Many. Further reading:
+- [Relationships, navigation properties, and foreign keys](https://learn.microsoft.com/en-us/ef/ef6/fundamentals/relationships "Relationships, navigation properties, and foreign keys")
 - [Relationships between Entities in Entity Framework 6](https://www.entityframeworktutorial.net/entityframework6/entity-relationships.aspx "Relationships between Entities in Entity Framework 6")
 - [Configure One-to-Many Relationships in EF 6](https://www.entityframeworktutorial.net/code-first/configure-one-to-many-relationship-in-code-first.aspx "Configure One-to-Many Relationships in EF 6")
 - [Configure One-to-Zero-or-One Relationship in Entity Framework 6](https://www.entityframeworktutorial.net/code-first/configure-one-to-one-relationship-in-code-first.aspx "Configure One-to-Zero-or-One Relationship in Entity Framework 6")
