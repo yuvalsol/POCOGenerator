@@ -3949,7 +3949,7 @@ namespace POCOGeneratorUI
         private void ShowDisclaimer()
         {
             if (DisclaimerForm == null)
-                DisclaimerForm = new DisclaimerForm(POCOGenerator.Disclaimer.Message);
+                DisclaimerForm = new DisclaimerForm(POCOGenerator.Disclaimer.Message.Replace(Environment.NewLine, " "));
             DisclaimerForm.ShowDialog(this);
         }
 
