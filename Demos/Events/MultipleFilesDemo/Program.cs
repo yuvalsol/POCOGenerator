@@ -32,9 +32,13 @@ namespace MultipleFilesDemo
             int indent = 0;
             int filesCount = 0;
 
-            // create server folder
+            #region Server
+
+            // create server and namespace folders
             generator.ServerGenerating += (object sender, ServerGeneratingEventArgs e) =>
             {
+                // create server folder
+
                 string server = e.Server.ToString();
                 string folder = string.Join("_", server.Split(Path.GetInvalidFileNameChars()));
 
@@ -50,7 +54,29 @@ namespace MultipleFilesDemo
                     Directory.CreateDirectory(path);
 
                 Console.WriteLine("{0}", folder);
+
+                // create namespace folder
+
+                if (sender is IGenerator g)
+                {
+                    string @namespace = g.Settings.POCO.Namespace;
+
+                    if (string.IsNullOrEmpty(@namespace) == false)
+                    {
+                        folder = string.Join("_", @namespace.Split(Path.GetInvalidFileNameChars()));
+
+                        path = Path.Combine(path, folder);
+
+                        if (Directory.Exists(path) == false)
+                            Directory.CreateDirectory(path);
+
+                        indent += INDENT_SIZE;
+                        Console.WriteLine("{0}{1}", new string(' ', indent), folder);
+                    }
+                }
             };
+
+            #region Database
 
             // create database folder
             generator.DatabaseGenerating += (object sender, DatabaseGeneratingEventArgs e) =>
@@ -242,11 +268,15 @@ namespace MultipleFilesDemo
                 indent -= INDENT_SIZE;
             };
 
+            #endregion
+
             // take the path one step up once the server is written
             generator.ServerGenerated += (object sender, ServerGeneratedEventArgs e) =>
             {
                 path = Path.GetDirectoryName(path);
             };
+
+            #endregion
 
             GeneratorResults results = generator.Generate();
 
@@ -292,10 +322,12 @@ namespace MultipleFilesDemo
 
         private static string GetNamespace(string @namespace, Database database, string dbGroup, string schema)
         {
-            @namespace = string.Format("{0}.{1}.{2}", @namespace, database, dbGroup);
+            string fullNamespace = string.Format("{0}.{1}", database, dbGroup);
+            if (string.IsNullOrEmpty(@namespace) == false)
+                fullNamespace = string.Format("{0}.{1}", @namespace, fullNamespace);
             if (string.IsNullOrEmpty(schema) == false)
-                @namespace = string.Format("{0}.{1}", @namespace, schema);
-            return @namespace;
+                fullNamespace = string.Format("{0}.{1}", fullNamespace, schema);
+            return fullNamespace;
         }
 
         private static void DbObjectPOCO(string className, string poco, string schema, string path, ref int filesCount)
