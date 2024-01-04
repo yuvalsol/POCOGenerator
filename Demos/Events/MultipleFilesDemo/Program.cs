@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using POCOGenerator;
@@ -30,7 +32,8 @@ namespace MultipleFilesDemo
 
             string path = root;
             int indent = 0;
-            int filesCount = 0;
+            // key: schema, value: files count
+            OrderedDictionary filesCount = new OrderedDictionary(StringComparer.OrdinalIgnoreCase);
 
             #region Server
 
@@ -98,7 +101,7 @@ namespace MultipleFilesDemo
             // create Tables folder
             generator.TablesGenerating += (object sender, TablesGeneratingEventArgs e) =>
             {
-                DbGroupGenerating("Tables", ref path, ref indent, ref filesCount);
+                DbGroupGenerating("Tables", ref path, ref indent, filesCount);
             };
 
             // get namespace for table
@@ -110,13 +113,13 @@ namespace MultipleFilesDemo
             // save table poco
             generator.TablePOCO += (object sender, TablePOCOEventArgs e) =>
             {
-                DbObjectPOCO(e.ClassName, e.POCO, e.Table.Schema, path, ref filesCount);
+                DbObjectPOCO(e.ClassName, e.POCO, e.Table.Schema, path, filesCount);
             };
 
             // take the path one step up once all the tables are written
             generator.TablesGenerated += (object sender, TablesGeneratedEventArgs e) =>
             {
-                DbGroupGenerated(ref path, ref indent, ref filesCount);
+                DbGroupGenerated(ref path, ref indent, filesCount);
             };
 
             #endregion
@@ -126,7 +129,7 @@ namespace MultipleFilesDemo
             // create Tables folder for complex type tables
             generator.ComplexTypeTablesGenerating += (object sender, ComplexTypeTablesGeneratingEventArgs e) =>
             {
-                DbGroupGenerating("Tables", ref path, ref indent, ref filesCount);
+                DbGroupGenerating("Tables", ref path, ref indent, filesCount);
             };
 
             // get namespace for complex type table
@@ -138,13 +141,13 @@ namespace MultipleFilesDemo
             // save complex type table poco
             generator.ComplexTypeTablePOCO += (object sender, ComplexTypeTablePOCOEventArgs e) =>
             {
-                DbObjectPOCO(e.ClassName, e.POCO, e.ComplexTypeTable.Schema, path, ref filesCount);
+                DbObjectPOCO(e.ClassName, e.POCO, e.ComplexTypeTable.Schema, path, filesCount);
             };
 
             // take the path one step up once all the complex type tables are written
             generator.ComplexTypeTablesGenerated += (object sender, ComplexTypeTablesGeneratedEventArgs e) =>
             {
-                DbGroupGenerated(ref path, ref indent, ref filesCount);
+                DbGroupGenerated(ref path, ref indent, filesCount);
             };
 
             #endregion
@@ -154,7 +157,7 @@ namespace MultipleFilesDemo
             // create Views folder
             generator.ViewsGenerating += (object sender, ViewsGeneratingEventArgs e) =>
             {
-                DbGroupGenerating("Views", ref path, ref indent, ref filesCount);
+                DbGroupGenerating("Views", ref path, ref indent, filesCount);
             };
 
             // get namespace for view
@@ -166,13 +169,13 @@ namespace MultipleFilesDemo
             // save view poco
             generator.ViewPOCO += (object sender, ViewPOCOEventArgs e) =>
             {
-                DbObjectPOCO(e.ClassName, e.POCO, e.View.Schema, path, ref filesCount);
+                DbObjectPOCO(e.ClassName, e.POCO, e.View.Schema, path, filesCount);
             };
 
             // take the path one step up once all the views are written
             generator.ViewsGenerated += (object sender, ViewsGeneratedEventArgs e) =>
             {
-                DbGroupGenerated(ref path, ref indent, ref filesCount);
+                DbGroupGenerated(ref path, ref indent, filesCount);
             };
 
             #endregion
@@ -182,7 +185,7 @@ namespace MultipleFilesDemo
             // create Procedures folder
             generator.ProceduresGenerating += (object sender, ProceduresGeneratingEventArgs e) =>
             {
-                DbGroupGenerating("Procedures", ref path, ref indent, ref filesCount);
+                DbGroupGenerating("Procedures", ref path, ref indent, filesCount);
             };
 
             // get namespace for procedure
@@ -194,13 +197,13 @@ namespace MultipleFilesDemo
             // save procedure poco
             generator.ProcedurePOCO += (object sender, ProcedurePOCOEventArgs e) =>
             {
-                DbObjectPOCO(e.ClassName, e.POCO, e.Procedure.Schema, path, ref filesCount);
+                DbObjectPOCO(e.ClassName, e.POCO, e.Procedure.Schema, path, filesCount);
             };
 
             // take the path one step up once all the procedures are written
             generator.ProceduresGenerated += (object sender, ProceduresGeneratedEventArgs e) =>
             {
-                DbGroupGenerated(ref path, ref indent, ref filesCount);
+                DbGroupGenerated(ref path, ref indent, filesCount);
             };
 
             #endregion
@@ -210,7 +213,7 @@ namespace MultipleFilesDemo
             // create Functions folder
             generator.FunctionsGenerating += (object sender, FunctionsGeneratingEventArgs e) =>
             {
-                DbGroupGenerating("Functions", ref path, ref indent, ref filesCount);
+                DbGroupGenerating("Functions", ref path, ref indent, filesCount);
             };
 
             // get namespace for function
@@ -222,13 +225,13 @@ namespace MultipleFilesDemo
             // save function poco
             generator.FunctionPOCO += (object sender, FunctionPOCOEventArgs e) =>
             {
-                DbObjectPOCO(e.ClassName, e.POCO, e.Function.Schema, path, ref filesCount);
+                DbObjectPOCO(e.ClassName, e.POCO, e.Function.Schema, path, filesCount);
             };
 
             // take the path one step up once all the functions are written
             generator.FunctionsGenerated += (object sender, FunctionsGeneratedEventArgs e) =>
             {
-                DbGroupGenerated(ref path, ref indent, ref filesCount);
+                DbGroupGenerated(ref path, ref indent, filesCount);
             };
 
             #endregion
@@ -238,7 +241,7 @@ namespace MultipleFilesDemo
             // create TVPs folder
             generator.TVPsGenerating += (object sender, TVPsGeneratingEventArgs e) =>
             {
-                DbGroupGenerating("TVPs", ref path, ref indent, ref filesCount);
+                DbGroupGenerating("TVPs", ref path, ref indent, filesCount);
             };
 
             // get namespace for tvp
@@ -250,13 +253,13 @@ namespace MultipleFilesDemo
             // save tvp poco
             generator.TVPPOCO += (object sender, TVPPOCOEventArgs e) =>
             {
-                DbObjectPOCO(e.ClassName, e.POCO, e.TVP.Schema, path, ref filesCount);
+                DbObjectPOCO(e.ClassName, e.POCO, e.TVP.Schema, path, filesCount);
             };
 
             // take the path one step up once all the tvps are written
             generator.TVPsGenerated += (object sender, TVPsGeneratedEventArgs e) =>
             {
-                DbGroupGenerated(ref path, ref indent, ref filesCount);
+                DbGroupGenerated(ref path, ref indent, filesCount);
             };
 
             #endregion
@@ -307,7 +310,7 @@ namespace MultipleFilesDemo
 
         private const int INDENT_SIZE = 4;
 
-        private static void DbGroupGenerating(string dbGroup, ref string path, ref int indent, ref int filesCount)
+        private static void DbGroupGenerating(string dbGroup, ref string path, ref int indent, OrderedDictionary filesCount)
         {
             path = Path.Combine(path, dbGroup);
 
@@ -315,9 +318,9 @@ namespace MultipleFilesDemo
                 Directory.CreateDirectory(path);
 
             indent += INDENT_SIZE;
-            Console.Write("{0}{1}", new string(' ', indent), dbGroup);
+            Console.WriteLine("{0}{1}", new string(' ', indent), dbGroup);
 
-            filesCount = 0;
+            filesCount.Clear();
         }
 
         private static string GetNamespace(string @namespace, Database database, string dbGroup, string schema)
@@ -330,7 +333,7 @@ namespace MultipleFilesDemo
             return fullNamespace;
         }
 
-        private static void DbObjectPOCO(string className, string poco, string schema, string path, ref int filesCount)
+        private static void DbObjectPOCO(string className, string poco, string schema, string path, OrderedDictionary filesCount)
         {
             schema = string.Join("_", (schema ?? string.Empty).Split(Path.GetInvalidFileNameChars()));
 
@@ -344,14 +347,30 @@ namespace MultipleFilesDemo
             path = Path.Combine(path, fileName);
             File.WriteAllText(path, poco);
 
-            filesCount++;
+            if (filesCount.Contains(schema))
+                filesCount[schema] = (int)filesCount[schema] + 1;
+            else
+                filesCount.Add(schema, 1);
         }
 
-        private static void DbGroupGenerated(ref string path, ref int indent, ref int filesCount)
+        private static void DbGroupGenerated(ref string path, ref int indent, OrderedDictionary filesCount)
         {
             path = Path.GetDirectoryName(path);
 
-            Console.WriteLine(": {0} {1}", filesCount, (filesCount == 1 ? "file" : "files"));
+            if (filesCount.Count > 0)
+            {
+                indent += INDENT_SIZE;
+
+                foreach (DictionaryEntry item in filesCount)
+                {
+                    string schema = (string)item.Key;
+                    int count = (int)item.Value;
+                    Console.WriteLine("{0}{1}: {2} {3}", new string(' ', indent), schema, count, (count == 1 ? "file" : "files"));
+                }
+
+                indent -= INDENT_SIZE;
+            }
+
             indent -= INDENT_SIZE;
         }
     }
