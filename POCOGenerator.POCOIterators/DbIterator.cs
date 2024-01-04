@@ -1217,7 +1217,7 @@ namespace POCOGenerator.POCOIterators
                 className += settings.ClassNameIteratorSettings.FixedClassName;
             }
 
-            // postfix
+            // suffix
             if (string.IsNullOrEmpty(settings.ClassNameIteratorSettings.Suffix) == false)
                 className += settings.ClassNameIteratorSettings.Suffix;
 
