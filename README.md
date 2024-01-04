@@ -196,13 +196,15 @@ These settings enable navigation properties and determine how they are construct
 
 These settings add Code-First Entity Framework attributes to POCO classes. More about EF annotations on this page [Code First Data Annotations](https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/data-annotations "Code First Data Annotations").
 
-**EF** - Add EF main attributes.
+**EF** - Add Entity Framework main attributes.
 - **Table** attribute to class declaration. `[Table("Production.Product")]`
 - **Key** attribute to primary key properties. `[Key]`
-- **Column** attribute to composite primary key properties with `Order` set to the order of the key in the composite primary key. `[Column(Order = 1)]`
 - **MaxLength** attribute to `string` properties. `[MaxLength(50)]`
 - **Timestamp** attribute to `timestamp` properties. `[Timestamp]`
 - **DatabaseGenerated** attribute to Identity & Computed properties. `[DatabaseGenerated(DatabaseGeneratedOption.Identity)]`
+- **Column** attribute, even when **Column** setting is not checked, in the following cases:
+    - The database column name is different from the POCO column name. Names are going through a cleaning process so they can be valid C# identifiers. Spaces and minus signs are replaced with underscore, underscore is prefixed when database name starts with a digit.
+    - The column is part of a composite primary key (more than one column). The `Order` property is set to the ordinal position of the column in the composite primary key. `[Column(Order = 1)]`
 
 **Column** - Add `Column` attribute with the database column's name and type. `[Column(Name = "ProductID", TypeName = "int")]`
 

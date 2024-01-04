@@ -1465,7 +1465,8 @@
             this.chkEF.Size = new System.Drawing.Size(39, 17);
             this.chkEF.TabIndex = 1;
             this.chkEF.Text = "EF";
-            this.toolTip.SetToolTip(this.chkEF, "Add EF main attributes.");
+            this.toolTip.SetToolTip(this.chkEF, "Add Table, Key, MaxLength, Timestamp and\r\nDatabaseGenerated attributes to data me" +
+        "mbers.");
             this.chkEF.UseVisualStyleBackColor = true;
             this.chkEF.CheckedChanged += new System.EventHandler(this.chkEF_CheckedChanged);
             // 
