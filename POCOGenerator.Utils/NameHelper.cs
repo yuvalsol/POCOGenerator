@@ -129,7 +129,7 @@ namespace POCOGenerator.Utils
 
         public static string CleanName(string name)
         {
-            name = name.Replace(" ", string.Empty).Replace('-', '_').Trim();
+            name = name.Replace(" ", "_").Replace('-', '_').Trim();
             if (name.Length > 0 && '0' <= name[0] && name[0] <= '9')
                 name = "_" + name;
             return name;
