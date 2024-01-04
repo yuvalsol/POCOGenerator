@@ -23,7 +23,7 @@ namespace POCOGenerator.Objects
 
         /// <summary>Gets the error message that occurred during the generating process of this stored procedure.</summary>
         /// <value>The error message that occurred during the generating process of this stored procedure.</value>
-        public string Error { get { return (this.procedure.Error != null ? this.procedure.Error.Message : null); } }
+        public string Error { get { return this.procedure.Error?.Message; } }
 
         /// <summary>Gets the database that this stored procedure belongs to.</summary>
         /// <value>The database that this stored procedure belongs to.</value>
@@ -101,8 +101,8 @@ namespace POCOGenerator.Objects
         {
             get
             {
-                if (this.procedure is POCOGenerator.DbObjects.ISchema)
-                    return ((POCOGenerator.DbObjects.ISchema)this.procedure).Schema;
+                if (this.procedure is POCOGenerator.DbObjects.ISchema schema)
+                    return schema.Schema;
                 return null;
             }
         }

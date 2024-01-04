@@ -24,7 +24,7 @@ namespace POCOGenerator.Objects
         /// <summary>Gets a value indicating whether this index column is a descending index column.</summary>
         /// <value>
         ///   <c>true</c> if this index column is a descending index column; otherwise, <c>false</c>.</value>
-        public bool Is_Descending { get { return this.indexColumn.Is_Descending; } }
+        public bool IsDescending { get { return this.indexColumn.Is_Descending; } }
 
         /// <summary>Returns a string that represents this index column.</summary>
         /// <returns>A string that represents this index column.</returns>

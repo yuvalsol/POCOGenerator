@@ -6,7 +6,7 @@ namespace POCOGenerator.POCOWriters.Writers
 {
     internal class StreamPOCOWriter : POCOWriter, IWriter
     {
-        private Stream stream;
+        private readonly Stream stream;
 
         internal StreamPOCOWriter(Stream stream)
         {
@@ -23,7 +23,7 @@ namespace POCOGenerator.POCOWriters.Writers
 
         private void StreamWriteLine(string text = null)
         {
-            byte[] buffer = null;
+            byte[] buffer;
 
             if (string.IsNullOrEmpty(text) == false)
             {

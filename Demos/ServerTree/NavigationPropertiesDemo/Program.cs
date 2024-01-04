@@ -8,7 +8,7 @@ namespace NavigationPropertiesDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             bool redirectToFile = true;
 
@@ -226,7 +226,7 @@ namespace NavigationPropertiesDemo
 
             indent += INDENT_SIZE;
             foreach (TableIndexColumn column in index.IndexColumns)
-                Console.WriteLine("{0}{1}{2}", new string(' ', indent), column.TableColumn.ColumnName, (column.Is_Descending ? " (Desc)" : " (Asc)"));
+                Console.WriteLine("{0}{1}{2}", new string(' ', indent), column.TableColumn.ColumnName, (column.IsDescending ? " (Desc)" : " (Asc)"));
         }
 
         private static void PrintTableNavigationProperties(Table table, bool manyToManyJoinTable, int indent)

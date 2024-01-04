@@ -8,7 +8,7 @@ namespace DetailedServerTreeDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             bool redirectToFile = true;
 
@@ -221,7 +221,7 @@ namespace DetailedServerTreeDemo
 
             indent += INDENT_SIZE;
             foreach (TableIndexColumn column in index.IndexColumns)
-                Console.WriteLine("{0}{1}{2}", new string(' ', indent), column.TableColumn.ColumnName, (column.Is_Descending ? " (Desc)" : " (Asc)"));
+                Console.WriteLine("{0}{1}{2}", new string(' ', indent), column.TableColumn.ColumnName, (column.IsDescending ? " (Desc)" : " (Asc)"));
         }
 
         #endregion
@@ -279,7 +279,7 @@ namespace DetailedServerTreeDemo
 
             indent += INDENT_SIZE;
             foreach (ViewIndexColumn column in index.IndexColumns)
-                Console.WriteLine("{0}{1}{2}", new string(' ', indent), column.ViewColumn.ColumnName, (column.Is_Descending ? " (Desc)" : " (Asc)"));
+                Console.WriteLine("{0}{1}{2}", new string(' ', indent), column.ViewColumn.ColumnName, (column.IsDescending ? " (Desc)" : " (Asc)"));
         }
 
         #endregion

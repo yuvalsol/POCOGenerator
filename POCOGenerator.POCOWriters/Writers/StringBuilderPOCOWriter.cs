@@ -5,7 +5,7 @@ namespace POCOGenerator.POCOWriters.Writers
 {
     internal class StringBuilderPOCOWriter : POCOWriter, IWriter
     {
-        private StringBuilder stringBuilder;
+        private readonly StringBuilder stringBuilder;
 
         internal StringBuilderPOCOWriter(StringBuilder stringBuilder)
         {

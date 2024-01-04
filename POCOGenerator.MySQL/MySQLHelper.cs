@@ -36,17 +36,17 @@ namespace POCOGenerator.MySQL
 
         protected override IDataParameter GetParameter(IProcedureParameter parameter, IDatabase database)
         {
-            MySqlParameter mySqlParameter = new MySqlParameter();
-            mySqlParameter.ParameterName = parameter.ParameterName;
-            mySqlParameter.Value = DBNull.Value;
+            MySqlParameter mySqlParameter = new MySqlParameter()
+            {
+                ParameterName = parameter.ParameterName,
+                Value = DBNull.Value
+            };
 
             string dataType = (parameter.ParameterDataType ?? string.Empty).ToLower();
-            bool isUnsigned = parameter.ParameterIsUnsigned;
 
             // https://dev.mysql.com/doc/refman/8.0/en/data-types.html
             switch (dataType)
             {
-                // https://www.xaprb.com/blog/2006/04/11/bit-values-in-mysql
                 case "bit": mySqlParameter.MySqlDbType = (Support["Version_At_Least_5.0.3"] ? MySqlDbType.Bit : /*tinyint(1)*/ MySqlDbType.Byte); break;
 
                 case "tinyint": mySqlParameter.MySqlDbType = (parameter.ParameterIsUnsigned ? MySqlDbType.UByte : MySqlDbType.Byte); break;
@@ -256,8 +256,10 @@ namespace POCOGenerator.MySQL
                     command.CommandType = CommandType.Text;
                     command.CommandTimeout = 60;
 
-                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64);
-                    mySqlParameter.Value = database.ToString();
+                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64)
+                    {
+                        Value = database.ToString()
+                    };
                     command.Parameters.Add(mySqlParameter);
 
                     connection.Open();
@@ -287,8 +289,10 @@ namespace POCOGenerator.MySQL
                     command.CommandType = CommandType.Text;
                     command.CommandTimeout = 60;
 
-                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64);
-                    mySqlParameter.Value = database.ToString();
+                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64)
+                    {
+                        Value = database.ToString()
+                    };
                     command.Parameters.Add(mySqlParameter);
 
                     connection.Open();
@@ -325,8 +329,10 @@ namespace POCOGenerator.MySQL
                     command.CommandType = CommandType.Text;
                     command.CommandTimeout = 60;
 
-                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64);
-                    mySqlParameter.Value = database.ToString();
+                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64)
+                    {
+                        Value = database.ToString()
+                    };
                     command.Parameters.Add(mySqlParameter);
 
                     connection.Open();
@@ -356,8 +362,10 @@ namespace POCOGenerator.MySQL
                     command.CommandType = CommandType.Text;
                     command.CommandTimeout = 60;
 
-                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64);
-                    mySqlParameter.Value = database.ToString();
+                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64)
+                    {
+                        Value = database.ToString()
+                    };
                     command.Parameters.Add(mySqlParameter);
 
                     connection.Open();
@@ -387,8 +395,10 @@ namespace POCOGenerator.MySQL
                     command.CommandType = CommandType.Text;
                     command.CommandTimeout = 60;
 
-                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64);
-                    mySqlParameter.Value = database.ToString();
+                    MySqlParameter mySqlParameter = new MySqlParameter("@database_name", MySqlDbType.VarChar, 64)
+                    {
+                        Value = database.ToString()
+                    };
                     command.Parameters.Add(mySqlParameter);
 
                     connection.Open();

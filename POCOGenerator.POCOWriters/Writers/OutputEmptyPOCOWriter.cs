@@ -3,9 +3,9 @@ using System.Text;
 
 namespace POCOGenerator.POCOWriters.Writers
 {
-    internal class EmptyPOCOWriter : POCOWriter, IWriter
+    internal class OutputEmptyPOCOWriter : POCOWriter, IWriter
     {
-        internal EmptyPOCOWriter()
+        internal OutputEmptyPOCOWriter()
         {
         }
 

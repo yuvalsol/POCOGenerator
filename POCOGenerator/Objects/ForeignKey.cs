@@ -33,21 +33,21 @@ namespace POCOGenerator.Objects
         /// <para>One-to-one relationship is when the primary key of one table is also a foreign key to the primary key of another table.</para></summary>
         /// <value>
         ///   <c>true</c> if this foreign key is part of a one-to-one relationship between tables; otherwise, <c>false</c>.</value>
-        public bool Is_One_To_One { get { return this.foreignKey.Is_One_To_One; } }
+        public bool IsOneToOne { get { return this.foreignKey.Is_One_To_One; } }
 
         /// <summary>
         /// Gets a value indicating whether this foreign key is part of a one-to-many relationship between tables.
         /// <para>A single foreign key, without any special constraints, is a database implementation of a one-to-many relationship between two tables.</para></summary>
         /// <value>
         ///   <c>true</c> if this foreign key is part of a one-to-many relationship between tables; otherwise, <c>false</c>.</value>
-        public bool Is_One_To_Many { get { return this.foreignKey.Is_One_To_Many; } }
+        public bool IsOneToMany { get { return this.foreignKey.Is_One_To_Many; } }
 
         /// <summary>
         /// Gets a value indicating whether this foreign key is part of a many-to-many relationship between tables.
         /// <para>Many-to-many relationship is when two or more entities have multiple references to all the other entities in the relationship.</para></summary>
         /// <value>
         ///   <c>true</c> if this foreign key is part of a many-to-many relationship between tables; otherwise, <c>false</c>.</value>
-        public bool Is_Many_To_Many { get { return this.foreignKey.Is_Many_To_Many; } }
+        public bool IsManyToMany { get { return this.foreignKey.Is_Many_To_Many; } }
 
         /// <summary>
         /// Gets a value indicating whether this foreign key is part of a complete many-to-many relationship between tables.
@@ -55,17 +55,17 @@ namespace POCOGenerator.Objects
         /// If there is at least one more column, in the join table, that is not part of the primary key, then it is not a complete many-to-many relationship.</para></summary>
         /// <value>
         ///   <c>true</c> if this foreign key is part of a complete many-to-many relationship between tables; otherwise, <c>false</c>.</value>
-        public bool Is_Many_To_Many_Complete { get { return this.foreignKey.Is_Many_To_Many_Complete; } }
+        public bool IsManyToManyComplete { get { return this.foreignKey.Is_Many_To_Many_Complete; } }
 
         /// <summary>Gets a value indicating whether this foreign key has an option of cascade delete enabled.</summary>
         /// <value>
         ///   <c>true</c> if this foreign key has an option of cascade delete enabled; otherwise, <c>false</c>.</value>
-        public bool Is_Cascade_Delete { get { return this.foreignKey.Is_Cascade_Delete; } }
+        public bool IsCascadeDelete { get { return this.foreignKey.Is_Cascade_Delete; } }
 
         /// <summary>Gets a value indicating whether this foreign key has an option of cascade update enabled.</summary>
         /// <value>
         ///   <c>true</c> if this foreign key has an option of cascade update enabled; otherwise, <c>false</c>.</value>
-        public bool Is_Cascade_Update { get { return this.foreignKey.Is_Cascade_Update; } }
+        public bool IsCascadeUpdate { get { return this.foreignKey.Is_Cascade_Update; } }
 
         private Table primaryTable;
         /// <summary>Gets the table that this foreign key referencing to.</summary>

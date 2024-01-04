@@ -5,7 +5,7 @@ namespace POCOGenerator.POCOWriters.Writers
 {
     internal class TextWriterPOCOWriter : POCOWriter, IWriter
     {
-        private TextWriter textWriter;
+        private readonly TextWriter textWriter;
 
         internal TextWriterPOCOWriter(TextWriter textWriter)
         {

@@ -6,7 +6,7 @@ namespace POCOGenerator.POCOWriters.Writers
 {
     internal class RichTextBoxPOCOWriter : POCOWriter, IWriter, ISyntaxHighlight
     {
-        private RichTextBox richTextBox;
+        private readonly RichTextBox richTextBox;
 
         internal RichTextBoxPOCOWriter(RichTextBox richTextBox)
         {

@@ -26,7 +26,7 @@ namespace POCOGenerator.Objects
 
         /// <summary>Gets the error message that occurred during the generating process of this TVP.</summary>
         /// <value>The error message that occurred during the generating process of this TVP.</value>
-        public string Error { get { return (this.tvp.Error != null ? this.tvp.Error.Message : null); } }
+        public string Error { get { return this.tvp.Error?.Message; } }
 
         /// <summary>Gets the database that this TVP belongs to.</summary>
         /// <value>The database that this TVP belongs to.</value>
@@ -74,8 +74,8 @@ namespace POCOGenerator.Objects
         {
             get
             {
-                if (this.tvp is POCOGenerator.DbObjects.ISchema)
-                    return ((POCOGenerator.DbObjects.ISchema)this.tvp).Schema;
+                if (this.tvp is POCOGenerator.DbObjects.ISchema schema)
+                    return schema.Schema;
                 return null;
             }
         }

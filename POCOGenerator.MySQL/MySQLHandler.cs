@@ -1,5 +1,4 @@
 ﻿using System;
-using POCOGenerator.Db;
 using POCOGenerator.DbHandlers;
 using POCOGenerator.DbObjects;
 using POCOGenerator.POCOIterators;

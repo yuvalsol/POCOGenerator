@@ -48,8 +48,7 @@ namespace POCOGenerator.Db
         {
             string serverVersion = GetServerVersion();
 
-            POCOGenerator.DbObjects.Version version;
-            if (POCOGenerator.DbObjects.Version.TryParse(serverVersion, out version))
+            if (POCOGenerator.DbObjects.Version.TryParse(serverVersion, out POCOGenerator.DbObjects.Version version))
             {
                 server.Version = version;
                 Support.Version = version;
@@ -462,7 +461,7 @@ namespace POCOGenerator.Db
                     {
                         tvp.Description = descriptions.Where(d =>
                             d.ObjectType == DbObjectType.TVP &&
-                            (d is ISchema == false || tvp is ISchema == false || ((ISchema)d).Schema == ((ISchema)tvp).Schema) &&
+                            (d is ISchema schema1 == false || tvp is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                             d.Name == tvp.Name
                         ).Select(d => d.Description).FirstOrDefault();
 
@@ -472,7 +471,7 @@ namespace POCOGenerator.Db
                             {
                                 column.Description = descriptions.Where(d =>
                                     d.ObjectType == DbObjectType.TVPColumn &&
-                                    (d is ISchema == false || tvp is ISchema == false || ((ISchema)d).Schema == ((ISchema)tvp).Schema) &&
+                                    (d is ISchema schema1 == false || tvp is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                                     d.Name == tvp.Name &&
                                     d.Minor_Name == column.ColumnName
                                 ).Select(d => d.Description).FirstOrDefault();
@@ -487,7 +486,7 @@ namespace POCOGenerator.Db
                     {
                         table.Description = descriptions.Where(d =>
                             d.ObjectType == DbObjectType.Table &&
-                            (d is ISchema == false || table is ISchema == false || ((ISchema)d).Schema == ((ISchema)table).Schema) &&
+                            (d is ISchema schema1 == false || table is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                             d.Name == table.Name
                         ).Select(d => d.Description).FirstOrDefault();
 
@@ -497,7 +496,7 @@ namespace POCOGenerator.Db
                             {
                                 column.Description = descriptions.Where(d =>
                                     d.ObjectType == DbObjectType.Column &&
-                                    (d is ISchema == false || table is ISchema == false || ((ISchema)d).Schema == ((ISchema)table).Schema) &&
+                                    (d is ISchema schema1 == false || table is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                                     d.Name == table.Name &&
                                     d.Minor_Name == column.ColumnName
                                 ).Select(d => d.Description).FirstOrDefault();
@@ -506,11 +505,11 @@ namespace POCOGenerator.Db
 
                         if (table.Indexes.HasAny())
                         {
-                            foreach (Index index in table.Indexes)
+                            foreach (Index index in table.Indexes.Cast<Index>())
                             {
                                 index.Description = descriptions.Where(d =>
                                     d.ObjectType == DbObjectType.Index &&
-                                    (d is ISchema == false || table is ISchema == false || ((ISchema)d).Schema == ((ISchema)table).Schema) &&
+                                    (d is ISchema schema1 == false || table is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                                     d.Name == table.Name &&
                                     d.Minor_Name == index.Name
                                 ).Select(d => d.Description).FirstOrDefault();
@@ -525,7 +524,7 @@ namespace POCOGenerator.Db
                     {
                         view.Description = descriptions.Where(d =>
                             d.ObjectType == DbObjectType.View &&
-                            (d is ISchema == false || view is ISchema == false || ((ISchema)d).Schema == ((ISchema)view).Schema) &&
+                            (d is ISchema schema1 == false || view is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                             d.Name == view.Name
                         ).Select(d => d.Description).FirstOrDefault();
 
@@ -535,7 +534,7 @@ namespace POCOGenerator.Db
                             {
                                 column.Description = descriptions.Where(d =>
                                     d.ObjectType == DbObjectType.Column &&
-                                    (d is ISchema == false || view is ISchema == false || ((ISchema)d).Schema == ((ISchema)view).Schema) &&
+                                    (d is ISchema schema1 == false || view is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                                     d.Name == view.Name &&
                                     d.Minor_Name == column.ColumnName
                                 ).Select(d => d.Description).FirstOrDefault();
@@ -544,11 +543,11 @@ namespace POCOGenerator.Db
 
                         if (view.Indexes.HasAny())
                         {
-                            foreach (Index index in view.Indexes)
+                            foreach (Index index in view.Indexes.Cast<Index>())
                             {
                                 index.Description = descriptions.Where(d =>
                                     d.ObjectType == DbObjectType.Index &&
-                                    (d is ISchema == false || view is ISchema == false || ((ISchema)d).Schema == ((ISchema)view).Schema) &&
+                                    (d is ISchema schema1 == false || view is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                                     d.Name == view.Name &&
                                     d.Minor_Name == index.Name
                                 ).Select(d => d.Description).FirstOrDefault();
@@ -563,7 +562,7 @@ namespace POCOGenerator.Db
                     {
                         procedure.Description = descriptions.Where(d =>
                             d.ObjectType == DbObjectType.Procedure &&
-                            (d is ISchema == false || procedure is ISchema == false || ((ISchema)d).Schema == ((ISchema)procedure).Schema) &&
+                            (d is ISchema schema1 == false || procedure is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                             d.Name == procedure.Name
                         ).Select(d => d.Description).FirstOrDefault();
 
@@ -573,7 +572,7 @@ namespace POCOGenerator.Db
                             {
                                 parameter.Description = descriptions.Where(d =>
                                     d.ObjectType == DbObjectType.ProcedureParameter &&
-                                    (d is ISchema == false || procedure is ISchema == false || ((ISchema)d).Schema == ((ISchema)procedure).Schema) &&
+                                    (d is ISchema schema1 == false || procedure is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                                     d.Name == procedure.Name &&
                                     d.Minor_Name == parameter.ParameterName
                                 ).Select(d => d.Description).FirstOrDefault();
@@ -588,7 +587,7 @@ namespace POCOGenerator.Db
                     {
                         function.Description = descriptions.Where(d =>
                             d.ObjectType == DbObjectType.Function &&
-                            (d is ISchema == false || function is ISchema == false || ((ISchema)d).Schema == ((ISchema)function).Schema) &&
+                            (d is ISchema schema1 == false || function is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                             d.Name == function.Name
                         ).Select(d => d.Description).FirstOrDefault();
 
@@ -598,7 +597,7 @@ namespace POCOGenerator.Db
                             {
                                 parameter.Description = descriptions.Where(d =>
                                     d.ObjectType == DbObjectType.ProcedureParameter &&
-                                    (d is ISchema == false || function is ISchema == false || ((ISchema)d).Schema == ((ISchema)function).Schema) &&
+                                    (d is ISchema schema1 == false || function is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                                     d.Name == function.Name &&
                                     d.Minor_Name == parameter.ParameterName
                                 ).Select(d => d.Description).FirstOrDefault();
@@ -677,8 +676,7 @@ namespace POCOGenerator.Db
                 tvp.Error = ex;
             }
 
-            if (tvp.TVPColumns != null)
-                tvp.TVPColumns.ForEach(c => c.TVP = tvp);
+            tvp.TVPColumns?.ForEach(c => c.TVP = tvp);
         }
 
         protected virtual List<ITVPColumn> GetTVPColumns(ITVP tvp)
@@ -766,8 +764,7 @@ namespace POCOGenerator.Db
                 }
             }
 
-            if (table.TableColumns != null)
-                table.TableColumns.ForEach(c => c.Table = table);
+            table.TableColumns?.ForEach(c => c.Table = table);
         }
 
         protected abstract IEnumerable<ITableColumn> GetSchemaTableColumns(DbConnection connection, ITable table);
@@ -777,7 +774,7 @@ namespace POCOGenerator.Db
             if (primaryKeysInternal.HasAny())
             {
                 var primaryKeyColumns = primaryKeysInternal.Where(pk =>
-                    (pk is ISchema == false || table is ISchema == false || ((ISchema)pk).Schema == ((ISchema)table).Schema) &&
+                    (pk is ISchema schema1 == false || table is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                     pk.Table_Name == table.Name
                 ).ToList();
 
@@ -810,7 +807,7 @@ namespace POCOGenerator.Db
             if (uniqueKeysInternal.HasAny())
             {
                 var uniqueKeys = uniqueKeysInternal.Where(uk =>
-                    (uk is ISchema == false || table is ISchema == false || ((ISchema)uk).Schema == ((ISchema)table).Schema) &&
+                    (uk is ISchema schema1 == false || table is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                     uk.Table_Name == table.Name
                 )
                 .GroupBy(ukc => new { ukc.Name })
@@ -859,7 +856,7 @@ namespace POCOGenerator.Db
                 var indexes = indexesInternal.Where(i =>
                     i.Is_Table_Index == isTableIndex &&
                     i.Is_View_Index == isViewIndex &&
-                    (i is ISchema == false || table is ISchema == false || ((ISchema)i).Schema == ((ISchema)table).Schema) &&
+                    (i is ISchema schema1 == false || table is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                     i.Table_Name == table.Name
                 )
                 .GroupBy(ic => new
@@ -918,7 +915,7 @@ namespace POCOGenerator.Db
                     if (identityColumns.HasAny())
                     {
                         column.IsIdentity = identityColumns.Exists(ic =>
-                            (ic is ISchema == false || table is ISchema == false || ((ISchema)ic).Schema == ((ISchema)table).Schema) &&
+                            (ic is ISchema schema1 == false || table is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                             ic.Table_Name == table.Name &&
                             ic.Column_Name == column.ColumnName
                         );
@@ -927,7 +924,7 @@ namespace POCOGenerator.Db
                     if (computedColumns.HasAny())
                     {
                         column.IsComputed = computedColumns.Exists(cc =>
-                            (cc is ISchema == false || table is ISchema == false || ((ISchema)cc).Schema == ((ISchema)table).Schema) &&
+                            (cc is ISchema schema1 == false || table is ISchema schema2 == false || schema1.Schema == schema2.Schema) &&
                             cc.Table_Name == table.Name &&
                             cc.Column_Name == column.ColumnName
                         );
@@ -949,7 +946,7 @@ namespace POCOGenerator.Db
             if (foreignKeysInternal.HasAny())
             {
                 var foreignKeys = foreignKeysInternal.Where(fk =>
-                    (fk is IInternalForeignKeySchema == false || table is ISchema == false || ((IInternalForeignKeySchema)fk).Foreign_Schema == ((ISchema)table).Schema) &&
+                    (fk is IInternalForeignKeySchema schema1 == false || table is ISchema schema2 == false || schema1.Foreign_Schema == schema2.Schema) &&
                     fk.Foreign_Table == table.Name
                 )
                 .GroupBy(fkc => new
@@ -961,7 +958,7 @@ namespace POCOGenerator.Db
                     fkc.Is_Many_To_Many_Complete,
                     fkc.Is_Cascade_Delete,
                     fkc.Is_Cascade_Update,
-                    Primary_Schema = (fkc is ForeignKeySchemaInternal ? ((ForeignKeySchemaInternal)fkc).Primary_Schema : null),
+                    Primary_Schema = (fkc is ForeignKeySchemaInternal schema ? schema.Primary_Schema : null),
                     fkc.Primary_Table
                 })
                 .ToList();
@@ -969,7 +966,7 @@ namespace POCOGenerator.Db
                 foreach (var foreignKey in foreignKeys)
                 {
                     ITable primaryTable = table.Database.Tables.FirstOrDefault(pt =>
-                        (foreignKey.Key.Primary_Schema == null || pt is ISchema == false || foreignKey.Key.Primary_Schema == ((ISchema)pt).Schema) &&
+                        (foreignKey.Key.Primary_Schema == null || pt is ISchema schema == false || foreignKey.Key.Primary_Schema == schema.Schema) &&
                         foreignKey.Key.Primary_Table == pt.Name
                     );
 
@@ -1080,8 +1077,7 @@ namespace POCOGenerator.Db
                 }
             }
 
-            if (view.TableColumns != null)
-                view.TableColumns.ForEach(c => c.Table = view);
+            view.TableColumns?.ForEach(c => c.Table = view);
         }
 
         protected abstract IEnumerable<ITableColumn> GetSchemaViewColumns(DbConnection connection, IView view);
@@ -1138,11 +1134,9 @@ namespace POCOGenerator.Db
                 }
             }
 
-            if (procedure.ProcedureParameters != null)
-                procedure.ProcedureParameters.ForEach(p => p.Procedure = procedure);
+            procedure.ProcedureParameters?.ForEach(p => p.Procedure = procedure);
 
-            if (procedure.ProcedureColumns != null)
-                procedure.ProcedureColumns.ForEach(c => c.Procedure = procedure);
+            procedure.ProcedureColumns?.ForEach(c => c.Procedure = procedure);
         }
 
         protected abstract IEnumerable<IProcedureParameter> GetSchemaProcedureParameters(DbConnection connection, IProcedure procedure);
@@ -1255,11 +1249,8 @@ namespace POCOGenerator.Db
 
             if (isScalarFunction == false)
             {
-                if (function.ProcedureParameters != null)
-                    function.ProcedureParameters.ForEach(p => p.Procedure = function);
-
-                if (function.ProcedureColumns != null)
-                    function.ProcedureColumns.ForEach(c => c.Procedure = function);
+                function.ProcedureParameters?.ForEach(p => p.Procedure = function);
+                function.ProcedureColumns?.ForEach(c => c.Procedure = function);
             }
 
             return isScalarFunction;
@@ -1318,7 +1309,7 @@ namespace POCOGenerator.Db
                 {
                     if (table.ForeignKeys.HasAny())
                     {
-                        foreach (ForeignKey fk in table.ForeignKeys)
+                        foreach (ForeignKey fk in table.ForeignKeys.Cast<ForeignKey>())
                         {
                             fk.NavigationPropertyFromForeignToPrimary = GetNavigationPropertyFromForeignToPrimary(fk);
                             fk.NavigationPropertyFromPrimaryToForeign = GetNavigationPropertyFromPrimaryToForeign(fk);
@@ -1364,18 +1355,19 @@ namespace POCOGenerator.Db
                     {
                         item.thisFK.ForeignTable.IsJoinTable = true;
 
-                        var virtualFK = new ForeignKey();
-                        virtualFK.IsVirtualForeignKey = true;
-                        virtualFK.Name = string.Empty;
-                        virtualFK.Is_One_To_One = false;
-                        virtualFK.Is_One_To_Many = false;
-                        virtualFK.Is_Many_To_Many = true;
-                        virtualFK.Is_Many_To_Many_Complete = false;
-                        virtualFK.Is_Cascade_Delete = false;
-                        virtualFK.Is_Cascade_Update = false;
-
-                        virtualFK.ForeignTable = item.otherFK.PrimaryTable;
-                        virtualFK.PrimaryTable = item.thisFK.PrimaryTable;
+                        var virtualFK = new ForeignKey()
+                        {
+                            IsVirtualForeignKey = true,
+                            Name = string.Empty,
+                            Is_One_To_One = false,
+                            Is_One_To_Many = false,
+                            Is_Many_To_Many = true,
+                            Is_Many_To_Many_Complete = false,
+                            Is_Cascade_Delete = false,
+                            Is_Cascade_Update = false,
+                            ForeignTable = item.otherFK.PrimaryTable,
+                            PrimaryTable = item.thisFK.PrimaryTable
+                        };
 
                         // dummy foreign key column
                         // the columns don't have to be the same data type
@@ -1636,10 +1628,8 @@ namespace POCOGenerator.Db
                                     if (complexTypeTables == null)
                                         complexTypeTables = new List<IComplexTypeTable>();
 
-                                    ComplexTypeTable complexTypeTable = complexTypeTables.FirstOrDefault(t => t.Name == complexTypeTableName) as ComplexTypeTable;
-
                                     // build complex type table
-                                    if (complexTypeTable == null)
+                                    if ((complexTypeTables.FirstOrDefault(t => t.Name == complexTypeTableName) is ComplexTypeTable complexTypeTable) == false)
                                     {
                                         if (Support.IsSupportSchema)
                                         {
@@ -1797,7 +1787,7 @@ namespace POCOGenerator.Db
             {
                 int suffix = 1;
                 foreach (var ctt in cttGroup.Skip(1).Cast<ComplexTypeTable>())
-                    ctt.Name = ctt.Name + (suffix++);
+                    ctt.Name += (suffix++);
             }
         }
 

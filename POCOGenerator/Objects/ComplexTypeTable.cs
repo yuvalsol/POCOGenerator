@@ -24,7 +24,7 @@ namespace POCOGenerator.Objects
 
         /// <summary>Gets the error message that occurred during the generating process of this complex type.</summary>
         /// <value>The error message that occurred during the generating process of this complex type.</value>
-        public string Error { get { return (this.complexTypeTable.Error != null ? this.complexTypeTable.Error.Message : null); } }
+        public string Error { get { return this.complexTypeTable.Error?.Message; } }
 
         /// <summary>Gets the database that this complex type belongs to.</summary>
         /// <value>The database that this complex type belongs to.</value>
@@ -97,8 +97,8 @@ namespace POCOGenerator.Objects
         {
             get
             {
-                if (this.complexTypeTable is POCOGenerator.DbObjects.ISchema)
-                    return ((POCOGenerator.DbObjects.ISchema)this.complexTypeTable).Schema;
+                if (this.complexTypeTable is POCOGenerator.DbObjects.ISchema schema)
+                    return schema.Schema;
                 return null;
             }
         }

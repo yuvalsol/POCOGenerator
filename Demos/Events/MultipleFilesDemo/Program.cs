@@ -8,7 +8,7 @@ namespace MultipleFilesDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             IGenerator generator = GeneratorFactory.GetGenerator();
             try { generator.Settings.Connection.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }

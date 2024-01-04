@@ -57,12 +57,12 @@ namespace POCOGenerator.Objects
         /// <summary>Gets a value indicating whether <see cref="ForeignTableColumn" /> is part of the primary key of <see cref="ForeignKey.ForeignTable" />.</summary>
         /// <value>
         ///   <c>true</c> if the foreign table column is part of a primary key; otherwise, <c>false</c>.</value>
-        public bool Is_Foreign_Column_PK { get { return this.foreignKeyColumn.Is_Foreign_Column_PK; } }
+        public bool IsForeignColumnPK { get { return this.foreignKeyColumn.Is_Foreign_Column_PK; } }
 
         /// <summary>Gets a value indicating whether <see cref="PrimaryTableColumn" /> is part of the primary key of <see cref="ForeignKey.PrimaryTable" />.</summary>
         /// <value>
         ///   <c>true</c> if the primary table column is part of a primary key; otherwise, <c>false</c>.</value>
-        public bool Is_Primary_Column_PK { get { return this.foreignKeyColumn.Is_Primary_Column_PK; } }
+        public bool IsPrimaryColumnPK { get { return this.foreignKeyColumn.Is_Primary_Column_PK; } }
 
         /// <summary>Gets the ordinal position of the foreign key column.</summary>
         /// <value>The ordinal position of the foreign key column.</value>

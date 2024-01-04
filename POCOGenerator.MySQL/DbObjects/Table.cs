@@ -31,7 +31,7 @@ namespace POCOGenerator.MySQL.DbObjects
         #region IDbObjectTraverse Members
 
         public string Name { get { return TABLE_NAME; } }
-        public IEnumerable<IColumn> Columns { get { return (TableColumns != null ? TableColumns.Cast<IColumn>() : null); } }
+        public IEnumerable<IColumn> Columns { get { return TableColumns?.Cast<IColumn>(); } }
         public virtual DbObjectType DbObjectType { get { return DbObjectType.Table; } }
 
         #endregion

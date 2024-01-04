@@ -35,11 +35,13 @@ namespace System.Windows.Forms
 
         public static void HideCheckBox(this TreeNode node)
         {
-            TVITEM tvi = new TVITEM();
-            tvi.hItem = node.Handle;
-            tvi.mask = TVIF_STATE;
-            tvi.stateMask = TVIS_STATEIMAGEMASK;
-            tvi.state = 0;
+            TVITEM tvi = new TVITEM()
+            {
+                hItem = node.Handle,
+                mask = TVIF_STATE,
+                stateMask = TVIS_STATEIMAGEMASK,
+                state = 0
+            };
             IntPtr lparam = Marshal.AllocHGlobal(Marshal.SizeOf(tvi));
             Marshal.StructureToPtr(tvi, lparam, false);
             SendMessage(node.TreeView.Handle, TVM_SETITEM, IntPtr.Zero, lparam);
@@ -47,10 +49,12 @@ namespace System.Windows.Forms
 
         public static void ShowPlus(this TreeNode node)
         {
-            TVITEM tvi = new TVITEM();
-            tvi.hItem = node.Handle;
-            tvi.mask = TVIF_CHILDREN;
-            tvi.cChildren = 1;
+            TVITEM tvi = new TVITEM()
+            {
+                hItem = node.Handle,
+                mask = TVIF_CHILDREN,
+                cChildren = 1
+            };
             IntPtr lparam = Marshal.AllocHGlobal(Marshal.SizeOf(tvi));
             Marshal.StructureToPtr(tvi, lparam, false);
             SendMessage(node.TreeView.Handle, TVM_SETITEM, IntPtr.Zero, lparam);
@@ -60,7 +64,7 @@ namespace System.Windows.Forms
 
         #region Hidden Nodes
 
-        private static Dictionary<TreeNode, TreeNode> hiddenNodes = new Dictionary<TreeNode, TreeNode>();
+        private static readonly Dictionary<TreeNode, TreeNode> hiddenNodes = new Dictionary<TreeNode, TreeNode>();
 
         public static bool IsHidden(this TreeNode node)
         {

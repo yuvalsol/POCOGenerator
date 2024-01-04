@@ -7,7 +7,7 @@ namespace MemoryStreamDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             byte[] bytes = null;
             GeneratorResults results = GeneratorResults.None;

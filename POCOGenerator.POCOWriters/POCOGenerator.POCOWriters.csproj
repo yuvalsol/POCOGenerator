@@ -57,7 +57,7 @@
     <Compile Include="WriterFactory.cs" />
     <Compile Include="Writers\ConsoleColorPOCOWriter.cs" />
     <Compile Include="Writers\ConsolePOCOWriter.cs" />
-    <Compile Include="Writers\EmptyPOCOWriter.cs" />
+    <Compile Include="Writers\OutputEmptyPOCOWriter.cs" />
     <Compile Include="Writers\RichTextBoxPOCOWriter.cs" />
     <Compile Include="Writers\StreamPOCOWriter.cs" />
     <Compile Include="Writers\StringBuilderPOCOWriter.cs" />

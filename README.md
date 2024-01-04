@@ -455,7 +455,7 @@ IGenerator generator = GeneratorWinFormsFactory.GetGenerator(RichTextBox richTex
 Once a generator is created, you can redirect its current underline output to any other output source.
 
 ```cs
-generator.ClearOut(); // Output-empty generator
+generator.RedirectToOutputEmpty();
 generator.RedirectTo(StringBuilder stringBuilder);
 generator.RedirectTo(TextWriter textWriter);
 generator.RedirectTo(Stream stream);

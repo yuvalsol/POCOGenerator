@@ -395,10 +395,10 @@ namespace POCOGenerator.DbObjects
             if (ReferenceEquals(v1, v2))
                 return 0;
 
-            if (ReferenceEquals(v2, null))
+            if (v2 is null)
                 return 1;
 
-            if (ReferenceEquals(v1, null))
+            if (v1 is null)
                 return -1;
 
             return CompareVersions(v1.Major, v1.Minor, v1.Build, v1.Revision, v2.Major, v2.Minor, v2.Build, v2.Revision);
@@ -406,7 +406,7 @@ namespace POCOGenerator.DbObjects
 
         private static int CompareVersions(Version v1, int v2Major)
         {
-            if (ReferenceEquals(v1, null))
+            if (v1 is null)
                 return -1;
 
             return CompareVersions(v1.Major, v1.Minor, v1.Build, v1.Revision, v2Major, 0, 0, 0);
@@ -414,7 +414,7 @@ namespace POCOGenerator.DbObjects
 
         private static int CompareVersions(int v1Major, Version v2)
         {
-            if (ReferenceEquals(v2, null))
+            if (v2 is null)
                 return 1;
 
             return CompareVersions(v1Major, 0, 0, 0, v2.Major, v2.Minor, v2.Build, v2.Revision);
@@ -422,7 +422,7 @@ namespace POCOGenerator.DbObjects
 
         private static int CompareVersions(Version v1, double v2MajorMinor)
         {
-            if (ReferenceEquals(v1, null))
+            if (v1 is null)
                 return -1;
 
             string[] segments = v2MajorMinor.ToString(CultureInfo.InvariantCulture).Split('.');
@@ -434,7 +434,7 @@ namespace POCOGenerator.DbObjects
 
         private static int CompareVersions(double v1MajorMinor, Version v2)
         {
-            if (ReferenceEquals(v2, null))
+            if (v2 is null)
                 return 1;
 
             string[] segments = v1MajorMinor.ToString(CultureInfo.InvariantCulture).Split('.');

@@ -29,7 +29,7 @@ namespace POCOGenerator.Objects
 
         /// <summary>Gets the error message that occurred during the generating process of this table.</summary>
         /// <value>The error message that occurred during the generating process of this table.</value>
-        public string Error { get { return (this.table.Error != null ? this.table.Error.Message : null); } }
+        public string Error { get { return this.table.Error?.Message; } }
 
         /// <summary>Gets the database that this table belongs to.</summary>
         /// <value>The database that this table belongs to.</value>
@@ -239,8 +239,8 @@ namespace POCOGenerator.Objects
         {
             get
             {
-                if (this.table is POCOGenerator.DbObjects.ISchema)
-                    return ((POCOGenerator.DbObjects.ISchema)this.table).Schema;
+                if (this.table is POCOGenerator.DbObjects.ISchema schema)
+                    return schema.Schema;
                 return null;
             }
         }

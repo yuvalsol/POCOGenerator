@@ -6,7 +6,7 @@ namespace ConsoleDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             IGenerator generator = GeneratorFactory.GetConsoleGenerator();
             try { generator.Settings.Connection.ConnectionString = File.ReadAllText("ConnectionString.txt"); } catch { }

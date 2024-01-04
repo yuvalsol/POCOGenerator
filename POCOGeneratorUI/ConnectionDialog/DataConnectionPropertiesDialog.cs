@@ -12,7 +12,7 @@ namespace POCOGeneratorUI.ConnectionDialog
             this.builder = builder;
         }
 
-        private DbConnectionStringBuilder builder;
+        private readonly DbConnectionStringBuilder builder;
 
         private void DataConnectionPropertiesDialog_Load(object sender, EventArgs e)
         {

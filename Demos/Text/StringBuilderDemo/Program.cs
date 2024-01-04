@@ -7,7 +7,7 @@ namespace StringBuilderDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             StringBuilder stringBuilder = new StringBuilder();
 

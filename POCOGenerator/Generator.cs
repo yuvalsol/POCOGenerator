@@ -23,7 +23,7 @@ namespace POCOGenerator
 
         #region Settings
 
-        private GeneratorSettings settings;
+        private readonly GeneratorSettings settings;
         private GeneratorSettings settingsInternal;
 
         public Settings Settings
@@ -186,9 +186,8 @@ namespace POCOGenerator
             IWriter writer = this.createWriterInternal();
 
             // set the writer syntax colors
-            if (writer is ISyntaxHighlight)
+            if (writer is ISyntaxHighlight syntaxHighlight)
             {
-                var syntaxHighlight = (ISyntaxHighlight)writer;
                 syntaxHighlight.Text = this.settingsInternal.SyntaxHighlight.Text;
                 syntaxHighlight.Keyword = this.settingsInternal.SyntaxHighlight.Keyword;
                 syntaxHighlight.UserType = this.settingsInternal.SyntaxHighlight.UserType;

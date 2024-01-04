@@ -23,7 +23,7 @@ namespace POCOGenerator.Objects
 
         /// <summary>Gets the error message that occurred during the generating process of this view.</summary>
         /// <value>The error message that occurred during the generating process of this view.</value>
-        public string Error { get { return (this.view.Error != null ? this.view.Error.Message : null); } }
+        public string Error { get { return this.view.Error?.Message; } }
 
         /// <summary>Gets the database that this view belongs to.</summary>
         /// <value>The database that this view belongs to.</value>
@@ -91,8 +91,8 @@ namespace POCOGenerator.Objects
         {
             get
             {
-                if (this.view is POCOGenerator.DbObjects.ISchema)
-                    return ((POCOGenerator.DbObjects.ISchema)this.view).Schema;
+                if (this.view is POCOGenerator.DbObjects.ISchema schema)
+                    return schema.Schema;
                 return null;
             }
         }

@@ -36,9 +36,11 @@ namespace POCOGenerator.SQLServer
 
         protected override IDataParameter GetParameter(IProcedureParameter parameter, IDatabase database)
         {
-            SqlParameter sqlParameter = new SqlParameter();
-            sqlParameter.ParameterName = parameter.ParameterName;
-            sqlParameter.Value = DBNull.Value;
+            SqlParameter sqlParameter = new SqlParameter()
+            {
+                ParameterName = parameter.ParameterName,
+                Value = DBNull.Value
+            };
 
             string dataType = (parameter.ParameterDataType ?? string.Empty).ToLower();
 
@@ -369,7 +371,7 @@ namespace POCOGenerator.SQLServer
         protected override void RemoveSystemObjectsFromTVPs(IDatabase database, List<ISystemObject> systemObjects)
         {
             if (database.TVPs.HasAny() && systemObjects.HasAny())
-                database.TVPs = database.TVPs.Where(tvp => systemObjects.Any(so => (so is ISchema == false || tvp is ISchema == false || ((ISchema)so).Schema == ((ISchema)tvp).Schema) && so.Name == tvp.Name && so.Type == "TT") == false).ToList();
+                database.TVPs = database.TVPs.Where(tvp => systemObjects.Any(so => (so is ISchema schema1 == false || tvp is ISchema schema2 == false || schema1.Schema == schema2.Schema) && so.Name == tvp.Name && so.Type == "TT") == false).ToList();
         }
 
         protected override List<ITVPColumn> GetTVPColumns(ITVP tvp)
@@ -384,8 +386,10 @@ namespace POCOGenerator.SQLServer
                     command.CommandType = CommandType.Text;
                     command.CommandTimeout = 60;
 
-                    var param = new SqlParameter("@tvp_id", SqlDbType.Int);
-                    param.Value = tvp.TVPId;
+                    var param = new SqlParameter("@tvp_id", SqlDbType.Int)
+                    {
+                        Value = tvp.TVPId
+                    };
                     command.Parameters.Add(param);
 
                     connection.Open();
@@ -469,7 +473,7 @@ namespace POCOGenerator.SQLServer
         protected override void RemoveSystemObjectsFromTables(IDatabase database, List<ISystemObject> systemObjects)
         {
             if (database.Tables.HasAny() && systemObjects.HasAny())
-                database.Tables = database.Tables.Where(t => systemObjects.Any(so => (so is ISchema == false || t is ISchema == false || ((ISchema)so).Schema == ((ISchema)t).Schema) && so.Name == t.Name && (so.Type == "IT" || so.Type == "S" || so.Type == "U")) == false).ToList();
+                database.Tables = database.Tables.Where(t => systemObjects.Any(so => (so is ISchema schema1 == false || t is ISchema schema2 == false || schema1.Schema == schema2.Schema) && so.Name == t.Name && (so.Type == "IT" || so.Type == "S" || so.Type == "U")) == false).ToList();
         }
 
         protected override IEnumerable<ITableColumn> GetSchemaTableColumns(DbConnection connection, ITable table)
@@ -489,7 +493,7 @@ namespace POCOGenerator.SQLServer
         protected override void RemoveSystemObjectsFromViews(IDatabase database, List<ISystemObject> systemObjects)
         {
             if (database.Views.HasAny() && systemObjects.HasAny())
-                database.Views = database.Views.Where(v => systemObjects.Any(so => (so is ISchema == false || v is ISchema == false || ((ISchema)so).Schema == ((ISchema)v).Schema) && so.Name == v.Name && so.Type == "V") == false).ToList();
+                database.Views = database.Views.Where(v => systemObjects.Any(so => (so is ISchema schema1 == false || v is ISchema schema2 == false || schema1.Schema == schema2.Schema) && so.Name == v.Name && so.Type == "V") == false).ToList();
         }
 
         protected override IEnumerable<ITableColumn> GetSchemaViewColumns(DbConnection connection, IView view)
@@ -509,7 +513,7 @@ namespace POCOGenerator.SQLServer
         protected override void RemoveSystemObjectsFromProcedures(IDatabase database, List<ISystemObject> systemObjects)
         {
             if (database.Procedures.HasAny() && systemObjects.HasAny())
-                database.Procedures = database.Procedures.Where(p => systemObjects.Any(so => (so is ISchema == false || p is ISchema == false || ((ISchema)so).Schema == ((ISchema)p).Schema) && so.Name == p.Name && (so.Type == "P" || so.Type == "PC" || so.Type == "RF" || so.Type == "X")) == false).ToList();
+                database.Procedures = database.Procedures.Where(p => systemObjects.Any(so => (so is ISchema schema1 == false || p is ISchema schema2 == false || schema1.Schema == schema2.Schema) && so.Name == p.Name && (so.Type == "P" || so.Type == "PC" || so.Type == "RF" || so.Type == "X")) == false).ToList();
         }
 
         protected override IEnumerable<IProcedureParameter> GetSchemaProcedureParameters(DbConnection connection, IProcedure procedure)
@@ -595,7 +599,7 @@ namespace POCOGenerator.SQLServer
         protected override void RemoveSystemObjectsFromFunctions(IDatabase database, List<ISystemObject> systemObjects)
         {
             if (database.Functions.HasAny() && systemObjects.HasAny())
-                database.Functions = database.Functions.Where(f => systemObjects.Any(so => (so is ISchema == false || f is ISchema == false || ((ISchema)so).Schema == ((ISchema)f).Schema) && so.Name == f.Name && (so.Type == "AF" || so.Type == "FN" || so.Type == "FS" || so.Type == "FT" || so.Type == "IF" || so.Type == "TF")) == false).ToList();
+                database.Functions = database.Functions.Where(f => systemObjects.Any(so => (so is ISchema schema1 == false || f is ISchema schema2 == false || schema1.Schema == schema2.Schema) && so.Name == f.Name && (so.Type == "AF" || so.Type == "FN" || so.Type == "FS" || so.Type == "FT" || so.Type == "IF" || so.Type == "TF")) == false).ToList();
         }
 
         protected override IEnumerable<IProcedureParameter> GetSchemaFunctionParameters(DbConnection connection, IFunction function)

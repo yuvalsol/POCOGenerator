@@ -509,7 +509,7 @@ namespace POCOGenerator.POCOIterators
             // Class Name
             string className = GetClassName(
                 dbObject.Database.ToString(),
-                (dbObject is ISchema ? ((ISchema)dbObject).Schema : null),
+                (dbObject is ISchema schema ? schema.Schema : null),
                 dbObject.Name,
                 dbObject.DbObjectType
             );
@@ -1090,9 +1090,8 @@ namespace POCOGenerator.POCOIterators
                         WriteEFComplexType(dbObject, namespaceOffset);
                 }
 
-                if (settings.EFAnnotationsIteratorSettings.Description && dbObject is IDescription)
+                if (settings.EFAnnotationsIteratorSettings.Description && dbObject is IDescription descObject)
                 {
-                    IDescription descObject = (IDescription)dbObject;
                     if (string.IsNullOrEmpty(descObject.Description) == false)
                         WriteEFDescription(descObject.Description, false, namespaceOffset);
                 }
@@ -1107,14 +1106,13 @@ namespace POCOGenerator.POCOIterators
             writer.Write("(");
             writer.WriteString("\"");
 
-            if (dbObject is ISchema)
+            if (dbObject is ISchema schema)
             {
-                string schema = ((ISchema)dbObject).Schema;
-                if (string.IsNullOrEmpty(schema) == false)
+                if (string.IsNullOrEmpty(schema.Schema) == false)
                 {
-                    if (schema != DefaultSchema)
+                    if (schema.Schema != DefaultSchema)
                     {
-                        writer.WriteString(schema);
+                        writer.WriteString(schema.Schema);
                         writer.WriteString(".");
                     }
                 }
@@ -1615,8 +1613,7 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteColumnDefaultConstructorInitializationDateTime(ITableColumn column, string namespaceOffset, string cleanColumnDefault)
         {
-            DateTime dateTime;
-            if (DateTime.TryParse(cleanColumnDefault, out dateTime))
+            if (DateTime.TryParse(cleanColumnDefault, out DateTime dateTime))
             {
                 WriteColumnDefaultConstructorInitializationStart(column, namespaceOffset);
                 WriteDateTime(dateTime);
@@ -1676,8 +1673,7 @@ namespace POCOGenerator.POCOIterators
             }
             else
             {
-                DateTime dateTime;
-                if (DateTime.TryParse(cleanColumnDefault, out dateTime))
+                if (DateTime.TryParse(cleanColumnDefault, out DateTime dateTime))
                 {
                     WriteColumnDefaultConstructorInitializationStart(column, namespaceOffset);
                     WriteTimeSpan(dateTime);
@@ -1720,8 +1716,7 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteColumnDefaultConstructorInitializationDateTimeOffset(ITableColumn column, string namespaceOffset, string cleanColumnDefault)
         {
-            DateTimeOffset dateTimeOffset;
-            if (DateTimeOffset.TryParse(cleanColumnDefault, out dateTimeOffset))
+            if (DateTimeOffset.TryParse(cleanColumnDefault, out DateTimeOffset dateTimeOffset))
             {
                 WriteColumnDefaultConstructorInitializationStart(column, namespaceOffset);
                 WriteDateTimeOffset(dateTimeOffset);
@@ -1729,8 +1724,7 @@ namespace POCOGenerator.POCOIterators
             }
             else
             {
-                DateTime dateTime;
-                if (DateTime.TryParse(cleanColumnDefault, out dateTime))
+                if (DateTime.TryParse(cleanColumnDefault, out DateTime dateTime))
                 {
                     WriteColumnDefaultConstructorInitializationStart(column, namespaceOffset);
                     WriteDateTimeOffset(dateTime);
@@ -2020,8 +2014,7 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteEnumConstructorInitialization(ITableColumn column, string namespaceOffset)
         {
-            IEnumColumn enumColumn = column as IEnumColumn;
-            if (enumColumn == null)
+            if ((column is IEnumColumn enumColumn) == false)
                 return;
 
             string cleanColumnName = NameHelper.CleanName(enumColumn.Column.ColumnName);
@@ -2316,9 +2309,8 @@ namespace POCOGenerator.POCOIterators
 
         protected virtual void WriteEFDescriptionAttribute(IColumn column, string namespaceOffset)
         {
-            if (settings.EFAnnotationsIteratorSettings.Description && column is IDescription)
+            if (settings.EFAnnotationsIteratorSettings.Description && column is IDescription descObject)
             {
-                IDescription descObject = (IDescription)column;
                 if (string.IsNullOrEmpty(descObject.Description) == false)
                     WriteEFDescription(descObject.Description, true, namespaceOffset);
             }
@@ -2332,7 +2324,7 @@ namespace POCOGenerator.POCOIterators
         protected virtual bool IsCompositePrimaryKey(IDbObjectTraverse dbObject)
         {
             if (dbObject.Columns.HasAny())
-                return (dbObject.Columns.Count(c => c is ITableColumn && ((ITableColumn)c).PrimaryKeyColumn != null) > 1);
+                return dbObject.Columns.Count(c => c is ITableColumn tableColumn && tableColumn.PrimaryKeyColumn != null) > 1;
             return false;
         }
 
@@ -2627,7 +2619,7 @@ namespace POCOGenerator.POCOIterators
             IComplexTypeTable complexTypeTable = tableColumn.ComplexTypeTableColumn.ComplexTypeTable;
             string complexTypeName = GetClassName(
                 dbObject.Database.ToString(),
-                (complexTypeTable is ISchema ? ((ISchema)complexTypeTable).Schema : null),
+                (complexTypeTable is ISchema schema ? schema.Schema : null),
                 complexTypeTable.Name,
                 complexTypeTable.DbObjectType
             );
@@ -3052,7 +3044,7 @@ namespace POCOGenerator.POCOIterators
                         {
                             string className = GetClassName(
                                 dbObject.Database.ToString(),
-                                (fk.PrimaryTable is ISchema ? ((ISchema)fk.PrimaryTable).Schema : null),
+                                (fk.PrimaryTable is ISchema schema ? schema.Schema : null),
                                 fk.PrimaryTable.Name,
                                 dbObject.DbObjectType
                             );
@@ -3077,7 +3069,7 @@ namespace POCOGenerator.POCOIterators
                         {
                             string className = GetClassName(
                                 dbObject.Database.ToString(),
-                                (fk.ForeignTable is ISchema ? ((ISchema)fk.ForeignTable).Schema : null),
+                                (fk.ForeignTable is ISchema schema ? schema.Schema : null),
                                 fk.ForeignTable.Name,
                                 dbObject.DbObjectType
                             );
@@ -3099,7 +3091,7 @@ namespace POCOGenerator.POCOIterators
 
                                     string className = GetClassName(
                                         dbObject.Database.ToString(),
-                                        (vfk.ForeignTable is ISchema ? ((ISchema)vfk.ForeignTable).Schema : null),
+                                        (vfk.ForeignTable is ISchema schema ? schema.Schema : null),
                                         vfk.ForeignTable.Name,
                                         dbObject.DbObjectType
                                     );
@@ -3203,18 +3195,18 @@ namespace POCOGenerator.POCOIterators
                         writer.Write(namespaceOffset);
                         writer.Write(settings.POCOIteratorSettings.Tab);
                         writer.WriteComment("// ");
-                        if (navigationProperty.ForeignKey.ForeignTable is ISchema)
+                        if (navigationProperty.ForeignKey.ForeignTable is ISchema schemaFT)
                         {
-                            writer.WriteComment(((ISchema)navigationProperty.ForeignKey.ForeignTable).Schema);
+                            writer.WriteComment(schemaFT.Schema);
                             writer.WriteComment(".");
                         }
                         writer.WriteComment(navigationProperty.ForeignKey.ForeignTable.Name);
                         writer.WriteComment(".");
                         writer.WriteComment(fkc.ForeignTableColumn.ColumnName);
                         writer.WriteComment(" -> ");
-                        if (navigationProperty.ForeignKey.PrimaryTable is ISchema)
+                        if (navigationProperty.ForeignKey.PrimaryTable is ISchema schemaPT)
                         {
-                            writer.WriteComment(((ISchema)navigationProperty.ForeignKey.PrimaryTable).Schema);
+                            writer.WriteComment(schemaPT.Schema);
                             writer.WriteComment(".");
                         }
                         writer.WriteComment(navigationProperty.ForeignKey.PrimaryTable.Name);

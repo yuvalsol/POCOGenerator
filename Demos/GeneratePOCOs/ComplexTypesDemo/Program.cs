@@ -6,7 +6,7 @@ namespace ComplexTypesDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             // execute script ComplexTypesDB.sql to create ComplexTypesDB database
 

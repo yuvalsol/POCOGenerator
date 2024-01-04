@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using System.Linq;
+
+namespace System
 {
     internal static partial class EventExtensions
     {
@@ -6,7 +8,7 @@
         {
             if (handler != null)
             {
-                foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList())
+                foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList().Cast<EventHandler<TEventArgs>>())
                 {
                     listener.Invoke(sender, args);
                     if (args != null && args is POCOGenerator.IStopGenerating stopGenerating && stopGenerating.Stop)
@@ -20,7 +22,7 @@
             if (handler != null)
             {
                 TEventArgs args = argsHandler();
-                foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList())
+                foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList().Cast<EventHandler<TEventArgs>>())
                 {
                     listener.Invoke(sender, args);
                     if (args != null && args is POCOGenerator.IStopGenerating stopGenerating && stopGenerating.Stop)
@@ -36,7 +38,7 @@
         {
             if (handler != null)
             {
-                foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList())
+                foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList().Cast<EventHandler<TEventArgs>>())
                     listener.BeginInvoke(sender, args, (ar) => { try { listener.EndInvoke(ar); } catch { } }, null);
             }
         }
@@ -46,7 +48,7 @@
             if (handler != null)
             {
                 TEventArgs args = argsHandler();
-                foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList())
+                foreach (EventHandler<TEventArgs> listener in handler.GetInvocationList().Cast<EventHandler<TEventArgs>>())
                     listener.BeginInvoke(sender, args, (ar) => { try { listener.EndInvoke(ar); } catch { } }, null);
                 return args;
             }

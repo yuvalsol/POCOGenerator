@@ -7,7 +7,7 @@ namespace FileStreamDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             string fileName = "AdventureWorks2014.cs";
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);

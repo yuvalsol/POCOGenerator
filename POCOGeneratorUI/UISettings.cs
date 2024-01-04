@@ -39,17 +39,6 @@ namespace POCOGeneratorUI
         public bool rdbEnumSQLTypeToEnumUShort_Checked { get; set; }
         public bool rdbEnumSQLTypeToEnumInt_Checked { get; set; }
 
-        // Navigation Properties
-        public bool chkNavigationProperties_Checked { get; set; }
-        public bool chkVirtualNavigationProperties_Checked { get; set; }
-        public bool chkOverrideNavigationProperties_Checked { get; set; }
-        public bool chkManyToManyJoinTable_Checked { get; set; }
-        public bool chkNavigationPropertiesComments_Checked { get; set; }
-        public bool rdbListNavigationProperties_Checked { get; set; }
-        public bool rdbIListNavigationProperties_Checked { get; set; }
-        public bool rdbICollectionNavigationProperties_Checked { get; set; }
-        public bool rdbIEnumerableNavigationProperties_Checked { get; set; }
-
         // Class Name
         public bool chkSingular_Checked { get; set; }
         public bool chkIncludeDB_Checked { get; set; }
@@ -67,6 +56,17 @@ namespace POCOGeneratorUI
         public string txtFixedClassName_Text { get; set; }
         public string txtPrefix_Text { get; set; }
         public string txtSuffix_Text { get; set; }
+
+        // Navigation Properties
+        public bool chkNavigationProperties_Checked { get; set; }
+        public bool chkVirtualNavigationProperties_Checked { get; set; }
+        public bool chkOverrideNavigationProperties_Checked { get; set; }
+        public bool chkManyToManyJoinTable_Checked { get; set; }
+        public bool chkNavigationPropertiesComments_Checked { get; set; }
+        public bool rdbListNavigationProperties_Checked { get; set; }
+        public bool rdbIListNavigationProperties_Checked { get; set; }
+        public bool rdbICollectionNavigationProperties_Checked { get; set; }
+        public bool rdbIEnumerableNavigationProperties_Checked { get; set; }
 
         // EF Annotations
         public bool chkEF_Checked { get; set; }

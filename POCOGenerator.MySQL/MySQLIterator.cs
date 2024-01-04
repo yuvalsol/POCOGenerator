@@ -354,8 +354,7 @@ namespace POCOGenerator.MySQL
 
         protected override void WriteEnumConstructorInitialization(ITableColumn column, string namespaceOffset)
         {
-            IEnumColumn enumColumn = column as IEnumColumn;
-            if (enumColumn == null)
+            if ((column is IEnumColumn enumColumn) == false)
                 return;
 
             if (settings.POCOIteratorSettings.EnumSQLTypeToString == false && (settings.POCOIteratorSettings.EnumSQLTypeToEnumUShort || settings.POCOIteratorSettings.EnumSQLTypeToEnumInt))
@@ -385,8 +384,7 @@ namespace POCOGenerator.MySQL
             if (enumColumn.IsEnumDataType == false)
                 return null;
 
-            ITableColumn tableColumn = enumColumn as ITableColumn;
-            if (tableColumn == null)
+            if ((enumColumn is ITableColumn tableColumn) == false)
                 return null;
 
             // has column default
@@ -410,8 +408,7 @@ namespace POCOGenerator.MySQL
             if (enumColumn.IsSetDataType == false)
                 return null;
 
-            ITableColumn tableColumn = enumColumn as ITableColumn;
-            if (tableColumn == null)
+            if ((enumColumn is ITableColumn tableColumn) == false)
                 return null;
 
             if (string.IsNullOrEmpty(tableColumn.ColumnDefault) == false)
@@ -482,8 +479,7 @@ namespace POCOGenerator.MySQL
             {
                 if (settings.POCOIteratorSettings.EnumSQLTypeToString == false && (settings.POCOIteratorSettings.EnumSQLTypeToEnumUShort || settings.POCOIteratorSettings.EnumSQLTypeToEnumInt))
                 {
-                    IEnumColumn enumColumn = column as IEnumColumn;
-                    if (enumColumn != null)
+                    if (column is IEnumColumn enumColumn)
                     {
                         if (enumColumn.IsEnumDataType || enumColumn.IsSetDataType)
                         {

@@ -24,7 +24,7 @@ namespace POCOGenerator.MySQL.DbObjects
         #region IDbObjectTraverse Members
 
         public string Name { get { return SPECIFIC_NAME; } }
-        public IEnumerable<IColumn> Columns { get { return (ProcedureColumns != null ? ProcedureColumns.Cast<IColumn>() : null); } }
+        public IEnumerable<IColumn> Columns { get { return ProcedureColumns?.Cast<IColumn>(); } }
         public virtual DbObjectType DbObjectType { get { return DbObjectType.Procedure; } }
 
         #endregion

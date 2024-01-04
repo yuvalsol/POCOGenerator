@@ -1446,9 +1446,8 @@ namespace POCOGeneratorUI
             TreeNode selectedNode = trvServer.SelectedNode;
             if (selectedNode != null && selectedNode.Tag != null)
             {
-                if (selectedNode.Tag is Database)
+                if (selectedNode.Tag is Database database)
                 {
-                    Database database = (Database)selectedNode.Tag;
                     if (database.Errors.Any())
                     {
                         txtPocoEditor.Select(txtPocoEditor.TextLength, 0);
@@ -1520,25 +1519,25 @@ namespace POCOGeneratorUI
                             if (this.currentSelectedNode == selectedNode)
                                 return GeneratorResults.None;
 
-                    if (selectedNode.Tag is Table)
+                    if (selectedNode.Tag is Table table)
                     {
-                        selectedTables = new List<Table>() { (Table)selectedNode.Tag };
+                        selectedTables = new List<Table>() { table };
                     }
-                    else if (selectedNode.Tag is POCOGenerator.Objects.View)
+                    else if (selectedNode.Tag is POCOGenerator.Objects.View view)
                     {
-                        selectedViews = new List<POCOGenerator.Objects.View>() { (POCOGenerator.Objects.View)selectedNode.Tag };
+                        selectedViews = new List<POCOGenerator.Objects.View>() { view };
                     }
-                    else if (selectedNode.Tag is Procedure)
+                    else if (selectedNode.Tag is Procedure procedure)
                     {
-                        selectedProcedures = new List<Procedure>() { (Procedure)selectedNode.Tag };
+                        selectedProcedures = new List<Procedure>() { procedure };
                     }
-                    else if (selectedNode.Tag is Function)
+                    else if (selectedNode.Tag is Function function)
                     {
-                        selectedFunctions = new List<Function>() { (Function)selectedNode.Tag };
+                        selectedFunctions = new List<Function>() { function };
                     }
-                    else if (selectedNode.Tag is TVP)
+                    else if (selectedNode.Tag is TVP tvp)
                     {
-                        selectedTVPs = new List<TVP>() { (TVP)selectedNode.Tag };
+                        selectedTVPs = new List<TVP>() { tvp };
                     }
                     else
                     {
@@ -1793,13 +1792,11 @@ namespace POCOGeneratorUI
 
             SetGeneratorSettings();
 
-            if (BeforeGeneratePOCOs != null)
-                BeforeGeneratePOCOs(this.generator);
+            BeforeGeneratePOCOs?.Invoke(this.generator);
 
             GeneratorResults results = this.generator.GeneratePOCOs();
 
-            if (AfterGeneratePOCOs != null)
-                AfterGeneratePOCOs(this.generator);
+            AfterGeneratePOCOs?.Invoke(this.generator);
 
             this.generator.DatabaseGenerating -= databaseGenerating;
             this.generator.TablesGenerating -= tablesGenerating;
@@ -1985,9 +1982,9 @@ namespace POCOGeneratorUI
                             contextMenuTable.Hide();
                         }
                     }
-                    else if (node.Tag is Table)
+                    else if (node.Tag is Table table)
                     {
-                        string tableName = ((Table)node.Tag).ToString();
+                        string tableName = table.ToString();
                         checkReferencedTablesToolStripMenuItem.Text = "Check Tables Referenced From " + tableName;
                         checkReferencingTablesToolStripMenuItem.Text = "Check Tables Referencing To " + tableName;
                         checkAccessibleTablesToolStripMenuItem.Text = "Check Recursively Tables Accessible From && To " + tableName;
@@ -2037,7 +2034,7 @@ namespace POCOGeneratorUI
             if (parent == null)
                 return;
 
-            FilterSettings filterSettings = null;
+            FilterSettings filterSettings;
             if (filters.ContainsKey(parent))
                 filterSettings = filters[parent];
             else
@@ -2259,8 +2256,7 @@ namespace POCOGeneratorUI
             if (node == null)
                 return;
 
-            Table table = node.Tag as Table;
-            if (table == null)
+            if ((node.Tag is Table table) == false)
                 return;
 
             DisableServerTreeAfterCheck();
@@ -2297,8 +2293,7 @@ namespace POCOGeneratorUI
             if (node == null)
                 return;
 
-            Table table = node.Tag as Table;
-            if (table == null)
+            if ((node.Tag is Table table) == false)
                 return;
 
             DisableServerTreeAfterCheck();
@@ -2330,8 +2325,7 @@ namespace POCOGeneratorUI
             if (node == null)
                 return;
 
-            Table table = node.Tag as Table;
-            if (table == null)
+            if ((node.Tag is Table table) == false)
                 return;
 
             DisableServerTreeAfterCheck();
@@ -2997,16 +2991,16 @@ namespace POCOGeneratorUI
             TreeNode selectedNode = GetSelectedNode();
             if (selectedNode != null)
             {
-                if (selectedNode.Tag is Table)
-                    dbObject = (Table)selectedNode.Tag;
-                else if (selectedNode.Tag is POCOGenerator.Objects.View)
-                    dbObject = (POCOGenerator.Objects.View)selectedNode.Tag;
-                else if (selectedNode.Tag is Procedure)
-                    dbObject = (Procedure)selectedNode.Tag;
-                else if (selectedNode.Tag is Function)
-                    dbObject = (Function)selectedNode.Tag;
-                else if (selectedNode.Tag is TVP)
-                    dbObject = (TVP)selectedNode.Tag;
+                if (selectedNode.Tag is Table table)
+                    dbObject = table;
+                else if (selectedNode.Tag is POCOGenerator.Objects.View view)
+                    dbObject = view;
+                else if (selectedNode.Tag is Procedure procedure)
+                    dbObject = procedure;
+                else if (selectedNode.Tag is Function function)
+                    dbObject = function;
+                else if (selectedNode.Tag is TVP tvp)
+                    dbObject = tvp;
             }
 
             if (selectedDbObjectsCount == 0 && dbObject == null)
@@ -3175,7 +3169,7 @@ namespace POCOGeneratorUI
                 g =>
                 {
                     g.Settings.POCO.WrapAroundEachClass = true;
-                    g.ClearOut();
+                    g.RedirectToOutputEmpty();
                     g.TablePOCO += tablePOCO;
                     g.ComplexTypeTablePOCO += complexTypeTablePOCO;
                     g.ViewPOCO += viewPOCO;
@@ -3436,7 +3430,7 @@ namespace POCOGeneratorUI
                 g =>
                 {
                     g.Settings.POCO.WrapAroundEachClass = true;
-                    g.ClearOut();
+                    g.RedirectToOutputEmpty();
                     g.ServerGenerating += serverGenerating;
                     g.DatabaseGenerating += databaseGenerating;
                     g.TablesGenerating += tablesGenerating;
@@ -3970,9 +3964,9 @@ namespace POCOGeneratorUI
                 RDBMS = this.rdbms,
                 ConnectionString = this.connectionString,
 
-                SupportSchema = (this.generator != null ? this.generator.Support.SupportSchema : true),
-                SupportTVPs = (this.generator != null ? this.generator.Support.SupportTVPs : true),
-                SupportEnumDataType = (this.generator != null ? this.generator.Support.SupportEnumDataType : false),
+                SupportSchema = (this.generator == null || this.generator.Support.SupportSchema),
+                SupportTVPs = (this.generator == null || this.generator.Support.SupportTVPs),
+                SupportEnumDataType = (this.generator != null && this.generator.Support.SupportEnumDataType),
 
                 dbObjectsForm_IsEnableTables = this.dbObjectsForm_IsEnableTables,
                 dbObjectsForm_IsEnableViews = this.dbObjectsForm_IsEnableViews,

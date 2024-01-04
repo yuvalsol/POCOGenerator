@@ -25,13 +25,13 @@ namespace POCOGenerator.Objects
         /// <value>
         ///   <c>true</c> if this index is a unique index; otherwise, <c>false</c>.</value>
         /// <remarks>A unique index guarantees that the index key contains no duplicate values and therefore every row is in some way unique.</remarks>
-        public bool Is_Unique { get { return this.index.Is_Unique; } }
+        public bool IsUnique { get { return this.index.Is_Unique; } }
 
         /// <summary>Gets a value indicating whether this index is a clustered index.</summary>
         /// <value>
         ///   <c>true</c> if this index is a clustered index; otherwise, <c>false</c>.</value>
         /// <remarks>A clustered index sorts and stores the data rows based on their key values. These key values are the columns included in the index definition.</remarks>
-        public bool Is_Clustered { get { return this.index.Is_Clustered; } }
+        public bool IsClustered { get { return this.index.Is_Clustered; } }
 
         /// <summary>Gets the description of the index.</summary>
         /// <value>The description of the index.</value>

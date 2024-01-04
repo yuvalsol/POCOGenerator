@@ -15,20 +15,17 @@ namespace POCOGenerator.POCOWriters
 
         public void SnapshotClear()
         {
-            if (snapshot != null)
-                snapshot.Clear();
+            snapshot?.Clear();
         }
 
         public void SnapshotWrite(string text)
         {
-            if (snapshot != null)
-                snapshot.Append(text);
+            snapshot?.Append(text);
         }
 
         public void SnapshotWriteLine(string text = null)
         {
-            if (snapshot != null)
-                snapshot.AppendLine(text);
+            snapshot?.AppendLine(text);
         }
 
         public StringBuilder EndSnapshot()
