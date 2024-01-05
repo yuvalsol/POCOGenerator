@@ -47,7 +47,10 @@ namespace WildcardsDemo
             bool isError = (results & GeneratorResults.Error) == GeneratorResults.Error;
 
             if (isError)
+            {
+                Console.WriteLine();
                 Console.WriteLine("Error Result: {0}", results);
+            }
 
             if (Error != null)
             {

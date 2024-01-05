@@ -32,6 +32,9 @@ namespace ConsoleDemo
             bool isError = (results & GeneratorResults.Error) == GeneratorResults.Error;
             bool isWarning = (results & GeneratorResults.Warning) == GeneratorResults.Warning;
 
+            if (results != GeneratorResults.None)
+                Console.WriteLine();
+
             if (isError)
                 Console.WriteLine("Error Result: {0}", results);
             else if (isWarning)
