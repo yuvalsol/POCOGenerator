@@ -46,7 +46,7 @@ namespace NavigationPropertiesDemo
                 Server server = e.Server;
                 bool manyToManyJoinTable = generator.Settings.NavigationProperties.ManyToManyJoinTable;
 
-                Console.WriteLine("Many-To-Many Join Table = {0}", manyToManyJoinTable);
+                Console.WriteLine("Show Many-to-Many Join Tables = {0}", manyToManyJoinTable);
                 Console.WriteLine();
 
                 PrintServer(server, manyToManyJoinTable);
@@ -131,7 +131,13 @@ namespace NavigationPropertiesDemo
             if (table.IsJoinTable && manyToManyJoinTable == false)
                 return;
 
-            Console.WriteLine("{0}{1}", new string(' ', indent), table);
+            Console.Write(new string(' ', indent));
+            Console.Write(table);
+
+            if (table.IsJoinTable)
+                Console.WriteLine(" (Join Table)");
+            else
+                Console.WriteLine();
 
             indent += INDENT_SIZE;
             PrintTableColumns(table, indent);
@@ -237,37 +243,67 @@ namespace NavigationPropertiesDemo
             if (table.NavigationProperties.Any())
             {
                 Console.WriteLine("{0}{1}", new string(' ', indent), "Navigation Properties");
-                Console.WriteLine("{0}{1}", new string(' ', indent), "Navigation Property Structure: ToTable/CollectionOf(ToTable) Name [ForeignKey]");
 
                 int counter = 1;
                 indent += INDENT_SIZE;
                 foreach (NavigationProperty navigationProperty in table.NavigationProperties)
-                    PrintTableNavigationProperty(navigationProperty, manyToManyJoinTable, indent, counter++);
-            }
-        }
-
-        private static void PrintTableNavigationProperty(NavigationProperty navigationProperty, bool manyToManyJoinTable, int indent, int counter)
-        {
-            if ((manyToManyJoinTable && navigationProperty.IsVisibleWhenManyToManyJoinTableIsOn) ||
-                (manyToManyJoinTable == false && navigationProperty.IsVisibleWhenManyToManyJoinTableIsOff))
-            {
-                PrintNavigationProperty(navigationProperty, indent, counter);
-                PrintInverseProperty(navigationProperty, indent);
+                {
+                    if ((manyToManyJoinTable && navigationProperty.IsVisibleWhenManyToManyJoinTableIsOn) ||
+                        (manyToManyJoinTable == false && navigationProperty.IsVisibleWhenManyToManyJoinTableIsOff))
+                    {
+                        PrintNavigationProperty(navigationProperty, indent, counter++);
+                        PrintInverseProperty(navigationProperty, indent);
+                    }
+                }
             }
         }
 
         private static void PrintNavigationProperty(NavigationProperty navigationProperty, int indent, int? counter = null)
         {
-            Console.WriteLine(
-                new string(' ', indent) +
-                (counter != null ? counter.Value.ToString("D2") + ". " : "    ") +
-                (navigationProperty.IsCollection ? "CollectionOf(" : string.Empty) +
-                navigationProperty.ToTable +
-                (navigationProperty.IsCollection ? ")" : string.Empty) +
-                " " +
-                navigationProperty.PropertyName +
-                (navigationProperty.IsVirtualNavigationProperty ? " [Virtual Navigation Property]" : " [" + navigationProperty.ForeignKey + "]")
-            );
+            Console.Write(new string(' ', indent));
+            Console.Write(counter != null ? counter.Value.ToString("D2") + ". " : new string(' ', 4));
+            Console.Write(navigationProperty.IsCollection ? "CollectionOf(" : string.Empty);
+            Console.Write(navigationProperty.ToTable);
+            Console.Write(navigationProperty.IsCollection ? ")" : string.Empty);
+            Console.Write(" ");
+            Console.WriteLine(navigationProperty.PropertyName);
+
+            if (counter == null)
+                return;
+
+            indent += INDENT_SIZE;
+            Console.Write(new string(' ', indent));
+            Console.WriteLine("Foreign Key");
+
+            indent += INDENT_SIZE;
+            Console.Write(new string(' ', indent));
+
+            if (navigationProperty.IsVirtualNavigationProperty)
+            {
+                Console.WriteLine("Virtual Navigation Property. No Foreign Key.");
+                return;
+            }
+
+            Console.Write(navigationProperty.ForeignKey);
+
+            // navigationProperty.FromTable - the table that the navigation property is referencing from
+            // navigationProperty.ForeignKey.ForeignTable - the table that the foreign key belongs to
+            // if these tables are not the same then the foreign key (not the navigation property)
+            // is referencing from navigationProperty.ToTable to navigationProperty.FromTable
+            // and navigationProperty.ToTable == navigationProperty.ForeignKey.ForeignTable
+            if (navigationProperty.FromTable != navigationProperty.ForeignKey.ForeignTable)
+                Console.Write(" (FK at {0})", navigationProperty.ToTable);
+            Console.WriteLine();
+
+            Console.Write(new string(' ', indent));
+            if (navigationProperty.ForeignKey.IsManyToManyComplete)
+                Console.WriteLine("Many-to-Many Complete Relationship");
+            else if (navigationProperty.ForeignKey.IsManyToMany)
+                Console.WriteLine("Many-to-Many Relationship");
+            else if (navigationProperty.ForeignKey.IsOneToOne)
+                Console.WriteLine("One-to-One Relationship");
+            else if (navigationProperty.ForeignKey.IsOneToMany)
+                Console.WriteLine("One-to-Many Relationship");
         }
 
         private static void PrintInverseProperty(NavigationProperty navigationProperty, int indent)
@@ -276,7 +312,7 @@ namespace NavigationPropertiesDemo
 
             if (inverseProperty != null)
             {
-                Console.WriteLine("{0}    {1}", new string(' ', indent), "Inverse Property");
+                Console.WriteLine("{0}{1}{2}", new string(' ', indent), new string(' ', 4), "Inverse Property");
                 indent += INDENT_SIZE;
 
                 PrintNavigationProperty(inverseProperty, indent);

@@ -1845,43 +1845,45 @@ The demo works the same as [ServerTreeDemo](#servertreedemo "ServerTreeDemo") bu
 
 Demo code [NavigationPropertiesDemo/Program.cs](Demos/ServerTree/NavigationPropertiesDemo/Program.cs "NavigationPropertiesDemo/Program.cs").
 
-The demo works the same as [DetailedServerTreeDemo](#detailedservertreedemo "DetailedServerTreeDemo") but is limited to tables and prints information about tables navigation properties.
+The demo works the same as [DetailedServerTreeDemo](#detailedservertreedemo "DetailedServerTreeDemo") but is limited to tables and prints information about navigation properties.
 
 ```
-Person.Person
+Sales.Store
     Columns
         BusinessEntityID (PK, FK, int, not null)
-        ...
+        Name (nvarchar(50), not null)
+        SalesPersonID (FK, int, null)
+        Demographics (XML(.), null)
+        rowguid (uniqueidentifier, not null)
+        ModifiedDate (datetime, not null)
     Primary Key
-        PK_Person_BusinessEntityID
+        PK_Store_BusinessEntityID
             BusinessEntityID
     Foreign Keys
-        FK_Person_BusinessEntity_BusinessEntityID
-            Person.Person.BusinessEntityID -> Person.BusinessEntity.BusinessEntityID
+        FK_Store_BusinessEntity_BusinessEntityID
+            Sales.Store.BusinessEntityID -> Person.BusinessEntity.BusinessEntityID
+        FK_Store_SalesPerson_SalesPersonID
+            Sales.Store.SalesPersonID -> Sales.SalesPerson.BusinessEntityID
+    Indexes
+        AK_Store_rowguid (unique, not clustered)
+            rowguid (Asc)
+        IX_Store_SalesPersonID (not unique, not clustered)
+            SalesPersonID (Asc)
     Navigation Properties
-    Navigation Property Structure: ToTable/CollectionOf(ToTable) Name [ForeignKey]
-        01. Person.BusinessEntity BusinessEntity [FK_Person_BusinessEntity_BusinessEntityID]
-        02. CollectionOf(Person.BusinessEntityContact) BusinessEntityContact [FK_BusinessEntityContact_Person_PersonID]
+        01. Person.BusinessEntity BusinessEntity
+            Foreign Key
+                FK_Store_BusinessEntity_BusinessEntityID
+                One-to-One Relationship
+        02. Sales.SalesPerson SalesPerson
+            Foreign Key
+                FK_Store_SalesPerson_SalesPersonID
+                One-to-Many Relationship
+        03. CollectionOf(Sales.Customer) Customers
+            Foreign Key
+                FK_Customer_Store_StoreID (FK at Sales.Customer)
+                One-to-Many Relationship
             Inverse Property
-                Person.Person Person [FK_BusinessEntityContact_Person_PersonID]
-        03. CollectionOf(Sales.Customer) Customers [FK_Customer_Person_PersonID]
-            Inverse Property
-                Person.Person Person [FK_Customer_Person_PersonID]
-        04. CollectionOf(Person.EmailAddress) EmailAddresses [FK_EmailAddress_Person_BusinessEntityID]
-            Inverse Property
-                Person.Person Person [FK_EmailAddress_Person_BusinessEntityID]
-        05. HumanResources.Employee Employee [FK_Employee_Person_BusinessEntityID]
-            Inverse Property
-                Person.Person Person [FK_Employee_Person_BusinessEntityID]
-        06. Person.Password Password [FK_Password_Person_BusinessEntityID]
-            Inverse Property
-                Person.Person Person [FK_Password_Person_BusinessEntityID]
-        07. CollectionOf(Sales.PersonCreditCard) PersonCreditCards [FK_PersonCreditCard_Person_BusinessEntityID]
-            Inverse Property
-                Person.Person Person [FK_PersonCreditCard_Person_BusinessEntityID]
-        08. CollectionOf(Person.PersonPhone) PersonPhones [FK_PersonPhone_Person_BusinessEntityID]
-            Inverse Property
-                Person.Person Person [FK_PersonPhone_Person_BusinessEntityID]
+                Sales.Store Store
 ```
 
 # Schemas
@@ -2235,7 +2237,7 @@ public class Person
 
 Many-to-Many relationship is when two or more entities have multiple references to all the other entities in the relationship. A database implementation of Many-to-Many relationship is a join table, or intuitively a table "in the middle", that is a construct of all the primary keys of all the tables that take part in the relationship. Every primary key in the join table is also a foreign key to the appropriate primary key in the other corresponding table. The tables in the Many-to-Many relationship don't reference each other directly but rather go through the join table, hence the table "in the middle".
 
-If the join table has more columns than the foreign keys to the other primary keys, for example a create time column, then POCO Generator will treat this relationship as One-To-Many relationship between the join table and each of the other tables in the relationship. This will also take effect when the **Many-to-Many Join Table** setting is enabled.
+If the join table has more columns than the foreign keys to the other primary keys, for example a create time column, then POCO Generator will treat this relationship as One-to-Many relationship between the join table and each of the other tables in the relationship. This will also take effect when the **Many-to-Many Join Table** setting is enabled.
 
 In this example, a product can be in several warehouses and every warehouse stores several products. The join table is `WarehouseProducts`. All the columns of `WarehouseProducts` are primary keys and each column is a foreign key to `Product` primary key or `Warehouse` primary key appropriately.
 

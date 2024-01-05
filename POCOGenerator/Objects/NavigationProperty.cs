@@ -32,9 +32,13 @@ namespace POCOGenerator.Objects
         ///   <c>true</c> if this navigation property is a collection of <see cref="ToTable" />; otherwise, <c>false</c>.</value>
         public bool IsCollection { get { return this.navigationProperty.IsCollection; } }
 
-        /// <summary>Gets a value indicating whether this is a navigation property between tables that are connected between them with a many-to-many join table.</summary>
+        /// <summary>Gets a value indicating whether this is a navigation property between tables that are connected to each other through a many-to-many join table.
+        /// <para>If this navigation property is virtual then <see cref="ForeignKey" /> returns <see langword="null" /> because there is no foreign key that defines this navigation property.</para>
+        /// <para>If <see cref="NavigationProperties.ManyToManyJoinTable" /> is <c>true</c> then this property returns <c>false</c> because all join tables are not hidden.</para></summary>
         /// <value>
         ///   <c>true</c> if this navigation property is a virtual navigation property; otherwise, <c>false</c>.</value>
+        /// <seealso cref="ForeignKey" />
+        /// <seealso cref="NavigationProperties.ManyToManyJoinTable" />
         public bool IsVirtualNavigationProperty { get { return this.navigationProperty.IsVirtualNavigationProperty; } }
 
         /// <summary>Gets a value indicating whether this navigation property is visible when <see cref="NavigationProperties.ManyToManyJoinTable" /> is <c>true</c>.</summary>
@@ -73,8 +77,11 @@ namespace POCOGenerator.Objects
         }
 
         private ForeignKey foreignKey;
-        /// <summary>Gets the foreign key that defines the relationship between the tables.</summary>
+        /// <summary>Gets the foreign key that defines the relationship between the tables.
+        /// <para>If <see cref="IsVirtualNavigationProperty" /> is <c>true</c> then this property returns <see langword="null" /> because there is no foreign key that defines this navigation property.</para></summary>
         /// <value>The foreign key that defines the relationship between the tables.</value>
+        /// <seealso cref="IsVirtualNavigationProperty" />
+        /// <seealso cref="NavigationProperties.ManyToManyJoinTable" />
         public ForeignKey ForeignKey
         {
             get
