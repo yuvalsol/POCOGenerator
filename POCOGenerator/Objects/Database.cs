@@ -52,6 +52,11 @@ namespace POCOGenerator.Objects
             }
         }
 
+        // AccessibleTables property contains non-included tables that can be recursively accessed
+        // from included tables through foreign keys.
+        // In a well-connected database (lots of foreign keys), AccessibleTables is memory consuming.
+        // It might include all tables in the database.
+        // This is a trade-off between maintaining tables accessibility over memory consumption.
         private CachedEnumerable<POCOGenerator.DbObjects.ITable, Table> accessibleTables;
         internal IEnumerable<Table> AccessibleTables
         {

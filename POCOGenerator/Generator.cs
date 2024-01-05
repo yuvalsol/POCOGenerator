@@ -627,6 +627,18 @@ namespace POCOGenerator
                                 }
                             }
 
+                            foreach (var foreignTable in item.Database.Tables)
+                            {
+                                if (foreignTable.ForeignKeys.HasAny())
+                                {
+                                    if (item.AccessibleTables.Contains(foreignTable) == false)
+                                    {
+                                        if (foreignTable.ForeignKeys.Any(x => x.PrimaryTable == table))
+                                            item.AccessibleTables.Add(foreignTable);
+                                    }
+                                }
+                            }
+
                             if (table.ComplexTypeTables.HasAny())
                             {
                                 foreach (var complexTypeTable in table.ComplexTypeTables)
