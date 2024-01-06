@@ -29,13 +29,22 @@
         <RemoveDir Directories="@(Directories)" Condition="%(Files)=='0'" />
     </Target>
     <Target Name="CopyToOutput" AfterTargets="ClearReferenceCopyLocalPaths" Condition="$(Configuration.Contains('Release'))">
-        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\POCOGenerator">
+        <GetAssemblyIdentity AssemblyFiles="$(OutputPath)$(TargetName)$(TargetExt)">
+            <Output TaskParameter="Assemblies" ItemName="MyAssemblyIdentities" />
+        </GetAssemblyIdentity>
+        <PropertyGroup>
+            <AssemblyVersion>$([System.Text.RegularExpressions.Regex]::Match("%(MyAssemblyIdentities.Version)", "^\d+\.\d+\.\d+"))</AssemblyVersion>
+        </PropertyGroup>
+        <PropertyGroup>
+            <TargetFramework>net$([System.Text.RegularExpressions.Regex]::Replace("$(TargetFrameworkVersion)", "v|\.", ""))</TargetFramework>
+        </PropertyGroup>
+        <Copy SourceFiles="$(OutputPath)$(TargetName)$(TargetExt)" DestinationFolder="$(SolutionDir)Output\POCOGenerator.$(AssemblyVersion)\lib\$(TargetFramework)">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
-        <Copy SourceFiles="$(OutputPath)$(TargetName).xml" DestinationFolder="$(SolutionDir)Output\POCOGenerator">
+        <Copy SourceFiles="$(OutputPath)$(TargetName).xml" DestinationFolder="$(SolutionDir)Output\POCOGenerator.$(AssemblyVersion)\lib\$(TargetFramework)">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
-        <Copy SourceFiles="$(SolutionDir)Solution Items\Disclaimer.txt" DestinationFolder="$(SolutionDir)Output\POCOGenerator">
+        <Copy SourceFiles="$(SolutionDir)Solution Items\Disclaimer.txt" DestinationFolder="$(SolutionDir)Output\POCOGenerator.$(AssemblyVersion)">
             <Output TaskParameter="CopiedFiles" ItemName="CopiedSuccessfully" />
         </Copy>
         <Message Importance="high" Text="Copy To Output '%(CopiedSuccessfully.Identity)'"></Message>
