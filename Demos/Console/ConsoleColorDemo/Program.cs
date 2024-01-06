@@ -19,6 +19,7 @@ namespace ConsoleColorDemo
             generator.Settings.ClassName.IncludeSchema = true;
             generator.Settings.ClassName.SchemaSeparator = "_";
             generator.Settings.ClassName.IgnoreDboSchema = true;
+            generator.Settings.EFAnnotations.Enable = true;
 
             GeneratorResults results = generator.Generate();
 

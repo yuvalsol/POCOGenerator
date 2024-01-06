@@ -20,6 +20,7 @@ namespace ConsoleColorDarkThemeDemo
             generator.Settings.ClassName.IncludeSchema = true;
             generator.Settings.ClassName.SchemaSeparator = "_";
             generator.Settings.ClassName.IgnoreDboSchema = true;
+            generator.Settings.EFAnnotations.Enable = true;
 
             generator.Settings.SyntaxHighlight.Text = Color.FromArgb(255, 255, 255);
             generator.Settings.SyntaxHighlight.Keyword = Color.FromArgb(86, 156, 214);
