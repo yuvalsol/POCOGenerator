@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using Console = Colorful.Console;
+using Console = TrueColorConsole.VTConsole;
 
 namespace POCOGenerator.POCOWriters.Writers
 {
@@ -20,8 +20,8 @@ namespace POCOGenerator.POCOWriters.Writers
 
         public void Clear()
         {
-            Console.BackgroundColor = this.Background;
-            Console.Clear();
+            Console.SetColorBackground(this.Background);
+            Console.EraseInDisplay(TrueColorConsole.VTEraseMode.Entirely);
             SnapshotClear();
         }
 
