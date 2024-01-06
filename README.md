@@ -1222,6 +1222,23 @@ Demo code [ConsoleColorDemo/Program.cs](Demos/Console/ConsoleColorDemo/Program.c
 
 The demo demonstrates how to write POCOs to the Console with syntax highlight using predefined colors.
 
+```cs
+IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
+generator.Settings.Connection.ConnectionString =
+    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
+generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
+generator.Settings.POCO.CommentsWithoutNull = true;
+generator.Settings.ClassName.IncludeSchema = true;
+generator.Settings.ClassName.SchemaSeparator = "_";
+generator.Settings.ClassName.IgnoreDboSchema = true;
+generator.Settings.EFAnnotations.Enable = true;
+generator.Generate();
+```
+
+![ConsoleColor Demo](./Solution%20Items/Images/ConsoleColorDemo.jpg "ConsoleColor Demo")
+
+These are the syntax highlight predefined colors.
+
 |            | RGB           | Hex     |
 |------------|---------------|---------|
 | Text       | 0, 0, 0       | #000000 |
@@ -1232,35 +1249,22 @@ The demo demonstrates how to write POCOs to the Console with syntax highlight us
 | Error      | 255, 0, 0     | #ff0000 |
 | Background | 255, 255, 255 | #ffffff |
 
-```cs
-IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
-generator.Settings.Connection.ConnectionString =
-    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
-generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
-generator.Generate();
-```
-
 #### ConsoleColorDarkThemeDemo
 
 Demo code [ConsoleColorDarkThemeDemo/Program.cs](Demos/Console/ConsoleColorDarkThemeDemo/Program.cs "ConsoleColorDarkThemeDemo/Program.cs").
 
 The demo demonstrates how to write POCOs to the Console with custom syntax highlight.
 
-|            | RGB           | Hex     |
-|------------|---------------|---------|
-| Text       | 255, 255, 255 | #ffffff |
-| Keyword    | 86, 156, 214  | #569cd6 |
-| User Type  | 78, 201, 176  | #4ec9b0 |
-| String     | 214, 157, 133 | #d69d85 |
-| Comment    | 96, 139, 78   | #608b4e |
-| Error      | 255, 0, 0     | #ff0000 |
-| Background | 0, 0, 0       | #000000 |
-
 ```cs
 IGenerator generator = GeneratorFactory.GetConsoleColorGenerator();
 generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
+generator.Settings.POCO.CommentsWithoutNull = true;
+generator.Settings.ClassName.IncludeSchema = true;
+generator.Settings.ClassName.SchemaSeparator = "_";
+generator.Settings.ClassName.IgnoreDboSchema = true;
+generator.Settings.EFAnnotations.Enable = true;
 
 generator.Settings.SyntaxHighlight.Text = Color.FromArgb(255, 255, 255);
 generator.Settings.SyntaxHighlight.Keyword = Color.FromArgb(86, 156, 214);
@@ -1273,6 +1277,20 @@ generator.Settings.SyntaxHighlight.Background = Color.FromArgb(0, 0, 0);
 generator.Generate();
 ```
 
+![ConsoleColorDarkTheme Demo](./Solution%20Items/Images/ConsoleColorDarkThemeDemo.jpg "ConsoleColorDarkTheme Demo")
+
+These are the syntax highlight dark theme colors.
+
+|            | RGB           | Hex     |
+|------------|---------------|---------|
+| Text       | 255, 255, 255 | #ffffff |
+| Keyword    | 86, 156, 214  | #569cd6 |
+| User Type  | 78, 201, 176  | #4ec9b0 |
+| String     | 214, 157, 133 | #d69d85 |
+| Comment    | 96, 139, 78   | #608b4e |
+| Error      | 255, 0, 0     | #ff0000 |
+| Background | 0, 0, 0       | #000000 |
+
 ### RichTextBox Demos
 
 #### RichTextBoxDemo
@@ -1281,16 +1299,21 @@ Demo code [RichTextBoxDemo/DemoForm.cs](Demos/RichTextBox/RichTextBoxDemo/DemoFo
 
 The demo demonstrates how to write POCOs to WinForms `RichTextBox` control.
 
-![RichTextBox Demo](./Solution%20Items/Images/RichTextBoxDemo.jpg "RichTextBox Demo")
-
 ```cs
 RichTextBox txtPocoEditor = new System.Windows.Forms.RichTextBox();
 IGenerator generator = GeneratorWinFormsFactory.GetGenerator(txtPocoEditor);
 generator.Settings.Connection.ConnectionString =
     @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014";
 generator.Settings.DatabaseObjects.Tables.IncludeAll = true;
+generator.Settings.POCO.CommentsWithoutNull = true;
+generator.Settings.ClassName.IncludeSchema = true;
+generator.Settings.ClassName.SchemaSeparator = "_";
+generator.Settings.ClassName.IgnoreDboSchema = true;
+generator.Settings.EFAnnotations.Enable = true;
 generator.Generate();
 ```
+
+![RichTextBox Demo](./Solution%20Items/Images/RichTextBoxDemo.jpg "RichTextBox Demo")
 
 Dark theme syntax highlight colors are listed at [ConsoleColorDarkThemeDemo](#consolecolordarkthemedemo "ConsoleColorDarkThemeDemo").
 

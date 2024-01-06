@@ -91,6 +91,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{177A5F2F-A12D-4C55-A06F-70B5C9AF18F7}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\Images\ClassNameSettings.jpg = Solution Items\Images\ClassNameSettings.jpg
+		Solution Items\Images\ConsoleColorDarkThemeDemo.jpg = Solution Items\Images\ConsoleColorDarkThemeDemo.jpg
+		Solution Items\Images\ConsoleColorDemo.jpg = Solution Items\Images\ConsoleColorDemo.jpg
 		Solution Items\Images\EFAnnotationsSettings.jpg = Solution Items\Images\EFAnnotationsSettings.jpg
 		Solution Items\Images\ExportToFilesSettings.jpg = Solution Items\Images\ExportToFilesSettings.jpg
 		Solution Items\Images\FilterSettings.jpg = Solution Items\Images\FilterSettings.jpg
