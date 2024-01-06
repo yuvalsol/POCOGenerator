@@ -2298,3 +2298,22 @@ public class Warehouse
     public virtual ICollection<Product> Products { get; set; }
 }
 ```
+# NuGet Packages
+
+Key packages that are used in this project.
+
+**Microsoft.SqlServer.Types**\
+This package is used to support SQL Server types `geometry`, `geography`, and `hierarchyid`.\
+[Microsoft.SqlServer.Types 160.1000.6](https://www.nuget.org/packages/Microsoft.SqlServer.Types/160.1000.6 "Microsoft.SqlServer.Types 160.1000.6") - Components implementing the geometry, geography, and hierarchy ID types in SQL Server.
+
+**[MySql.Data](https://dev.mysql.com/doc/relnotes/connector-net/en/news-8-0-33.html "MySql.Data")**\
+This package is the MySql client.\
+[MySql.Data 8.0.33](https://www.nuget.org/packages/MySql.Data/8.0.33 "MySql.Data 8.0.33") - MySql.Data.MySqlClient .Net Core Class Library.
+
+**[Pluralize.NET](https://github.com/sarathkcm/Pluralize.NET "Pluralize.NET")**\
+This package is used to singularize class names and pluralize collection navigation properties.\
+[Pluralize.NET 1.0.2](https://www.nuget.org/packages/Pluralize.NET/1.0.2 "Pluralize.NET 1.0.2") - Pluralize or singularize any English word.
+
+**[TrueColorConsole](https://github.com/aybe/TrueColorConsole "TrueColorConsole")**\
+This package is used to write to the Console (Windows Terminal) with colors.\
+[TrueColorConsole 1.0.2](https://www.nuget.org/packages/TrueColorConsole/1.0.2 "TrueColorConsole 1.0.2") - 24-bit coloring and VT features for .NET System.Console.
