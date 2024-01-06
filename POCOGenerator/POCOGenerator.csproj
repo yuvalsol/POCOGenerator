@@ -129,6 +129,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="ILRepack.targets" />
     <None Include="packages.config" />
   </ItemGroup>
