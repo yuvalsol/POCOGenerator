@@ -311,6 +311,8 @@ Mapping from RDBMS data types to .NET data types.
 
 More about SQL Server data type mappings on this page [SQL Server Data Type Mappings](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings "SQL Server Data Type Mappings").
 
+NuGet package for `Microsoft.SqlServer.Types` at [Microsoft.SqlServer.Types](https://www.nuget.org/packages/Microsoft.SqlServer.Types "Microsoft.SqlServer.Types").
+
 |    SQL Server    |                   .NET                   |
 |------------------|------------------------------------------|
 | bigint           | long                                     |
