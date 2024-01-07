@@ -554,14 +554,14 @@ namespace POCOGenerator.POCOIterators
             {
                 // Using
                 if (settings.POCOIteratorSettings.UsingInsideNamespace == false)
-                    WriteUsing(dbObjects, namespaceOffset);
+                    WriteUsing(dbObject, namespaceOffset);
 
                 // Namespace Start
                 namespaceOffset = WriteNamespaceStart(@namespace);
 
                 // Using
                 if (settings.POCOIteratorSettings.UsingInsideNamespace)
-                    WriteUsing(dbObjects, namespaceOffset);
+                    WriteUsing(dbObject, namespaceOffset);
             }
 
             // Class Attributes
@@ -934,6 +934,11 @@ namespace POCOGenerator.POCOIterators
         #endregion
 
         #region Using
+
+        protected virtual void WriteUsing(IDbObjectTraverse dbObject, string namespaceOffset)
+        {
+            WriteUsing(new IDbObjectTraverse[] { dbObject }, namespaceOffset);
+        }
 
         protected virtual void WriteUsing(IEnumerable<IDbObjectTraverse> dbObjects, string namespaceOffset)
         {
