@@ -21,6 +21,9 @@ Original article and previous version of [POCO Generator on CodeProject](https:/
 
 [^1]: Table-valued parameters (TVPs) are declared by using user-defined table types and are scoped to stored procedures and functions. POCO Generator generates user-defined table types but uses the acronym TVP (table-valued parameter) interchangeably with user-defined table type although they are different things.
 
+> [!NOTE]
+> I don't have much time to be actively involved with this project anymore, let alone deal with pull requests, so I'm making this repository archived and read-only. I'll try to continue develop this project in the future but no promises. Fork away.
+
 # Disclaimer
 
 > [!CAUTION]
